@@ -46,8 +46,10 @@
         async function fetchData() {
             const response = await fetch(runquery);
             const jsonData = await response.json();
-            document.write(jsonData);
+            alert(jsonData);
         }
+
+        fetchData();
 
         /*
         fetch(runquery, options)

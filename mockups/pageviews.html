@@ -11,26 +11,6 @@
         <script>
         var chartDom = document.getElementById('main2');
         var myChart = echarts.init(chartDom);
-        var option;
-        
-        option = {
-            xAxis: {
-                type: 'category',
-                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-            },
-            yAxis: {
-                type: 'value'
-            },
-            series: [
-                {
-                data: [820, 932, 901, 934, 1290, 1330, 1320],
-                type: 'line',
-                smooth: true
-                }
-            ]
-        };
-
-        myChart.setOption(option);
 
         // prepare run-query params
         var params = new URL(window.location.href).searchParams;
@@ -56,6 +36,28 @@
             const jsonData = await response.json();
             alert(jsonData.results.data.length);
             alert(jsonData.results.data[0].estimated_pv);
+        
+            var option;
+        
+            option = {
+                xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                    data: [820, 932, 901, 934, 1290, 1330, 1320],
+                    type: 'line',
+                    smooth: true
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+        
         }
 
         fetchData();

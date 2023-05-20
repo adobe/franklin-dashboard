@@ -34,8 +34,33 @@
         async function fetchData() {
             const response = await fetch(runquery);
             const jsonData = await response.json();
-            alert(jsonData.results.data.length);
-            alert(jsonData.results.data[0].estimated_pv);
+
+            // prepare arrays compatible with ECharts
+            var dates = new Array();
+            var pageviews = new Array();
+            var lastdate = "";
+            let i = 0;
+            while (i < jsonData.results.data.length) {
+                let date = jsonData.results.data[i].date;
+                let pageview = jsonData.results.data[i].estimated_pv;
+
+                // this particular run-query does not return
+                // by date, but rather by date/weight combo.
+                // need to sum multiple results for same date
+                if (date != lastdate) {
+                    dates.push(date);
+                    pageviews.push(pageview);
+                } else {
+                    let partialpageviews = pageviews.pop();
+                    pageviews.push(partialpageviews + pageview);
+                }
+                
+                i++;
+            }
+
+
+            alert(JSON.stringify(dates));
+            alert(JSON.stringify(pageviews));
         
             var option;
         

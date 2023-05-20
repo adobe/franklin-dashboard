@@ -38,17 +38,25 @@
         var runquery = "https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5270/rum-pageviews-bdf?domainkey=" + domainkey + "&url=" + url;
         
 
-        let options = {
-            method: 'GET',      
-            headers: {}
-        };
+        //let options = {
+        //    method: 'GET',      
+        //    headers: {}
+        //};
 
+        async function fetchData() {
+            const response = await fetch(runquery);
+            const jsonData = await response.json();
+            document.write(jsonData);
+        }
+
+        /*
         fetch(runquery, options)
         .then(response => response.json())
         .then(body => {
             // Do something with body
-            document.write("done");
+            alert("done");
         });
+        */
 
         </script>
     </body>

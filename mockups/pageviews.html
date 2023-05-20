@@ -54,7 +54,7 @@
         async function fetchData() {
             const response = await fetch(runquery);
             const jsonData = await response.json();
-            alert(jsonData.results.data.count);
+            alert(jsonData.results.data.length);
         }
 
         fetchData();

@@ -31,7 +31,7 @@
             + "&enddate=" + enddate;
         
 
-        async function fetchData() {
+        async function drawChart() {
             const response = await fetch(runquery);
             const jsonData = await response.json();
 
@@ -56,17 +56,16 @@
                 }
 
                 lastdate = date;
-                
                 i++;
             }
 
-
-            alert(JSON.stringify(dates));
-            alert(JSON.stringify(pageviews));
-        
-            var option;
-        
-            option = {
+            // prepare chart
+            var option = {
+                title: {
+                    text: 'Estimated page views for ' + url,
+                    subtext: 'Last 30 days',
+                    left: 'center'
+                },
                 xAxis: {
                     type: 'category',
                     data: dates
@@ -82,12 +81,11 @@
                     }
                 ]
             };
-
             myChart.setOption(option);
         
         }
 
-        fetchData();
+        drawChart();
 
         </script>
     </body>

@@ -49,10 +49,10 @@
                 // need to sum multiple results for same date
                 if (date != lastdate) {
                     dates.push(date);
-                    pageviews.push(pageview);
+                    pageviews.push(parseInt(pageview));
                 } else {
                     let partialpageviews = pageviews.pop();
-                    pageviews.push(partialpageviews + pageview);
+                    pageviews.push(partialpageviews + parseInt(pageview));
                 }
 
                 lastdate = date;

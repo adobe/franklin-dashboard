@@ -1,0 +1,55 @@
+<html>
+    <head>
+        <script src="./echarts.min.js"></script>
+    </head>
+    <body>
+        <h1>Franklin Dashboard</h1>
+        <hr>
+
+        <div id="main2" style="width:100%; height:400px;"></div>
+
+        <script>
+        var chartDom = document.getElementById('main2');
+        var myChart = echarts.init(chartDom);
+        var option;
+        
+        option = {
+            xAxis: {
+                type: 'category',
+                data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                data: [820, 932, 901, 934, 1290, 1330, 1320],
+                type: 'line',
+                smooth: true
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+
+        var params = new URL(window.location.href).searchParams;
+        var url = params.get("url");
+        var domainkey = params.get("domainkey");
+        var runquery = "https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5179/rum-pageviews-bdf?domainkey=" + domainkey + "&url=" + url;
+        
+
+        let options = {
+            method: 'GET',      
+            headers: {}
+        };
+
+        fetch(runquery, options)
+        .then(response => response.json())
+        .then(body => {
+            // Do something with body
+            document.write("done");
+        });
+
+        </script>
+    </body>
+</html>

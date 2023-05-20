@@ -32,34 +32,32 @@
 
         myChart.setOption(option);
 
+        // prepare run-query params
         var params = new URL(window.location.href).searchParams;
         var url = params.get("url");
         var domainkey = params.get("domainkey");
-        var runquery = "https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5270/rum-pageviews-bdf?domainkey=" + domainkey + "&url=" + url;
-        
+        var startdate = new Date();
+        startdate.setDate(startdate.getDate() - 30);
+        startdate = startdate.toISOString().split('T')[0];
+        var enddate = new Date();
+        enddate = enddate.toISOString().split('T')[0];
 
-        //let options = {
-        //    method: 'GET',      
-        //    headers: {}
-        //};
+        var runquery =
+            "https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5270/rum-pageviews-bdf"
+            + "?domainkey=" + domainkey
+            + "&url=" + url
+            + "&interval=-1"
+            + "&startdate=" + startdate
+            + "&enddate=" + enddate;
+        
 
         async function fetchData() {
             const response = await fetch(runquery);
             const jsonData = await response.json();
-            alert(jsonData.results.data);
-            document.write(jsonData.results.data);
+            alert(jsonData.results.data.count);
         }
 
         fetchData();
-
-        /*
-        fetch(runquery, options)
-        .then(response => response.json())
-        .then(body => {
-            // Do something with body
-            alert("done");
-        });
-        */
 
         </script>
     </body>

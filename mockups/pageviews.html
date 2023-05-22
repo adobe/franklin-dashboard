@@ -11,21 +11,22 @@
         <script>
 
         function drawChart() {
-            
+            // load chart library
             const script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = "./echarts.min.js";
             document.head.appendChild(script);
             
+            // initialize chart
             const script2 = document.createElement('script');
             script.type = 'text/javascript';
+            script.async = true;
             script.innerHTML = `
                 var chartDom = document.getElementById('main2');
                 var myChart = echarts.init(chartDom);
-                myChart.setOption(option);
-            `;
-            document.head.appendChild(script2);
-            
+                //myChart.setOption(option);
+                
+                            
             //var chartDom = document.getElementById('main2');
             //var myChart = echarts.init(chartDom);
 
@@ -47,12 +48,12 @@
                 + "&startdate=" + startdate
                 + "&enddate=" + enddate;
             
-            //const response = await fetch(runquery);
-            //const jsonData = await response.json();
+            const response = await fetch(runquery);
+            const jsonData = await response.json();
             
-            const response = fetch(runquery);
-            const jsonData = response.json();
-
+            //const response = fetch(runquery);
+            //const jsonData = response.json();
+           
             // prepare arrays compatible with ECharts
             var dates = new Array();
             var pageviews = new Array();
@@ -102,7 +103,15 @@
                     }
                 ]
             };
-            //myChart.setOption(option);
+            myChart.setOption(option);
+                
+                
+                
+                
+                
+            `;
+            document.head.appendChild(script2);
+
         
         }
             

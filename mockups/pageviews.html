@@ -28,11 +28,18 @@
             + "&interval=-1"
             + "&startdate=" + startdate
             + "&enddate=" + enddate;
+            
+        var jsonData;
         
+        async function fetchData() {
+            const response = await fetch(runquery);
+            jsonData = await response.json();
+        }
+        fetchData();
 
         async function drawChart() {
-            const response = await fetch(runquery);
-            const jsonData = await response.json();
+            //const response = await fetch(runquery);
+            //const jsonData = await response.json();
 
             // prepare arrays compatible with ECharts
             var dates = new Array();

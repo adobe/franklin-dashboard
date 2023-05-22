@@ -1,6 +1,6 @@
 <html>
     <head>
-        <script src="./echarts.min.js"></script>
+
     </head>
     <body>
         <h1>Franklin Dashboard</h1>
@@ -32,6 +32,12 @@
         
 
         async function drawChart() {
+            
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = "./echarts.min.js";
+            document.head.appendChild(script);
+            
             const response = await fetch(runquery);
             const jsonData = await response.json();
 
@@ -87,8 +93,10 @@
             myChart.setOption(option);
         
         }
+            
+        window.setTimeout(() => drawChart(), 3000);
 
-        drawChart();
+        //drawChart();
 
         </script>
     </body>

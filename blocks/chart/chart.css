@@ -2,7 +2,7 @@
     display: grid;
     width: 100vw;
     height: 100vh;
-    grid-template-areas: 
+    grid-template: 
                 "a b"
                 "c d";
     grid-template-rows: 50% 50%;

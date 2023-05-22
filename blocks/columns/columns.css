@@ -79,6 +79,7 @@
   text-align: center;
 }
 
+/* stylelint-disable no-descending-specificity */
 .columns.contained > div > div {
   margin-bottom: var(--spacing-l);
 }
@@ -123,3 +124,5 @@
       grid-gap: var(--spacing-xxl);
   }
 }
+
+/* stylelint-enable no-descending-specificity */

@@ -283,6 +283,7 @@ export function readBlockConfig(block) {
         config[name] = value;
       }
     }
+    row.remove();
   });
   return config;
 }
@@ -353,9 +354,18 @@ export function updateSectionsStatus(main) {
  * @param {Element} main The container element
  */
 export function decorateBlocks(main) {
+  let chartCounter = 1;
   main
     .querySelectorAll('div.section > div > div')
-    .forEach(decorateBlock);
+    .forEach((block) => {
+      decorateBlock(block);
+      const shortBlockName = block.classList[0];
+      // create id for each chart
+      if (shortBlockName === 'chart') {
+        chartCounter += 1;
+        block.id = `chart${chartCounter}`;
+      }
+    });
 }
 
 /**
@@ -528,26 +538,33 @@ export function decorateTemplateAndTheme() {
  * Decorates paragraphs containing a single link as buttons.
  * @param {Element} element container element
  */
-export function decorateButtons(element) {
-  element.querySelectorAll('a').forEach((a) => {
-    a.title = a.title || a.textContent;
-    if (a.href !== a.textContent) {
-      const up = a.parentElement;
-      const twoup = a.parentElement.parentElement;
-      if (!a.querySelector('img')) {
-        if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button primary'; // default
-          up.classList.add('button-container');
+export function decorateButtons(block = document) {
+  const noButtonBlocks = ['cards'];
+  block.querySelectorAll(':scope a').forEach(($a) => {
+    $a.title = $a.title || $a.textContent;
+    const $block = $a.closest('div.section > div > div');
+    let blockName;
+    if ($block) {
+      blockName = $block.className;
+    }
+    if (!noButtonBlocks.includes(blockName)
+      && $a.href !== $a.textContent) {
+      const $up = $a.parentElement;
+      const $twoup = $a.parentElement.parentElement;
+      if (!$a.querySelector('img')) {
+        if ($up.childNodes.length === 1 && ($up.tagName === 'P' || $up.tagName === 'DIV')) {
+          $a.className = 'button accent'; // default
+          $up.classList.add('button-container');
         }
-        if (up.childNodes.length === 1 && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
-          a.className = 'button primary';
-          twoup.classList.add('button-container');
+        if ($up.childNodes.length === 1 && $up.tagName === 'STRONG'
+          && $twoup.childNodes.length === 1 && $twoup.tagName === 'P') {
+          $a.className = 'button accent';
+          $twoup.classList.add('button-container');
         }
-        if (up.childNodes.length === 1 && up.tagName === 'EM'
-          && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
-          a.className = 'button secondary';
-          twoup.classList.add('button-container');
+        if ($up.childNodes.length === 1 && $up.tagName === 'EM'
+          && $twoup.childNodes.length === 1 && $twoup.tagName === 'P') {
+          $a.className = 'button accent light';
+          $twoup.classList.add('button-container');
         }
       }
     }

@@ -22,6 +22,7 @@
             script2.type = 'text/javascript';
             script2.innerHTML = `
                 var chartDom = document.getElementById('main2');
+                import * as echarts from 'echarts';
                 var myChart = echarts.init(chartDom);
                 myChart.setOption(option);
             `;

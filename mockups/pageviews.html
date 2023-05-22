@@ -1,6 +1,6 @@
 <html>
     <head>
-        <script src="./echarts.min.js"></script>
+        
     </head>
     <body>
         <h1>Franklin Dashboard</h1>
@@ -10,8 +10,7 @@
 
         <script>
         var chartDom = document.getElementById('main2');
-        var myChart = echarts.init(chartDom);
-
+        
         // prepare run-query params
         var params = new URL(window.location.href).searchParams;
         var url = params.get("url");
@@ -84,12 +83,17 @@
                     }
                 ]
             };
+            
+            var myChart = echarts.init(chartDom);
             myChart.setOption(option);
         
         }
 
-        drawChart();
+        window.setTimeout(() => drawChart(), 3000);
 
         </script>
+        
+        <script src="./echarts.min.js"></script>
+        
     </body>
 </html>

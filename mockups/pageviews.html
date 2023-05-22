@@ -10,7 +10,7 @@
 
         <script>
 
-        function drawChart() {
+        async function drawChart() {
             // load chart library
             const script = document.createElement('script');
             script.type = 'text/javascript';
@@ -20,13 +20,13 @@
             // initialize chart
             const script2 = document.createElement('script');
             script.type = 'text/javascript';
-            script.async = true;
             script.innerHTML = `
                 var chartDom = document.getElementById('main2');
                 var myChart = echarts.init(chartDom);
-                //myChart.setOption(option);
-                
-                            
+                myChart.setOption(option);
+            `;
+            document.head.appendChild(script2);
+
             //var chartDom = document.getElementById('main2');
             //var myChart = echarts.init(chartDom);
 
@@ -47,6 +47,14 @@
                 + "&interval=-1"
                 + "&startdate=" + startdate
                 + "&enddate=" + enddate;
+            
+            /*
+            fetch(runquery)
+                .then((response) => response.json)
+                .then((results) => {
+                
+                })
+            */
             
             const response = await fetch(runquery);
             const jsonData = await response.json();
@@ -103,15 +111,7 @@
                     }
                 ]
             };
-            myChart.setOption(option);
-                
-                
-                
-                
-                
-            `;
-            document.head.appendChild(script2);
-
+            //myChart.setOption(option);
         
         }
             

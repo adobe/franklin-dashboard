@@ -38,8 +38,11 @@
                 + "&startdate=" + startdate
                 + "&enddate=" + enddate;
             
-            const response = await fetch(runquery);
-            const jsonData = await response.json();
+            //const response = await fetch(runquery);
+            //const jsonData = await response.json();
+            
+            const response = fetch(runquery);
+            const jsonData = response.json();
 
             // prepare arrays compatible with ECharts
             var dates = new Array();

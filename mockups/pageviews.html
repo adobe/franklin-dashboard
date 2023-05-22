@@ -17,8 +17,17 @@
             script.src = "./echarts.min.js";
             document.head.appendChild(script);
             
-            var chartDom = document.getElementById('main2');
-            var myChart = echarts.init(chartDom);
+            const script2 = document.createElement('script');
+            script.type = 'text/javascript';
+            script.innerHTML = `
+                var chartDom = document.getElementById('main2');
+                var myChart = echarts.init(chartDom);
+                myChart.setOption(option);
+            `;
+            document.head.appendChild(script2);
+            
+            //var chartDom = document.getElementById('main2');
+            //var myChart = echarts.init(chartDom);
 
             // prepare run-query params
             var params = new URL(window.location.href).searchParams;
@@ -93,7 +102,7 @@
                     }
                 ]
             };
-            myChart.setOption(option);
+            //myChart.setOption(option);
         
         }
             

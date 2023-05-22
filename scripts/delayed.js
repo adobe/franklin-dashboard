@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM } from './lib-franklin.js';
+
 const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
 
 // Core Web Vitals RUM collection
@@ -23,6 +24,6 @@ function createInlineScriptSrc(src, parent) {
 createInlineScriptSrc(ECHARTS, document.head);
 
 window.partytown = {
-    lib: '/scripts/',
+  lib: '/scripts/',
 };
 import('./partytown.js');

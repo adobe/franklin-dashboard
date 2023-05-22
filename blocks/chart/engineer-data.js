@@ -1,17 +1,22 @@
 /**
  * This function chooses a script to inline based on the data being accessed via http request.
  * inlined script will contain data processing necessary for charts of that type to appear.
- * @param {*} data 
- * @returns 
+ * @param {*} data
+ * @returns
  */
-export function engineerData(tableAndColumn, paramData, tableColumn, labelKey){
-    //tied to table name, column name, will determine how we handle data
-    const commonPlots = `
+function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
+  // tied to table name, column name, will determine how we handle data
+  const commonPlots = `
     res = data.results.data;
     const labels = res.map(row => row.${labelKey});
-    const series = res.map(row => row.${tableColumn});`
-  
-    const cashubCommonPlot = `
+    const series = res.map(row => row.${tableColumn});`;
+
+  const franklinLCPData = `
+  res = data.results.data;
+  const labels = res.map(row => row.${labelKey});
+  const series = res.map(row => row.${tableColumn}/1000);`;
+
+  const cashubCommonPlot = `
     function transformDataIntoMap(results){
       const transformed = {};
       const key = 'host';
@@ -40,11 +45,7 @@ export function engineerData(tableAndColumn, paramData, tableColumn, labelKey){
     if(${paramData.has('url')} && ('${paramData.get('url')}' in res)){
       plotData = res['${paramData.get('url')}'];
     }else{
-      Object.keys(res).forEach((k) => {
-        if(!plotData && res[k].length >= 30){
-          plotData = res[k];
-        }
-      });
+      plotData = res['developer.adobe.com'];
     }
     plotData.sort(function(a,b){
       let lesser = ymd2Date(a.year, a.month, a.day) < ymd2Date(b.year, b.month, b.day);
@@ -76,22 +77,23 @@ export function engineerData(tableAndColumn, paramData, tableColumn, labelKey){
       }
       let row = plotData[plotData.length - amount];
       start = [row.month, row.day, row.year%2000].join('-');
-    }`
-  
-    /* ------------------------------------------------------------------------- */
-    //ADD MORE INLINE JS THAT HANDLES DATA FOR A DIFFERENT TYPE OF CHART BELOW!
-  
-    const DATA_CONFIG = {
-      //Franklin queries
-      'rum-dashboard-avglcp': commonPlots,
-      'rum-dashboard-avgfid': commonPlots,
-      'rum-dashboard-avgcls': commonPlots,
-      //Vrapp queries
-      'daily-rum-avglcp': cashubCommonPlot,
-      'daily-rum-avgfid': cashubCommonPlot,
-      'daily-rum-avgcls': cashubCommonPlot,
-    }
-  
-  
-    return DATA_CONFIG[tableAndColumn];
-  }
+    }`;
+
+  /* ------------------------------------------------------------------------- */
+  // ADD MORE INLINE JS THAT HANDLES DATA FOR A DIFFERENT TYPE OF CHART BELOW!
+
+  const DATA_CONFIG = {
+    // Franklin queries
+    'rum-dashboard-avglcp': franklinLCPData,
+    'rum-dashboard-avgfid': commonPlots,
+    'rum-dashboard-avgcls': commonPlots,
+    // Vrapp queries
+    'daily-rum-avglcp': cashubCommonPlot,
+    'daily-rum-avgfid': cashubCommonPlot,
+    'daily-rum-avgcls': cashubCommonPlot,
+  };
+
+  return DATA_CONFIG[tableAndColumn];
+}
+
+export default engineerData;

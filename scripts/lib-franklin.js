@@ -356,14 +356,15 @@ export function updateSectionsStatus(main) {
 export function decorateBlocks(main) {
   let chartCounter = 1;
   main
-  .querySelectorAll('div.section > div > div')
-  .forEach((block, idx) => {
-    decorateBlock(block)
-    const shortBlockName = block.classList[0];
-    //create id for each chart
-    if(shortBlockName === 'chart'){
-      block.id = `chart${chartCounter++}`;
-    }
+    .querySelectorAll('div.section > div > div')
+    .forEach((block) => {
+      decorateBlock(block);
+      const shortBlockName = block.classList[0];
+      // create id for each chart
+      if (shortBlockName === 'chart') {
+        chartCounter += 1;
+        block.id = `chart${chartCounter}`;
+      }
     });
 }
 

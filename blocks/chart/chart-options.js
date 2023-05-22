@@ -1,18 +1,19 @@
 /**
- * This function chooses the chart option based on the endpoint and tablecolumn! Each possible table/column must have a chart config
- * as these are different types of data that mandate different types of displays
- * @param {*} typeChart 
- * @param {*} tableColumn 
- * @param {*} perfRanges 
- * @param {*} legend 
- * @param {*} min 
- * @param {*} max 
- * @returns 
+ * This function chooses the chart option based on the endpoint and tablecolumn!
+ * Each possible table/column must have a chart config as these are different types
+ * of data that mandate different types of displays
+ * @param {*} typeChart
+ * @param {*} tableColumn
+ * @param {*} perfRanges
+ * @param {*} legend
+ * @param {*} min
+ * @param {*} max
+ * @returns
  */
-export const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, max) => {
-    const pick = `${endpoint}-${typeChart}`;
-    const CHART_CONFIG = {
-      'daily-rum-line': `{
+const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, max) => {
+  const pick = `${endpoint}-${typeChart}`;
+  const CHART_CONFIG = {
+    'daily-rum-line': `{
         title: {
         text: currentUrl + ' ${legend}',
         x: 'center',
@@ -44,7 +45,7 @@ export const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend
               data: [
                 {
                   name: 'Good',
-                  yAxis: ${perfRanges[tableColumn]['good'][1]},
+                  yAxis: ${perfRanges[tableColumn].good[1]},
                   label: {
                     normal: {
                     show: true, 
@@ -60,7 +61,7 @@ export const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend
                 },
                 {
                   name: 'Okay',
-                  yAxis: ${perfRanges[tableColumn]['okay'][1]},
+                  yAxis: ${perfRanges[tableColumn].okay[1]},
                   label: {
                     normal: {
                     show: true, 
@@ -76,7 +77,7 @@ export const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend
                 },
                 {
                   name: 'Poor',
-                  yAxis: ${perfRanges[tableColumn]['poor'][0]},
+                  yAxis: ${perfRanges[tableColumn].poor[0]},
                   label: {
                     normal: {
                     show: true, 
@@ -100,25 +101,25 @@ export const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend
                 [
                   {
                     name: 'Good',
-                    yAxis: ${perfRanges[tableColumn]['good'][0]}, //min of green area
+                    yAxis: ${perfRanges[tableColumn].good[0]}, //min of green area
                     itemStyle: {
                       color: 'rgba(23, 232, 30, 0.2)'
                     },
                   },
                   {
-                    yAxis: ${perfRanges[tableColumn]['good'][1]}, //max of green area area
+                    yAxis: ${perfRanges[tableColumn].good[1]}, //max of green area area
                   }
                 ],
                 [
                   {
                     name: 'Needs Improvement',
-                    yAxis: ${perfRanges[tableColumn]['okay'][0]}, //min of green area
+                    yAxis: ${perfRanges[tableColumn].okay[0]}, //min of green area
                     itemStyle: {
                       color: 'rgba(256, 256, 256, 0.4)'
                     },
                   },
                   {
-                    yAxis: ${perfRanges[tableColumn]['okay'][1]}, //max of green area area
+                    yAxis: ${perfRanges[tableColumn].okay[1]}, //max of green area area
                   }
                 ],
               ]
@@ -126,7 +127,7 @@ export const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend
           }
         ]
       };`,
-      'rum-dashboard-bar-horizontal': `{
+    'rum-dashboard-bar-horizontal': `{
         title: {
           text: '${legend}',
           x: 'center',
@@ -153,6 +154,8 @@ export const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend
           }
         ]
       };`,
-    };
-    return `var option = ` + CHART_CONFIG[pick];
   };
+  return `var option = ${CHART_CONFIG[pick]}`;
+};
+
+export default chartPicker;

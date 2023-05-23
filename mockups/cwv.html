@@ -11,19 +11,20 @@
         
         <div id="loading"><img src="./loading.gif"></div>
         <div id="main2" style="width:100%; height:300px;"></div>
+        <div id="main3" style="width:100%; height:300px;"></div>
+        <div id="main4" style="width:100%; height:300px;"></div>
 
         <script>
         var chartDom = document.getElementById('main2');
+        var chart2Dom = document.getElementById('main3');
+        var chart3Dom = document.getElementById('main4');
         
         // prepare run-query params
         var params = new URL(window.location.href).searchParams;
         var url = params.get("url");
         var domainkey = params.get("domainkey");
-        var startdate = new Date();
-        startdate.setDate(startdate.getDate() - 180);
-        startdate = startdate.toISOString().split('T')[0];
-        var enddate = new Date();
-        enddate = enddate.toISOString().split('T')[0];
+        var startdate = params.get("startdate");
+        var enddate = params.get("enddate");
 
         // prepare query URL
         var runquery =
@@ -44,6 +45,12 @@
             var lcps50 = new Array();
             var lcps75 = new Array();
             var lcps90 = new Array();
+            var fids50 = new Array();
+            var fids75 = new Array();
+            var fids90 = new Array();
+            var clss50 = new Array();
+            var clss75 = new Array();
+            var clss90 = new Array();
 
             let i = 0;
             while (i < jsonData.results.data.length) {
@@ -51,11 +58,23 @@
                 let lcp50 = jsonData.results.data[i].lcp50;
                 let lcp75 = jsonData.results.data[i].lcp75;
                 let lcp90 = jsonData.results.data[i].lcp90;
+                let fid50 = jsonData.results.data[i].fid50;
+                let fid75 = jsonData.results.data[i].fid75;
+                let fid90 = jsonData.results.data[i].fid90;
+                let cls50 = jsonData.results.data[i].cls50;
+                let cls75 = jsonData.results.data[i].cls75;
+                let cls90 = jsonData.results.data[i].cls90;
 
                 dates.push(date);
                 lcps50.push(parseInt(lcp50));
                 lcps75.push(parseInt(lcp75));
                 lcps90.push(parseInt(lcp90));
+                fids50.push(parseInt(fid50));
+                fids75.push(parseInt(fid75));
+                fids90.push(parseInt(fid90));
+                clss50.push(parseInt(cls50));
+                clss75.push(parseInt(cls75));
+                clss90.push(parseInt(cls90));
 
                 i++;
             }
@@ -99,12 +118,98 @@
                     }
                 ]
             };
+
+            // prepare chart
+            var option2 = {
+                title: {
+                    text: 'FID for ' + url
+                },
+                legend: {
+                    data: ['50 pct', '75 pct', '90 pct']
+                },
+                tooltip: {
+                    trigger: 'axis',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dates
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '50 pct',
+                        data: fids50,
+                        type: 'line',
+                        smooth: true
+                    },
+                    {
+                        name: '75 pct',
+                        data: fids75,
+                        type: 'line',
+                        smooth: true
+                    },
+                    {
+                        name: '90 pct',
+                        data: fids90,
+                        type: 'line',
+                        smooth: true
+                    }
+                ]
+            };
+
+            // prepare chart
+            var option3 = {
+                title: {
+                    text: 'CLS for ' + url
+                },
+                legend: {
+                    data: ['50 pct', '75 pct', '90 pct']
+                },
+                tooltip: {
+                    trigger: 'axis',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dates
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '50 pct',
+                        data: clss50,
+                        type: 'line',
+                        smooth: true
+                    },
+                    {
+                        name: '75 pct',
+                        data: clss75,
+                        type: 'line',
+                        smooth: true
+                    },
+                    {
+                        name: '90 pct',
+                        data: clss90,
+                        type: 'line',
+                        smooth: true
+                    }
+                ]
+            };
             
             // hide loading icon
             document.getElementById("loading").classList.add("hide");
             
             var myChart = echarts.init(chartDom);
             myChart.setOption(option);
+
+            var myChart2 = echarts.init(chart2Dom);
+            myChart2.setOption(option2);
+
+            var myChart3 = echarts.init(chart3Dom);
+            myChart3.setOption(option3);
         
         }
 

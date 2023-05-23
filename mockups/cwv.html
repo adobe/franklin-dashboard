@@ -63,9 +63,10 @@
             // prepare chart
             var option = {
                 title: {
-                    text: 'Median LCP for ' + url,
-                    subtext: 'Last 180 days',
-                    left: 'center'
+                    text: 'LCP for ' + url
+                },
+                legend: {
+                    data: ['50 pct', '75 pct', '90 pct']
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -79,19 +80,22 @@
                 },
                 series: [
                     {
-                    data: lcps50,
-                    type: 'line',
-                    smooth: true
+                        name: '50 pct',
+                        data: lcps50,
+                        type: 'line',
+                        smooth: true
                     },
                     {
-                    data: lcps75,
-                    type: 'line',
-                    smooth: true
+                        name: '75 pct',
+                        data: lcps75,
+                        type: 'line',
+                        smooth: true
                     },
                     {
-                    data: lcps90,
-                    type: 'line',
-                    smooth: true
+                        name: '90 pct',
+                        data: lcps90,
+                        type: 'line',
+                        smooth: true
                     }
                 ]
             };

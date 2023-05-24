@@ -45,7 +45,7 @@
             while (i < jsonData.results.data.length) {
                 let bucket = jsonData.results.data[i].bucket;
                 let lcpcount = jsonData.results.data[i].lcp_count;
-                let clickcount = jsonData.results.data[i].click_count;
+                let clickcount = jsonData.results.data[i].click_count * 50;
 
                 buckets.push(bucket);
                 lcpcounts.push(lcpcount);
@@ -69,15 +69,9 @@
                     type: 'category',
                     data: buckets
                 },
-                yAxis: [
-                    {
-                        type: 'value'
-                    },
-                    {
-                        type: 'value',
-                        max: 100
-                    }
-                ],
+                yAxis: {
+                    type: 'value'
+                },
                 series: [
                     {
                         data: lcpcounts,

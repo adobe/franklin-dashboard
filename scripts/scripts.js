@@ -101,6 +101,21 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
+  function createInlineScriptSrc(src, parent) {
+    const script = document.createElement('script');
+    script.type = 'text/partytown';
+    script.src = src;
+    parent.appendChild(script);
+  }
+  const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
+
+  createInlineScriptSrc(ECHARTS, document.head);
+
+  window.partytown = {
+    lib: '/scripts/',
+  };
+  import('./partytown.js');
+
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 

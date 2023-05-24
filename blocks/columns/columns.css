@@ -21,11 +21,23 @@
 .columns.bleed div.columns-image img {
   object-fit: cover;
   height: 100vw;
-  width: 100%;
+  width: fit-content;
   object-position: left;
   opacity: 0;
   transform: translate(50px, 0);
   transition: transform 0.5s ease-out, opacity 1s;
+}
+
+.columns-wrapper {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+}
+
+.columns.bleed.block.one {
+  display: flex;
+  justify-content: center;
+  width: fit-content;
 }
 
 .columns.bleed div.columns-image.columns-left img {
@@ -49,7 +61,6 @@
       object-fit: cover;
       height: 50vw;
       max-height: 600px;
-      width: 100%;
       object-position: left;
   }
 

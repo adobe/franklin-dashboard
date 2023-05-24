@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <style>
+            #loading img {display:block; margin: auto;}
+            .hide {display:none;}
+        </style>
+    </head>
+    <body>
+        <h1>Franklin Dashboard</h1>
+        <hr>
+        
+        <div id="loading"><img src="./loading.gif"></div>
+        <div id="main2" style="width:100%; height:400px;"></div>
+
+        <script>
+        var chartDom = document.getElementById('main2');
+        
+        // prepare run-query params
+        var params = new URL(window.location.href).searchParams;
+        var url = params.get("url");
+        var domainkey = params.get("domainkey");
+        var startdate = new Date();
+        startdate.setDate(startdate.getDate() - 30);
+        startdate = startdate.toISOString().split('T')[0];
+        var enddate = new Date();
+        enddate = enddate.toISOString().split('T')[0];
+
+        // prepare query URL
+        var runquery =
+            "https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5315/dash-conversions"
+            + "?domainkey=" + domainkey
+            + "&url=" + url
+            + "&interval=-1"
+            + "&startdate=" + startdate
+            + "&enddate=" + enddate;
+
+        async function drawChart() {
+            // call query
+            const response = await fetch(runquery);
+            const jsonData = await response.json();
+
+            // prepare arrays compatible with chart
+            var buckets = new Array();
+            var lcpcounts = new Array();
+            var clickcounts = new Array();
+
+            let i = 0;
+            while (i < jsonData.results.data.length) {
+                let bucket = jsonData.results.data[i].bucket;
+                let lcpcount = jsonData.results.data[i].lcp_count;
+                let clickcount = jsonData.results.data[i].click_count;
+
+                buckets.push(bucket);
+                lcpcounts.push(lcpcount);
+                clickcounts.push(clickcount);
+
+                i++;
+            }
+
+            // prepare chart
+            var option = {
+                title: {
+                    text: 'LCP distribution for ' + url
+                },
+                legend: {
+                    data: ['Total', 'Conversions']
+                },
+                tooltip: {
+                    trigger: 'axis',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: buckets
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        data: lcpcounts,
+                        type: 'line',
+                        smooth: true
+                    },
+                    {
+                        data: clickcounts,
+                        type: 'line',
+                        smooth: true
+                    }
+
+                ]
+            };
+            
+            // hide loading icon
+            document.getElementById("loading").classList.add("hide");
+            
+            var myChart = echarts.init(chartDom);
+            myChart.setOption(option);
+        
+        }
+
+        window.setTimeout(() => drawChart(), 3000);
+
+        </script>
+        
+        <script src="./echarts.min.js"></script>
+        
+    </body>
+</html>
+

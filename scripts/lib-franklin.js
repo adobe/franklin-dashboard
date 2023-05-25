@@ -358,9 +358,9 @@ export function getUrlBase(endpoint) {
     'daily-rum': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
     'rum-pageviews-bdf': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
     'github-prs': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
-    site4s: 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
-    'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@v3/',
-    'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@v3/',
+    'site4s': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
+    'rum-dashboard': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
+    'rum-pageviews': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
   };
 
   return urlBase[endpoint];

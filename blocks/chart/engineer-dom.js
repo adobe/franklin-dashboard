@@ -41,7 +41,7 @@ export function prePlotDomEngineering(tableAndColumn, chartId, block) {
         const canvasWrapper = document.createElement('div');
         canvasWrapper.id = '${chartId}';
         currBlock.append(canvasWrapper);
-        let myChart = echarts.init(canvasWrapper, null, { renderer: 'svg' });
+        let myChart = echarts.init(canvasWrapper);
         `;
 
   const DOM_CONFIG = {

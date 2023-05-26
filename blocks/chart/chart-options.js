@@ -12,6 +12,18 @@
  */
 const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, max) => {
   const pick = `${endpoint}-${typeChart}`;
+  let goodLower;
+  let goodUpper;
+  let okayUpper;
+  let okayLower;
+  let badLower;
+  if(Object.hasOwn(perfRanges, tableColumn)){
+    goodLower = perfRanges[tableColumn].good[0];
+    goodUpper = perfRanges[tableColumn].good[1];
+    okayLower = perfRanges[tableColumn].okay[0];
+    okayUpper = perfRanges[tableColumn].okay[1];
+    badLower = perfRanges[tableColumn].poor[0];
+  }
   const CHART_CONFIG = {
     'daily-rum-line': `{
         title: {
@@ -39,13 +51,42 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           {
             name: '${tableColumn}',
             type: 'line',
+            smooth: true,
+            symbol: 'none',
             data: series,
+            markArea: {
+              data: [
+                [
+                  {
+                    name: 'Good',
+                    yAxis: ${goodLower}, //min of green area
+                    itemStyle: {
+                      color: 'rgba(256, 256, 256, 0.1)'
+                    },
+                  },
+                  {
+                    yAxis: ${goodUpper}, //max of green area area
+                  }
+                ],
+                [
+                  {
+                    name: 'Needs Improvement',
+                    yAxis: ${okayLower}, //min of green area
+                    itemStyle: {
+                      color: 'rgba(256, 256, 256, 0.1)'
+                    },
+                  },
+                  {
+                    yAxis: ${okayUpper}, //max of green area area
+                  }
+                ],
+              ]
+            },
             markLine: {
-              symbol: 'none',
               data: [
                 {
                   name: 'Good',
-                  yAxis: ${perfRanges[tableColumn].good[1]},
+                  ${goodUpper ? `yAxis:` + goodUpper +`,` : ``}
                   label: {
                     normal: {
                     show: true, 
@@ -54,14 +95,14 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
                   lineStyle: {
                     width: 10,
                     normal: {
-                      type:'dashed',
+                      type:'solid',
                       color: 'green',
                     }
                   },
                 },
                 {
                   name: 'Okay',
-                  yAxis: ${perfRanges[tableColumn].okay[1]},
+                  ${okayUpper ? `yAxis:` + okayUpper+`,` : ``}
                   label: {
                     normal: {
                     show: true, 
@@ -70,23 +111,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
                   lineStyle: {
                     width: 10,
                     normal: {
-                      type:'dashed',
-                      color: 'orange',
-                    }
-                  },
-                },
-                {
-                  name: 'Poor',
-                  yAxis: ${perfRanges[tableColumn].poor[0]},
-                  label: {
-                    normal: {
-                    show: true, 
-                    }
-                  },
-                  lineStyle: {
-                    width: 10,
-                    normal: {
-                      type:'dashed',
+                      type:'solid',
                       color: 'red',
                     }
                   },
@@ -95,34 +120,6 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
               areaStyle: {
                 color: '#91cc75'
               }
-            },
-            markArea: {
-              data: [
-                [
-                  {
-                    name: 'Good',
-                    yAxis: ${perfRanges[tableColumn].good[0]}, //min of green area
-                    itemStyle: {
-                      color: 'rgba(23, 232, 30, 0.2)'
-                    },
-                  },
-                  {
-                    yAxis: ${perfRanges[tableColumn].good[1]}, //max of green area area
-                  }
-                ],
-                [
-                  {
-                    name: 'Needs Improvement',
-                    yAxis: ${perfRanges[tableColumn].okay[0]}, //min of green area
-                    itemStyle: {
-                      color: 'rgba(256, 256, 256, 0.4)'
-                    },
-                  },
-                  {
-                    yAxis: ${perfRanges[tableColumn].okay[1]}, //max of green area area
-                  }
-                ],
-              ]
             },
           }
         ]
@@ -137,8 +134,8 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           data: ['${tableColumn}']
         },
         xAxis: {
-          min: ${min},
-          max: ${max},
+          ${min ? 'min: ' + min + ',' : ''}
+          ${max ? 'max: ' + max + ',' : ''}
         },
         yAxis: {
           data: labels,

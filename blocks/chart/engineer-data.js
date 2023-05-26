@@ -87,6 +87,7 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
     'rum-dashboard-avglcp': franklinLCPData,
     'rum-dashboard-avgfid': commonPlots,
     'rum-dashboard-avgcls': commonPlots,
+    'rum-dashboard-pageviews': commonPlots,
     // Vrapp queries
     'daily-rum-avglcp': cashubCommonPlot,
     'daily-rum-avgfid': cashubCommonPlot,

@@ -5,10 +5,7 @@ import { postPlotDomEngineering, prePlotDomEngineering } from './engineer-dom.js
 
 export default function decorate(block) {
   const params = new URLSearchParams(window.location.search);
-  const paramsObj = Array.from(params.keys()).reduce(
-    (acc, val) => ({ ...acc, [val]: params.get(val) }),
-    {},
-  );
+
   const axisDict = {
     avgfid: [0, 500],
     avgcls: [0, 0.45],
@@ -33,12 +30,6 @@ export default function decorate(block) {
     },
   };
 
-  const urlBase = {
-    'daily-rum': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5286/',
-    'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@v3/',
-    'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@v3/',
-  };
-
   let cfg = readBlockConfig(block);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const typeChart = cfg.type;
@@ -53,38 +44,42 @@ export default function decorate(block) {
   const chartId = `${[endpoint, tableColumn, typeChart].join('-')}`.toLowerCase(); // id is data row + chart type because why have this twice?
   const tableAndColumn = `${endpoint}-${tableColumn}`;
 
-  const paramData = new URLSearchParams();
-  Object.entries(paramsObj).forEach(([param, val]) => {
-    paramData.append(param, val);
+  let chartMin; //defaults
+  let chartMax; //defaults
+  
+  if(Object.hasOwn(axisDict, tableColumn)){
+    chartMin = axisDict[tableColumn][0];
+    chartMax = axisDict[tableColumn][1];
+  }
+
+  // once we read config, clear the dom.
+  block.querySelectorAll(':scope > div').forEach((row) => {
+    row.remove();
   });
-
-  const chartMin = axisDict[tableColumn][0];
-  const chartMax = axisDict[tableColumn][1];
-
   const echartsScript = document.createElement('script');
   echartsScript.type = 'text/partytown';
-  // echartsScript.src ='../../scripts/test.js'
+  //echartsScript.src ='../../scripts/test.js'
   echartsScript.async = true;
   echartsScript.innerHTML = `
   (async function(){
     //data will live in this variable res
     let res;
     //request data
-    const resp = await fetch('${urlBase[endpoint]}${endpoint}', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            //'Cache-control': 'max-age=300',
-          },
-          body: '${paramData}'
-      });
-    const data = await resp.json();
-    //configure this chart and fill it with proper parameters
-    ${prePlotDomEngineering(tableAndColumn, chartId, block)}
-    ${engineerData(tableAndColumn, paramData, tableColumn, labelKey)}
-    ${chartPicker(endpoint, typeChart, tableColumn, perfRanges, legend, chartMin, chartMax)}
-    ${postPlotDomEngineering(tableAndColumn, chartId, paramData)}
-    myChart.setOption(option);
+    function checkForData(){
+      if((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')){
+        window.setTimeout(checkForData, 10);
+      }
+      else if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false){
+        const data = window.dashboard['${endpoint}'];
+        //configure this chart and fill it with proper parameters
+        ${prePlotDomEngineering(tableAndColumn, chartId, block)}
+        ${engineerData(tableAndColumn, params, tableColumn, labelKey)}
+        ${chartPicker(endpoint, typeChart, tableColumn, perfRanges, legend, chartMin, chartMax)}
+        ${postPlotDomEngineering(tableAndColumn, chartId, params)}
+        myChart.setOption(option);
+      }
+    }
+    checkForData();
     })()
   `;
 

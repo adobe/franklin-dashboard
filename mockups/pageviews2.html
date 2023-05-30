@@ -11,9 +11,11 @@
         
         <div id="loading"><img src="./loading.gif"></div>
         <div id="main2" style="width:100%; height:400px;"></div>
+        <div id="main3" style="width:100%; height:400px;"></div>
 
         <script>
         var chartDom = document.getElementById('main2');
+        var listDom = document.getElementById('main3');
         
         // prepare run-query params
         var params = new URL(window.location.href).searchParams;
@@ -27,6 +29,15 @@
 
         // prepare query URL
         var runquery =
+            "https://helix-pages.anywhere.run/helix-services/run-query@ci5354/dash@pageviews"
+            + "?domainkey=" + domainkey
+            + "&url=" + url
+            + "&interval=-1"
+            + "&offset=-1"
+            + "&startdate=" + startdate
+            + "&enddate=" + enddate;
+
+        var runquery2 =
             "https://helix-pages.anywhere.run/helix-services/run-query@ci5354/dash@pageviews"
             + "?domainkey=" + domainkey
             + "&url=" + url
@@ -89,7 +100,63 @@
         
         }
 
-        window.setTimeout(() => drawChart(), 3000);
+        async function drawList() {
+            // call query
+            const response = await fetch(runquery2);
+            const jsonData = await response.json();
+
+            // prepare arrays compatible with chart
+            var dates = new Array();
+            var pageviews = new Array();
+   
+            let i = 0;
+            while (i < jsonData.results.data.length) {
+                let date = jsonData.results.data[i].date;
+                let pageview = jsonData.results.data[i].estimated_pv;
+
+                dates.push(date);
+                pageviews.push(parseInt(pageview));
+
+                i++;
+            }
+
+            // prepare chart
+            var option = {
+                title: {
+                    text: 'Estimated page views for ' + url,
+                    subtext: 'Last 30 days',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: dates
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                    data: pageviews,
+                    type: 'line',
+                    smooth: true
+                    }
+                ]
+            };
+            
+            // hide loading icon
+            document.getElementById("loading").classList.add("hide");
+            
+            var myList = echarts.init(listDom);
+            myList.setOption(option);
+        
+        }
+
+        //window.setTimeout(() => drawChart(), 3000);
+        drawChart();
+        drawList();
 
         </script>
         

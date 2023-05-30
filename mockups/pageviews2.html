@@ -1,19 +1,31 @@
 <html>
     <head>
         <style>
-            #loading img {display:block; margin: auto;}
-            .hide {display:none;}
+            #loading img {display: block; margin: auto;}
+            .hide {display: none;}
+            .container-2col {display: grid; grid-template-columns: 1fr 1fr;}
+            .main {height: 300px;}
+            .wide {grid-column-start: 1; grid-column-end: 3;}
+            .header {font-weight: bold;}
         </style>
     </head>
     <body>
         
-        <div id="loading"><img src="./loading.gif"></div>
-        <div id="main2" style="width:100%; height:400px;"></div>
-        <div id="main3" style="width:100%; height:400px;"></div>
+        <div class="container-2col">
+            <div class="main wide">
+                <div id="loading"><img src="./loading.gif"></div>
+                <div id="pageviews" style="width:100%; height:300px;"></div>
+            </div>
+            <div>
+                <div id="top-pages" style="height:300px;"></div>
+            </div>
+            <div>
+                <div id="another-chart"></div>
+        </div>
 
         <script>
-        var chartDom = document.getElementById('main2');
-        var listDom = document.getElementById('main3');
+        var chartDom = document.getElementById('pageviews');
+        var listDom = document.getElementById('top-pages');
         
         // prepare run-query params
         var params = new URL(window.location.href).searchParams;
@@ -24,6 +36,8 @@
         startdate = startdate.toISOString().split('T')[0];
         var enddate = new Date();
         enddate = enddate.toISOString().split('T')[0];
+        var limit = params.get("limit");
+        if (!limit) {limit = 10};
 
         // prepare query URL
         var runquery =
@@ -103,63 +117,47 @@
             const response = await fetch(runquery2);
             const jsonData = await response.json();
 
-            //listDom.innerHTML = "got it"
+            // prepare DOM for list
+            let container = document.createElement("div");
+            container.className = "container-2col";
 
-            var container = document.createElement("div");
+            let headerTitle = document.createElement("div");
+            headerTitle.classList.add("header", "wide");
+            headerTitle.textContent = "Top " + limit + " most popular pages";
+            container.appendChild(headerTitle);
+        
+            let headerUrl = document.createElement("div");
+            headerUrl.className = "header";
+            headerUrl.textContent = "URL";
+            container.appendChild(headerUrl);
+
+            let headerCount = document.createElement("div");
+            headerCount.className = "header";
+            headerCount.textContent = "Estimated Count";
+            container.appendChild(headerCount);
+
             listDom.appendChild(container);
 
-            // prepare arrays compatible with chart
-            var pages = new Array();
-            var pageviews = new Array();
-   
+            // add results data
             let i = 0;
-            while (i < jsonData.results.data.length) {
+            while (i < jsonData.results.data.length && i < parseInt(limit)) {
                 let page = jsonData.results.data[i].url;
                 let pageview = jsonData.results.data[i].estimated_pv;
+                
+                let url = document.createElement("div");
+                let anchor = document.createElement("a");
+                anchor.setAttribute("href", "javascript:document.getElementById('another-chart').textContent='draw-chart-here';")
+                anchor.textContent = page;
+                url.appendChild(anchor);
+                container.appendChild(url);
 
-                pages.push(page);
-                pageviews.push(parseInt(pageview));
+                let count = document.createElement("div");
+                count.textContent = pageview;
+                container.appendChild(count);
 
-                let view = document.createElement("div");
-                view.textContent = page + ":::" + pageview;
-                container.appendChild(view);
-console.log(page + ":::" + pageview);
                 i++;
             }
 
-/*
-            // prepare chart
-            var option = {
-                title: {
-                    text: 'Estimated page views for ' + url,
-                    subtext: 'Last 30 days',
-                    left: 'center'
-                },
-                tooltip: {
-                    trigger: 'axis',
-                },
-                xAxis: {
-                    type: 'category',
-                    data: dates
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                    data: pageviews,
-                    type: 'line',
-                    smooth: true
-                    }
-                ]
-            };
-            
-            // hide loading icon
-            document.getElementById("loading").classList.add("hide");
-            
-            var myList = echarts.init(listDom);
-            myList.setOption(option);
-*/        
         }
 
         //window.setTimeout(() => drawChart(), 3000);

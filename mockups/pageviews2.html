@@ -103,9 +103,10 @@
             const response = await fetch(runquery2);
             const jsonData = await response.json();
 
-            listDom.innerHTML = "got it"
+            //listDom.innerHTML = "got it"
 
-            var container = listDom.appendChild("div");
+            var container = document.createElement("div");
+            listDom.appendChild(container);
 
             // prepare arrays compatible with chart
             var pages = new Array();
@@ -122,7 +123,7 @@
                 let view = document.createElement("div");
                 view.textContent = page + ":::" + pageview;
                 container.appendChild(view);
-
+console.log(page + ":::" + pageview);
                 i++;
             }
 

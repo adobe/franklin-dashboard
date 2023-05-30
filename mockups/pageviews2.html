@@ -36,7 +36,7 @@
             + "&enddate=" + enddate;
 
         var runquery2 =
-            "https://helix-pages.anywhere.run/helix-services/run-query@ci5354/dash@pageviews"
+            "https://helix-pages.anywhere.run/helix-services/run-query@ci5354/dash@top-pages"
             + "?domainkey=" + domainkey
             + "&url=" + url
             + "&interval=-1"
@@ -103,6 +103,8 @@
             const response = await fetch(runquery2);
             const jsonData = await response.json();
 
+            listDom.innerHTML = "got it"
+/*
             // prepare arrays compatible with chart
             var dates = new Array();
             var pageviews = new Array();
@@ -149,7 +151,7 @@
             
             var myList = echarts.init(listDom);
             myList.setOption(option);
-        
+*/        
         }
 
         //window.setTimeout(() => drawChart(), 3000);

@@ -104,22 +104,29 @@
             const jsonData = await response.json();
 
             listDom.innerHTML = "got it"
-/*
+
+            var container = listDom.appendChild("div");
+
             // prepare arrays compatible with chart
-            var dates = new Array();
+            var pages = new Array();
             var pageviews = new Array();
    
             let i = 0;
             while (i < jsonData.results.data.length) {
-                let date = jsonData.results.data[i].date;
+                let page = jsonData.results.data[i].url;
                 let pageview = jsonData.results.data[i].estimated_pv;
 
-                dates.push(date);
+                pages.push(page);
                 pageviews.push(parseInt(pageview));
+
+                let view = document.createElement("div");
+                view.textContent = page + ":::" + pageview;
+                container.appendChild(view);
 
                 i++;
             }
 
+/*
             // prepare chart
             var option = {
                 title: {

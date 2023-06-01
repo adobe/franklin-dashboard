@@ -1,0 +1,11 @@
+.datalist .container-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.datalist .wide {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+.datalist .header {
+    font-weight: bold;
+}

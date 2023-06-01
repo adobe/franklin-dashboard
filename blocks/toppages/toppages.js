@@ -3,7 +3,7 @@ import { drawList } from '../datalist/datalist.js';
 
 /**
  * loads and decorates the toppages block
- * which inherits styles and functionality from the datalist block
+ * which uses styles and functionality from the datalist block
  * @param {Element} block The toppages block element
  */
 export default async function decorate(block) {

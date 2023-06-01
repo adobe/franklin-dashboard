@@ -62,6 +62,9 @@ export async function drawList(block, cfg) {
         currentpage.searchParams.set("limit", element);
         let target = currentpage.toString();
         btn.setAttribute("onclick", "document.location='" + target + "';");
+        if (element==limit) {
+            btn.className = "selected";
+        }
         headerLimit.appendChild(btn);
     });
     container.appendChild(headerLimit);

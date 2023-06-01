@@ -9,3 +9,6 @@
 .datalist .header {
     font-weight: bold;
 }
+.datalist button.selected {
+    background-color: green;
+}

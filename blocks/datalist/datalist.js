@@ -48,7 +48,7 @@ export async function drawList(block, cfg) {
     block.appendChild(container);
 
     let headerTitle = document.createElement("div");
-    headerTitle.classList.add("header", "wide");
+    headerTitle.classList.add("title", "wide");
     headerTitle.textContent = cfg["title"];
     container.appendChild(headerTitle);
 
@@ -89,10 +89,16 @@ export async function drawList(block, cfg) {
         
         // add rows, currently a two column grid
         let div1 = document.createElement("div");
+        if ((i % 2) == 1) {
+            div1.className = "odd";
+        }
         div1.textContent = col1;
         container.appendChild(div1);
 
         let div2 = document.createElement("div");
+        if ((i % 2) == 1) {
+            div2.className = "odd";
+        }
         div2.textContent = col2;
         container.appendChild(div2);
 

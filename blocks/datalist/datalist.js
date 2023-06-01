@@ -17,7 +17,8 @@ export async function drawList(block, cfg) {
     block.textContent = "";
 
     // prepare run-query params
-    var params = new URL(window.location.href).searchParams;
+    let currentpage = new URL(window.location.href);
+    var params = currentpage.searchParams;
     var url = params.get("url");
     var domainkey = params.get("domainkey");
     var startdate = new Date();
@@ -44,12 +45,28 @@ export async function drawList(block, cfg) {
     // prepare DOM for list
     let container = document.createElement("div");
     container.className = "container-2col";
+    block.appendChild(container);
 
     let headerTitle = document.createElement("div");
     headerTitle.classList.add("header", "wide");
     headerTitle.textContent = cfg["title"];
     container.appendChild(headerTitle);
 
+    // allow user to change number of items in list
+    let headerLimit = document.createElement("div");
+    headerLimit.className = "wide";
+    const limits = [10, 25, 50, 100];
+    limits.forEach(element => {
+        let btn = document.createElement("button");
+        btn.textContent = "Show " + element;
+        currentpage.searchParams.set("limit", element);
+        let target = currentpage.toString();
+        btn.setAttribute("onclick", "document.location='" + target + "';");
+        headerLimit.appendChild(btn);
+    });
+    container.appendChild(headerLimit);
+
+    // column headers
     let headerUrl = document.createElement("div");
     headerUrl.className = "header";
     headerUrl.textContent = cfg["col1name"];
@@ -59,8 +76,6 @@ export async function drawList(block, cfg) {
     headerCount.className = "header";
     headerCount.textContent = cfg["col2name"];
     container.appendChild(headerCount);
-
-    block.appendChild(container);
 
     // add results data
     let i = 0;

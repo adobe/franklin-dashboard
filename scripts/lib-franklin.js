@@ -402,7 +402,7 @@ export async function bulkQueryRequest(main) {
 
   const reqs = {};
   const params = new URLSearchParams(window.location.search);
-  main.querySelectorAll('.section  .charts').forEach((chartBlock) => {
+  main.querySelectorAll('.section  .charts, .section .lists').forEach((chartBlock) => {
     let cfg = readBlockConfig(chartBlock);
     cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
     const endpoint = cfg.data;
@@ -500,8 +500,8 @@ export function decorateBlocks(main) {
       const shortBlockName = block.classList[0];
       // create id for each chart
       if (shortBlockName === 'charts') {
-        chartCounter += 1;
         block.id = `chart${chartCounter}`;
+        chartCounter += 1;
       }
     });
 }

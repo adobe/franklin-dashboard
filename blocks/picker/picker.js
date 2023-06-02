@@ -70,7 +70,10 @@ export default function decorate(block) {
         form.appendChild(div2);
         form.appendChild(submit);
         submit.textContent = 'Submit';
-        submit.onclick = processParams;
+        submit.onclick = () => {
+              processParams();
+              return false;
+        }
         block.prepend(form);
     }
   }

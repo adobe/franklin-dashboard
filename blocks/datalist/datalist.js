@@ -1,4 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { drawLoading, hideLoading } from '../../scripts/loading.js';
 
 /**
  * loads and decorates the top pages block
@@ -15,6 +16,22 @@ export default async function decorate(block) {
 export async function drawList(block, cfg) {
     // empty default content
     block.textContent = "";
+
+    // prepare DOM for list
+    let container = document.createElement("div");
+    container.className = "container-2col";
+    block.appendChild(container);
+
+    let headerTitle = document.createElement("div");
+    headerTitle.classList.add("title", "wide");
+    headerTitle.textContent = cfg["title"];
+    container.appendChild(headerTitle);
+
+    // draw the loading graphic
+    let loading = document.createElement("div");
+    loading.classList.add("loading", "wide");
+    container.appendChild(loading);
+    drawLoading(loading);
 
     // prepare run-query params
     let currentpage = new URL(window.location.href);
@@ -42,15 +59,8 @@ export async function drawList(block, cfg) {
     const response = await fetch(runquery);
     const jsonData = await response.json();
 
-    // prepare DOM for list
-    let container = document.createElement("div");
-    container.className = "container-2col";
-    block.appendChild(container);
-
-    let headerTitle = document.createElement("div");
-    headerTitle.classList.add("title", "wide");
-    headerTitle.textContent = cfg["title"];
-    container.appendChild(headerTitle);
+    // query complete, hide loading graphic
+    hideLoading(loading);
 
     // allow user to change number of items in list
     let headerLimit = document.createElement("div");

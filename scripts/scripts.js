@@ -109,6 +109,11 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  // load echarts
+  const script = document.createElement('script');
+  script.src = "/scripts/echarts.min.js";
+  document.head.appendChild(script);
 }
 
 /**

@@ -163,6 +163,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           data: series,
           type: 'line',
           smooth: true,
+          symbol: none,
         }
       ]
     };`,

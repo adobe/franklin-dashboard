@@ -1,17 +1,15 @@
-.section.charts-container {
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    grid-template: 
-                "a b"
-                "c d";
-    grid-template-rows: 50% 50%;
-    grid-template-columns: 50% 50%;
-    overflow: hidden;
+div.charts.block {
+    height: 100%; 
+    width: 100%;
 }
 
-div {
-    height: 100%; 
+div.charts-wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+div [_echarts_instance_] {
+    height: 100%;
     width: 100%;
 }
 
@@ -19,22 +17,6 @@ div {
     display: flex; 
     align-items: center;
     justify-content: center;
-}
-
-.section.charts-container > .charts-wrapper > .charts.block#chart1 {
-    grid-area: a;
-}
-
-.section.charts-container > .charts-wrapper > .charts.block#chart2 {
-    grid-area: b;
-}
-
-.section.charts-container > .charts-wrapper > .charts.block#chart3 {
-    grid-area: c;
-}
-
-.section.charts-container > .charts-wrapper > .charts.block#chart4 {
-    grid-area: d;
 }
 
 .section.charts-container > .charts-wrapper{

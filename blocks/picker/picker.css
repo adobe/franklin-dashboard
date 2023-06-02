@@ -1,5 +1,9 @@
+
+
 button#date\ submit {
+    position: relative;
     width: fit-content;
+    height: fit-content;
 }
 
 label#startdate {
@@ -20,4 +24,8 @@ input#startdate {
 input#enddate {
     width: fit-content;
     font-size:small;
+}
+
+form > div {
+    float: left;
 }

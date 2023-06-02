@@ -301,3 +301,48 @@ div .nav-wrapper {
 footer {
   margin-top: auto;
 }
+
+.section.picker-container.charts-container {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template: "picker picker"
+                 "a b"
+                 "c d";
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 10% 45% 45%;
+}
+
+div.lists-wrapper {
+  grid-area: list;
+}
+
+div.picker-wrapper {
+  grid-area: picker;
+}
+
+.section.charts-container > .charts-wrapper > .charts.block {
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+}
+
+.section.charts-container > .charts-wrapper > .charts.block#chart1 {
+  grid-area: a;
+}
+
+.section.charts-container > .charts-wrapper > .charts.block#chart2 {
+  grid-area: b;
+}
+
+.section.charts-container > .charts-wrapper > .charts.block#chart3 {
+  grid-area: c;
+}
+
+.section.charts-container > .charts-wrapper > .charts.block#chart4 {
+  grid-area: d;
+}
+
+div > h1 {
+  grid-area: heading;
+}

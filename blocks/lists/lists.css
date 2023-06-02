@@ -1,0 +1,29 @@
+.columns-2 {
+    display: grid;
+    grid-template-areas: 'item1 item2';
+}
+
+.list.block {
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+.columns-2 > [class^="row"] {
+    border: 1px solid black;
+    border-radius: 5px;
+    word-wrap: break-word;
+}
+
+div#col2Title {
+    margin: auto;
+}
+
+div#col1Title {
+    margin: auto;
+}
+
+.columns-2{
+    height: 100%;
+    overflow:hidden; 
+    overflow-y:scroll;
+}

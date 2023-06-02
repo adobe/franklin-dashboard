@@ -13,6 +13,11 @@ export default function decorate(block) {
 
   const type = cfg.type;
 
+    // once we read config, clear the dom.
+  block.querySelectorAll(':scope > div').forEach((row) => {
+    row.remove();
+  });
+
   if(type && Object.hasOwn(typeDict, type) && typeDict[type]){
     const form = document.createElement('form');
     const div1 = document.createElement('div');
@@ -22,7 +27,7 @@ export default function decorate(block) {
     submit.id = 'date submit'
 
     function checkDates(start, end){
-      if(new Date.parse(start) > new Date.parse(end)){
+      if(new Date(start) > new Date(end)){
         throw new Error('Start Date is Greater than End Date')
       }
     }
@@ -35,8 +40,8 @@ export default function decorate(block) {
 
         params.append('startdate', start.value);
         params.append('enddate', end.value);
-
-        window.location.href = document.location.host + params.toString();
+        let loc = (document.location.origin + document.location.pathname + '?' + params.toString());
+        window.location.href = loc;
         console.log('executed');
     }
 

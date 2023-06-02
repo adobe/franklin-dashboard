@@ -125,6 +125,10 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
         ]
       };`,
     'rum-pageviews-line': `{
+      title: {
+        text: '${legend}',
+        x: 'center',
+      },
       xAxis: {
         type: 'category',
         data: labels

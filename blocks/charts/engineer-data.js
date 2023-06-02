@@ -6,17 +6,7 @@
  */
 function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
   // tied to table name, column name, will determine how we handle data
-  const commonPlots = `
-    res = data.results.data;
-    const labels = res.map(row => row.${labelKey});
-    const series = res.map(row => row.${tableColumn});`;
-
-  const franklinLCPData = `
-  res = data.results.data;
-  const labels = res.map(row => row.${labelKey});
-  const series = res.map(row => row.${tableColumn}/1000);`;
-
-  const cashubCommonPlot = `
+    const utils = `
     function transformDataIntoMap(results){
       const transformed = {};
       const key = 'host';
@@ -29,25 +19,13 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
           }
       })
       return transformed;
-    }
-  
-    function numDaysBetween(d1, d2) {
-      var diff = Math.abs(d1.getTime() - d2.getTime());
-      return diff / (1000 * 60 * 60 * 24);
     };
-  
+
     function ymd2Date(year, month, day){
-        return new Date(year, month, day);
+      return new Date(year, month, day);
     }
-    res = transformDataIntoMap(data.results.data);
-  
-    let plotData;
-    if(${paramData.has('url')} && ('${paramData.get('url')}' in res)){
-      plotData = res['${paramData.get('url')}'];
-    }else{
-      plotData = res['developer.adobe.com'];
-    }
-    plotData.sort(function(a,b){
+
+    function comparator(a,b){
       let lesser = ymd2Date(a.year, a.month, a.day) < ymd2Date(b.year, b.month, b.day);
       let greater = ymd2Date(a.year, a.month, a.day) < ymd2Date(b.year, b.month, b.day)
       if(lesser){
@@ -59,16 +37,48 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
       else{
         return 0;
       }
-    });
+    }`
+
+  const commonPlots = `
+    res = data.results.data;
+    const labels = res.map(row => row.${labelKey});
+    const series = res.map(row => row.${tableColumn});`;
+
+  const dashboardCommonPlots = `
+  res = data.results.data;
+  const labels = res.map(row => row.${labelKey}.replace('https://${paramData.get('url')}', '');
+  const series = res.map(row => row.${tableColumn});
+  `
+
+  const pageviewsPlot = `
+    ${utils}
+    res = data.results.data;
+    const labels = res.sort(comparator).map(row => row.${labelKey}.slice(0, 10));
+    const series = res.map(row => row.${tableColumn});
+  `
+  const franklinLCPData = `
+    res = data.results.data;
+    const labels = res.map(row => row.${labelKey});
+    const series = res.map(row => row.${tableColumn}/1000);
+  `;
+
+  const cashubCommonPlot = `
+    ${utils};
+    res = transformDataIntoMap(data.results.data);
   
-    let labels = plotData.map(row => [row.month, row.day, row.year%2000].join('-'));
+    let plotData;
+    if(${paramData.has('url')} && Object.hasOwn(res, '${paramData.get('url')}')){
+      plotData = res['${paramData.get('url')}'];
+    }
+  
+    let labels = plotData.map(row => row.date);
     let series = plotData.map(row => row.${tableColumn} ${tableColumn === 'avglcp' ? ' > 6 ? 5.5 : row.avglcp' : ''});
   
     let currentUrl = plotData[0].host;
   
     let percentage = .50;
     let row = plotData[0];
-    start = [row.month, row.day, row.year%2000].join('-');
+    start = row.date;
     let amount = parseInt(plotData.length * percentage); 
     if(amount > 70){
       while(amount > 70){
@@ -76,7 +86,7 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
         amount = parseInt(plotData.length * percentage);
       }
       let row = plotData[plotData.length - amount];
-      start = [row.month, row.day, row.year%2000].join('-');
+      start = row.date;
     }`;
 
   /* ------------------------------------------------------------------------- */
@@ -88,6 +98,7 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
     'rum-dashboard-avgfid': commonPlots,
     'rum-dashboard-avgcls': commonPlots,
     'rum-dashboard-pageviews': commonPlots,
+    'rum-pageviews-pageviews': pageviewsPlot,
     // Vrapp queries
     'daily-rum-avglcp': cashubCommonPlot,
     'daily-rum-avgfid': cashubCommonPlot,

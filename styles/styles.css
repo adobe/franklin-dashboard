@@ -292,3 +292,12 @@ main .section.highlight {
               -70px 90px 0 rgba(0,0,0,0);
   }
 }
+
+div .nav-wrapper {
+  width: fit-content;
+  height: fit-content;
+}  
+
+footer {
+  margin-top: auto;
+}

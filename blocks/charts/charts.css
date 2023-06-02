@@ -1,4 +1,4 @@
-.section.chart-container {
+.section.charts-container {
     display: grid;
     width: 100vw;
     height: 100vh;
@@ -15,29 +15,29 @@ div {
     width: 100%;
 }
 
-.section.chart-container > .chart-wrapper > .chart.block {
+.section.charts-container > .charts-wrapper > .charts.block {
     display: flex; 
     align-items: center;
     justify-content: center;
 }
 
-.section.chart-container > .chart-wrapper > .chart.block#chart1 {
+.section.charts-container > .charts-wrapper > .charts.block#charts1 {
     grid-area: a;
 }
 
-.section.chart-container > .chart-wrapper > .chart.block#chart2 {
+.section.charts-container > .charts-wrapper > .charts.block#charts2 {
     grid-area: b;
 }
 
-.section.chart-container > .chart-wrapper > .chart.block#chart3 {
+.section.charts-container > .charts-wrapper > .charts.block#charts3 {
     grid-area: c;
 }
 
-.section.chart-container > .chart-wrapper > .chart.block#chart4 {
+.section.charts-container > .charts-wrapper > .charts.block#charts4 {
     grid-area: d;
 }
 
-.section.chart-container > .chart-wrapper{
+.section.charts-container > .charts-wrapper{
     aspect-ratio: 1/1; 
     height: 100%;
     width: 100%;

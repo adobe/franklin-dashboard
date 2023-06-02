@@ -124,6 +124,21 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           }
         ]
       };`,
+    'rum-pageviews-line': `{
+      xAxis: {
+        type: 'category',
+        data: labels
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [
+        {
+          data: series,
+          type: 'line'
+        }
+      ]
+    };`,
     'rum-dashboard-bar-horizontal': `{
         title: {
           text: '${legend}',
@@ -133,16 +148,14 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
         legend: {
           data: ['${tableColumn}']
         },
+        grid: {
+          containLabel: true,
+        },
         xAxis: {
-          ${min ? 'min: ' + min + ',' : ''}
-          ${max ? 'max: ' + max + ',' : ''}
         },
         yAxis: {
           data: labels,
           triggerEvent: true,
-        },
-        grid: {
-          containLabel: true,
         },
         series: [
           {

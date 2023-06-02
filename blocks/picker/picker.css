@@ -1,0 +1,23 @@
+button#date\ submit {
+    width: fit-content;
+}
+
+label#startdate {
+    width: fit-content;
+    font-size: small;
+}
+
+label#enddate {
+    width: fit-content;
+    font-size: small;
+}
+
+input#startdate {
+    width: fit-content;
+    font-size: small;
+}
+
+input#enddate {
+    width: fit-content;
+    font-size:small;
+}

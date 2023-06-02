@@ -355,12 +355,14 @@ export function updateSectionsStatus(main) {
  */
 export function getUrlBase(endpoint) {
   const urlBase = {
-    'daily-rum': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
-    'rum-pageviews-bdf': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
-    'github-prs': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
-    'site4s': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
-    'rum-dashboard': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
-    'rum-pageviews': 'https://lqmig3v5eb.execute-api.us-east-1.amazonaws.com/helix-services/run-query/ci5310/',
+    'daily-rum': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'github-prs': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'site4s': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'sk-daily-users': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'sk-interactions': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
   };
 
   return urlBase[endpoint];
@@ -378,7 +380,7 @@ export async function bulkQueryRequest(main) {
 
   const reqs = {};
   const params = new URLSearchParams(window.location.search);
-  main.querySelectorAll('.section  .chart').forEach((chartBlock) => {
+  main.querySelectorAll('.section  .charts').forEach((chartBlock) => {
     let cfg = readBlockConfig(chartBlock);
     cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
     const endpoint = cfg.data;
@@ -392,13 +394,7 @@ export async function bulkQueryRequest(main) {
   const promiseArr = [];
   Object.keys(reqs).forEach((key) => {
     const k = key.toLowerCase();
-    promiseArr.push(`fetch('${getUrlBase(k)}${k}', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: '${params}' 
-      })
+    promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
       .then((resp) => resp.json())
       .then((data) => {
         if(!Object.hasOwn(window, 'dashboard')){
@@ -409,33 +405,37 @@ export async function bulkQueryRequest(main) {
     `);
   });
 
-  const consolidatedQueryCalls = `[${promiseArr.join(', ')}]`;
+  if(promiseArr.length > 0){
+    const consolidatedQueryCalls = `[${promiseArr.join(', ')}]`;
+    const queryScript = document.createElement('script');
+    queryScript.type = 'text/partytown';
+    // queryScript.src ='../../scripts/test-conso.js'
+    queryScript.async = true;
+    queryScript.innerHTML = `
 
-  const queryScript = document.createElement('script');
-  queryScript.type = 'text/partytown';
-  // queryScript.src ='../../scripts/test-conso.js'
-  queryScript.async = true;
-  queryScript.innerHTML = `
-
-  
-  
-  function checkData(){
-    if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true){
-      window.setTimeout(checkData, 10);
-    }else{
-      window.dataIncoming = true;
-      Promise.all(${consolidatedQueryCalls}).
-      then(() => {
-        window.dataIncoming = false;
-        document.querySelector('.loader').remove();
-      });
+    
+    
+    function checkData(){
+      if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true){
+        window.setTimeout(checkData, 10);
+      }else{
+        window.dataIncoming = true;
+        Promise.all(${consolidatedQueryCalls}).
+        then(() => {
+          window.dataIncoming = false;
+          document.querySelector('.loader').remove();
+        });
+      }
     }
-  }
 
-  (async function(){
-    checkData()
-  })();`;
-  main.append(queryScript);
+    (async function(){
+      checkData()
+    })();`;
+    main.append(queryScript);
+  }
+  else{
+    document.querySelector('.loader').remove();
+  }
 }
 
 /**
@@ -451,7 +451,7 @@ export function decorateBlocks(main) {
       decorateBlock(block);
       const shortBlockName = block.classList[0];
       // create id for each chart
-      if (shortBlockName === 'chart') {
+      if (shortBlockName === 'charts') {
         chartCounter += 1;
         block.id = `chart${chartCounter}`;
       }

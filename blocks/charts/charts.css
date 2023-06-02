@@ -1,7 +1,7 @@
 .section.charts-container {
     display: grid;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     grid-template: 
                 "a b"
                 "c d";
@@ -21,19 +21,19 @@ div {
     justify-content: center;
 }
 
-.section.charts-container > .charts-wrapper > .charts.block#charts1 {
+.section.charts-container > .charts-wrapper > .charts.block#chart1 {
     grid-area: a;
 }
 
-.section.charts-container > .charts-wrapper > .charts.block#charts2 {
+.section.charts-container > .charts-wrapper > .charts.block#chart2 {
     grid-area: b;
 }
 
-.section.charts-container > .charts-wrapper > .charts.block#charts3 {
+.section.charts-container > .charts-wrapper > .charts.block#chart3 {
     grid-area: c;
 }
 
-.section.charts-container > .charts-wrapper > .charts.block#charts4 {
+.section.charts-container > .charts-wrapper > .charts.block#chart4 {
     grid-area: d;
 }
 

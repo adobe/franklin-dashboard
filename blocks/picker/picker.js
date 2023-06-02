@@ -38,8 +38,8 @@ export default function decorate(block) {
 
         checkDates(start.value, end.value);
 
-        params.append('startdate', start.value);
-        params.append('enddate', end.value);
+        params.set('startdate', start.value);
+        params.set('enddate', end.value);
         let loc = (document.location.origin + document.location.pathname + '?' + params.toString());
         window.location.href = loc;
         console.log('executed');

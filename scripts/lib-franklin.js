@@ -439,8 +439,8 @@ export async function bulkQueryRequest(main) {
   Object.keys(reqs).forEach((key) => {
     const k = key.toLowerCase();
     if(getEndpointParams(k) === 'interval' && params.has('startdate') && params.has('enddate')){
-      params.append('interval', interval);
-      params.append('offset', offset);
+      params.set('interval', interval);
+      params.set('offset', offset);
     }
     promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
       .then((resp) => resp.json())

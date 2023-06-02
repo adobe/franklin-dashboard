@@ -41,6 +41,17 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
 
   const commonPlots = `
     res = data.results.data;
+    const dataSize = res.length;
+    let windowPercentage = 0.05;
+    let windowSize = windowPercentage * dataSize;
+  
+    while(windowSize > 10){
+      windowPercentage -= 0.01;
+      windowSize = windowPercentage * dataSize;
+    }
+  
+    let start = 0;
+    let end = windowPercentage * 100;
     const labels = res.map(row => row.${labelKey});
     const series = res.map(row => row.${tableColumn});`;
 
@@ -53,14 +64,25 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
   const pageviewsPlot = `
     ${utils}
     res = data.results.data;
+    const dataSize = res.length;
+    let tenPercent;
+  
+    if(dataSize !== 0){
+      tenPercent = 50.0/dataSize
+    }
+
+    if(tenPercent >= 1){
+      start = 0;
+      end = 100;
+    }
+    else{
+      start = (100 - (tenPercent * 100));
+      end = 100;
+    }
+  
     const labels = res.sort(comparator).map(row => row.${labelKey}.slice(0, 10));
     const series = res.map(row => row.${tableColumn});
   `
-  const franklinLCPData = `
-    res = data.results.data;
-    const labels = res.map(row => row.${labelKey});
-    const series = res.map(row => row.${tableColumn}/1000);
-  `;
 
   const cashubCommonPlot = `
     ${utils};
@@ -94,7 +116,7 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
 
   const DATA_CONFIG = {
     // Franklin queries
-    'rum-dashboard-avglcp': franklinLCPData,
+    'rum-dashboard-avglcp': commonPlots,
     'rum-dashboard-avgfid': commonPlots,
     'rum-dashboard-avgcls': commonPlots,
     'rum-dashboard-pageviews': commonPlots,

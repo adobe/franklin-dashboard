@@ -9,7 +9,7 @@ export default function decorate(block) {
   const axisDict = {
     avgfid: [0, 500],
     avgcls: [0, 0.45],
-    avglcp: [0, 6],
+    avglcp: [0, 6000],
   };
 
   const perfRanges = {
@@ -24,9 +24,9 @@ export default function decorate(block) {
       poor: [0.25],
     },
     avglcp: {
-      good: [0, 2.5],
-      okay: [2.5, 4.0],
-      poor: [4.0],
+      good: [0, 2500],
+      okay: [2500, 4000],
+      poor: [4000],
     },
   };
 

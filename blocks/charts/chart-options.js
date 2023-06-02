@@ -8,6 +8,7 @@
  * @param {*} legend
  * @param {*} min
  * @param {*} max
+ * @param {*} dataSize
  * @returns
  */
 const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, max) => {
@@ -24,6 +25,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
     okayUpper = perfRanges[tableColumn].okay[1];
     badLower = perfRanges[tableColumn].poor[0];
   }
+
   const CHART_CONFIG = {
     'daily-rum-line': `{
         title: {
@@ -124,14 +126,34 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           }
         ]
       };`,
+
+    /*-------------------------------*/
     'rum-pageviews-line': `{
       title: {
         text: '${legend}',
         x: 'center',
       },
+      dataZoom: [
+        {
+            id: 'dataZoomX',
+            type: 'slider',
+            zoomLock: false,
+            start: start,
+            end: end,
+        },
+        {
+          type: 'inside',
+        }
+      ],
       xAxis: {
         type: 'category',
-        data: labels
+        triggerEvent: true,
+        data: labels,
+        axisLabel: {
+          show: true,
+          interval: 2,
+          rotate: 20,
+        },
       },
       yAxis: {
         type: 'value'
@@ -139,32 +161,127 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
       series: [
         {
           data: series,
-          type: 'line'
+          type: 'line',
+          smooth: true,
         }
       ]
     };`,
+
+    /*--------------------------------*/
     'rum-dashboard-bar-horizontal': `{
         title: {
           text: '${legend}',
           x: 'center',
         },
-        tooltip: {},
+        dataZoom: [
+          {
+            type: 'slider',
+            yAxisIndex: 0,
+            zoomLock: false,
+            left: 0,
+            start: start,
+            end: end,
+            handleSize: 30,
+          },
+        ],  
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow"
+          },
+          extraCssText: 'width: fit-content; height: fit-content;'
+        },
         legend: {
           data: ['${tableColumn}']
         },
         grid: {
-          containLabel: true,
+          overflow: "truncate",
         },
         xAxis: {
         },
         yAxis: {
           data: labels,
-          triggerEvent: true,
+          axisLabel: {
+            show: false,
+          }
         },
         series: [
           {
             type: 'bar',
             data: series,
+            label: {
+              position: 'insideLeft',
+              formatter: '{b}',
+              show: true,
+              color: '#000000',
+            },
+            markArea: {
+              data: [
+                [
+                  {
+                    name: 'Good',
+                    xAxis: ${goodLower}, //min of green area
+                    itemStyle: {
+                      color: 'rgba(221,255,221, 0.5)'
+                    },
+                  },
+                  {
+                    xAxis: ${goodUpper}, //max of green area area
+                  }
+                ],
+                [
+                  {
+                    name: 'Needs Improvement',
+                    xAxis: ${okayLower}, //min of green area
+                    itemStyle: {
+                      color: 'rgba(256, 256, 256, 0.1)'
+                    },
+                  },
+                  {
+                    xAxis: ${okayUpper}, //max of green area area
+                  }
+                ],
+              ]
+            },
+            markLine: {
+              data: [
+                {
+                  name: 'Good',
+                  ${goodUpper ? `xAxis:` + goodUpper +`,` : ``}
+                  lineStyle: {
+                    width: 10,
+                    normal: {
+                      type:'dashed',
+                      color: 'green',
+                    }
+                  },
+                  label: {
+                    normal: {
+                    show: false, 
+                    }
+                  },
+                },
+                {
+                  name: 'Okay',
+                  ${okayUpper ? `xAxis:` + okayUpper+`,` : ``}
+                  lineStyle: {
+                    width: 10,
+                    normal: {
+                      type:'dashed',
+                      color: 'red',
+                    }
+                  },
+                  label: {
+                    normal: {
+                    show: false, 
+                    }
+                  },
+                },
+              ],
+              areaStyle: {
+                color: '#91cc75'
+              }
+            },
           }
         ]
       };`,

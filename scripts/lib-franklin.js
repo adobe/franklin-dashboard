@@ -355,17 +355,37 @@ export function updateSectionsStatus(main) {
  */
 export function getUrlBase(endpoint) {
   const urlBase = {
-    'daily-rum': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
-    'github-prs': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
-    'site4s': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
-    'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
-    'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
-    'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
-    'sk-daily-users': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
-    'sk-interactions': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5375/',
+    'daily-rum': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'github-prs': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'site4s': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'sk-daily-users': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'sk-interactions': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
   };
 
   return urlBase[endpoint];
+}
+
+/**
+ * configuration that selects correct params for a type of url
+ * @param {String} endpoint
+ * @returns
+ */
+export function getEndpointParams(endpoint) {
+  const endpointParams = {
+    'daily-rum': 'date',
+    'github-prs': 'date',
+    'site4s': 'date',
+    'rum-dashboard': 'date',
+    'rum-pageviews': 'interval',
+    'sk-actions-by-repo': 'date',
+    'sk-daily-users': 'date',
+    'sk-interactions': 'date',
+  };
+
+  return endpointParams[endpoint];
 }
 
 /**
@@ -377,6 +397,8 @@ export async function bulkQueryRequest(main) {
   const loader = document.createElement('span');
   loader.className = 'loader';
   main.prepend(loader);
+  let offset;
+  let interval;
 
   const reqs = {};
   const params = new URLSearchParams(window.location.search);
@@ -391,9 +413,35 @@ export async function bulkQueryRequest(main) {
     }
   });
 
+  if(params.has('startdate') && params.has('enddate')){
+    let start = new Date(params.get('startdate'));
+    let end = new Date(params.get('enddate'));
+
+    let today = new Date();
+
+    if(start < end){
+      const offs = Math.abs(today - end);
+      const intv = Math.abs(end - start);
+      offset = Math.ceil(offs / (1000 * 60 * 60 * 24)); 
+      interval = Math.ceil(intv / (1000 * 60 * 60 * 24)); 
+    }
+    else if(start === end){
+      offset = 1;
+      interval = 1;
+    }
+    else{
+      offset = -1;
+      interval = -1;
+    }
+  }
+
   const promiseArr = [];
   Object.keys(reqs).forEach((key) => {
     const k = key.toLowerCase();
+    if(getEndpointParams(k) === 'interval' && params.has('startdate') && params.has('enddate')){
+      params.append('interval', interval);
+      params.append('offset', offset);
+    }
     promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
       .then((resp) => resp.json())
       .then((data) => {

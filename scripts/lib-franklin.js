@@ -438,6 +438,8 @@ export async function bulkQueryRequest(main) {
   const promiseArr = [];
   Object.keys(reqs).forEach((key) => {
     const k = key.toLowerCase();
+    params.set('interval', -1);
+    params.set('offset', -1);
     if(getEndpointParams(k) === 'interval' && params.has('startdate') && params.has('enddate')){
       params.set('interval', interval);
       params.set('offset', offset);

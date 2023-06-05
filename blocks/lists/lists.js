@@ -30,7 +30,7 @@ export default function decorate(block) {
             else if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false){
                 const data = window.dashboard['${endpoint}'];
                 res = data.results.data;
-                res.sort((a, b) => {
+                res = res.sort((a, b) => {
                     if(a.pageviews < b.pageviews){
                         return -1;
                     }
@@ -43,22 +43,20 @@ export default function decorate(block) {
                 })
 
                 const list = document.createElement('div');
-                /*
                 const col1Title = document.createElement('div');
                 const col2Title = document.createElement('div');
                 col1Title.className = 'title';
                 col2Title.className = 'title';
                 col1Title.id = 'col1Title';
                 col2Title.id = 'col2Title';
-                const heading1 = document.createElement('h2');
-                const heading2 = document.createElement('h2');
+                const heading1 = document.createElement('div');
+                const heading2 = document.createElement('div');
                 heading1.textContent = '${col1}';
                 heading2.textContent = '${col2}';
                 col1Title.appendChild(heading1);
                 col2Title.appendChild(heading2);
                 list.appendChild(col1Title);
                 list.appendChild(col2Title);
-                */
                 list.className = 'columns-${columns}'
                 res.forEach((row, idx) => {
                     const div1 = document.createElement('div');

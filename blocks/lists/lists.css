@@ -1,29 +1,26 @@
 .columns-2 {
     display: grid;
-    grid-template-areas: 'item1 item2';
+    grid-template-columns: 80% 20%;
+    border-right: 1px solid black;
+    border-radius: 1px;
 }
 
-.list.block {
-    grid-column-start: 1;
-    grid-column-end: 1;
+.columns-2 .title {
+    margin-left: 0;
 }
 
 .columns-2 > [class^="row"] {
-    border: 1px solid black;
-    border-radius: 5px;
     word-wrap: break-word;
-}
-
-div#col2Title {
-    margin: auto;
-}
-
-div#col1Title {
-    margin: auto;
+    font-size: small;
+    margin-left: 0;
+    border-bottom: black;
+    border-bottom-style: dashed;
+    border-bottom-width: 1px;
 }
 
 .columns-2{
-    height: 100%;
+    height: 75vh;
+    width: 85%;
     overflow:hidden; 
     overflow-y:scroll;
 }

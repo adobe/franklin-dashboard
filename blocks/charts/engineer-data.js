@@ -55,10 +55,10 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
     const labels = res.map(row => row.${labelKey});
     const series = res.map(row => row.${tableColumn});`;
 
-  const dashboardCommonPlots = `
-  res = data.results.data;
-  const labels = res.map(row => row.${labelKey}.replace('https://${paramData.get('url')}', '');
-  const series = res.map(row => row.${tableColumn});
+    const dashboardCommonPlots = `
+    res = data.results.data;
+    const labels = res.map(row => row.${labelKey}.replace('https://${paramData.get('url')}', '');
+    const series = res.map(row => row.${tableColumn});
   `
 
   const pageviewsPlot = `
@@ -83,6 +83,14 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
     const labels = res.sort(comparator).map(row => row.${labelKey}.slice(0, 10));
     const series = res.map(row => row.${tableColumn});
   `
+  
+  const skCommonPlot = `
+  res = data.results.data;
+  res = [...res].reverse();
+  const labels = res.map(row => row.${labelKey});
+  const series = res.map(row => row.${tableColumn});
+  `;
+
 
   const cashubCommonPlot = `
     ${utils};
@@ -121,6 +129,9 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
     'rum-dashboard-avgcls': commonPlots,
     'rum-dashboard-pageviews': commonPlots,
     'rum-pageviews-pageviews': pageviewsPlot,
+    'sk-daily-users-actions': skCommonPlot,
+    'sk-daily-users-checkpoints': skCommonPlot,
+    'sk-daily-users-extension_actions': skCommonPlot,
     // Vrapp queries
     'daily-rum-avglcp': cashubCommonPlot,
     'daily-rum-avgfid': cashubCommonPlot,

@@ -1,6 +1,11 @@
+form#date_form {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 100%;
+    grid-column: 1 / 3;
+}
 
-
-button#date\ submit {
+button#date_submit {
     position: relative;
     width: fit-content;
     height: fit-content;
@@ -16,6 +21,11 @@ label#enddate {
     font-size: small;
 }
 
+label#url_input {
+    width: fit-content;
+    font-size: small;
+}
+
 input#startdate {
     width: fit-content;
     font-size: small;
@@ -26,6 +36,15 @@ input#enddate {
     font-size:small;
 }
 
-form > div {
-    float: left;
+input#url_input {
+    width: fit-content;
+    font-size:small;
+}
+
+div {
+    margin: auto;
+}
+
+button {
+    margin: auto;
 }

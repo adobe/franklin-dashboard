@@ -360,8 +360,8 @@ export function getUrlBase(endpoint) {
     'site4s': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
     'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
     'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    'sk-daily-users': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5399/',
+    'sk-daily-users': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5399/',
     'sk-interactions': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
   };
 
@@ -444,6 +444,9 @@ export async function bulkQueryRequest(main) {
       params.set('interval', interval);
       params.set('offset', offset);
     }
+    if(params.has('owner_repo')){
+      params.delete('url');
+    }
     promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
       .then((resp) => resp.json())
       .then((data) => {
@@ -474,6 +477,10 @@ export async function bulkQueryRequest(main) {
         then(() => {
           window.dataIncoming = false;
           document.querySelector('.loader').remove();
+        })
+        .catch((err) => {
+          alert('API Call Has Failed, Check that inputs are correct');
+          document.querySelector('.loader').remove();
         });
       }
     }
@@ -502,6 +509,7 @@ export function decorateBlocks(main) {
       const shortBlockName = block.classList[0];
       // create id for each chart
       if (shortBlockName === 'charts') {
+        block.parentElement.id = `chart${chartCounter}`;
         block.id = `chart${chartCounter}`;
         chartCounter += 1;
       }

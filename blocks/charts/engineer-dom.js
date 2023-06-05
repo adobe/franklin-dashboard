@@ -26,6 +26,9 @@ export function postPlotDomEngineering(tableAndColumn, chartId, paramData) {
     'rum-dashboard-avgcls': urlChartDomOps + commonDomOps,
     'rum-dashboard-pageviews': urlChartDomOps + commonDomOps,
     'rum-pageviews-pageviews': urlChartDomOps + commonDomOps,
+    'sk-daily-users-actions': urlChartDomOps + commonDomOps,
+    'sk-daily-users-checkpoints': urlChartDomOps + commonDomOps,
+    'sk-daily-users-extension_actions': urlChartDomOps + commonDomOps,
     // cashub queries
     'daily-rum-avglcp': commonDomOps,
     'daily-rum-avgfid': commonDomOps,
@@ -51,6 +54,9 @@ export function prePlotDomEngineering(tableAndColumn, chartId, block) {
     'rum-dashboard-avgcls': commonDomOps,
     'rum-dashboard-pageviews': commonDomOps,
     'rum-pageviews-pageviews': commonDomOps,
+    'sk-daily-users-actions': commonDomOps,
+    'sk-daily-users-checkpoints': commonDomOps,
+    'sk-daily-users-extension_actions': commonDomOps,
     // cashub queries
     'daily-rum-avglcp': commonDomOps,
     'daily-rum-avgfid': commonDomOps,

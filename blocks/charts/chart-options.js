@@ -133,26 +133,14 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
         text: '${legend}',
         x: 'center',
       },
-      dataZoom: [
-        {
-            id: 'dataZoomX',
-            type: 'slider',
-            zoomLock: false,
-            start: start,
-            end: end,
-        },
-        {
-          type: 'inside',
-        }
-      ],
       xAxis: {
         type: 'category',
         triggerEvent: true,
         data: labels,
         axisLabel: {
           show: true,
-          interval: 2,
-          rotate: 20,
+          interval: 1,
+          rotate: 70,
         },
       },
       yAxis: {
@@ -286,6 +274,35 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           }
         ]
       };`,
+
+      'sk-daily-users-line': `{
+        title: {
+          text: '${legend}',
+          x: 'center',
+        },
+        xAxis: {
+          type: 'category',
+          triggerEvent: true,
+          data: labels,
+          axisLabel: {
+            show: true,
+            interval: 1,
+            rotate: 70,
+          },
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            data: series,
+            type: 'line',
+            smooth: true,
+            symbol: none,
+          }
+        ]
+      };`,
+  
   };
   return `var option = ${CHART_CONFIG[pick]}`;
 };

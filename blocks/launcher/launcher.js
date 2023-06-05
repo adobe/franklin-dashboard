@@ -16,14 +16,12 @@ export default async function decorate(block) {
 
     block.innerHTML = `
         <form method="get" action="./lists">
-            domainkey:
-            <br>
-            <input name="domainkey" value="` + domainkey + `">
-            <br>
-            hostname:
-            <br>
-            <input name="url" value="` + url + `">
-            <br>
+            <label for="domainkey">domainkey</label>
+            <input id="domainkey" name="domainkey" value="` + domainkey + `">
+            
+            <label for="url">hostname</hostname>
+            <input id="url" name="url" value="` + url + `">
+            
             <button type="submit">Go</button>
         </form>
     `;

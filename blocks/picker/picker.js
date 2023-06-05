@@ -50,7 +50,7 @@ export default function decorate(block) {
       if(params.has('startdate') && params.has('enddate') && (params.has('url') || params.has('owner_repo'))){
         startPlaceHolder = params.get('startdate');
         endPlaceHolder = params.get('enddate');
-        urlPlaceHolder = params.has('url') ? params.get('url') : params.get('owner_repo');
+        urlPlaceHolder = type === 'date' ? params.get('url') : params.get('owner_repo');
       }
       const input2 = document.createElement('input');
       const label2 = document.createElement('label');

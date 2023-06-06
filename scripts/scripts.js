@@ -11,6 +11,7 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  readBlockConfig,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
@@ -69,6 +70,7 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
+    bulkQueryRequest(main);
   }
 }
 
@@ -86,6 +88,153 @@ export function addFavIcon(href) {
     existingLink.replaceWith(link);
   } else {
     document.head.append(link);
+  }
+}
+
+/**
+ * configuration that selects correct base of url for a particular endpoint
+ * @param {String} endpoint
+ * @returns
+ */
+export function getUrlBase(endpoint) {
+  const urlBase = {
+    'daily-rum': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'github-prs': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'site4s': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5399/',
+    'sk-daily-users': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5399/',
+    'sk-interactions': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+  };
+
+  return urlBase[endpoint];
+}
+
+/**
+ * configuration that selects correct params for a type of url
+ * @param {String} endpoint
+ * @returns
+ */
+export function getEndpointParams(endpoint) {
+  const endpointParams = {
+    'daily-rum': 'date',
+    'github-prs': 'date',
+    'site4s': 'date',
+    'rum-dashboard': 'date',
+    'rum-pageviews': 'interval',
+    'sk-actions-by-repo': 'date',
+    'sk-daily-users': 'date',
+    'sk-interactions': 'date',
+  };
+
+  return endpointParams[endpoint];
+}
+
+/**
+ * takes block and preemptively fires off requests for resources in worker thread
+ * @param {*} main
+ */
+export async function bulkQueryRequest(main) {
+  // let's make a loader
+  const loader = document.createElement('span');
+  loader.className = 'loader';
+  main.prepend(loader);
+  let offset;
+  let interval;
+
+  const reqs = {};
+  const params = new URLSearchParams(window.location.search);
+  main.querySelectorAll('.section  .charts, .section .lists').forEach((chartBlock) => {
+    let cfg = readBlockConfig(chartBlock);
+    cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
+    const endpoint = cfg.data;
+    if (Object.hasOwn(reqs, endpoint)) {
+      reqs[endpoint] += 1;
+    } else {
+      reqs[endpoint] = 1;
+    }
+  });
+
+  if(params.has('startdate') && params.has('enddate')){
+    let start = new Date(params.get('startdate'));
+    let end = new Date(params.get('enddate'));
+
+    let today = new Date();
+
+    if(start < end){
+      const offs = Math.abs(today - end);
+      const intv = Math.abs(end - start);
+      offset = Math.ceil(offs / (1000 * 60 * 60 * 24)); 
+      interval = Math.ceil(intv / (1000 * 60 * 60 * 24)); 
+    }
+    else if(start === end){
+      offset = 1;
+      interval = 1;
+    }
+    else{
+      offset = -1;
+      interval = -1;
+    }
+  }
+
+  const promiseArr = [];
+  Object.keys(reqs).forEach((key) => {
+    const k = key.toLowerCase();
+    params.set('interval', -1);
+    params.set('offset', -1);
+    if(getEndpointParams(k) === 'interval' && params.has('startdate') && params.has('enddate')){
+      params.set('interval', interval);
+      params.set('offset', offset);
+    }
+    if(params.has('owner_repo')){
+      params.delete('url');
+    }
+    promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
+      .then((resp) => resp.json())
+      .then((data) => {
+        if(!Object.hasOwn(window, 'dashboard')){
+          window.dashboard = {};
+        } 
+        window.dashboard['${k}'] = data;
+      })
+    `);
+  });
+
+  if(promiseArr.length > 0){
+    const consolidatedQueryCalls = `[${promiseArr.join(', ')}]`;
+    const queryScript = document.createElement('script');
+    queryScript.type = 'text/partytown';
+    // queryScript.src ='../../scripts/test-conso.js'
+    queryScript.async = true;
+    queryScript.innerHTML = `
+
+    
+    
+    function checkData(){
+      if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true){
+        window.setTimeout(checkData, 10);
+      }else{
+        window.dataIncoming = true;
+        Promise.all(${consolidatedQueryCalls}).
+        then(() => {
+          window.dataIncoming = false;
+          document.querySelector('.loader').remove();
+        })
+        .catch((err) => {
+          alert('API Call Has Failed, Check that inputs are correct');
+          document.querySelector('.loader').remove();
+        });
+      }
+    }
+
+    (async function(){
+      checkData()
+    })();`;
+    main.append(queryScript);
+  }
+  else{
+    document.querySelector('.loader').remove();
   }
 }
 

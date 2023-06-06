@@ -1,4 +1,4 @@
-import { readBlockConfig, getUrlBase } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
   const params = new URLSearchParams(window.location.search);
@@ -43,7 +43,6 @@ export default function decorate(block) {
 
   if(type === 'date' || type === 'date (sk)'){
       //set id of button
-      form.id = 'date_form'
       let startPlaceHolder = 'mm/dd/yyyy';
       let endPlaceHolder = 'mm/dd/yyyy';
       let urlPlaceHolder = 'www.placeholder.com';
@@ -52,48 +51,33 @@ export default function decorate(block) {
         endPlaceHolder = params.get('enddate');
         urlPlaceHolder = type === 'date' ? params.get('url') : params.get('owner_repo');
       }
-      const input2 = document.createElement('input');
-      const label2 = document.createElement('label');
-      const div2 = document.createElement('div');
-      const input3 = document.createElement('input');
-      const label3 = document.createElement('label');
-      const div3 = document.createElement('div');
-      input1.type = 'date';
-      input1.id = label1.id = 'startdate';
-      input1.placeholder = startPlaceHolder;
-      input2.type = 'date';
-      input2.id = label2.id = 'enddate';
-      input2.placeholder = endPlaceHolder;
-      input1.min = '2018-01-01';
-      input2.min = '2018-01-01';
-      label3.id = 'url_input'
-      label3.textContent = type === 'date' ? 'Franklin VIP Url' : 'Franklin Owner/Repo'
-      input3.id = 'url_input'
-      input3.type = 'text';
-      input3.placeholder = urlPlaceHolder;
+      const minDate = '2018-01-01';
       let today = new Date().toISOString().split('T')[0];
-      input1.max = today;
-      input2.max = today;
-      label1.textContent = 'Start Date';
-      label2.textContent = 'End Date';
-      input1.required = true;
-      input2.required = true;
-      input3.required = true;
-      div1.appendChild(label1);
-      div1.appendChild(input1);
-      div2.appendChild(label2);
-      div2.appendChild(input2);
-      div3.appendChild(label3);
-      div3.appendChild(input3);
-      form.appendChild(div3);
-      form.appendChild(div1);
-      form.appendChild(div2);
-      submit.textContent = 'Submit';
-      form.appendChild(submit);
-      submit.onclick = () => {
-          processDateInput();
-          return false;
+      //space in sk variant must be fixed for query selector
+      let selectorType = type === 'date' ? type : 'sk'
+      block.innerHTML = `
+        <form id="date_form">
+          <div>
+            ${type === 'date' ? "<label id='url_input'>Site Url</label" : "<label id='url_input'>Owner/Repo</label>"}
+            <input id='url_input' type="text" placeholder="${urlPlaceHolder}"></input>
+          </div>
+          <div>
+            <label id="startdate">Start Date</label>
+            <input id="startdate" type="date" placeholder="${startPlaceHolder}" min="${minDate}" max="${today}"></input>
+          </div>
+          <div>
+            <label id="enddate">End Date</label>
+            <input id="enddate" type="date" placeholder="${endPlaceHolder}" min="${minDate}" max="${today}"></input>
+          </div>
+          <div id="${selectorType}_submit">
+            <button>Submit</button>
+          </div>
+        </form>
+      `
+      let button = block.querySelector(`#${selectorType}_submit`);
+      button.onclick = () => {
+        processDateInput();
+        return false;
       }
-      block.prepend(form);
+    }
   }
-}

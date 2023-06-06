@@ -54,7 +54,7 @@ export default function decorate(block) {
     block.innerHTML = `
         <form id="date-form">
           <div>
-            ${type === 'date' ? "<label id='url-input'>Site Url</label" : "<label id='url-input'>Owner/Repo</label>"}
+            ${type === 'date' ? "<label id='url-input'>Site Url</label>" : "<label id='url-input'>Owner/Repo</label>"}
             <input id='url-input' type="text" placeholder="${urlPlaceHolder}"></input>
           </div>
           <div>

@@ -1,4 +1,5 @@
-import { readBlockConfig, getUrlBase } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { getUrlBase } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
   const params = new URLSearchParams(window.location.search);
@@ -6,7 +7,6 @@ export default function decorate(block) {
   let cfg = readBlockConfig(block);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const endpoint = cfg.data;
-  const tableColumn = cfg.field;
 
   const domainInfo = document.createElement('script');
   domainInfo.type = 'text/partytown';
@@ -25,7 +25,6 @@ export default function decorate(block) {
             body: '${params}'
         });
         const data = await resp.json();
-        console.log(data);
     })();`;
 
   block.append(domainInfo);
@@ -33,9 +32,7 @@ export default function decorate(block) {
 
 function checkData() {
   if (Object.hasOwn(window, 'dashboard')) {
-    console.log('going to wait');
     window.setTimeout(checkData, 100);
-    console.log('i am out now');
   } else {
     window.dashboard = {
       dataIncoming: true,

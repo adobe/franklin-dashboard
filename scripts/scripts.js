@@ -59,39 +59,6 @@ export function decorateMain(main) {
 }
 
 /**
- * Loads everything needed to get to LCP.
- * @param {Element} doc The container element
- */
-async function loadEager(doc) {
-  document.documentElement.lang = 'en';
-  decorateTemplateAndTheme();
-  const main = doc.querySelector('main');
-  if (main) {
-    decorateMain(main);
-    document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
-    bulkQueryRequest(main);
-  }
-}
-
-/**
- * Adds the favicon.
- * @param {string} href The favicon URL
- */
-export function addFavIcon(href) {
-  const link = document.createElement('link');
-  link.rel = 'icon';
-  link.type = 'image/png';
-  link.href = href;
-  const existingLink = document.querySelector('head link[rel="icon"]');
-  if (existingLink) {
-    existingLink.replaceWith(link);
-  } else {
-    document.head.append(link);
-  }
-}
-
-/**
  * configuration that selects correct base of url for a particular endpoint
  * @param {String} endpoint
  * @returns
@@ -100,7 +67,7 @@ export function getUrlBase(endpoint) {
   const urlBase = {
     'daily-rum': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
     'github-prs': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    'site4s': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
+    site4s: 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
     'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
     'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
     'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5399/',
@@ -120,7 +87,7 @@ export function getEndpointParams(endpoint) {
   const endpointParams = {
     'daily-rum': 'date',
     'github-prs': 'date',
-    'site4s': 'date',
+    site4s: 'date',
     'rum-dashboard': 'date',
     'rum-pageviews': 'interval',
     'sk-actions-by-repo': 'date',
@@ -156,23 +123,21 @@ export async function bulkQueryRequest(main) {
     }
   });
 
-  if(params.has('startdate') && params.has('enddate')){
-    let start = new Date(params.get('startdate'));
-    let end = new Date(params.get('enddate'));
+  if (params.has('startdate') && params.has('enddate')) {
+    const start = new Date(params.get('startdate'));
+    const end = new Date(params.get('enddate'));
 
-    let today = new Date();
+    const today = new Date();
 
-    if(start < end){
+    if (start < end) {
       const offs = Math.abs(today - end);
       const intv = Math.abs(end - start);
-      offset = Math.ceil(offs / (1000 * 60 * 60 * 24)); 
-      interval = Math.ceil(intv / (1000 * 60 * 60 * 24)); 
-    }
-    else if(start === end){
+      offset = Math.ceil(offs / (1000 * 60 * 60 * 24));
+      interval = Math.ceil(intv / (1000 * 60 * 60 * 24));
+    } else if (start === end) {
       offset = 1;
       interval = 1;
-    }
-    else{
+    } else {
       offset = -1;
       interval = -1;
     }
@@ -183,11 +148,11 @@ export async function bulkQueryRequest(main) {
     const k = key.toLowerCase();
     params.set('interval', -1);
     params.set('offset', -1);
-    if(getEndpointParams(k) === 'interval' && params.has('startdate') && params.has('enddate')){
+    if (getEndpointParams(k) === 'interval' && params.has('startdate') && params.has('enddate')) {
       params.set('interval', interval);
       params.set('offset', offset);
     }
-    if(params.has('owner_repo')){
+    if (params.has('owner_repo')) {
       params.delete('url');
     }
     promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
@@ -201,7 +166,7 @@ export async function bulkQueryRequest(main) {
     `);
   });
 
-  if(promiseArr.length > 0){
+  if (promiseArr.length > 0) {
     const consolidatedQueryCalls = `[${promiseArr.join(', ')}]`;
     const queryScript = document.createElement('script');
     queryScript.type = 'text/partytown';
@@ -232,9 +197,41 @@ export async function bulkQueryRequest(main) {
       checkData()
     })();`;
     main.append(queryScript);
-  }
-  else{
+  } else {
     document.querySelector('.loader').remove();
+  }
+}
+
+/**
+ * Loads everything needed to get to LCP.
+ * @param {Element} doc The container element
+ */
+async function loadEager(doc) {
+  document.documentElement.lang = 'en';
+  decorateTemplateAndTheme();
+  const main = doc.querySelector('main');
+  if (main) {
+    decorateMain(main);
+    document.body.classList.add('appear');
+    await waitForLCP(LCP_BLOCKS);
+    bulkQueryRequest(main);
+  }
+}
+
+/**
+ * Adds the favicon.
+ * @param {string} href The favicon URL
+ */
+export function addFavIcon(href) {
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/png';
+  link.href = href;
+  const existingLink = document.querySelector('head link[rel="icon"]');
+  if (existingLink) {
+    existingLink.replaceWith(link);
+  } else {
+    document.head.append(link);
   }
 }
 

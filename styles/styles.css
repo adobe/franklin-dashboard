@@ -249,7 +249,8 @@ main .section.highlight {
   left: 50vw;
   margin: auto;
 }
-.loader:before {
+
+.loader::before {
   content: "";
   position: absolute;
   bottom: 30px;
@@ -260,7 +261,8 @@ main .section.highlight {
   background: #FF3D00;
   animation: loading-bounce 0.5s ease-in-out infinite alternate;
 }
-.loader:after {
+
+.loader::after {
   content: "";
   position: absolute;
   right: 0;
@@ -278,6 +280,7 @@ main .section.highlight {
   60% { transform: scale(1, 1)}
   100% { bottom: 140px }
 }
+
 @keyframes loading-step {
   0% {
     box-shadow: 0 10px 0 black,
@@ -285,11 +288,12 @@ main .section.highlight {
               -35px 50px 0 black,
               -70px 90px 0 black;
   }
+
   100% {
     box-shadow: 0 10px 0 #fff,
               -35px 50px 0 #fff,
               -70px 90px 0 #fff,
-              -70px 90px 0 rgba(0,0,0,0);
+              -70px 90px 0 rgb(0 0 0 / 0%);
   }
 }
 

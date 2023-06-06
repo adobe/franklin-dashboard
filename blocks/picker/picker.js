@@ -20,9 +20,9 @@ export default function decorate(block) {
   }
 
   function processDateInput() {
-    const start = document.querySelector('input#startdate');
-    const end = document.querySelector('input#enddate');
-    const url = document.querySelector('input#url_input');
+    const start = document.querySelector('input#start-date');
+    const end = document.querySelector('input#end-date');
+    const url = document.querySelector('input#url-input');
 
     checkDates(start.value, end.value);
 
@@ -52,25 +52,25 @@ export default function decorate(block) {
     // space in sk variant must be fixed for query selector
     const selectorType = type === 'date' ? type : 'sk';
     block.innerHTML = `
-        <form id="date_form">
+        <form id="date-form">
           <div>
-            ${type === 'date' ? "<label id='url_input'>Site Url</label" : "<label id='url_input'>Owner/Repo</label>"}
-            <input id='url_input' type="text" placeholder="${urlPlaceHolder}"></input>
+            ${type === 'date' ? "<label id='url-input'>Site Url</label" : "<label id='url-input'>Owner/Repo</label>"}
+            <input id='url-input' type="text" placeholder="${urlPlaceHolder}"></input>
           </div>
           <div>
-            <label id="startdate">Start Date</label>
-            <input id="startdate" type="date" placeholder="${startPlaceHolder}" min="${minDate}" max="${today}"></input>
+            <label id="start-date">Start Date</label>
+            <input id="start-date" type="date" placeholder="${startPlaceHolder}" min="${minDate}" max="${today}"></input>
           </div>
           <div>
-            <label id="enddate">End Date</label>
-            <input id="enddate" type="date" placeholder="${endPlaceHolder}" min="${minDate}" max="${today}"></input>
+            <label id="end-date">End Date</label>
+            <input id="end-date" type="date" placeholder="${endPlaceHolder}" min="${minDate}" max="${today}"></input>
           </div>
-          <div id="${selectorType}_submit">
+          <div id="${selectorType}-submit">
             <button>Submit</button>
           </div>
         </form>
       `;
-    const button = block.querySelector(`#${selectorType}_submit`);
+    const button = block.querySelector(`#${selectorType}-submit`);
     button.onclick = () => {
       processDateInput();
       return false;

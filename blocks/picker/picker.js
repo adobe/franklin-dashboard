@@ -6,56 +6,52 @@ export default function decorate(block) {
   let cfg = readBlockConfig(block);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
 
-  const type = cfg.type;
+  const { type } = cfg;
 
-    // once we read config, clear the dom.
+  // once we read config, clear the dom.
   block.querySelectorAll(':scope > div').forEach((row) => {
     row.remove();
   });
 
-    const form = document.createElement('form');
-    const div1 = document.createElement('div');
-    const label1 = document.createElement('label');
-    const input1 = document.createElement('input');
-    const submit = document.createElement('button');
-    submit.id = `${type}_submit`;
-
-    function checkDates(start, end){
-      if(new Date(start) > new Date(end)){
-        throw new Error('Start Date is Greater than End Date')
-      }
+  function checkDates(start, end) {
+    if (new Date(start) > new Date(end)) {
+      throw new Error('Start Date is Greater than End Date');
     }
+  }
 
-    function processDateInput(){
-        const start = document.querySelector('input#startdate');
-        const end = document.querySelector('input#enddate');
-        const url = document.querySelector('input#url_input');
+  function processDateInput() {
+    const start = document.querySelector('input#startdate');
+    const end = document.querySelector('input#enddate');
+    const url = document.querySelector('input#url_input');
 
-        checkDates(start.value, end.value);
+    checkDates(start.value, end.value);
 
-        params.set('startdate', start.value);
-        params.set('enddate', end.value);
-        type === 'date' ? params.set('url', url.value) : params.set('owner_repo', url.value)
-        let loc = (document.location.origin + document.location.pathname + '?' + params.toString());
-        window.location.href = loc;
-        console.log('executed');
+    params.set('startdate', start.value);
+    params.set('enddate', end.value);
+    if (type === 'date') {
+      params.set('url', url.value);
+    } else {
+      params.set('owner_repo', url.value);
     }
+    const loc = (`${document.location.origin + document.location.pathname}?${params.toString()}`);
+    window.location.href = loc;
+  }
 
-  if(type === 'date' || type === 'date (sk)'){
-      //set id of button
-      let startPlaceHolder = 'mm/dd/yyyy';
-      let endPlaceHolder = 'mm/dd/yyyy';
-      let urlPlaceHolder = 'www.placeholder.com';
-      if(params.has('startdate') && params.has('enddate') && (params.has('url') || params.has('owner_repo'))){
-        startPlaceHolder = params.get('startdate');
-        endPlaceHolder = params.get('enddate');
-        urlPlaceHolder = type === 'date' ? params.get('url') : params.get('owner_repo');
-      }
-      const minDate = '2018-01-01';
-      let today = new Date().toISOString().split('T')[0];
-      //space in sk variant must be fixed for query selector
-      let selectorType = type === 'date' ? type : 'sk'
-      block.innerHTML = `
+  if (type === 'date' || type === 'date (sk)') {
+    // set id of button
+    let startPlaceHolder = 'mm/dd/yyyy';
+    let endPlaceHolder = 'mm/dd/yyyy';
+    let urlPlaceHolder = 'www.placeholder.com';
+    if (params.has('startdate') && params.has('enddate') && (params.has('url') || params.has('owner_repo'))) {
+      startPlaceHolder = params.get('startdate');
+      endPlaceHolder = params.get('enddate');
+      urlPlaceHolder = type === 'date' ? params.get('url') : params.get('owner_repo');
+    }
+    const minDate = '2018-01-01';
+    const today = new Date().toISOString().split('T')[0];
+    // space in sk variant must be fixed for query selector
+    const selectorType = type === 'date' ? type : 'sk';
+    block.innerHTML = `
         <form id="date_form">
           <div>
             ${type === 'date' ? "<label id='url_input'>Site Url</label" : "<label id='url_input'>Owner/Repo</label>"}
@@ -73,11 +69,11 @@ export default function decorate(block) {
             <button>Submit</button>
           </div>
         </form>
-      `
-      let button = block.querySelector(`#${selectorType}_submit`);
-      button.onclick = () => {
-        processDateInput();
-        return false;
-      }
-    }
+      `;
+    const button = block.querySelector(`#${selectorType}_submit`);
+    button.onclick = () => {
+      processDateInput();
+      return false;
+    };
   }
+}

@@ -1,24 +1,24 @@
-import { readBlockConfig, getUrlBase } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 export default function decorate(block) {
-    const params = new URLSearchParams(window.location.search);
+  // const params = new URLSearchParams(window.location.search);
 
-    let cfg = readBlockConfig(block);
-    cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
-    const endpoint = cfg.data;
-    const columns = cfg.columns;
-    const col1 = cfg.col1;
-    const col2 = cfg.col2;
+  let cfg = readBlockConfig(block);
+  cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
+  const endpoint = cfg.data;
+  const { columns } = cfg;
+  const { col1 } = cfg;
+  const { col2 } = cfg;
 
-      // once we read config, clear the dom.
-    block.querySelectorAll(':scope > div').forEach((row) => {
-        row.remove();
-    });
-    const echartsScript = document.createElement('script');
-    echartsScript.type = 'text/partytown';
-    //echartsScript.src ='../../scripts/test.js'
-    echartsScript.async = true;
-    echartsScript.innerHTML = `
+  // once we read config, clear the dom.
+  block.querySelectorAll(':scope > div').forEach((row) => {
+    row.remove();
+  });
+  const echartsScript = document.createElement('script');
+  echartsScript.type = 'text/partytown';
+  // echartsScript.src ='../../scripts/test.js'
+  echartsScript.async = true;
+  echartsScript.innerHTML = `
     (async function(){
         //data will live in this variable res
         let res;

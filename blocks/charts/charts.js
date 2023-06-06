@@ -44,12 +44,11 @@ export default function decorate(block) {
   const chartId = `${[endpoint, tableColumn, typeChart].join('-')}`.toLowerCase(); // id is data row + chart type because why have this twice?
   const tableAndColumn = `${endpoint}-${tableColumn}`;
 
-  let chartMin; //defaults
-  let chartMax; //defaults
-  
-  if(Object.hasOwn(axisDict, tableColumn)){
-    chartMin = axisDict[tableColumn][0];
-    chartMax = axisDict[tableColumn][1];
+  let chartMin; // defaults
+  let chartMax; // defaults
+
+  if (Object.hasOwn(axisDict, tableColumn)) {
+    [chartMin, chartMax] = axisDict[tableColumn];
   }
 
   // once we read config, clear the dom.
@@ -58,7 +57,7 @@ export default function decorate(block) {
   });
   const echartsScript = document.createElement('script');
   echartsScript.type = 'text/partytown';
-  //echartsScript.src ='../../scripts/test.js'
+  // echartsScript.src ='../../scripts/test.js'
   echartsScript.async = true;
   echartsScript.innerHTML = `
   (async function(){

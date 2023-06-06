@@ -17,13 +17,9 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
   let goodUpper;
   let okayUpper;
   let okayLower;
-  let badLower;
-  if(Object.hasOwn(perfRanges, tableColumn)){
-    goodLower = perfRanges[tableColumn].good[0];
-    goodUpper = perfRanges[tableColumn].good[1];
-    okayLower = perfRanges[tableColumn].okay[0];
-    okayUpper = perfRanges[tableColumn].okay[1];
-    badLower = perfRanges[tableColumn].poor[0];
+  if (Object.hasOwn(perfRanges, tableColumn)) {
+    [goodLower, goodUpper] = perfRanges[tableColumn].good;
+    [okayLower, okayUpper] = perfRanges[tableColumn].okay;
   }
 
   const CHART_CONFIG = {
@@ -88,7 +84,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
               data: [
                 {
                   name: 'Good',
-                  ${goodUpper ? `yAxis:` + goodUpper +`,` : ``}
+                  ${goodUpper ? `yAxis:${goodUpper},` : ''}
                   label: {
                     normal: {
                     show: true, 
@@ -104,7 +100,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
                 },
                 {
                   name: 'Okay',
-                  ${okayUpper ? `yAxis:` + okayUpper+`,` : ``}
+                  ${okayUpper ? `yAxis:${okayUpper},` : ''}
                   label: {
                     normal: {
                     show: true, 
@@ -236,7 +232,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
               data: [
                 {
                   name: 'Good',
-                  ${goodUpper ? `xAxis:` + goodUpper +`,` : ``}
+                  ${goodUpper ? `xAxis:${goodUpper},` : ''}
                   lineStyle: {
                     width: 10,
                     normal: {
@@ -252,7 +248,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
                 },
                 {
                   name: 'Okay',
-                  ${okayUpper ? `xAxis:` + okayUpper+`,` : ``}
+                  ${okayUpper ? `xAxis:${okayUpper},` : ''}
                   lineStyle: {
                     width: 10,
                     normal: {
@@ -275,7 +271,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
         ]
       };`,
 
-      'sk-daily-users-line': `{
+    'sk-daily-users-line': `{
         title: {
           text: '${legend}',
           x: 'center',
@@ -302,7 +298,7 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           }
         ]
       };`,
-  
+
   };
   return `var option = ${CHART_CONFIG[pick]}`;
 };

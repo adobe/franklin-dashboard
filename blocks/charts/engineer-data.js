@@ -6,7 +6,7 @@
  */
 function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
   // tied to table name, column name, will determine how we handle data
-    const utils = `
+  const utils = `
     function transformDataIntoMap(results){
       const transformed = {};
       const key = 'host';
@@ -37,7 +37,7 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
       else{
         return 0;
       }
-    }`
+    }`;
 
   const commonPlots = `
     res = data.results.data;
@@ -54,12 +54,6 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
     let end = windowPercentage * 100;
     const labels = res.map(row => row.${labelKey});
     const series = res.map(row => row.${tableColumn});`;
-
-    const dashboardCommonPlots = `
-    res = data.results.data;
-    const labels = res.map(row => row.${labelKey}.replace('https://${paramData.get('url')}', '');
-    const series = res.map(row => row.${tableColumn});
-  `
 
   const pageviewsPlot = `
     ${utils}
@@ -82,15 +76,14 @@ function engineerData(tableAndColumn, paramData, tableColumn, labelKey) {
   
     const labels = res.sort(comparator).map(row => row.${labelKey}.slice(0, 10));
     const series = res.map(row => row.${tableColumn});
-  `
-  
+  `;
+
   const skCommonPlot = `
   res = data.results.data;
   res = [...res].reverse();
   const labels = res.map(row => row.${labelKey});
   const series = res.map(row => row.${tableColumn});
   `;
-
 
   const cashubCommonPlot = `
     ${utils};

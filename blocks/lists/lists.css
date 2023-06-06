@@ -3,6 +3,10 @@
     grid-template-columns: 80% 20%;
     border-right: 1px solid black;
     border-radius: 1px;
+    height: 75vh;
+    width: 85%;
+    overflow:hidden; 
+    overflow-y:scroll;
 }
 
 .columns-2 .title {
@@ -16,11 +20,4 @@
     border-bottom: black;
     border-bottom-style: dashed;
     border-bottom-width: 1px;
-}
-
-.columns-2{
-    height: 75vh;
-    width: 85%;
-    overflow:hidden; 
-    overflow-y:scroll;
 }

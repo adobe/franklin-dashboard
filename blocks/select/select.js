@@ -40,6 +40,8 @@ function checkData() {
   }
 }
 
-(async function () {
+async function runSelect() {
   checkData();
-}());
+}
+
+runSelect();

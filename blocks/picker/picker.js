@@ -55,15 +55,15 @@ export default function decorate(block) {
         <form id="date-form">
           <div>
             ${type === 'date' ? "<label id='url-input'>Site Url</label>" : "<label id='url-input'>Owner/Repo</label>"}
-            <input id='url-input' type="text" placeholder="${urlPlaceHolder}"></input>
+            <input id='url-input' type="text" placeholder="${urlPlaceHolder}" required></input>
           </div>
           <div>
             <label id="start-date">Start Date</label>
-            <input id="start-date" type="date" placeholder="${startPlaceHolder}" min="${minDate}" max="${today}"></input>
+            <input id="start-date" type="date" placeholder="${startPlaceHolder}" min="${minDate}" max="${today}" required></input>
           </div>
           <div>
             <label id="end-date">End Date</label>
-            <input id="end-date" type="date" placeholder="${endPlaceHolder}" min="${minDate}" max="${today}"></input>
+            <input id="end-date" type="date" placeholder="${endPlaceHolder}" min="${minDate}" max="${today}" required></input>
           </div>
           <div id="${selectorType}-submit">
             <button>Submit</button>

@@ -152,9 +152,6 @@ export async function bulkQueryRequest(main) {
       params.set('interval', interval);
       params.set('offset', offset);
     }
-    if (params.has('owner_repo')) {
-      params.delete('url');
-    }
     promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
       .then((resp) => resp.json())
       .then((data) => {

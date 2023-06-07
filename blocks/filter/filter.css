@@ -52,6 +52,10 @@
     background-color: green;
 }
 
+.filter button.disabled, .filter.button.disabled.selected {
+    background-color: gray;
+}
+
 .filter div.hide {
     display: none;
 }
@@ -59,4 +63,9 @@
 .filter div.customdate, .filter div.customdate input.noedit {
     border-color: var(--highlight-background-color);
     background-color: var(--highlight-background-color);
+}
+
+.filter div.error {
+    font-size: small;
+    color: red;
 }

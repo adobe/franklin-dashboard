@@ -221,12 +221,12 @@ main img {
 }
 
 main .section {
-  padding: 64px 16px;
+  padding: 16px 16px;
 }
 
 @media (min-width: 600px) {
   main .section {
-    padding: 64px 32px;
+    padding: 16px 32px 32px;
   }
 }
 

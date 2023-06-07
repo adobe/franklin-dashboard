@@ -1,0 +1,62 @@
+.filter.block {
+    border: solid 1px;
+    background-color: var(--overlay-background-color);
+    margin-bottom: 16px;    
+}
+
+.filter form, .filter div.customdate {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px 10px;
+}
+
+.filter div {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 150px;
+    margin: auto;
+}
+
+.filter div.wide {
+    flex-grow: 2;
+    flex-shrink: 2;
+}
+
+.filter div.center {
+    text-align: center;
+}
+
+.filter label {
+    width: fit-content;
+    font-size: small;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.filter input {
+    width: fit-content;
+    font-size: var(--body-font-size-xs);
+}
+
+.filter input.noedit {
+    border-color: var(--overlay-background-color);
+    background-color: var(--overlay-background-color);
+}
+
+.filter button {
+    margin: auto;
+    margin-bottom: 5px;
+}
+
+.filter button.selected {
+    background-color: green;
+}
+
+.filter div.hide {
+    display: none;
+}
+
+.filter div.customdate, .filter div.customdate input.noedit {
+    border-color: var(--highlight-background-color);
+    background-color: var(--highlight-background-color);
+}

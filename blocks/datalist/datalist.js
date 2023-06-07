@@ -35,23 +35,42 @@ export async function drawList(block, cfg) {
 
     // prepare run-query params
     let currentpage = new URL(window.location.href);
-    var params = currentpage.searchParams;
-    var url = params.get("url");
-    var domainkey = params.get("domainkey");
-    var startdate = new Date();
-    startdate.setDate(startdate.getDate() - 30);
-    startdate = startdate.toISOString().split('T')[0];
-    var enddate = new Date();
-    enddate = enddate.toISOString().split('T')[0];
-    var limit = params.get("limit");
-    if (!limit) {limit = 10};
+    let params = currentpage.searchParams;
+    let url = params.get("url");
+    let domainkey = params.get("domainkey");
+    let interval = params.get("interval");
+    let offset = params.get("offset");
+    let startdate = params.get("startdate");
+    let enddate = params.get("enddate");
+    let limit = params.get("limit");
+
+    // set defaults
+    if (interval == null) {
+        interval = '30';
+    }
+    if (offset == null) {
+        offset = '0';
+    }
+    if (startdate == null) {
+        startdate = '';
+    }
+    if (enddate == null) {
+        enddate = '';
+    }
+    if (limit == null) {
+        limit = '10';
+    }
+    if (startdate!='') {
+        interval = '-1';
+        offset = '-1';
+    }
 
     var runquery =
             cfg["runquery"]
             + "?domainkey=" + domainkey
             + "&url=" + url
-            + "&interval=-1"
-            + "&offset=-1"
+            + "&interval=" + interval
+            + "&offset=" + offset
             + "&startdate=" + startdate
             + "&enddate=" + enddate;
 
@@ -61,23 +80,6 @@ export async function drawList(block, cfg) {
 
     // query complete, hide loading graphic
     hideLoading(loading);
-
-    // allow user to change number of items in list
-    let headerLimit = document.createElement("div");
-    headerLimit.className = "wide";
-    const limits = [10, 25, 50, 100];
-    limits.forEach(element => {
-        let btn = document.createElement("button");
-        btn.textContent = "Show " + element;
-        currentpage.searchParams.set("limit", element);
-        let target = currentpage.toString();
-        btn.setAttribute("onclick", "document.location='" + target + "';");
-        if (element==limit) {
-            btn.className = "selected";
-        }
-        headerLimit.appendChild(btn);
-    });
-    container.appendChild(headerLimit);
 
     // column headers
     let headerUrl = document.createElement("div");

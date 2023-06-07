@@ -39,7 +39,7 @@ function focus(input, editable) {
  */
 function changeInterval(interval, offset, startdate, enddate) {
   // update input fields and display as appropriate based on inputs
-  if (interval !== -1) {
+  if (interval !== '-1') {
     // interval selected
     document.getElementById('customdate').classList.add('hide');
     document.getElementById('interval').value = interval;

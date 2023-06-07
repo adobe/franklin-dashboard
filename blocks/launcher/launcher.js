@@ -9,11 +9,12 @@ export default async function decorate(block) {
     const cfg = readBlockConfig(block);
 
     // set form defaults if already in URL
-    let currentpage = new URL(window.location.href);
-    var params = currentpage.searchParams;
-    var url = params.get("url");
-    var domainkey = params.get("domainkey");
+    const currentpage = new URL(window.location.href);
+    const params = currentpage.searchParams;
+    const url = params.get("url");
+    const domainkey = params.get("domainkey");
 
+    // TODO update action attribute to point to correct main page
     block.innerHTML = `
         <form method="get" action="./lists">
             <input type="hidden" name="interval" value="30">

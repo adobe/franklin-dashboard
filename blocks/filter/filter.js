@@ -6,13 +6,13 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
  */
 export default function decorate(block) {
   // retrieve block config
-  let cfg = readBlockConfig(block);
+  const cfg = readBlockConfig(block);
   //cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
 
   // draw the form
   drawFilter(block, cfg);
 
-  // set button onclick events
+  // add event listeners
   // interval buttons
   document.getElementById('int7').addEventListener('click', () => {
     changeInterval('7', '0', '', '');
@@ -84,62 +84,51 @@ export default function decorate(block) {
  * @param {Map} cfg Map containing config params
  */
 function drawFilter(block, cfg) {
-  // empty default content
-  block.textContent = "";
+  // draw placeholder "hero" for LCP purposes
+  block.innerHTML = "<form></form>";
 
   // retrieve querystring params for default filter values
-  let currentpage = new URL(window.location.href);
-  let currentpagenoqs = location.href.replace(location.search, '');
-  let params = currentpage.searchParams;
-  let url = params.get("url");
-  let domainkey = params.get("domainkey");
-  let interval = params.get("interval");
-  let offset = params.get("offset");
-  let startdate = params.get("startdate");
-  let enddate = params.get("enddate");
-  let limit = params.get("limit");
+  const currentpage = new URL(window.location.href);
+  const currentpagenoqs = location.href.replace(location.search, '');
+  const params = currentpage.searchParams;
+  const url = params.get('url');
+  const domainkey = params.get('domainkey');
+  // set defaults as needed
+  let interval = params.get("interval") || '30';
+  let offset = params.get("offset") || '0';
+  const startdate = params.get("startdate") || '';
+  const enddate = params.get("enddate") || '';
+  const limit = params.get("limit") || '10';
 
-  // set defaults
-  if (interval == null) {
-    interval = '30';
-  }
-  if (offset == null) {
-    offset = '0';
-  }
-  if (startdate == null) {
-    startdate = '';
-  }
-  if (enddate == null) {
-    enddate = '';
-  }
-  if (limit == null) {
-    limit = '10';
-  }
   if (startdate!='') {
     interval = '-1';
     offset = '-1';
   }
   
   // prepare variables to draw filter form
-  let int7 = interval==7 ? "selected" : "";
-  let int30 = interval==30 ? "selected" : "";
-  let int90 = interval==90 ? "selected" : "";
-  let intCustom = !int7 && !int30 && !int90 ? "selected" : "";
-  let customDate = intCustom!="selected" ? "hide" : "";
-  let limit10 = limit==10 ? "selected" : "";
-  let limit30 = limit==30 ? "selected" : "";
-  let limit100 = limit==100 ? "selected" : "";
-  let today = new Date().toISOString().split('T')[0];
+  const int7 = interval==7 ? "selected" : "";
+  const int30 = interval==30 ? "selected" : "";
+  const int90 = interval==90 ? "selected" : "";
+  const intCustom = !int7 && !int30 && !int90 ? "selected" : "";
+  const customDate = intCustom!="selected" ? "hide" : "";
+  const limit10 = limit==10 ? "selected" : "";
+  const limit30 = limit==30 ? "selected" : "";
+  const limit100 = limit==100 ? "selected" : "";
+  const today = new Date().toISOString().split('T')[0];
 
   // if block config param for sections exists
   // then show only the sections requested
-  let sections = cfg["sections"];
+  const sections = cfg["sections"];
   let securl = "";
+  let secownerrepo = "";
   let secdate = "";
   let seclimit = "";
   if (sections !== null) {
     if (sections.toLowerCase().indexOf("url")==-1) {
       securl = "hide";
+    }
+    if (sections.toLowerCase().indexOf("ownerrepo")==-1) {
+      secownerrepo = "hide";
     }
     if (sections.toLowerCase().indexOf("date")==-1) {
       secdate = "hide";
@@ -150,8 +139,10 @@ function drawFilter(block, cfg) {
   }
  
   // prepare filter form
-  // TODO conditionally include sections of form based on block config
-  let formHTML = `
+  // TODO add ownerrepo section as carryover from picker block
+  // TODO which will mimic customurl div
+  // TODO and will need event listener updates in decorate() function
+  const formHTML = `
     <form id=filter method=get action="` + currentpagenoqs + `">
       <input type=hidden name=domainkey value="` + domainkey + `">
       <input type=hidden id=interval name=interval value="` + interval + `">
@@ -284,7 +275,6 @@ function checkDates() {
   let startdate = document.getElementById('startdate').value;
   let enddate = document.getElementById('enddate').value;
   let dateerror = document.getElementById('dateerror');
-  console.log("checking dates");
   
   if (startdate=='' || enddate=='') {
     valid = false;
@@ -297,7 +287,6 @@ function checkDates() {
     dateerror.textContent = 'Start Date must be earlier than End Date.';
     show('dateerror', true);
   }
-  console.log("dates are valid: " + valid);
 
   if (valid) {
     // any button which submits form can be used
@@ -327,7 +316,6 @@ function checkDates() {
     show('datefilter', false);
     show('dateerror', true);
   }
-  console.log("drew fields");
 
   return valid;
 }

@@ -8,6 +8,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0px 10px;
+    min-height: 100px;
 }
 
 .filter div {

@@ -5,7 +5,6 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
  * @param {Element} block The filter block element
  */
 export default function decorate(block) {
-  //const params = new URLSearchParams(window.location.search);
   // retrieve block config
   let cfg = readBlockConfig(block);
   //cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
@@ -285,6 +284,7 @@ function checkDates() {
   let startdate = document.getElementById('startdate').value;
   let enddate = document.getElementById('enddate').value;
   let dateerror = document.getElementById('dateerror');
+  console.log("checking dates");
   
   if (startdate=='' || enddate=='') {
     valid = false;
@@ -297,6 +297,7 @@ function checkDates() {
     dateerror.textContent = 'Start Date must be earlier than End Date.';
     show('dateerror', true);
   }
+  console.log("dates are valid: " + valid);
 
   if (valid) {
     // any button which submits form can be used
@@ -326,6 +327,7 @@ function checkDates() {
     show('datefilter', false);
     show('dateerror', true);
   }
+  console.log("drew fields");
 
   return valid;
 }

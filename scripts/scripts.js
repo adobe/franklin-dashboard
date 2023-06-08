@@ -248,6 +248,10 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  window.partytown = {
+    lib: '/scripts/',
+  };
+  import('./partytown.js');
   const main = doc.querySelector('main');
   bulkQueryRequest(main);
   await loadBlocks(main);
@@ -265,11 +269,6 @@ async function loadLazy(doc) {
   const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
 
   createInlineScriptSrc(ECHARTS, document.head);
-
-  window.partytown = {
-    lib: '/scripts/',
-  };
-  import('./partytown.js');
 
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));

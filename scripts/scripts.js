@@ -254,12 +254,6 @@ async function loadLazy(doc) {
   };
   import('./partytown.js');
   bulkQueryRequest(main);
-  await loadBlocks(main);
-
-  const { hash } = window.location;
-  const element = hash ? doc.getElementById(hash.substring(1)) : false;
-  if (hash && element) element.scrollIntoView();
-
   function createInlineScriptSrc(src, parent) {
     const script = document.createElement('script');
     script.type = 'text/partytown';
@@ -269,6 +263,11 @@ async function loadLazy(doc) {
   const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
 
   createInlineScriptSrc(ECHARTS, document.head);
+  await loadBlocks(main);
+
+  const { hash } = window.location;
+  const element = hash ? doc.getElementById(hash.substring(1)) : false;
+  if (hash && element) element.scrollIntoView();
 
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));

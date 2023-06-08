@@ -246,7 +246,7 @@ async function loadLazy(doc) {
 
   function createInlineScriptSrc(src, parent) {
     const script = document.createElement('script');
-    script.type = 'text/partytown';
+    script.type = 'text/javascript';
     script.src = src;
     parent.appendChild(script);
   }

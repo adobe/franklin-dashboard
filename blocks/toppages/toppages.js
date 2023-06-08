@@ -23,5 +23,6 @@ export default async function decorate(block) {
   cfg.col2value = 'estimated_pv';
 
   // use function from datalist block to draw list
-  drawList(block, cfg);
+  setTimeout(() => {drawList(block, cfg);}, 3000);
+  
 }

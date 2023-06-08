@@ -14,13 +14,10 @@
 .launcher input, .launcher button {
     text-align: center;
     margin: auto;
+    margin-bottom: 16px;
     max-width: 30rem;
 }
 
 .launcher button {
     display: block;
-    margin-top: 16px;
-    margin-bottom: 16px;
 }
-
-

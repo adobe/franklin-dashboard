@@ -2,14 +2,6 @@
     font-size: var(--body-font-size-s);
 }
 
-.section {
-    background-color: #45b9e7;
-}
-
-.section.launcher-container {
-    background-color: white;
-}
-
 .section.launcher-container div p {
     text-align: center;
 }

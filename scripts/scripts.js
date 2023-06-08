@@ -104,6 +104,18 @@ export function getEndpointParams(endpoint) {
  */
 export async function bulkQueryRequest(main) {
   // let's make a loader
+  let chartCounter = 1;
+  main
+  .querySelectorAll('div.section > div > div')
+  .forEach((block) => {
+    const shortBlockName = block.classList[0];
+    // create id for each chart
+    if (shortBlockName === 'charts') {
+      block.parentElement.id = `chart${chartCounter}`;
+      block.id = `chart${chartCounter}`;
+      chartCounter += 1;
+    }
+  });
   const loader = document.createElement('span');
   loader.className = 'loader';
   main.prepend(loader);
@@ -211,7 +223,6 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
-    bulkQueryRequest(main);
   }
 }
 
@@ -238,11 +249,22 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
+  bulkQueryRequest(main);
   await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
+
+  function createInlineScriptSrc(src, parent) {
+    const script = document.createElement('script');
+    script.type = 'text/partytown';
+    script.src = src;
+    parent.appendChild(script);
+  }
+  const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
+
+  createInlineScriptSrc(ECHARTS, document.head);
 
   window.partytown = {
     lib: '/scripts/',

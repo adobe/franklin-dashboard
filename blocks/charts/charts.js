@@ -56,7 +56,7 @@ export default function decorate(block) {
     row.remove();
   });
   const echartsScript = document.createElement('script');
-  echartsScript.type = 'text/javascript';
+  echartsScript.type = 'text/partytown';
   // echartsScript.src ='../../scripts/test.js'
   echartsScript.async = true;
   echartsScript.innerHTML = `

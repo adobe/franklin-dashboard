@@ -23,7 +23,7 @@ export default async function decorate(block) {
             <input type="hidden" name="offset" value="0">
             <input type="hidden" name="limit" value="10">
             <label for="domainkey">domainkey</label>
-            <input id="domainkey" name="domainkey" value="${domainkey}" placeholder="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa">
+            <input id="domainkey" name="domainkey" value="${domainkey}" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
             <label for="url">hostname</label>
             <input id="url" name="url" value="${url}" placeholder="www.adobe.com">
             <button>Go</button>

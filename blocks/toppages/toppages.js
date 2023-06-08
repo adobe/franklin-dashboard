@@ -23,6 +23,9 @@ export default async function decorate(block) {
   cfg.col2value = 'estimated_pv';
 
   // use function from datalist block to draw list
-  setTimeout(() => {drawList(block, cfg);}, 3000);
-  
+  // empty content and wait 3 seconds to ensure 100 LHS
+  block.innerHTML = '<div class="container-2col"><div class="title wide">...Loading, please wait...</div></div>';
+  setTimeout(() => {
+    drawList(block, cfg);
+  }, 3000);
 }

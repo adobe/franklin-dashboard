@@ -24,9 +24,9 @@ export default async function decorate(block) {
             <input type="hidden" name="limit" value="10">
             <label for="domainkey">domainkey</label>
             <input id="domainkey" name="domainkey" value="${domainkey}">
-            <label for="url">hostname</hostname>
+            <label for="url">hostname</label>
             <input id="url" name="url" value="${url}">
-            <button type="submit">Go</button>
+            <button>Go</button>
         </form>
     `;
 }

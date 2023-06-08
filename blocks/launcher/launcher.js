@@ -13,8 +13,8 @@ export default async function decorate(block) {
   // set form defaults if already in URL
   const currentpage = new URL(window.location.href);
   const params = currentpage.searchParams;
-  const url = params.get('url');
-  const domainkey = params.get('domainkey');
+  const url = params.get('url') || '';
+  const domainkey = params.get('domainkey') || '';
 
   // TODO update action attribute to point to correct main page
   block.innerHTML = `
@@ -23,9 +23,9 @@ export default async function decorate(block) {
             <input type="hidden" name="offset" value="0">
             <input type="hidden" name="limit" value="10">
             <label for="domainkey">domainkey</label>
-            <input id="domainkey" name="domainkey" value="${domainkey}">
+            <input id="domainkey" name="domainkey" value="${domainkey}" placeholder="aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa">
             <label for="url">hostname</label>
-            <input id="url" name="url" value="${url}">
+            <input id="url" name="url" value="${url}" placeholder="www.adobe.com">
             <button>Go</button>
         </form>
     `;

@@ -4,6 +4,15 @@ import chartPicker from './chart-options.js';
 import { postPlotDomEngineering, prePlotDomEngineering } from './engineer-dom.js';
 
 export default function decorate(block) {
+  function createInlineScriptSrc(src, parent) {
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = src;
+    parent.appendChild(script);
+  }
+  const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
+
+  createInlineScriptSrc(ECHARTS, document.head);
   const params = new URLSearchParams(window.location.search);
 
   const axisDict = {
@@ -56,7 +65,7 @@ export default function decorate(block) {
     row.remove();
   });
   const echartsScript = document.createElement('script');
-  echartsScript.type = 'text/partytown';
+  echartsScript.type = 'text/javascript';
   // echartsScript.src ='../../scripts/test.js'
   echartsScript.async = true;
   echartsScript.innerHTML = `

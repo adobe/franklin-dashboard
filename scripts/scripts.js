@@ -166,7 +166,7 @@ export async function bulkQueryRequest(main) {
   if (promiseArr.length > 0) {
     const consolidatedQueryCalls = `[${promiseArr.join(', ')}]`;
     const queryScript = document.createElement('script');
-    queryScript.type = 'text/partytown';
+    queryScript.type = 'text/javascript';
     // queryScript.src ='../../scripts/test-conso.js'
     queryScript.async = true;
     queryScript.innerHTML = `
@@ -246,7 +246,7 @@ async function loadLazy(doc) {
 
   function createInlineScriptSrc(src, parent) {
     const script = document.createElement('script');
-    script.type = 'text/partytown';
+    script.type = 'text/javascript';
     script.src = src;
     parent.appendChild(script);
   }

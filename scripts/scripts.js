@@ -104,6 +104,19 @@ export function getEndpointParams(endpoint) {
  */
 export async function bulkQueryRequest(main) {
   // let's make a loader
+  let chartCounter = 1;
+  main
+  .querySelectorAll('div.section > div > div')
+  .forEach((block) => {
+    const shortBlockName = block.classList[0];
+    // create id for each chart
+    if (shortBlockName === 'charts') {
+      block.parentElement.id = `chart${chartCounter}`;
+      block.id = `chart${chartCounter}`;
+      chartCounter += 1;
+    }
+  });
+  // let's make a loader
   const loader = document.createElement('span');
   loader.className = 'loader';
   main.prepend(loader);
@@ -211,7 +224,6 @@ async function loadEager(doc) {
     decorateMain(main);
     document.body.classList.add('appear');
     await waitForLCP(LCP_BLOCKS);
-    bulkQueryRequest(main);
   }
 }
 
@@ -247,6 +259,7 @@ async function loadLazy(doc) {
 
   createInlineScriptSrc(ECHARTS, document.head);
   const main = doc.querySelector('main');
+  bulkQueryRequest(main);
   await loadBlocks(main);
 
   const { hash } = window.location;

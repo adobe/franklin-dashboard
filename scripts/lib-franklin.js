@@ -353,18 +353,10 @@ export function updateSectionsStatus(main) {
  * @param {Element} main The container element
  */
 export function decorateBlocks(main) {
-  let chartCounter = 1;
   main
     .querySelectorAll('div.section > div > div')
     .forEach((block) => {
       decorateBlock(block);
-      const shortBlockName = block.classList[0];
-      // create id for each chart
-      if (shortBlockName === 'charts') {
-        block.parentElement.id = `chart${chartCounter}`;
-        block.id = `chart${chartCounter}`;
-        chartCounter += 1;
-      }
     });
 }
 

@@ -58,6 +58,9 @@ export function decorateMain(main) {
   decorateBlocks(main);
 }
 
+/**
+ * Gets information on queries from rum-queries.json
+ */
 async function getQueryInfo() {
   if (!Object.hasOwn(window, 'urlBase')) {
     await fetch('/configs/rum-queries.json')
@@ -80,7 +83,7 @@ export function getUrlBase(endpoint) {
 }
 
 /**
- * configuration that selects correct params for a type of url
+ * configuration that selects correct param for a type of url
  * @param {String} endpoint
  * @returns
  */

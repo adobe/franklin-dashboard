@@ -14,11 +14,19 @@ main .hero {
   min-height: 300px;
 }
 
-main .hero h1 {
+main .hero h1, main .hero h2 {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
+}
+
+main .hero h1 {
   color: white;
+}
+
+main .hero h2 {
+  font-size: var(--heading-font-size-l);
+  color: var(--highlight-background-color);
 }
 
 main .hero picture {

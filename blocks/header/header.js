@@ -123,6 +123,11 @@ export default async function decorate(block) {
       });
     }
 
+    // retain querystring for any menu links
+    nav.querySelectorAll('a').forEach((link) => {
+      link.href += document.location.search;
+    });
+
     // hamburger for mobile
     const hamburger = document.createElement('div');
     hamburger.classList.add('nav-hamburger');

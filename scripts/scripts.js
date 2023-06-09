@@ -59,43 +59,37 @@ export function decorateMain(main) {
 }
 
 /**
+ * Gets information on queries from rum-queries.json
+ */
+async function getQueryInfo() {
+  if (!Object.hasOwn(window, 'urlBase')) {
+    await fetch('/configs/rum-queries.json')
+      .then((resp) => resp.json())
+      .then((data) => {
+        window.urlBase = {};
+        window.urlBase = data.data;
+      });
+  }
+}
+
+/**
  * configuration that selects correct base of url for a particular endpoint
  * @param {String} endpoint
  * @returns
  */
 export function getUrlBase(endpoint) {
-  const urlBase = {
-    'daily-rum': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    'github-prs': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    site4s: 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    'rum-dashboard': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    'rum-pageviews': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-    'sk-actions-by-repo': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5399/',
-    'sk-daily-users': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5399/',
-    'sk-interactions': 'https://helix-pages.anywhere.run/helix-services/run-query@ci5383/',
-  };
-
-  return urlBase[endpoint];
+  const urlObj = window.urlBase.find((config) => config.endpoint === endpoint);
+  return urlObj.base;
 }
 
 /**
- * configuration that selects correct params for a type of url
+ * configuration that selects correct param for a type of url
  * @param {String} endpoint
  * @returns
  */
 export function getEndpointParams(endpoint) {
-  const endpointParams = {
-    'daily-rum': 'date',
-    'github-prs': 'date',
-    site4s: 'date',
-    'rum-dashboard': 'date',
-    'rum-pageviews': 'interval',
-    'sk-actions-by-repo': 'date',
-    'sk-daily-users': 'date',
-    'sk-interactions': 'date',
-  };
-
-  return endpointParams[endpoint];
+  const urlObj = window.urlBase.find((config) => config.endpoint === endpoint);
+  return urlObj.parameters;
 }
 
 /**
@@ -106,17 +100,16 @@ export async function bulkQueryRequest(main) {
   // let's make a loader
   let chartCounter = 1;
   main
-  .querySelectorAll('div.section > div > div')
-  .forEach((block) => {
-    const shortBlockName = block.classList[0];
-    // create id for each chart
-    if (shortBlockName === 'charts') {
-      block.parentElement.id = `chart${chartCounter}`;
-      block.id = `chart${chartCounter}`;
-      chartCounter += 1;
-    }
-  });
-  // let's make a loader
+    .querySelectorAll('div.section > div > div')
+    .forEach((block) => {
+      const shortBlockName = block.classList[0];
+      // create id for each chart
+      if (shortBlockName === 'charts') {
+        block.parentElement.id = `chart${chartCounter}`;
+        block.id = `chart${chartCounter}`;
+        chartCounter += 1;
+      }
+    });
   const loader = document.createElement('span');
   loader.className = 'loader';
   main.prepend(loader);
@@ -161,7 +154,7 @@ export async function bulkQueryRequest(main) {
     const k = key.toLowerCase();
     params.set('interval', -1);
     params.set('offset', -1);
-    if (getEndpointParams(k) === 'interval' && params.has('startdate') && params.has('enddate')) {
+    if (getUrlBase(k) === 'interval' && params.has('startdate') && params.has('enddate')) {
       params.set('interval', interval);
       params.set('offset', offset);
     }
@@ -249,6 +242,8 @@ export function addFavIcon(href) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
+  const main = doc.querySelector('main');
+  await getQueryInfo().then(() => bulkQueryRequest(main));
   function createInlineScriptSrc(src, parent) {
     const script = document.createElement('script');
     script.type = 'text/javascript';
@@ -258,8 +253,6 @@ async function loadLazy(doc) {
   const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
 
   createInlineScriptSrc(ECHARTS, document.head);
-  const main = doc.querySelector('main');
-  bulkQueryRequest(main);
   await loadBlocks(main);
 
   const { hash } = window.location;

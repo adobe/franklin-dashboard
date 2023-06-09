@@ -5,36 +5,21 @@ import { postPlotDomEngineering, prePlotDomEngineering } from './engineer-dom.js
 
 export default function decorate(block) {
   const params = new URLSearchParams(window.location.search);
-
-  const axisDict = {
-    avgfid: [0, 500],
-    avgcls: [0, 0.45],
-    avglcp: [0, 6],
-  };
-
-  const perfRanges = {
-    avgfid: {
-      good: [0, 100],
-      okay: [100, 300],
-      poor: [300],
-    },
-    avgcls: {
-      good: [0, 0.1],
-      okay: [0.1, 0.25],
-      poor: [0.25],
-    },
-    avglcp: {
-      good: [0, 2.5],
-      okay: [2.5, 4.0],
-      poor: [4.0],
-    },
-  };
+  const perfRanges = {};
 
   let cfg = readBlockConfig(block);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const typeChart = cfg.type;
   const endpoint = cfg.data;
   const tableColumn = cfg.field;
+  if (Object.hasOwn(cfg, 'good') && Object.hasOwn(cfg, 'okay') && Object.hasOwn(cfg, 'poor')) {
+    perfRanges[tableColumn] = {
+      good: cfg.good.replace(' ', '').split(',').map((el) => parseFloat(el)),
+      okay: cfg.okay.replace(' ', '').split(',').map((el) => parseFloat(el)),
+      poor: cfg.poor.replace(' ', '').split(',').map((el) => parseFloat(el)),
+    };
+  }
+
   /* for next feature, make link to deep dive for a domain
   const homeLink = cfg['home-link'];
   const homeLinkLabelKey = cfg['home-link-label-key'];
@@ -44,21 +29,13 @@ export default function decorate(block) {
   const chartId = `${[endpoint, tableColumn, typeChart].join('-')}`.toLowerCase(); // id is data row + chart type because why have this twice?
   const tableAndColumn = `${endpoint}-${tableColumn}`;
 
-  let chartMin; //defaults
-  let chartMax; //defaults
-  
-  if(Object.hasOwn(axisDict, tableColumn)){
-    chartMin = axisDict[tableColumn][0];
-    chartMax = axisDict[tableColumn][1];
-  }
-
   // once we read config, clear the dom.
   block.querySelectorAll(':scope > div').forEach((row) => {
     row.remove();
   });
   const echartsScript = document.createElement('script');
   echartsScript.type = 'text/partytown';
-  //echartsScript.src ='../../scripts/test.js'
+  // echartsScript.src ='../../scripts/test.js'
   echartsScript.async = true;
   echartsScript.innerHTML = `
   (async function(){
@@ -74,7 +51,7 @@ export default function decorate(block) {
         //configure this chart and fill it with proper parameters
         ${prePlotDomEngineering(tableAndColumn, chartId, block)}
         ${engineerData(tableAndColumn, params, tableColumn, labelKey)}
-        ${chartPicker(endpoint, typeChart, tableColumn, perfRanges, legend, chartMin, chartMax)}
+        ${chartPicker(endpoint, typeChart, tableColumn, perfRanges, legend)}
         ${postPlotDomEngineering(tableAndColumn, chartId, params)}
         myChart.setOption(option);
       }

@@ -1,0 +1,26 @@
+div.charts.block {
+    height: 100%; 
+    width: 100%;
+}
+
+div.charts-wrapper {
+    height: 100%;
+    width: 100%;
+}
+
+div [_echarts_instance_] {
+    height: 100%;
+    width: 100%;
+}
+
+.section.charts-container > .charts-wrapper > .charts.block {
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.section.charts-container > .charts-wrapper{
+    aspect-ratio: 1/1; 
+    height: 100%;
+    width: 100%;
+}

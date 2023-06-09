@@ -25,6 +25,10 @@ export function postPlotDomEngineering(tableAndColumn, chartId, paramData) {
     'rum-dashboard-avgfid': urlChartDomOps + commonDomOps,
     'rum-dashboard-avgcls': urlChartDomOps + commonDomOps,
     'rum-dashboard-pageviews': urlChartDomOps + commonDomOps,
+    'rum-pageviews-pageviews': urlChartDomOps + commonDomOps,
+    'sk-daily-users-actions': urlChartDomOps + commonDomOps,
+    'sk-daily-users-checkpoints': urlChartDomOps + commonDomOps,
+    'sk-daily-users-extension_actions': urlChartDomOps + commonDomOps,
     // cashub queries
     'daily-rum-avglcp': commonDomOps,
     'daily-rum-avgfid': commonDomOps,
@@ -42,13 +46,17 @@ export function prePlotDomEngineering(tableAndColumn, chartId, block) {
         canvasWrapper.id = '${chartId}';
         currBlock.append(canvasWrapper);
         let myChart = echarts.init(canvasWrapper);
-        `;
+      `;
 
   const DOM_CONFIG = {
     'rum-dashboard-avglcp': commonDomOps,
     'rum-dashboard-avgfid': commonDomOps,
     'rum-dashboard-avgcls': commonDomOps,
     'rum-dashboard-pageviews': commonDomOps,
+    'rum-pageviews-pageviews': commonDomOps,
+    'sk-daily-users-actions': commonDomOps,
+    'sk-daily-users-checkpoints': commonDomOps,
+    'sk-daily-users-extension_actions': commonDomOps,
     // cashub queries
     'daily-rum-avglcp': commonDomOps,
     'daily-rum-avgfid': commonDomOps,

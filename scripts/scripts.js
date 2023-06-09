@@ -252,8 +252,9 @@ async function loadLazy(doc) {
   }
   const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
 
-  createInlineScriptSrc(ECHARTS, document.head);
-  await loadBlocks(main);
+  // load echarts delayed instead of lazy
+  // createInlineScriptSrc(ECHARTS, document.head);
+  // await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;

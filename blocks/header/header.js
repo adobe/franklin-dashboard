@@ -133,7 +133,7 @@ export default async function decorate(block) {
     const beta = document.createElement('span');
     beta.className = 'beta';
     beta.textContent = 'beta';
-    nav.querySelector('.nav-brand p a').append(beta);// += '<span class=beta>beta</span>';
+    nav.querySelector('.nav-brand p a').append(beta);
 
     // hamburger for mobile
     const hamburger = document.createElement('div');

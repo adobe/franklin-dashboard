@@ -128,6 +128,13 @@ export default async function decorate(block) {
       link.href += document.location.search;
     });
 
+    // for now add beta label to nav-brand anchor
+    // TODO remove once no longer considered beta
+    const beta = document.createElement('span');
+    beta.className = 'beta';
+    beta.textContent = 'beta';
+    nav.querySelector('.nav-brand p a').append(beta);// += '<span class=beta>beta</span>';
+
     // hamburger for mobile
     const hamburger = document.createElement('div');
     hamburger.classList.add('nav-hamburger');

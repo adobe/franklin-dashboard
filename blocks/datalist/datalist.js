@@ -41,7 +41,7 @@ export async function drawList(block, cfg) {
 
   // eslint-disable-next-line prefer-template
   const runquery = getUrlBase(cfg.runquery)
-    + cfg.runquery 
+    + cfg.runquery
     + '?domainkey=' + domainkey
     + '&url=' + url
     + '&interval=' + interval

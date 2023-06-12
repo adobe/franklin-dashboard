@@ -244,15 +244,6 @@ export function addFavIcon(href) {
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
   await getQueryInfo().then(() => bulkQueryRequest(main));
-  function createInlineScriptSrc(src, parent) {
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = src;
-    parent.appendChild(script);
-  }
-  const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
-
-  createInlineScriptSrc(ECHARTS, document.head);
   await loadBlocks(main);
 
   const { hash } = window.location;

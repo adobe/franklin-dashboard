@@ -1,4 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { getUrlBase } from '../../scripts/scripts.js';
 import { drawLoading, hideLoading } from '../../scripts/loading.js';
 
 export async function drawList(block, cfg) {
@@ -39,7 +40,8 @@ export async function drawList(block, cfg) {
   }
 
   // eslint-disable-next-line prefer-template
-  const runquery = cfg.runquery
+  const runquery = getUrlBase(cfg.runquery)
+    + cfg.runquery 
     + '?domainkey=' + domainkey
     + '&url=' + url
     + '&interval=' + interval

@@ -11,7 +11,7 @@
  * @param {*} dataSize
  * @returns
  */
-const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, max) => {
+const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend) => {
   const pick = `${endpoint}-${typeChart}`;
   let goodLower;
   let goodUpper;
@@ -42,8 +42,6 @@ const chartPicker = (endpoint, typeChart, tableColumn, perfRanges, legend, min, 
           }
         ],
         yAxis: {
-          min: ${min},
-          max: ${max},
         },
         series: [
           {

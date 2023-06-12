@@ -60,5 +60,7 @@ export default function decorate(block) {
     })()
   `;
 
-  block.append(echartsScript);
+  setTimeout(() => {
+    block.append(echartsScript);
+  }, 3000);
 }

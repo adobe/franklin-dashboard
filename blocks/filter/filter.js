@@ -97,10 +97,12 @@ function checkDates() {
   if (valid) {
     // any button which submits form can be used
     document.getElementById('btnurl').classList.remove('disabled');
+    document.getElementById('btnownerrepo').classList.remove('disabled');
     document.getElementById('limit10').classList.remove('disabled');
     document.getElementById('limit30').classList.remove('disabled');
     document.getElementById('limit100').classList.remove('disabled');
     document.getElementById('btnurl').disabled = false;
+    document.getElementById('btnownerrepo').disabled = false;
     document.getElementById('limit10').disabled = false;
     document.getElementById('limit30').disabled = false;
     document.getElementById('limit100').disabled = false;
@@ -112,10 +114,12 @@ function checkDates() {
     // do not allow any button to submit a form if dates are invalid
     // note the interval buttons remain enabled because they ignore dates
     document.getElementById('btnurl').classList.add('disabled');
+    document.getElementById('btnownerrepo').classList.add('disabled');
     document.getElementById('limit10').classList.add('disabled');
     document.getElementById('limit30').classList.add('disabled');
     document.getElementById('limit100').classList.add('disabled');
     document.getElementById('btnurl').disabled = true;
+    document.getElementById('btnownerrepo').disabled = true;
     document.getElementById('limit10').disabled = true;
     document.getElementById('limit30').disabled = true;
     document.getElementById('limit100').disabled = true;
@@ -140,9 +144,10 @@ function drawFilter(block, cfg) {
   const currentpage = new URL(window.location.href);
   const currentpagenoqs = window.location.href.replace(window.location.search, '');
   const params = currentpage.searchParams;
-  const url = params.get('url');
-  const domainkey = params.get('domainkey');
   // set defaults as needed
+  const url = params.get('url') || '';
+  const ownerrepo = params.get('owner_repo') || '';
+  const domainkey = params.get('domainkey');
   let interval = params.get('interval') || '30';
   let offset = params.get('offset') || '1';
   const startdate = params.get('startdate') || '';
@@ -178,8 +183,6 @@ function drawFilter(block, cfg) {
       securl = 'hide';
     }
     if (sections.toLowerCase().indexOf('ownerrepo') === -1) {
-      // TODO remove below commented line once ownerrepo is implemented
-      // eslint-disable-next-line no-unused-vars
       secownerrepo = 'hide';
     }
     if (sections.toLowerCase().indexOf('date') === -1) {
@@ -191,9 +194,6 @@ function drawFilter(block, cfg) {
   }
 
   // prepare filter form
-  // TODO add ownerrepo section as carryover from picker block
-  // TODO which will mimic customurl div
-  // TODO and will need event listener updates in decorate() function
   const formHTML = `
     <form id=filter method=get action="${currentpagenoqs}">
       <input type=hidden name=domainkey value="${domainkey}">
@@ -208,6 +208,15 @@ function drawFilter(block, cfg) {
         </div>
         <div id=urlfilter class=" hide">
           <button id=btnurl>Go</button>
+        </div>
+      </div>
+      <div id=owner_repo class="customurl ${secownerrepo}">
+        <div>
+          <label for=owner_repo>Owner/Repo</label>
+          <input id=owner_repo name=owner_repo class=noedit value="${ownerrepo}">
+        </div>
+        <div id=ownerrepofilter class=" hide">
+          <button id=btnownerrepo>Go</button>
         </div>
       </div>
       <div id=dateinterval class="center wide ${secdate}">
@@ -296,6 +305,9 @@ export default function decorate(block) {
   block.querySelector('#url').addEventListener('change', () => {
     show('urlfilter', true);
   });
+  block.querySelector('#owner_repo').addEventListener('change', () => {
+    show('ownerrepofilter', true);
+  });
   block.querySelector('#startdate').addEventListener('change', () => {
     checkDates();
   });
@@ -307,6 +319,9 @@ export default function decorate(block) {
   block.querySelector('#url').addEventListener('focus', () => {
     focus('url', true);
   });
+  block.querySelector('#owner_repo').addEventListener('focus', () => {
+    focus('owner_repo', true);
+  });
   block.querySelector('#startdate').addEventListener('focus', () => {
     focus('startdate', true);
   });
@@ -315,6 +330,9 @@ export default function decorate(block) {
   });
   block.querySelector('#url').addEventListener('blur', () => {
     focus('url', false);
+  });
+  block.querySelector('#owner_repo').addEventListener('blur', () => {
+    focus('owner_repo', false);
   });
   block.querySelector('#startdate').addEventListener('blur', () => {
     focus('startdate', false);

@@ -114,12 +114,12 @@ export async function bulkQueryRequest(main) {
     }
   });
 
-  const hasStart = params.has('startdate');
-  const hasEnd = params.has('enddate');
-  const hasInterval = params.has('interval');
-  const hasOffset = params.has('offset');
+  // const hasStart = params.has('startdate');
+  // const hasEnd = params.has('enddate');
+  // const hasInterval = params.has('interval');
+  // const hasOffset = params.has('offset');
   const dateValid = params.get('startdate').length > 4 && params.get('enddate').length > 4;
-  const intervalValid = parseInt(params.get('interval')) > 1 && parseInt(params.get('offset')) >= 1;
+  const intervalValid = parseInt(params.get('interval'), 10) > 1 && parseInt(params.get('offset'), 10) >= 1;
 
   if (dateValid) {
     const start = new Date(params.get('startdate'));
@@ -132,8 +132,8 @@ export async function bulkQueryRequest(main) {
       const intv = Math.abs(end - start);
       offset = Math.ceil(offs / (1000 * 60 * 60 * 24));
       interval = Math.ceil(intv / (1000 * 60 * 60 * 24));
-      let startdate = params.get('startdate');
-      let enddate = params.get('enddate');
+      const startdate = params.get('startdate');
+      const enddate = params.get('enddate');
       params.set('startdate', startdate);
       params.set('enddate', enddate);
       params.set('offset', offset);
@@ -145,14 +145,13 @@ export async function bulkQueryRequest(main) {
       offset = -1;
       interval = -1;
     }
-  } else if(intervalValid){
+  } else if (intervalValid) {
     params.delete('startdate');
     params.delete('enddate');
     offset = params.get('offset');
     interval = params.get('interval');
-  }
-  else{
-    throw new Error('Cannot send request, date params empty or interval params incorrect')
+  } else {
+    throw new Error('Cannot send request, date params empty or interval params incorrect');
   }
 
   const limit = params.get('limit') || '30';

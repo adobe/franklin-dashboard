@@ -190,7 +190,9 @@ export async function bulkQueryRequest(main) {
     })();`;
     main.append(queryScript);
   } else {
-    document.querySelector('.loader').remove();
+    if (document.querySelector('.loader')) {
+      document.querySelector('.loader').remove();
+    }
   }
 }
 

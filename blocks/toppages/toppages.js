@@ -16,6 +16,8 @@ export default async function decorate(block) {
   // add additional block params before passing to datalist to decorate
   // the intent is to build a "pre-configured" datalist and therefore
   // not require the content author to configure certain params
+  // TODO unify with bulkQueryRequest
+  cfg.data = 'dash@top-pages';
   cfg.runquery = 'dash@top-pages';
   cfg.col1name = 'URL';
   cfg.col1value = 'url';

@@ -1,5 +1,7 @@
 // eslint-disable-next-line import/no-cycle
 import { sampleRUM } from './lib-franklin.js';
+import { getQueryInfo, bulkQueryRequest } from './scripts.js';
+
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 

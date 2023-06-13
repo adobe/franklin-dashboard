@@ -21,6 +21,8 @@ div [_echarts_instance_] {
 
 .section.charts-container > .charts-wrapper{
     aspect-ratio: 1/1; 
-    height: 100%;
-    width: 100%;
+    min-height: 275px;
+    max-height: 400px;
+    min-width: 400px;
+    max-width: 600px;
 }

@@ -322,6 +322,12 @@ footer {
   grid-template-rows: 20% 40% 40%;
 }
 
+.section.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 300px;
+}
+
 .section.charts-container > .charts-wrapper > .charts.block {
   display: flex; 
   align-items: center;

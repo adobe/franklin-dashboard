@@ -119,7 +119,7 @@ export async function bulkQueryRequest(main) {
   const hasInterval = params.has('interval');
   const hasOffset = params.has('offset');
   const dateValid = hasStart && hasEnd && params.get('startdate').length > 4 && params.get('enddate').length > 4;
-  const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval')) > 1 && parseInt(params.get('offset')) >= 1;
+  const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) > 1 && parseInt(params.get('offset'), 10) >= 1;
 
   if (dateValid) {
     const start = new Date(params.get('startdate'));

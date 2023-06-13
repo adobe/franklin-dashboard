@@ -306,6 +306,14 @@ footer {
   margin-top: auto;
 }
 
+.section.picker-container.charts-container {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 20% 45% 45%;
+}
+
 .section.filter-container.charts-container {
   display: grid;
   width: 100vw;
@@ -346,9 +354,15 @@ footer {
   grid-row: 3 / 4;
 }
 
+.section.picker-container > .picker-wrapper {
+  grid-column: 1 / 3;
+  grid-row: 0 / 1;
+}
+
 .section.filter-container.charts-container > .filter-wrapper {
   grid-column: 1 / 3;
   grid-row: 1 / 2;
+  width: 100%;
 }
 
 /*

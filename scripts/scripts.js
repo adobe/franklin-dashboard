@@ -259,12 +259,11 @@ function loadDelayed() {
   script.type = 'text/javascript';
   script.src = 'https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js';
   document.head.appendChild(script);
-  let loaderTillLoaded = () => {
-    if(typeof echarts != 'undefined' && Object.hasOwn(window, 'dashboard')){
-      let loader = document.querySelector('.loader')
+  const loaderTillLoaded = () => {
+    if (typeof echarts !== 'undefined' && Object.hasOwn(window, 'dashboard')) {
+      const loader = document.querySelector('.loader');
       loader.remove();
-    }
-    else{
+    } else {
       window.setTimeout(loaderTillLoaded, 20);
     }
   };

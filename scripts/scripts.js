@@ -132,8 +132,8 @@ export async function bulkQueryRequest(main) {
       const intv = Math.abs(end - start);
       offset = Math.ceil(offs / (1000 * 60 * 60 * 24));
       interval = Math.ceil(intv / (1000 * 60 * 60 * 24));
-      let startdate = params.get('startdate');
-      let enddate = params.get('enddate');
+      const startdate = params.get('startdate');
+      const enddate = params.get('enddate');
       params.set('startdate', startdate);
       params.set('enddate', enddate);
       params.set('offset', offset);
@@ -145,21 +145,20 @@ export async function bulkQueryRequest(main) {
       offset = -1;
       interval = -1;
     }
-  } else if(intervalValid){
-    let today = new Date();
+  } else if (intervalValid) {
+    const today = new Date();
     offset = params.get('offset');
     interval = params.get('interval');
-    let dateOffsetInMillis = (24*60*60*1000) * offset;
-    let intervalInMillis = (24*60*60*1000) * interval;
-    let end = today - dateOffsetInMillis;
-    let start = end - intervalInMillis;
-    let startdate = new Date(start).toISOString().split('T')[0];
-    let enddate = new Date(end).toISOString().split('T')[0];
+    const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
+    const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
+    const end = today - dateOffsetInMillis;
+    const start = end - intervalInMillis;
+    const startdate = new Date(start).toISOString().split('T')[0];
+    const enddate = new Date(end).toISOString().split('T')[0];
     params.set('startdate', startdate);
     params.set('enddate', enddate);
-  }
-  else{
-    throw new Error('Cannot send request, date params empty or interval params incorrect')
+  } else {
+    throw new Error('Cannot send request, date params empty or interval params incorrect');
   }
 
   const limit = params.get('limit') || '30';

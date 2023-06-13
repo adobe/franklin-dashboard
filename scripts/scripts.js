@@ -176,9 +176,11 @@ export async function bulkQueryRequest(main) {
         Promise.all(${consolidatedQueryCalls}).
         then(() => {
           window.dataIncoming = false;
+          document.querySelector('.loader').remove();
         })
         .catch((err) => {
           alert('API Call Has Failed, Check that inputs are correct');
+          document.querySelector('.loader').remove();
         });
       }
     }
@@ -187,6 +189,8 @@ export async function bulkQueryRequest(main) {
       checkData()
     })();`;
     main.append(queryScript);
+  } else {
+    document.querySelector('.loader').remove();
   }
 }
 
@@ -259,15 +263,6 @@ function loadDelayed() {
   script.type = 'text/javascript';
   script.src = 'https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js';
   document.head.appendChild(script);
-  const loaderTillLoaded = () => {
-    if (typeof echarts !== 'undefined' && Object.hasOwn(window, 'dashboard')) {
-      const loader = document.querySelector('.loader');
-      loader.remove();
-    } else {
-      window.setTimeout(loaderTillLoaded, 20);
-    }
-  };
-  loaderTillLoaded();
   // load anything that can be postponed to the latest here
 }
 

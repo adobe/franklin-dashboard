@@ -28,13 +28,19 @@ export default function decorate(block) {
   const labelKey = cfg['label-key'];
   const chartId = `${[endpoint, tableColumn, typeChart].join('-')}`.toLowerCase(); // id is data row + chart type because why have this twice?
   const tableAndColumn = `${endpoint}-${tableColumn}`;
+  if (!Object.hasOwn(window, 'chartCounter')) {
+    window.chartCounter = 1;
+  }
+  block.parentElement.id = `chart${window.chartCounter}`;
+  block.id = `chart${window.chartCounter}`;
+  window.chartCounter += 1;
 
   // once we read config, clear the dom.
   block.querySelectorAll(':scope > div').forEach((row) => {
-    row.remove();
+    row.style.display = 'none';
   });
   const echartsScript = document.createElement('script');
-  echartsScript.type = 'text/partytown';
+  echartsScript.type = 'text/javascript';
   // echartsScript.src ='../../scripts/test.js'
   echartsScript.async = true;
   echartsScript.innerHTML = `
@@ -60,5 +66,12 @@ export default function decorate(block) {
     })()
   `;
 
-  block.append(echartsScript);
+  const appendChart = () => {
+    if (typeof echarts !== 'undefined') {
+      block.append(echartsScript);
+    } else {
+      window.setTimeout(appendChart, 10);
+    }
+  };
+  appendChart();
 }

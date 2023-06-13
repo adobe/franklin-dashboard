@@ -14,7 +14,7 @@ import {
   readBlockConfig,
 } from './lib-franklin.js';
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+const LCP_BLOCKS = ['filter']; // add your LCP blocks to the list
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -61,7 +61,7 @@ export function decorateMain(main) {
 /**
  * Gets information on queries from rum-queries.json
  */
-async function getQueryInfo() {
+export async function getQueryInfo() {
   if (!Object.hasOwn(window, 'urlBase')) {
     await fetch('/configs/rum-queries.json')
       .then((resp) => resp.json())
@@ -98,21 +98,6 @@ export function getEndpointParams(endpoint) {
  */
 export async function bulkQueryRequest(main) {
   // let's make a loader
-  let chartCounter = 1;
-  main
-    .querySelectorAll('div.section > div > div')
-    .forEach((block) => {
-      const shortBlockName = block.classList[0];
-      // create id for each chart
-      if (shortBlockName === 'charts') {
-        block.parentElement.id = `chart${chartCounter}`;
-        block.id = `chart${chartCounter}`;
-        chartCounter += 1;
-      }
-    });
-  const loader = document.createElement('span');
-  loader.className = 'loader';
-  main.prepend(loader);
   let offset;
   let interval;
 
@@ -172,7 +157,7 @@ export async function bulkQueryRequest(main) {
   if (promiseArr.length > 0) {
     const consolidatedQueryCalls = `[${promiseArr.join(', ')}]`;
     const queryScript = document.createElement('script');
-    queryScript.type = 'text/partytown';
+    queryScript.type = 'text/javascript';
     // queryScript.src ='../../scripts/test-conso.js'
     queryScript.async = true;
     queryScript.innerHTML = `
@@ -183,6 +168,10 @@ export async function bulkQueryRequest(main) {
       if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true){
         window.setTimeout(checkData, 10);
       }else{
+        const main = document.querySelector('main');
+        const loader = document.createElement('span');
+        loader.className = 'loader';
+        main.prepend(loader);
         window.dataIncoming = true;
         Promise.all(${consolidatedQueryCalls}).
         then(() => {
@@ -200,7 +189,7 @@ export async function bulkQueryRequest(main) {
       checkData()
     })();`;
     main.append(queryScript);
-  } else {
+  } else if (document.querySelector('.loader')) {
     document.querySelector('.loader').remove();
   }
 }
@@ -243,26 +232,11 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await getQueryInfo().then(() => bulkQueryRequest(main));
-  function createInlineScriptSrc(src, parent) {
-    const script = document.createElement('script');
-    script.type = 'text/partytown';
-    script.src = src;
-    parent.appendChild(script);
-  }
-  const ECHARTS = 'https://cdn.jsdelivr.net/npm/echarts@5.0/dist/echarts.min.js';
-
-  createInlineScriptSrc(ECHARTS, document.head);
   await loadBlocks(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
-
-  window.partytown = {
-    lib: '/scripts/',
-  };
-  import('./partytown.js');
 
   loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
@@ -279,9 +253,9 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
+  // load anything that can be postponed to the latest here
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
-  // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {

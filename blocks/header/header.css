@@ -147,6 +147,10 @@ header .nav-brand {
   line-height: 1;
 }
 
+header .nav-brand .beta {
+  color: var(--link-color);
+}
+
 header nav .nav-brand img {
   width: 128px;
   height: auto;

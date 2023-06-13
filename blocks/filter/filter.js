@@ -144,7 +144,7 @@ function drawFilter(block, cfg) {
   const domainkey = params.get('domainkey');
   // set defaults as needed
   let interval = params.get('interval') || '30';
-  let offset = params.get('offset') || '0';
+  let offset = params.get('offset') || '1';
   const startdate = params.get('startdate') || '';
   const enddate = params.get('enddate') || '';
   const limit = params.get('limit') || '10';
@@ -261,13 +261,13 @@ export default function decorate(block) {
   // add event listeners
   // interval buttons
   block.querySelector('#int7').addEventListener('click', () => {
-    changeInterval('7', '0', '', '');
+    changeInterval('7', '1', '', '');
   });
   block.querySelector('#int30').addEventListener('click', () => {
-    changeInterval('30', '0', '', '');
+    changeInterval('30', '1', '', '');
   });
   block.querySelector('#int90').addEventListener('click', () => {
-    changeInterval('90', '0', '', '');
+    changeInterval('90', '1', '', '');
   });
   block.querySelector('#intcustom').addEventListener('click', () => {
     changeInterval('-1', '-1', '', '');

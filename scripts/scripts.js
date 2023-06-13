@@ -98,8 +98,8 @@ export function getEndpointParams(endpoint) {
  */
 export async function bulkQueryRequest(main) {
   // let's make a loader
-  // let offset;
-  // let interval;
+  let offset;
+  let interval;
 
   const reqs = {};
   const params = new URLSearchParams(window.location.search);
@@ -114,9 +114,14 @@ export async function bulkQueryRequest(main) {
     }
   });
 
-  // commenting impl which is incompatible with filter block
-  /*
-  if (params.has('startdate') && params.has('enddate')) {
+  const hasStart = params.has('startdate');
+  const hasEnd = params.has('enddate');
+  const hasInterval = params.has('interval');
+  const hasOffset = params.has('offset');
+  const dateValid = params.get('startdate').length > 4 && params.get('enddate').length > 4;
+  const intervalValid = parseInt(params.get('interval')) > 1 && parseInt(params.get('offset')) >= 1;
+
+  if (dateValid) {
     const start = new Date(params.get('startdate'));
     const end = new Date(params.get('enddate'));
 
@@ -127,6 +132,12 @@ export async function bulkQueryRequest(main) {
       const intv = Math.abs(end - start);
       offset = Math.ceil(offs / (1000 * 60 * 60 * 24));
       interval = Math.ceil(intv / (1000 * 60 * 60 * 24));
+      let startdate = params.get('startdate');
+      let enddate = params.get('enddate');
+      params.set('startdate', startdate);
+      params.set('enddate', enddate);
+      params.set('offset', offset);
+      params.set('interval', interval);
     } else if (start === end) {
       offset = 1;
       interval = 1;
@@ -134,44 +145,22 @@ export async function bulkQueryRequest(main) {
       offset = -1;
       interval = -1;
     }
+  } else if(intervalValid){
+    params.delete('startdate');
+    params.delete('enddate');
+    offset = params.get('offset');
+    interval = params.get('interval');
   }
-  */
-
-  // compatible with filter block
-  // set defaults as needed
-  let interval = params.get('interval') || '30';
-  let offset = params.get('offset') || '0';
-  const startdate = params.get('startdate') || '';
-  const enddate = params.get('enddate') || '';
-  // TODO limit requires a discussion because it is used differently in different blocks
-  // TODO charts passes it into query and datalist only handles it in UI (for now)
-  const limit = params.get('limit') || '10';
-
-  if (startdate !== '') {
-    interval = '-1';
-    offset = '-1';
+  else{
+    throw new Error('Cannot send request, date params empty or interval params incorrect')
   }
+
+  const limit = params.get('limit') || '30';
+  params.set('limit', limit);
 
   const promiseArr = [];
   Object.keys(reqs).forEach((key) => {
     const k = key.toLowerCase();
-    // commenting impl which is incompatible with filter block
-    /*
-    params.set('interval', -1);
-    params.set('offset', -1);
-    if (getUrlBase(k) === 'interval' && params.has('startdate') && params.has('enddate')) {
-      params.set('interval', interval);
-      params.set('offset', offset);
-    }
-    */
-
-    // compatible with filter block
-    params.set('interval', interval);
-    params.set('offset', offset);
-    params.set('startdate', startdate);
-    params.set('enddate', enddate);
-    params.set('limit', limit);
-
     promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
       .then((resp) => resp.json())
       .then((data) => {

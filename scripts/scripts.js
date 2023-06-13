@@ -189,10 +189,8 @@ export async function bulkQueryRequest(main) {
       checkData()
     })();`;
     main.append(queryScript);
-  } else {
-    if (document.querySelector('.loader')) {
-      document.querySelector('.loader').remove();
-    }
+  } else if (document.querySelector('.loader')) {
+    document.querySelector('.loader').remove();
   }
 }
 
@@ -255,12 +253,9 @@ async function loadLazy(doc) {
  * without impacting the user experience.
  */
 function loadDelayed() {
+  // load anything that can be postponed to the latest here
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
-
-
-  
-  // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {

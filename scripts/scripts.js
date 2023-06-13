@@ -61,7 +61,7 @@ export function decorateMain(main) {
 /**
  * Gets information on queries from rum-queries.json
  */
-async function getQueryInfo() {
+export async function getQueryInfo() {
   if (!Object.hasOwn(window, 'urlBase')) {
     await fetch('/configs/rum-queries.json')
       .then((resp) => resp.json())
@@ -98,21 +98,6 @@ export function getEndpointParams(endpoint) {
  */
 export async function bulkQueryRequest(main) {
   // let's make a loader
-  let chartCounter = 1;
-  main
-    .querySelectorAll('div.section > div > div')
-    .forEach((block) => {
-      const shortBlockName = block.classList[0];
-      // create id for each chart
-      if (shortBlockName === 'charts') {
-        block.parentElement.id = `chart${chartCounter}`;
-        block.id = `chart${chartCounter}`;
-        chartCounter += 1;
-      }
-    });
-  const loader = document.createElement('span');
-  loader.className = 'loader';
-  main.prepend(loader);
   let offset;
   let interval;
 
@@ -183,15 +168,17 @@ export async function bulkQueryRequest(main) {
       if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true){
         window.setTimeout(checkData, 10);
       }else{
+        const main = document.querySelector('main');
+        const loader = document.createElement('span');
+        loader.className = 'loader';
+        main.prepend(loader);
         window.dataIncoming = true;
         Promise.all(${consolidatedQueryCalls}).
         then(() => {
           window.dataIncoming = false;
-          document.querySelector('.loader').remove();
         })
         .catch((err) => {
           alert('API Call Has Failed, Check that inputs are correct');
-          document.querySelector('.loader').remove();
         });
       }
     }
@@ -200,8 +187,6 @@ export async function bulkQueryRequest(main) {
       checkData()
     })();`;
     main.append(queryScript);
-  } else {
-    document.querySelector('.loader').remove();
   }
 }
 
@@ -243,7 +228,6 @@ export function addFavIcon(href) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await getQueryInfo().then(() => bulkQueryRequest(main));
   await loadBlocks(main);
 
   const { hash } = window.location;
@@ -267,6 +251,24 @@ async function loadLazy(doc) {
 function loadDelayed() {
   // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => import('./delayed.js'), 3000);
+  const main = document.querySelector('main');
+
+  getQueryInfo().then(() => bulkQueryRequest(main));
+
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src = 'https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js';
+  document.head.appendChild(script);
+  let loaderTillLoaded = () => {
+    if(typeof echarts != 'undefined' && Object.hasOwn(window, 'dashboard')){
+      let loader = document.querySelector('.loader')
+      loader.remove();
+    }
+    else{
+      window.setTimeout(loaderTillLoaded, 20);
+    }
+  };
+  loaderTillLoaded();
   // load anything that can be postponed to the latest here
 }
 

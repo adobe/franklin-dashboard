@@ -202,18 +202,18 @@ export async function bulkQueryRequest(main) {
         window.setTimeout(checkData, 10);
       }else{
         const main = document.querySelector('main');
-        const loader = document.createElement('span');
-        loader.className = 'loader';
-        main.prepend(loader);
+        // const loader = document.createElement('span');
+        // loader.className = 'loader';
+        // main.prepend(loader);
         window.dataIncoming = true;
         Promise.all(${consolidatedQueryCalls}).
         then(() => {
           window.dataIncoming = false;
-          document.querySelector('.loader').remove();
+          // document.querySelector('.loader').remove();
         })
         .catch((err) => {
           alert('API Call Has Failed, Check that inputs are correct');
-          document.querySelector('.loader').remove();
+          // document.querySelector('.loader').remove();
         });
       }
     }

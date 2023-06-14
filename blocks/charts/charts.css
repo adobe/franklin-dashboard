@@ -22,7 +22,11 @@ div [_echarts_instance_] {
 .section.charts-container > .charts-wrapper{
     aspect-ratio: 1/1; 
     min-height: 275px;
-    max-height: 400px;
+    max-height: 350px;
     min-width: 400px;
     max-width: 600px;
+}
+
+.charts div.loading {
+    width: 200px;
 }

@@ -1,4 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { drawLoading } from '../../scripts/loading.js';
 import engineerData from './engineer-data.js';
 import chartPicker from './chart-options.js';
 import { postPlotDomEngineering, prePlotDomEngineering } from './engineer-dom.js';
@@ -39,6 +40,13 @@ export default function decorate(block) {
   block.querySelectorAll(':scope > div').forEach((row) => {
     row.style.display = 'none';
   });
+
+  // draw the loading graphic
+  const loading = document.createElement('div');
+  loading.classList.add('loading', 'wide');
+  block.appendChild(loading);
+  drawLoading(loading);
+
   const echartsScript = document.createElement('script');
   echartsScript.type = 'text/javascript';
   // echartsScript.src ='../../scripts/test.js'
@@ -53,6 +61,11 @@ export default function decorate(block) {
         window.setTimeout(checkForData, 10);
       }
       else if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false){
+        // query complete, hide loading graphic
+        document.querySelectorAll('div.loading').forEach((loading) => {
+          loading.style.display = 'none';
+        });
+
         const data = window.dashboard['${endpoint}'];
         //configure this chart and fill it with proper parameters
         ${prePlotDomEngineering(tableAndColumn, chartId, block)}

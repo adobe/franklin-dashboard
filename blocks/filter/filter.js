@@ -210,7 +210,7 @@ function drawFilter(block, cfg) {
           <button id=btnurl>Go</button>
         </div>
       </div>
-      <div id=owner_repo class="customurl ${secownerrepo}">
+      <div id=customownerrepo class="customownerrepo ${secownerrepo}">
         <div>
           <label for=owner_repo>Owner/Repo</label>
           <input id=owner_repo name=owner_repo class=noedit value="${ownerrepo}">

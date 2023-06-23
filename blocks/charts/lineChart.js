@@ -1,4 +1,4 @@
-import { Chart } from './chart.js';
+import { Chart } from './chartClass.js';
 export class LineChart extends Chart {
     /* Member Data
      block: Object;

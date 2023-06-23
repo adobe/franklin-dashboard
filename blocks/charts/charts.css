@@ -13,6 +13,16 @@ div [_echarts_instance_] {
     width: 100%;
 }
 
+div [_echarts_instance_] > div {
+    height: 100%;
+    width: 100%;
+}
+
+div [_echarts_instance_] > div > canvas {
+    height: 100%;
+    width: 100%;
+}
+
 .section.charts-container > .charts-wrapper > .charts.block {
     display: flex; 
     align-items: center;
@@ -22,11 +32,12 @@ div [_echarts_instance_] {
 .section.charts-container > .charts-wrapper{
     aspect-ratio: 1/1; 
     min-height: 275px;
-    max-height: 350px;
+    max-height: 500px;
     min-width: 400px;
-    max-width: 600px;
+    max-width: 700px;
 }
 
 .charts div.loading {
     width: 200px;
 }
+

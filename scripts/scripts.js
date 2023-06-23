@@ -103,14 +103,16 @@ export async function bulkQueryRequest(main) {
 
   const reqs = {};
   const params = new URLSearchParams(window.location.search);
-  main.querySelectorAll('.section  .charts, .section .lists').forEach((chartBlock) => {
+  main.querySelectorAll('div.section > div > div').forEach((chartBlock) => {
     let cfg = readBlockConfig(chartBlock);
     cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
-    const endpoint = cfg.data;
-    if (Object.hasOwn(reqs, endpoint)) {
-      reqs[endpoint] += 1;
-    } else {
-      reqs[endpoint] = 1;
+    if(Object.hasOwn(cfg, 'data')){
+      const endpoint = cfg.data;
+      if (Object.hasOwn(reqs, endpoint)) {
+        reqs[endpoint] += 1;
+      } else {
+        reqs[endpoint] = 1;
+      }
     }
   });
 
@@ -176,27 +178,18 @@ export async function bulkQueryRequest(main) {
   const promiseArr = [];
   Object.keys(reqs).forEach((key) => {
     const k = key.toLowerCase();
-    promiseArr.push(`fetch('${getUrlBase(k)}${k}?${params.toString()}')
+    promiseArr.push(fetch(`${getUrlBase(k)}${k}?${params.toString()}`)
       .then((resp) => resp.json())
       .then((data) => {
         if(!Object.hasOwn(window, 'dashboard')){
           window.dashboard = {};
         } 
-        window.dashboard['${k}'] = data;
+        window.dashboard[k] = data;
       })
-    `);
+    );
   });
 
   if (promiseArr.length > 0) {
-    const consolidatedQueryCalls = `[${promiseArr.join(', ')}]`;
-    const queryScript = document.createElement('script');
-    queryScript.type = 'text/javascript';
-    // queryScript.src ='../../scripts/test-conso.js'
-    queryScript.async = true;
-    queryScript.innerHTML = `
-
-    
-    
     function checkData(){
       if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true){
         window.setTimeout(checkData, 10);
@@ -206,7 +199,7 @@ export async function bulkQueryRequest(main) {
         // loader.className = 'loader';
         // main.prepend(loader);
         window.dataIncoming = true;
-        Promise.all(${consolidatedQueryCalls}).
+        Promise.all(promiseArr).
         then(() => {
           window.dataIncoming = false;
           // document.querySelector('.loader').remove();
@@ -218,14 +211,12 @@ export async function bulkQueryRequest(main) {
       }
     }
 
-    (async function(){
-      checkData()
-    })();`;
-    main.append(queryScript);
-  } else if (document.querySelector('.loader')) {
-    document.querySelector('.loader').remove();
-  }
+    checkData()
+} else if (document.querySelector('.loader')) {
+  document.querySelector('.loader').remove();
 }
+}
+
 
 /**
  * Loads everything needed to get to LCP.

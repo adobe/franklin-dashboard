@@ -10,10 +10,6 @@ export default function decorate(block) {
   const { col1 } = cfg;
   const { col2 } = cfg;
 
-  // once we read config, clear the dom.
-  block.querySelectorAll(':scope > div').forEach((row) => {
-    row.remove();
-  });
   const echartsScript = document.createElement('script');
   echartsScript.type = 'text/partytown';
   // echartsScript.src ='../../scripts/test.js'

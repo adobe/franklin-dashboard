@@ -1,8 +1,7 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { drawLoading } from '../../scripts/loading.js';
-import engineerData from './engineer-data.js';
-import chartPicker from './chart-options.js';
-import { postPlotDomEngineering, prePlotDomEngineering } from './engineer-dom.js';
+import { LineChart } from './lineChart.js';
+import { BarChart } from './barCharts.js';
 
 export default function decorate(block) {
   const params = new URLSearchParams(window.location.search);
@@ -36,6 +35,10 @@ export default function decorate(block) {
   block.id = `chart${window.chartCounter}`;
   window.chartCounter += 1;
 
+  cfg.block = block;
+  cfg.chartId = chartId;
+  cfg.perfRanges = perfRanges;
+
   // once we read config, clear the dom.
   block.querySelectorAll(':scope > div').forEach((row) => {
     row.style.display = 'none';
@@ -47,44 +50,20 @@ export default function decorate(block) {
   block.appendChild(loading);
   drawLoading(loading);
 
-  const echartsScript = document.createElement('script');
-  echartsScript.type = 'text/javascript';
-  // echartsScript.src ='../../scripts/test.js'
-  echartsScript.async = true;
-  echartsScript.innerHTML = `
-  (async function(){
-    //data will live in this variable res
-    let res;
-    //request data
-    function checkForData(){
-      if((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')){
-        window.setTimeout(checkForData, 10);
-      }
-      else if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false){
-        // query complete, hide loading graphic
-        document.querySelectorAll('div.loading').forEach((loading) => {
-          loading.style.display = 'none';
-        });
+  const currBlock = document.querySelector(`div#${block.id}.${block.className.split(' ').join('.')}`);
+  // construct canvas where chart will sit
+  const canvasWrapper = document.createElement('div');  
+  canvasWrapper.style.height = '100%';
+  canvasWrapper.style.width = '100%';
+  canvasWrapper.id = chartId;
+  currBlock.append(canvasWrapper);
 
-        const data = window.dashboard['${endpoint}'];
-        //configure this chart and fill it with proper parameters
-        ${prePlotDomEngineering(tableAndColumn, chartId, block)}
-        ${engineerData(tableAndColumn, params, tableColumn, labelKey)}
-        ${chartPicker(endpoint, typeChart, tableColumn, perfRanges, legend)}
-        ${postPlotDomEngineering(tableAndColumn, chartId, params)}
-        myChart.setOption(option);
-      }
-    }
-    checkForData();
-    })()
-  `;
-
-  const appendChart = () => {
-    if (typeof echarts !== 'undefined') {
-      block.append(echartsScript);
-    } else {
-      window.setTimeout(appendChart, 10);
-    }
-  };
-  appendChart();
+  if(typeChart === 'line'){
+    const lineChart = new LineChart(cfg);
+    lineChart.drawChart();
+  }
+  else if(typeChart === 'bar'){
+    const barChart = new BarChart(cfg);
+    barChart.drawChart();
+  }
 }

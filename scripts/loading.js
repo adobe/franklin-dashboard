@@ -63,5 +63,5 @@ export async function drawLoading(domObj) {
  * @param {Element} domObj The target DOM element
  */
 export async function hideLoading(domObj) {
-  domObj.style.display = 'none';
+  domObj.remove();
 }

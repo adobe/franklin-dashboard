@@ -1,10 +1,9 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { drawLoading } from '../../scripts/loading.js';
-import { LineChart } from './lineChart.js';
-import { BarChart } from './barCharts.js';
+import LineChart from './lineChart.js';
+import BarChart from './barCharts.js';
 
 export default function decorate(block) {
-  const params = new URLSearchParams(window.location.search);
   const perfRanges = {};
 
   let cfg = readBlockConfig(block);
@@ -24,10 +23,7 @@ export default function decorate(block) {
   const homeLink = cfg['home-link'];
   const homeLinkLabelKey = cfg['home-link-label-key'];
   */
-  const legend = cfg.label;
-  const labelKey = cfg['label-key'];
   const chartId = `${[endpoint, tableColumn, typeChart].join('-')}`.toLowerCase(); // id is data row + chart type because why have this twice?
-  const tableAndColumn = `${endpoint}-${tableColumn}`;
   if (!Object.hasOwn(window, 'chartCounter')) {
     window.chartCounter = 1;
   }
@@ -52,17 +48,16 @@ export default function decorate(block) {
 
   const currBlock = document.querySelector(`div#${block.id}.${block.className.split(' ').join('.')}`);
   // construct canvas where chart will sit
-  const canvasWrapper = document.createElement('div');  
+  const canvasWrapper = document.createElement('div');
   canvasWrapper.style.height = '100%';
   canvasWrapper.style.width = '100%';
   canvasWrapper.id = chartId;
   currBlock.append(canvasWrapper);
 
-  if(typeChart === 'line'){
+  if (typeChart === 'line') {
     const lineChart = new LineChart(cfg);
     lineChart.drawChart();
-  }
-  else if(typeChart === 'bar'){
+  } else if (typeChart === 'bar') {
     const barChart = new BarChart(cfg);
     barChart.drawChart();
   }

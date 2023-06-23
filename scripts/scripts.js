@@ -106,7 +106,7 @@ export async function bulkQueryRequest(main) {
   main.querySelectorAll('div.section > div > div').forEach((chartBlock) => {
     let cfg = readBlockConfig(chartBlock);
     cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
-    if(Object.hasOwn(cfg, 'data')){
+    if (Object.hasOwn(cfg, 'data')) {
       const endpoint = cfg.data;
       if (Object.hasOwn(reqs, endpoint)) {
         reqs[endpoint] += 1;
@@ -181,42 +181,35 @@ export async function bulkQueryRequest(main) {
     promiseArr.push(fetch(`${getUrlBase(k)}${k}?${params.toString()}`)
       .then((resp) => resp.json())
       .then((data) => {
-        if(!Object.hasOwn(window, 'dashboard')){
+        if (!Object.hasOwn(window, 'dashboard')) {
           window.dashboard = {};
-        } 
+        }
         window.dashboard[k] = data;
-      })
-    );
+      }));
   });
 
   if (promiseArr.length > 0) {
-    function checkData(){
-      if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true){
+    const checkData = () => {
+      if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) {
         window.setTimeout(checkData, 10);
-      }else{
-        const main = document.querySelector('main');
-        // const loader = document.createElement('span');
-        // loader.className = 'loader';
-        // main.prepend(loader);
+      } else {
         window.dataIncoming = true;
-        Promise.all(promiseArr).
-        then(() => {
-          window.dataIncoming = false;
-          // document.querySelector('.loader').remove();
-        })
-        .catch((err) => {
-          alert('API Call Has Failed, Check that inputs are correct');
-          // document.querySelector('.loader').remove();
-        });
+        Promise.all(promiseArr)
+          .then(() => {
+            window.dataIncoming = false;
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error('API Call Has Failed, Check that inputs are correct', err.message);
+          });
       }
-    }
+    };
 
-    checkData()
-} else if (document.querySelector('.loader')) {
-  document.querySelector('.loader').remove();
+    checkData();
+  } else if (document.querySelector('.loader')) {
+    document.querySelector('.loader').remove();
+  }
 }
-}
-
 
 /**
  * Loads everything needed to get to LCP.

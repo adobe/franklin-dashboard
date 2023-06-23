@@ -95,7 +95,7 @@ export function getEndpointParams(endpoint) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function bulkQueryRequest(cfg) {
+export async function queryRequest(cfg) {
   // let's make a loader
   let offset;
   let interval;

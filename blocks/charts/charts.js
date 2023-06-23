@@ -1,6 +1,6 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { drawLoading } from '../../scripts/loading.js';
-import { getQueryInfo, bulkQueryRequest } from '../../scripts/scripts.js';
+import { getQueryInfo, queryRequest } from '../../scripts/scripts.js';
 import LineChart from './lineChart.js';
 import BarChart from './barCharts.js';
 
@@ -12,7 +12,7 @@ export default function decorate(block) {
   const typeChart = cfg.type;
   const endpoint = cfg.data;
   // As soon as we have endpoint, fire off request for data
-  getQueryInfo().then(() => bulkQueryRequest(cfg));
+  getQueryInfo().then(() => queryRequest(cfg));
   const tableColumn = cfg.field;
   if (Object.hasOwn(cfg, 'good') && Object.hasOwn(cfg, 'okay') && Object.hasOwn(cfg, 'poor')) {
     perfRanges[tableColumn] = {

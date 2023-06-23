@@ -1,5 +1,6 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { drawLoading } from '../../scripts/loading.js';
+import { getQueryInfo, bulkQueryRequest } from '../../scripts/scripts.js';
 import LineChart from './lineChart.js';
 import BarChart from './barCharts.js';
 
@@ -10,6 +11,8 @@ export default function decorate(block) {
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const typeChart = cfg.type;
   const endpoint = cfg.data;
+  // As soon as we have endpoint, fire off request for data
+  getQueryInfo().then(() => bulkQueryRequest(cfg));
   const tableColumn = cfg.field;
   if (Object.hasOwn(cfg, 'good') && Object.hasOwn(cfg, 'okay') && Object.hasOwn(cfg, 'poor')) {
     perfRanges[tableColumn] = {
@@ -54,11 +57,25 @@ export default function decorate(block) {
   canvasWrapper.id = chartId;
   currBlock.append(canvasWrapper);
 
-  if (typeChart === 'line') {
-    const lineChart = new LineChart(cfg);
-    lineChart.drawChart();
-  } else if (typeChart === 'bar') {
-    const barChart = new BarChart(cfg);
-    barChart.drawChart();
-  }
+  const makeChart = () => {
+    const flag = `${endpoint}Flag`;
+    if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
+      window.setTimeout(makeChart, 10);
+    } else if (Object.hasOwn(window, flag) && window[flag] === false) {
+      let thisChart;
+      if (typeChart === 'line') {
+        thisChart = new LineChart(cfg);
+      } else if (typeChart === 'bar') {
+        thisChart = new BarChart(cfg);
+      }
+      thisChart.setData(window.dashboard[endpoint].results.data);
+      thisChart.drawChart();
+      // query complete, hide loading graphic
+      document.querySelectorAll('div.loading').forEach((loader) => {
+        loader.style.display = 'none';
+      });
+    }
+  };
+
+  makeChart();
 }

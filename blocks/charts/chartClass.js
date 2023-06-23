@@ -13,18 +13,6 @@ export default class Chart {
     this.cfg = cfg;
   }
 
-  getData() {
-    if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
-      window.setTimeout(this.getData, 10);
-    } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
-      // query complete, hide loading graphic
-      this.data = window.dashboard[this.cfg.data].results.data;
-      document.querySelectorAll('div.loading').forEach((loading) => {
-        loading.style.display = 'none';
-      });
-    }
-  }
-
   setData(data) {
     this.data = data;
   }

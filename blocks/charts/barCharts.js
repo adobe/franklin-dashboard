@@ -16,18 +16,6 @@ export default class BarChart extends Chart {
     this.cfg = cfg;
   }
 
-  getData() {
-    if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
-      window.setTimeout(this.getData, 10);
-    } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
-      // query complete, hide loading graphic
-      this.data = window.dashboard[this.cfg.data].results.data;
-      document.querySelectorAll('div.loading').forEach((loading) => {
-        loading.style.display = 'none';
-      });
-    }
-  }
-
   setData(data) {
     this.data = data;
   }
@@ -53,10 +41,12 @@ export default class BarChart extends Chart {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
       this.echart = echarts.init(currBlock);
+      const endpoint = this.cfg.data;
+      const flag = `${endpoint}Flag`;
 
-      if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
+      if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
         window.setTimeout(this.drawChart.bind(this), 30);
-      } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
+      } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
         this.data = window.dashboard[this.cfg.data].results.data;
         document.querySelectorAll('div.loading').forEach((loading) => {

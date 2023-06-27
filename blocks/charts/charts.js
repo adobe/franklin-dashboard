@@ -65,7 +65,7 @@ export default function decorate(block) {
       window.setTimeout(makeChart, 10);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       let thisChart;
-      if (typeChart === 'line' && endpoint === 'rum-pageviews') {
+      if (typeChart === 'line' && (endpoint === 'rum-pageviews' || endpoint === 'sk-daily-users')) {
         thisChart = new PageviewsLineChart(cfg);
       } else if (typeChart === 'bar' && endpoint === 'rum-dashboard') {
         thisChart = new CWVBarChart(cfg);

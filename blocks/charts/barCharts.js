@@ -22,7 +22,7 @@ export default class BarChart extends Chart {
     super.extraDomOperations(chartElement);
   }
 
-  parseChartRanges(){
+  parseChartRanges() {
     let goodUpper;
     let goodLower;
     let okayLower;
@@ -41,7 +41,7 @@ export default class BarChart extends Chart {
     return [goodLower, goodUpper, okayLower, okayUpper];
   }
 
-  getSliderStartAndEnd(maxWindowSize){
+  getSliderStartAndEnd(maxWindowSize) {
     const dataSize = this.data.length;
     let windowPercentage = 0.05;
     let windowSize = windowPercentage * dataSize;

@@ -1,27 +1,6 @@
-import Chart from './chartClass.js';
+import BarChart from './barCharts.js';
 
-export default class BarChart extends Chart {
-  constructor(cfg) {
-    super(cfg);
-    this.cfg = cfg;
-  }
-
-  setData(data) {
-    this.data = data;
-  }
-
-  setEchart(echart) {
-    this.echart = echart;
-  }
-
-  configureEchart(options) {
-    this.options = options;
-  }
-
-  extraDomOperations(chartElement) {
-    super.extraDomOperations(chartElement);
-  }
-
+export default class CWVBarChart extends BarChart {
   parseChartRanges() {
     let goodUpper;
     let goodLower;
@@ -55,6 +34,12 @@ export default class BarChart extends Chart {
     const end = windowPercentage * 100;
 
     return [start, end];
+  }
+
+  transformData(callback = () => this.data) {
+    if (typeof callback === 'function') {
+      this.data = callback(this.data);
+    }
   }
 
   drawChart() {

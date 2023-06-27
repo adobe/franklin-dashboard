@@ -1,8 +1,10 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { drawLoading } from '../../scripts/loading.js';
 import { getQueryInfo, queryRequest } from '../../scripts/scripts.js';
-import LineChart from './lineChart.js';
-import BarChart from './barCharts.js';
+import LineChart from './linecharts/lineChart.js';
+import BarChart from './barcharts/barCharts.js';
+import CWVBarChart from './barcharts/CWVBarChart.js';
+import PageviewsLineChart from './linecharts/CWVLineChart.js';
 
 export default function decorate(block) {
   const perfRanges = {};
@@ -63,10 +65,14 @@ export default function decorate(block) {
       window.setTimeout(makeChart, 10);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       let thisChart;
-      if (typeChart === 'line') {
-        thisChart = new LineChart(cfg);
+      if (typeChart === 'line' && endpoint === 'rum-pageviews') {
+        thisChart = new PageviewsLineChart(cfg);
+      } else if (typeChart === 'bar' && endpoint === 'rum-dashboard') {
+        thisChart = new CWVBarChart(cfg);
       } else if (typeChart === 'bar') {
         thisChart = new BarChart(cfg);
+      } else if (typeChart === 'line') {
+        thisChart = new LineChart(cfg);
       }
       thisChart.setData(window.dashboard[endpoint].results.data);
       thisChart.drawChart();

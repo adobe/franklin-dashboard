@@ -1,27 +1,6 @@
-import Chart from './chartClass.js';
+import LineChart from './lineChart.js';
 
-export default class LineChart extends Chart {
-  constructor(cfg) {
-    super(cfg);
-    this.cfg = cfg;
-  }
-
-  setData(data) {
-    this.data = data;
-  }
-
-  setEchart(echart) {
-    this.echart = echart;
-  }
-
-  configureEchart(options) {
-    this.options = options;
-  }
-
-  extraDomOperations(chartElement) {
-    super.extraDomOperations(chartElement);
-  }
-
+export default class PageviewsLineChart extends LineChart {
   drawChart() {
     if (typeof echarts === 'undefined') {
       window.setTimeout(this.drawChart.bind(this), 10);
@@ -42,8 +21,10 @@ export default class LineChart extends Chart {
           loading.style.display = 'none';
         });
 
-        const labels = this.data.map((row) => row[`${this.cfg['label-key']}`]);
-        const series = this.data.map((row) => row[`${this.cfg.field}`]);
+        const reverseData = [...this.data].reverse();
+
+        const labels = reverseData.map((row) => row[`${this.cfg['label-key']}`].substr(0, 10));
+        const series = reverseData.map((row) => row[`${this.cfg.field}`]);
         const legend = this.cfg.label;
 
         const opts = {

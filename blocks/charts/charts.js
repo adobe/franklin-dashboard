@@ -62,7 +62,7 @@ export default function decorate(block) {
   const makeChart = () => {
     const flag = `${endpoint}Flag`;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
-      window.setTimeout(makeChart, 30);
+      window.setTimeout(makeChart, 10);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       let thisChart;
       if (typeChart === 'line' && (endpoint === 'rum-pageviews' || endpoint === 'sk-daily-users')) {

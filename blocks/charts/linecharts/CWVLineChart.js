@@ -13,7 +13,7 @@ export default class PageviewsLineChart extends LineChart {
       const flag = `${endpoint}Flag`;
 
       if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
-        window.setTimeout(this.drawChart.bind(this), 30);
+        window.setTimeout(this.drawChart.bind(this), 10);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
         this.data = window.dashboard[this.cfg.data].results.data;

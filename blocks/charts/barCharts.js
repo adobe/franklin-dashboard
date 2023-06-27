@@ -1,18 +1,8 @@
 import Chart from './chartClass.js';
 
 export default class BarChart extends Chart {
-  /* Member Data
-     block: Object;
-     echart: Object;
-     options: Object;
-     data: Object;
-     chartId: string;
-     cfg: Object;
-     */
-
   constructor(cfg) {
     super(cfg);
-    this.block = cfg.block;
     this.cfg = cfg;
   }
 
@@ -28,10 +18,43 @@ export default class BarChart extends Chart {
     this.options = options;
   }
 
-  extraDomOperations() {
-    new ResizeObserver(() => {
-      this.echart.resize();
-    }).observe(this.block);
+  extraDomOperations(chartElement) {
+    super.extraDomOperations(chartElement);
+  }
+
+  parseChartRanges(){
+    let goodUpper;
+    let goodLower;
+    let okayLower;
+    let okayUpper;
+
+    const { perfRanges } = this.cfg;
+
+    if (Object.hasOwn(perfRanges, this.cfg.field) && Object.hasOwn(perfRanges[this.cfg.field], 'good') && Object.hasOwn(perfRanges[this.cfg.field], 'okay') && Object.hasOwn(perfRanges[this.cfg.field], 'poor')) {
+      [goodLower, goodUpper] = perfRanges[this.cfg.field].good;
+      [okayLower, okayUpper] = perfRanges[this.cfg.field].okay;
+    } else {
+      [goodLower, goodUpper] = ['', ''];
+      [okayLower, okayUpper] = ['', ''];
+    }
+
+    return [goodLower, goodUpper, okayLower, okayUpper];
+  }
+
+  getSliderStartAndEnd(maxWindowSize){
+    const dataSize = this.data.length;
+    let windowPercentage = 0.05;
+    let windowSize = windowPercentage * dataSize;
+
+    while (windowSize > maxWindowSize) {
+      windowPercentage -= 0.01;
+      windowSize = windowPercentage * dataSize;
+    }
+
+    const start = 0;
+    const end = windowPercentage * 100;
+
+    return [start, end];
   }
 
   drawChart() {
@@ -41,6 +64,7 @@ export default class BarChart extends Chart {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
       this.echart = echarts.init(currBlock);
+      this.extraDomOperations(currBlock);
       const endpoint = this.cfg.data;
       const flag = `${endpoint}Flag`;
 
@@ -56,31 +80,9 @@ export default class BarChart extends Chart {
         const labels = this.data.map((row) => row[`${this.cfg['label-key']}`]);
         const series = this.data.map((row) => row[`${this.cfg.field}`]);
         const legend = this.cfg.label;
-        const { perfRanges } = this.cfg;
-        let goodUpper;
-        let goodLower;
-        let okayLower;
-        let okayUpper;
 
-        if (Object.hasOwn(perfRanges, this.cfg.field) && Object.hasOwn(perfRanges[this.cfg.field], 'good') && Object.hasOwn(perfRanges[this.cfg.field], 'okay') && Object.hasOwn(perfRanges[this.cfg.field], 'poor')) {
-          [goodLower, goodUpper] = perfRanges[this.cfg.field].good;
-          [okayLower, okayUpper] = perfRanges[this.cfg.field].okay;
-        } else {
-          [goodLower, goodUpper] = ['', ''];
-          [okayLower, okayUpper] = ['', ''];
-        }
-
-        const dataSize = this.data.length;
-        let windowPercentage = 0.05;
-        let windowSize = windowPercentage * dataSize;
-
-        while (windowSize > 10) {
-          windowPercentage -= 0.01;
-          windowSize = windowPercentage * dataSize;
-        }
-
-        const start = 0;
-        const end = windowPercentage * 100;
+        const [goodLower, goodUpper, okayLower, okayUpper] = this.parseChartRanges();
+        const [start, end] = this.getSliderStartAndEnd(15);
 
         const opts = {
           title: {

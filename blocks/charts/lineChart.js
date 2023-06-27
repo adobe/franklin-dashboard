@@ -1,18 +1,8 @@
 import Chart from './chartClass.js';
 
 export default class LineChart extends Chart {
-  /* Member Data
-     block: Object;
-     echart: Object;
-     options: Object;
-     data: Object;
-     chartId: string;
-     cfg: Object;
-     */
-
   constructor(cfg) {
     super(cfg);
-    this.block = cfg.block;
     this.cfg = cfg;
   }
 
@@ -28,10 +18,8 @@ export default class LineChart extends Chart {
     this.options = options;
   }
 
-  extraDomOperations() {
-    new ResizeObserver(() => {
-      this.echart.resize();
-    }).observe(this.block);
+  extraDomOperations(chartElement) {
+    super.extraDomOperations(chartElement);
   }
 
   drawChart() {
@@ -41,6 +29,7 @@ export default class LineChart extends Chart {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
       this.echart = echarts.init(currBlock);
+      this.extraDomOperations(currBlock);
       const endpoint = this.cfg.data;
       const flag = `${endpoint}Flag`;
 

@@ -62,7 +62,7 @@ export default function decorate(block) {
       getQueryInfo();
     }
     if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
-      window.setTimeout(getQuery, 5);
+      window.setTimeout(getQuery, 1);
     } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
       queryRequest(cfg, getUrlBase(endpoint));
     }

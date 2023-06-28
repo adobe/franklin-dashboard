@@ -30,7 +30,7 @@ export default class BarChart extends Chart {
 
   drawChart() {
     if (typeof echarts === 'undefined') {
-      window.setTimeout(this.drawChart.bind(this), 10);
+      window.setTimeout(this.drawChart.bind(this), 5);
     } else {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
@@ -40,7 +40,7 @@ export default class BarChart extends Chart {
       const flag = `${endpoint}Flag`;
 
       if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
-        window.setTimeout(this.drawChart.bind(this), 10);
+        window.setTimeout(this.drawChart.bind(this), 5);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
         this.data = window.dashboard[this.cfg.data].results.data;

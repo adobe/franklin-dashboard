@@ -169,7 +169,7 @@ export async function queryRequest(cfg, fullEndpoint) {
   const flag = `${endpoint}Flag`;
   const checkData = () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {
-      window.setTimeout(checkData, 10);
+      window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
       fetch(`${fullEndpoint}${endpoint}?${params.toString()}`)

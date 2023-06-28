@@ -60,15 +60,15 @@ export function decorateMain(main) {
 /**
  * Gets information on queries from rum-queries.json
  */
-export async function getQueryInfo() {
-  if (!Object.hasOwn(window, 'urlBase')) {
-    await fetch('/configs/rum-queries.json')
-      .then((resp) => resp.json())
-      .then((data) => {
-        window.urlBase = {};
-        window.urlBase = data.data;
-      });
-  }
+export function getQueryInfo() {
+  window.gettingQueryInfo = true;
+  fetch('/configs/rum-queries.json')
+    .then((resp) => resp.json())
+    .then((data) => {
+      window.urlBase = {};
+      window.urlBase = data.data;
+      window.gettingQueryInfo = false;
+    });
 }
 
 /**
@@ -95,7 +95,7 @@ export function getEndpointParams(endpoint) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(cfg) {
+export async function queryRequest(cfg, fullEndpoint) {
   // let's make a loader
   let offset;
   let interval;
@@ -170,9 +170,9 @@ export async function queryRequest(cfg) {
   const checkData = () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 10);
-    } else {
+    } else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
-      fetch(`${getUrlBase(endpoint)}${endpoint}?${params.toString()}`)
+      fetch(`${fullEndpoint}${endpoint}?${params.toString()}`)
         .then((resp) => resp.json())
         .then((data) => {
           window[flag] = false;

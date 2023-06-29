@@ -8,11 +8,6 @@ export default function decorate(block) {
 
   const { type } = cfg;
 
-  // once we read config, clear the dom.
-  block.querySelectorAll(':scope > div').forEach((row) => {
-    row.remove();
-  });
-
   function checkDates(start, end) {
     if (new Date(start) > new Date(end)) {
       throw new Error('Start Date is Greater than End Date');

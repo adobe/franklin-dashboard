@@ -1,17 +1,24 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { drawLoading } from '../../scripts/loading.js';
-import engineerData from './engineer-data.js';
-import chartPicker from './chart-options.js';
-import { postPlotDomEngineering, prePlotDomEngineering } from './engineer-dom.js';
+import { getQueryInfo, queryRequest, getUrlBase } from '../../scripts/scripts.js';
+import LineChart from './linecharts/lineChart.js';
+import BarChart from './barcharts/barCharts.js';
+import CWVBarChart from './barcharts/CWVBarChart.js';
+import PageviewsLineChart from './linecharts/PageviewsLineChart.js';
 
 export default function decorate(block) {
-  const params = new URLSearchParams(window.location.search);
+  // draw the loading graphic
+  const loading = document.createElement('div');
+  loading.classList.add('loading', 'wide');
+  block.appendChild(loading);
+  drawLoading(loading);
   const perfRanges = {};
 
   let cfg = readBlockConfig(block);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const typeChart = cfg.type;
   const endpoint = cfg.data;
+  // As soon as we have endpoint, fire off request for data
   const tableColumn = cfg.field;
   if (Object.hasOwn(cfg, 'good') && Object.hasOwn(cfg, 'okay') && Object.hasOwn(cfg, 'poor')) {
     perfRanges[tableColumn] = {
@@ -25,10 +32,7 @@ export default function decorate(block) {
   const homeLink = cfg['home-link'];
   const homeLinkLabelKey = cfg['home-link-label-key'];
   */
-  const legend = cfg.label;
-  const labelKey = cfg['label-key'];
   const chartId = `${[endpoint, tableColumn, typeChart].join('-')}`.toLowerCase(); // id is data row + chart type because why have this twice?
-  const tableAndColumn = `${endpoint}-${tableColumn}`;
   if (!Object.hasOwn(window, 'chartCounter')) {
     window.chartCounter = 1;
   }
@@ -36,55 +40,49 @@ export default function decorate(block) {
   block.id = `chart${window.chartCounter}`;
   window.chartCounter += 1;
 
+  cfg.block = block;
+  cfg.chartId = chartId;
+  cfg.perfRanges = perfRanges;
+
   // once we read config, clear the dom.
   block.querySelectorAll(':scope > div').forEach((row) => {
     row.style.display = 'none';
   });
 
-  // draw the loading graphic
-  const loading = document.createElement('div');
-  loading.classList.add('loading', 'wide');
-  block.appendChild(loading);
-  drawLoading(loading);
+  const currBlock = document.querySelector(`div#${block.id}.${block.className.split(' ').join('.')}`);
+  // construct canvas where chart will sit
+  const canvasWrapper = document.createElement('div');
+  canvasWrapper.style.height = '100%';
+  canvasWrapper.style.width = '100%';
+  canvasWrapper.id = chartId;
+  currBlock.append(canvasWrapper);
 
-  const echartsScript = document.createElement('script');
-  echartsScript.type = 'text/javascript';
-  // echartsScript.src ='../../scripts/test.js'
-  echartsScript.async = true;
-  echartsScript.innerHTML = `
-  (async function(){
-    //data will live in this variable res
-    let res;
-    //request data
-    function checkForData(){
-      if((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')){
-        window.setTimeout(checkForData, 10);
-      }
-      else if(Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false){
-        // query complete, hide loading graphic
-        document.querySelectorAll('div.loading').forEach((loading) => {
-          loading.style.display = 'none';
-        });
-
-        const data = window.dashboard['${endpoint}'];
-        //configure this chart and fill it with proper parameters
-        ${prePlotDomEngineering(tableAndColumn, chartId, block)}
-        ${engineerData(tableAndColumn, params, tableColumn, labelKey)}
-        ${chartPicker(endpoint, typeChart, tableColumn, perfRanges, legend)}
-        ${postPlotDomEngineering(tableAndColumn, chartId, params)}
-        myChart.setOption(option);
-      }
+  const getQuery = () => {
+    if (!Object.hasOwn(window, 'gettingQueryInfo')) {
+      getQueryInfo();
     }
-    checkForData();
-    })()
-  `;
-
-  const appendChart = () => {
-    if (typeof echarts !== 'undefined') {
-      block.append(echartsScript);
-    } else {
-      window.setTimeout(appendChart, 10);
+    if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
+      window.setTimeout(getQuery, 1);
+    } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
+      queryRequest(cfg, getUrlBase(endpoint));
     }
   };
-  appendChart();
+
+  const makeChart = () => {
+    let thisChart;
+    if (typeChart === 'line' && (endpoint === 'rum-pageviews' || endpoint === 'sk-daily-users')) {
+      thisChart = new PageviewsLineChart(cfg);
+    } else if (typeChart === 'bar' && endpoint === 'rum-dashboard') {
+      thisChart = new CWVBarChart(cfg);
+    } else if (typeChart === 'bar') {
+      thisChart = new BarChart(cfg);
+    } else if (typeChart === 'line') {
+      thisChart = new LineChart(cfg);
+    }
+    thisChart.drawChart();
+    // query complete, hide loading graphic
+  };
+
+  getQuery();
+  makeChart();
 }

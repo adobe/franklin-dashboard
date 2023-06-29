@@ -9,20 +9,7 @@ export default class Chart {
      */
 
   constructor(cfg) {
-    this.block = cfg.block;
     this.cfg = cfg;
-  }
-
-  getData() {
-    if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
-      window.setTimeout(this.getData, 10);
-    } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
-      // query complete, hide loading graphic
-      this.data = window.dashboard[this.cfg.data].results.data;
-      document.querySelectorAll('div.loading').forEach((loading) => {
-        loading.style.display = 'none';
-      });
-    }
   }
 
   setData(data) {
@@ -37,10 +24,15 @@ export default class Chart {
     this.options = options;
   }
 
-  extraDomOperations() {
+  extraDomOperations(chartElement) {
+    const canvasDiv = chartElement.querySelector('div');
+    canvasDiv.style.height = '100%';
+    canvasDiv.style.width = '100%';
+    canvasDiv.style.margin = 'auto';
+
     new ResizeObserver(() => {
       this.echart.resize();
-    }).observe(this.block);
+    }).observe(chartElement);
   }
 
   drawChart() {
@@ -50,7 +42,7 @@ export default class Chart {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}}`);
       // eslint-disable-next-line no-undef
       this.echart = echarts.init(currBlock);
-
+      this.extraDomOperations(currBlock);
       if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
         window.setTimeout(this.drawChart.bind(this), 30);
       } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {

@@ -11,7 +11,6 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  readBlockConfig,
 } from './lib-franklin.js';
 
 const LCP_BLOCKS = ['filter']; // add your LCP blocks to the list
@@ -61,15 +60,15 @@ export function decorateMain(main) {
 /**
  * Gets information on queries from rum-queries.json
  */
-export async function getQueryInfo() {
-  if (!Object.hasOwn(window, 'urlBase')) {
-    await fetch('/configs/rum-queries.json')
-      .then((resp) => resp.json())
-      .then((data) => {
-        window.urlBase = {};
-        window.urlBase = data.data;
-      });
-  }
+export function getQueryInfo() {
+  window.gettingQueryInfo = true;
+  fetch('/configs/rum-queries.json')
+    .then((resp) => resp.json())
+    .then((data) => {
+      window.urlBase = {};
+      window.urlBase = data.data;
+      window.gettingQueryInfo = false;
+    });
 }
 
 /**
@@ -96,25 +95,18 @@ export function getEndpointParams(endpoint) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function bulkQueryRequest(main) {
+export async function queryRequest(cfg, fullEndpoint) {
   // let's make a loader
   let offset;
   let interval;
 
-  const reqs = {};
+  let endpoint;
   const params = new URLSearchParams(window.location.search);
-  main.querySelectorAll('div.section > div > div').forEach((chartBlock) => {
-    let cfg = readBlockConfig(chartBlock);
-    cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
-    if (Object.hasOwn(cfg, 'data')) {
-      const endpoint = cfg.data;
-      if (Object.hasOwn(reqs, endpoint)) {
-        reqs[endpoint] += 1;
-      } else {
-        reqs[endpoint] = 1;
-      }
-    }
-  });
+  if (Object.hasOwn(cfg, 'data')) {
+    endpoint = cfg.data;
+  } else {
+    throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
+  }
 
   const hasStart = params.has('startdate');
   const hasEnd = params.has('enddate');
@@ -174,41 +166,28 @@ export async function bulkQueryRequest(main) {
 
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
-
-  const promiseArr = [];
-  Object.keys(reqs).forEach((key) => {
-    const k = key.toLowerCase();
-    promiseArr.push(fetch(`${getUrlBase(k)}${k}?${params.toString()}`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        if (!Object.hasOwn(window, 'dashboard')) {
-          window.dashboard = {};
-        }
-        window.dashboard[k] = data;
-      }));
-  });
-
-  if (promiseArr.length > 0) {
-    const checkData = () => {
-      if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) {
-        window.setTimeout(checkData, 10);
-      } else {
-        window.dataIncoming = true;
-        Promise.all(promiseArr)
-          .then(() => {
-            window.dataIncoming = false;
-          })
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error('API Call Has Failed, Check that inputs are correct', err.message);
-          });
-      }
-    };
-
-    checkData();
-  } else if (document.querySelector('.loader')) {
-    document.querySelector('.loader').remove();
-  }
+  const flag = `${endpoint}Flag`;
+  const checkData = () => {
+    if (Object.hasOwn(window, flag) && window[flag] === true) {
+      window.setTimeout(checkData, 5);
+    } else if (!Object.hasOwn(window, flag)) {
+      window[flag] = true;
+      fetch(`${fullEndpoint}${endpoint}?${params.toString()}`)
+        .then((resp) => resp.json())
+        .then((data) => {
+          window[flag] = false;
+          if (!Object.hasOwn(window, 'dashboard')) {
+            window.dashboard = {};
+          }
+          window.dashboard[endpoint] = data;
+        })
+        .catch((err) => {
+        // eslint-disable-next-line no-console
+          console.error('API Call Has Failed, Check that inputs are correct', err.message);
+        });
+    }
+  };
+  checkData();
 }
 
 /**

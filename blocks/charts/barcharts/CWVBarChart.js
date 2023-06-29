@@ -1,62 +1,61 @@
-import Chart from './chartClass.js';
+import BarChart from './barCharts.js';
 
-export default class BarChart extends Chart {
-  /* Member Data
-     block: Object;
-     echart: Object;
-     options: Object;
-     data: Object;
-     chartId: string;
-     cfg: Object;
-     */
+export default class CWVBarChart extends BarChart {
+  parseChartRanges() {
+    let goodUpper;
+    let goodLower;
+    let okayLower;
+    let okayUpper;
 
-  constructor(cfg) {
-    super(cfg);
-    this.block = cfg.block;
-    this.cfg = cfg;
-  }
+    const { perfRanges } = this.cfg;
 
-  getData() {
-    if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
-      window.setTimeout(this.getData, 10);
-    } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
-      // query complete, hide loading graphic
-      this.data = window.dashboard[this.cfg.data].results.data;
-      document.querySelectorAll('div.loading').forEach((loading) => {
-        loading.style.display = 'none';
-      });
+    if (Object.hasOwn(perfRanges, this.cfg.field) && Object.hasOwn(perfRanges[this.cfg.field], 'good') && Object.hasOwn(perfRanges[this.cfg.field], 'okay') && Object.hasOwn(perfRanges[this.cfg.field], 'poor')) {
+      [goodLower, goodUpper] = perfRanges[this.cfg.field].good;
+      [okayLower, okayUpper] = perfRanges[this.cfg.field].okay;
+    } else {
+      [goodLower, goodUpper] = ['', ''];
+      [okayLower, okayUpper] = ['', ''];
     }
+
+    return [goodLower, goodUpper, okayLower, okayUpper];
   }
 
-  setData(data) {
-    this.data = data;
+  getSliderStartAndEnd(maxWindowSize) {
+    const dataSize = this.data.length;
+    let windowPercentage = 0.05;
+    let windowSize = windowPercentage * dataSize;
+
+    while (windowSize > maxWindowSize) {
+      windowPercentage -= 0.01;
+      windowSize = windowPercentage * dataSize;
+    }
+
+    const start = 0;
+    const end = windowPercentage * 100;
+
+    return [start, end];
   }
 
-  setEchart(echart) {
-    this.echart = echart;
-  }
-
-  configureEchart(options) {
-    this.options = options;
-  }
-
-  extraDomOperations() {
-    new ResizeObserver(() => {
-      this.echart.resize();
-    }).observe(this.block);
+  transformData(callback = () => this.data) {
+    if (typeof callback === 'function') {
+      this.data = callback(this.data);
+    }
   }
 
   drawChart() {
     if (typeof echarts === 'undefined') {
-      window.setTimeout(this.drawChart.bind(this), 10);
+      window.setTimeout(this.drawChart.bind(this), 5);
     } else {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
       this.echart = echarts.init(currBlock);
+      this.extraDomOperations(currBlock);
+      const endpoint = this.cfg.data;
+      const flag = `${endpoint}Flag`;
 
-      if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
-        window.setTimeout(this.drawChart.bind(this), 30);
-      } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
+      if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
+        window.setTimeout(this.drawChart.bind(this), 5);
+      } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
         this.data = window.dashboard[this.cfg.data].results.data;
         document.querySelectorAll('div.loading').forEach((loading) => {
@@ -66,31 +65,9 @@ export default class BarChart extends Chart {
         const labels = this.data.map((row) => row[`${this.cfg['label-key']}`]);
         const series = this.data.map((row) => row[`${this.cfg.field}`]);
         const legend = this.cfg.label;
-        const { perfRanges } = this.cfg;
-        let goodUpper;
-        let goodLower;
-        let okayLower;
-        let okayUpper;
 
-        if (Object.hasOwn(perfRanges, this.cfg.field) && Object.hasOwn(perfRanges[this.cfg.field], 'good') && Object.hasOwn(perfRanges[this.cfg.field], 'okay') && Object.hasOwn(perfRanges[this.cfg.field], 'poor')) {
-          [goodLower, goodUpper] = perfRanges[this.cfg.field].good;
-          [okayLower, okayUpper] = perfRanges[this.cfg.field].okay;
-        } else {
-          [goodLower, goodUpper] = ['', ''];
-          [okayLower, okayUpper] = ['', ''];
-        }
-
-        const dataSize = this.data.length;
-        let windowPercentage = 0.05;
-        let windowSize = windowPercentage * dataSize;
-
-        while (windowSize > 10) {
-          windowPercentage -= 0.01;
-          windowSize = windowPercentage * dataSize;
-        }
-
-        const start = 0;
-        const end = windowPercentage * 100;
+        const [goodLower, goodUpper, okayLower, okayUpper] = this.parseChartRanges();
+        const [start, end] = this.getSliderStartAndEnd(15);
 
         const opts = {
           title: {

@@ -1,31 +1,9 @@
-import Chart from './chartClass.js';
+import Chart from '../chartClass.js';
 
 export default class LineChart extends Chart {
-  /* Member Data
-     block: Object;
-     echart: Object;
-     options: Object;
-     data: Object;
-     chartId: string;
-     cfg: Object;
-     */
-
   constructor(cfg) {
     super(cfg);
-    this.block = cfg.block;
     this.cfg = cfg;
-  }
-
-  getData() {
-    if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
-      window.setTimeout(this.getData, 10);
-    } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
-      // query complete, hide loading graphic
-      this.data = window.dashboard[this.cfg.data].results.data;
-      document.querySelectorAll('div.loading').forEach((loading) => {
-        loading.style.display = 'none';
-      });
-    }
   }
 
   setData(data) {
@@ -40,23 +18,24 @@ export default class LineChart extends Chart {
     this.options = options;
   }
 
-  extraDomOperations() {
-    new ResizeObserver(() => {
-      this.echart.resize();
-    }).observe(this.block);
+  extraDomOperations(chartElement) {
+    super.extraDomOperations(chartElement);
   }
 
   drawChart() {
     if (typeof echarts === 'undefined') {
-      window.setTimeout(this.drawChart.bind(this), 10);
+      window.setTimeout(this.drawChart.bind(this), 5);
     } else {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
       this.echart = echarts.init(currBlock);
+      this.extraDomOperations(currBlock);
+      const endpoint = this.cfg.data;
+      const flag = `${endpoint}Flag`;
 
-      if ((Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === true) || !Object.hasOwn(window, 'dataIncoming')) {
-        window.setTimeout(this.drawChart.bind(this), 30);
-      } else if (Object.hasOwn(window, 'dataIncoming') && window.dataIncoming === false) {
+      if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
+        window.setTimeout(this.drawChart.bind(this), 5);
+      } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
         this.data = window.dashboard[this.cfg.data].results.data;
         document.querySelectorAll('div.loading').forEach((loading) => {

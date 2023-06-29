@@ -5,10 +5,10 @@
 export async function drawLoading(domObj) {
   // check if echarts is loaded
   if (typeof echarts === 'undefined') {
-    // wait 10ms and check again
+    // wait 5ms and check again
     setTimeout(() => {
       drawLoading(domObj);
-    }, 10);
+    }, 5);
   } else {
     // ready to draw
     const option = {

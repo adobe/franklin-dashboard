@@ -10,8 +10,8 @@ export default function decorate(block) {
   // draw the loading graphic
   const loading = document.createElement('div');
   loading.classList.add('loading', 'wide');
-  block.appendChild(loading);
-  drawLoading(loading);
+  // block.appendChild(loading);
+  // drawLoading(loading);
   const perfRanges = {};
 
   let cfg = readBlockConfig(block);

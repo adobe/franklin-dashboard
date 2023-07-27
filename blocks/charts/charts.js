@@ -1,5 +1,5 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import { drawLoading } from '../../scripts/loading.js';
+// import { drawLoading } from '../../scripts/loading.js';
 import { getQueryInfo, queryRequest, getUrlBase } from '../../scripts/scripts.js';
 import LineChart from './linecharts/lineChart.js';
 import BarChart from './barcharts/barCharts.js';

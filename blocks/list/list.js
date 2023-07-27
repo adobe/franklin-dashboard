@@ -42,7 +42,7 @@ export default function decorate(block) {
 
   const makeList = () => {
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
-      window.setTimeout(makeList, 3000);
+      window.setTimeout(makeList, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;

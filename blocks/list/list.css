@@ -109,6 +109,7 @@ div.grid.list.col.url {
 .badbar {
     height: 100%;
     background-color: red;
+    color: black;
     text-align: center;
     font-size: medium;
 }
@@ -118,7 +119,6 @@ div.grid.list.col.url {
     width: 100%;
     background-repeat: no-repeat;
     background-color: red;
-    color: white;
 }
 
 .pass {

@@ -2,11 +2,12 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { getQueryInfo, queryRequest, getUrlBase } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
-  const perfRanges = {};
+  // const perfRanges = {};
 
   let cfg = readBlockConfig(block);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const endpoint = cfg.data;
+  /*
   if (Object.hasOwn(cfg, 'good') && Object.hasOwn(cfg, 'okay') && Object.hasOwn(cfg, 'poor')) {
     perfRanges[tableColumn] = {
       good: cfg.good.replace(' ', '').split(',').map((el) => parseFloat(el)),
@@ -14,9 +15,10 @@ export default function decorate(block) {
       poor: cfg.poor.replace(' ', '').split(',').map((el) => parseFloat(el)),
     };
   }
+  */
 
   cfg.block = block;
-  cfg.perfRanges = perfRanges;
+  // cfg.perfRanges = perfRanges;
   const flag = `${endpoint}Flag`;
 
   // once we read config, clear the dom.
@@ -40,13 +42,15 @@ export default function decorate(block) {
 
   const makeList = () => {
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
-      window.setTimeout(makeList, 3000);
+      window.setTimeout(makeList, 2000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;
+      /*
       document.querySelectorAll('div.loading').forEach((loading) => {
         loading.style.display = 'none';
       });
+      */
 
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
@@ -77,7 +81,7 @@ export default function decorate(block) {
         } else if (cols[j] === 'avgfid') {
           listGridHeadings.textContent = 'Avg FID';
         } else if (cols[j] === 'avginp') {
-          listGridHeadings.textContent = 'Avg FID';
+          listGridHeadings.textContent = 'Avg INP';
         } else {
           listGridHeadings.textContent = cols[j];
         }
@@ -134,6 +138,8 @@ export default function decorate(block) {
               txtContent = data[i][cols[j]] / 1000.00;
             } else if (cols[j] === 'url') {
               listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
+            } else if (cols[j] === 'pageviews') {
+              txtContent = parseInt(data[i][cols[j]], 10).toLocaleString('en-US');
             } else {
               txtContent = data[i][cols[j]];
             }

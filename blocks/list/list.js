@@ -46,6 +46,9 @@ export default function decorate(block) {
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;
+      const main = document.querySelector('main');
+      const loader = main.querySelector('.loader');
+      loader.remove();
       /*
       document.querySelectorAll('div.loading').forEach((loading) => {
         loading.style.display = 'none';

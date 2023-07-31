@@ -192,9 +192,6 @@ export async function queryRequest(cfg, fullEndpoint) {
             window.dashboard = {};
           }
           window.dashboard[endpoint] = data;
-          const main = document.querySelector('main');
-          const loader = main.querySelector('.loader');
-          loader.remove();
         })
         .catch((err) => {
         // eslint-disable-next-line no-console

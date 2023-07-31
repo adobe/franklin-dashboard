@@ -2,23 +2,11 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { getQueryInfo, queryRequest, getUrlBase } from '../../scripts/scripts.js';
 
 export default function decorate(block) {
-  // const perfRanges = {};
-
   let cfg = readBlockConfig(block);
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const endpoint = cfg.data;
-  /*
-  if (Object.hasOwn(cfg, 'good') && Object.hasOwn(cfg, 'okay') && Object.hasOwn(cfg, 'poor')) {
-    perfRanges[tableColumn] = {
-      good: cfg.good.replace(' ', '').split(',').map((el) => parseFloat(el)),
-      okay: cfg.okay.replace(' ', '').split(',').map((el) => parseFloat(el)),
-      poor: cfg.poor.replace(' ', '').split(',').map((el) => parseFloat(el)),
-    };
-  }
-  */
 
   cfg.block = block;
-  // cfg.perfRanges = perfRanges;
   const flag = `${endpoint}Flag`;
 
   // once we read config, clear the dom.
@@ -52,11 +40,6 @@ export default function decorate(block) {
       const main = document.querySelector('main');
       const loader = main.querySelector('.loader');
       loader.remove();
-      /*
-      document.querySelectorAll('div.loading').forEach((loading) => {
-        loading.style.display = 'none';
-      });
-      */
 
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');

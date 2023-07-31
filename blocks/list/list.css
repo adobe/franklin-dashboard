@@ -2,14 +2,6 @@ div.grid.list.container {
     display: grid;
     grid-gap: 0.2em;
     width: 100%;
-
-    /*
-    position: sticky;
-    top: 0;
-    background-color: var(--overlay-background-color);
-    height: 100vh;
-    overflow: scroll;
-    */
 }
 
 .list-container {
@@ -30,18 +22,11 @@ div.grid.list.row {
 }
 
 div.grid.list.row:not(.heading) {
-    /* border-radius: 10px; */
     border-color: black;
     font-size:var(--body-font-size-m);
 }
 
 div.grid.list.row.heading {
-    /*
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    background-color:grey;
-    */
     font-weight: bold;
     background-color: var(--highlight-background-color);
 }
@@ -56,7 +41,7 @@ div.grid.list.col {
     text-overflow: ellipsis;
     overflow: hidden;
     border-radius: 5px;
-    font-size: medium;
+    font-size: var(--body-font-size-xs);
     justify-content: center;
     align-items: center;
 }
@@ -71,11 +56,10 @@ div.grid.list.col.url {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
 
-    /*
-    border-bottom: 1px;
-    border-bottom-style: solid;
-    */
+div.grid.list.col.pageviews {
+    overflow: visible;
 }
 
 .usrexp {
@@ -87,15 +71,13 @@ div.grid.list.col.url {
     width: 100%;
     background-color: #b3b3b3;
     color: white;
-
-    /* height: 30px; */
 }
 
 .goodbar {
     height: 100%;
     background-color: green;
     text-align: center;
-    font-size: medium;
+    font-size: var(--body-font-size-xs);
 }
 
 .okaybar {
@@ -103,7 +85,7 @@ div.grid.list.col.url {
     background-color: orange;
     color: black;
     text-align: center;
-    font-size: medium;
+    font-size: var(--body-font-size-xs);
 }
 
 .badbar {
@@ -111,7 +93,7 @@ div.grid.list.col.url {
     background-color: red;
     color: black;
     text-align: center;
-    font-size: medium;
+    font-size: var(--body-font-size-xs);
 }
 
 .fail {
@@ -137,17 +119,12 @@ div.grid.list.col.url {
 }
 
 .loader {
-    /* align-items: center; */
     margin: auto;
-    
-    /* justify-content: center; */
-
-    /* position: absolute; */
     width: calc(100px - 24px);
     height: 50vh;
     position: relative;
     animation: flippx 2s infinite linear;
-  }
+}
 
 .loader::before {
     content: "";

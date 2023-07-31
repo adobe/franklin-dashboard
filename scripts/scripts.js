@@ -192,9 +192,6 @@ export async function queryRequest(cfg, fullEndpoint) {
             window.dashboard = {};
           }
           window.dashboard[endpoint] = data;
-          let main = document.querySelector('main');
-          let loader = main.querySelector('.loader');
-          loader.remove();
         })
         .catch((err) => {
         // eslint-disable-next-line no-console
@@ -263,8 +260,8 @@ async function loadLazy(doc) {
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
 
-  let html = document.querySelector('html');
-  html.classList.add('spectrum', 'spectrum--dark')
+  const html = document.querySelector('html');
+  html.classList.add('spectrum', 'spectrum--dark');
 }
 
 /**

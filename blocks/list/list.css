@@ -1,19 +1,22 @@
 div.grid.list.container {
     display: grid;
+    grid-gap: 0.2em;
+    width: 100%;
+
+    /*
     position: sticky;
     top: 0;
-    grid-gap: 1em;
     background-color: var(--overlay-background-color);
     height: 100vh;
-    width: 100%;
     overflow: scroll;
+    */
 }
 
-.list-container{
+.list-container {
     height: 100%;
 }
 
-.list-wrapper{
+.list-wrapper {
     height: 100%;
 }
 
@@ -26,17 +29,25 @@ div.grid.list.row {
     justify-items: center;
 }
 
-div.grid.list.row:not(.heading){
-    border-radius: 10px;
+div.grid.list.row:not(.heading) {
+    /* border-radius: 10px; */
     border-color: black;
     font-size:var(--body-font-size-m);
 }
 
 div.grid.list.row.heading {
+    /*
     position: -webkit-sticky;
     position: sticky;
     top: 0;
     background-color:grey;
+    */
+    font-weight: bold;
+    background-color: var(--highlight-background-color);
+}
+
+div.grid.list.row.odd {
+    background-color: var(--overlay-background-color);
 }
 
 div.grid.list.col {
@@ -50,8 +61,8 @@ div.grid.list.col {
     align-items: center;
 }
 
-div.grid.list.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid){
-    background-color: grey;
+div.grid.list.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
+    background-color: var(--highlight-background-color);
 }
 
 div.grid.list.col.url {
@@ -60,23 +71,24 @@ div.grid.list.col.url {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+
+    /*
     border-bottom: 1px;
     border-bottom-style: solid;
+    */
 }
 
 .usrexp {
     text-overflow: unset;
     white-space: unset;
     overflow: unset;
-}
-
-.usrexp {
     display: flex;
     flex-direction:row;
     width: 100%;
-    height: 30px;
     background-color: #b3b3b3;
     color: white;
+
+    /* height: 30px; */
 }
 
 .goodbar {
@@ -89,6 +101,7 @@ div.grid.list.col.url {
 .okaybar {
     height: 100%;
     background-color: orange;
+    color: black;
     text-align: center;
     font-size: medium;
 }
@@ -96,6 +109,7 @@ div.grid.list.col.url {
 .badbar {
     height: 100%;
     background-color: red;
+    color: black;
     text-align: center;
     font-size: medium;
 }
@@ -112,6 +126,7 @@ div.grid.list.col.url {
     width: 100%;
     background-repeat: no-repeat;
     background-color: green;
+    color: white;
 }
 
 .okay {
@@ -124,14 +139,17 @@ div.grid.list.col.url {
 .loader {
     /* align-items: center; */
     margin: auto;
+    
     /* justify-content: center; */
+
     /* position: absolute; */
     width: calc(100px - 24px);
     height: 50vh;
     position: relative;
     animation: flippx 2s infinite linear;
   }
-  .loader:before {
+
+.loader::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -142,8 +160,9 @@ div.grid.list.col.url {
     background:red;
     transform-origin: -24px 50%;
     animation: spin 1s infinite linear;
-  }
-  .loader:after {
+}
+
+.loader::after {
     content: "";
     position: absolute;
     left: 50%;
@@ -153,20 +172,25 @@ div.grid.list.col.url {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-  }
+}
   
-  @keyframes flippx {
+@keyframes flippx {
     0%, 49% {
       transform: scaleX(1);
     }
+
     50%, 100% {
       transform: scaleX(-1);
     }
-  }
-  @keyframes spin {
+}
+
+@keyframes spin {
     100% {
       transform: rotate(360deg);
     }
-  }
+}
 
-  
+div.section.list-container p {
+    font-size: var(--body-font-size-s);
+    margin-top: 0;
+}

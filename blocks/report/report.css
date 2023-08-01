@@ -1,0 +1,118 @@
+div.grid.list.container {
+    display: grid;
+    position: sticky;
+    top: 0;
+    grid-gap: 1em;
+    background-color: var(--overlay-background-color);
+    height: 100vh;
+    width: 100%;
+    overflow: scroll;
+}
+
+.flex { 
+    display: flex;
+    flex-direction: column;
+}
+
+.list-container{
+    height: 100%;
+}
+
+.list-wrapper{
+    height: 100%;
+}
+
+div.grid.list.row {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 4fr 4fr 2fr 2fr 2fr 2fr;
+    grid-gap: 10px;
+    align-items: center;
+    justify-items: center;
+}
+
+div.grid.list.row:not(.heading){
+    border-radius: 10px;
+    border-color: black;
+    font-size:var(--body-font-size-m);
+}
+
+div.grid.list.row.heading {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color:grey;
+}
+
+div.grid.list.col {
+    display: flex;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-radius: 5px;
+    font-size: medium;
+    justify-content: center;
+    align-items: center;
+}
+
+div.grid.list.col:not(.source, .topurl, .heading, .pages, .views, .actions_per_view, .actions){
+    background-color: grey;
+}
+
+div.grid.list.col.source, div.grid.list.col.topurl {
+    align-items: start;
+    justify-content: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    border-bottom: 1px;
+    border-bottom-style: solid;
+}
+
+.loader {
+    /* align-items: center; */
+    margin: auto;
+    /* justify-content: center; */
+    /* position: absolute; */
+    width: calc(100px - 24px);
+    height: 50vh;
+    position: relative;
+    animation: flippx 2s infinite linear;
+  }
+  .loader:before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background:red;
+    transform-origin: -24px 50%;
+    animation: spin 1s infinite linear;
+  }
+  .loader:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% , -50%);
+    background: blue;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+  
+  @keyframes flippx {
+    0%, 49% {
+      transform: scaleX(1);
+    }
+    50%, 100% {
+      transform: scaleX(-1);
+    }
+  }
+  @keyframes spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }

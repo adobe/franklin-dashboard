@@ -37,6 +37,7 @@ div.grid.list.row:not(.heading){
 }
 
 div.grid.list.row.heading {
+    height: fit-content;
     position: sticky;
     top: 0;
     background-color:grey;

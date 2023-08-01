@@ -25,14 +25,13 @@ div.grid.list.container {
 div.grid.list.row {
     display: grid;
     height: 100%;
-    grid-template-columns: 4fr 4fr 2fr 2fr 2fr 2fr;
+    grid-template-columns: 4fr 4fr 2fr 2fr 3fr 2fr;
     grid-gap: 10px;
     align-items: center;
     justify-items: center;
 }
 
 div.grid.list.row:not(.heading){
-    border-radius: 10px;
     border-color: black;
     font-size:var(--body-font-size-m);
 }
@@ -49,7 +48,6 @@ div.grid.list.col {
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
-    border-radius: 5px;
     font-size: medium;
     justify-content: center;
     align-items: center;
@@ -65,7 +63,15 @@ div.grid.list.col.source, div.grid.list.col.topurl {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    border-bottom: 1px;
+}
+
+.source:first-child {
+    border-width: 1px;
+    border-top-style: solid;
+}
+
+.source:last-child {
+    border-width: 1px;
     border-bottom-style: solid;
 }
 

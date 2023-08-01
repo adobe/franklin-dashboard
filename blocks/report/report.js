@@ -110,7 +110,6 @@ export default function decorate(block) {
                 }
                 gridElementArray[l].append(innerDiv);
             }
-            //Each Row has 6 columns, each column can have multiple values. 
         }
         for(let i = 0; i < 5; i++){
             listGridRow.append(gridElementArray[i]);

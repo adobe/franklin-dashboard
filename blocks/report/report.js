@@ -21,7 +21,7 @@ export default function decorate(block) {
     if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
       window.setTimeout(getQuery, 1);
     } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
-      queryRequest(cfg, getUrlBase(endpoint));
+      queryRequest(cfg, getUrlBase(endpoint), {checkpoint: '404'});
       const loaderSpan = document.createElement('div');
       loaderSpan.className = 'loader';
       block.append(loaderSpan);

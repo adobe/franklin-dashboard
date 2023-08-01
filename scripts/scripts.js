@@ -95,7 +95,7 @@ export function getEndpointParams(endpoint) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(cfg, fullEndpoint) {
+export async function queryRequest(cfg, fullEndpoint, qps = {}) {
   // let's make a loader
   let offset;
   let interval;
@@ -166,6 +166,9 @@ export async function queryRequest(cfg, fullEndpoint) {
 
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
+  Object.entries(qps).forEach(([k, v]) => {
+    params.set(k, v);
+  });
   const flag = `${endpoint}Flag`;
   const checkData = () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {

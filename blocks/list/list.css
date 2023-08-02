@@ -31,6 +31,10 @@ div.grid.list.row.heading {
     background-color: var(--highlight-background-color);
 }
 
+div.grid.list.col.heading {
+    border-style: solid;
+}
+
 div.grid.list.row.odd {
     background-color: var(--overlay-background-color);
 }

@@ -21,7 +21,10 @@ export default function decorate(block) {
     if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
       window.setTimeout(getQuery, 1);
     } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
-      queryRequest(cfg, getUrlBase(endpoint), {checkpoint: '404'});
+      setTimeout(() => {
+        queryRequest(cfg, getUrlBase(endpoint), { checkpoint: '404' });
+      }, 3000);
+
       const loaderSpan = document.createElement('div');
       loaderSpan.className = 'loader';
       block.append(loaderSpan);
@@ -50,7 +53,21 @@ export default function decorate(block) {
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
       for (let j = 0; j < 6; j += 1) {
         const listGridHeadings = document.createElement('div');
-        listGridHeadings.textContent = cols[j];
+        if (cols[j] === 'topurl') {
+          listGridHeadings.textContent = '404 path';
+        } else if (cols[j] === 'source') {
+          listGridHeadings.textContent = 'Referer';
+        } else if (cols[j] === 'actions') {
+          listGridHeadings.textContent = 'actions?';
+        } else if (cols[j] === 'views') {
+          listGridHeadings.textContent = 'views?';
+        } else if (cols[j] === 'actions_per_view') {
+          listGridHeadings.textContent = 'actions_per_view?';
+        } else if (cols[j] === 'pages') {
+          listGridHeadings.textContent = 'pages?';
+        } else {
+          listGridHeadings.textContent = cols[j];
+        }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
       }
@@ -79,15 +96,19 @@ export default function decorate(block) {
       }
 
       const entries = Object.entries(map404);
+      let counter = 0;
       entries.forEach(([key, val]) => {
         const listGridRow = document.createElement('div');
         listGridRow.classList.add('grid', 'list', 'row');
+        if ((counter % 2) === 1) {
+          listGridRow.classList.add('odd');
+        }
 
         const listGridColumn = document.createElement('div');
         listGridColumn.classList.add('grid', 'list', 'col', 'topurl');
         const link = document.createElement('a');
         link.href = key;
-        link.textContent = key;
+        link.textContent = key.replace(/^https?:\/\/[^/]+/i, '');
         listGridColumn.append(link);
         listGridRow.append(listGridColumn);
 
@@ -103,6 +124,7 @@ export default function decorate(block) {
             const content = val[k][keys[l]];
             const innerDiv = document.createElement('div');
             innerDiv.classList.add('grid', 'list', 'col', keys[l], 'inner');
+            // TODO the source field never shows a link, possible bug
             if (keys[l] === 'source' && val[k][keys[l]] !== 'empty') {
               const srcLink = document.createElement('a');
               srcLink.href = content;
@@ -118,6 +140,7 @@ export default function decorate(block) {
           listGridRow.append(gridElementArray[i]);
         }
         listGridContainer.append(listGridRow);
+        counter += 1;
       });
       block.append(listGridContainer);
     }

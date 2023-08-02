@@ -161,7 +161,19 @@ export async function queryRequest(cfg, fullEndpoint, qps = {}) {
     params.set('startdate', startdate);
     params.set('enddate', enddate);
   } else {
-    throw new Error('Cannot send request, date params empty or interval params incorrect');
+    const today = new Date();
+    offset = 1;
+    interval = 30;
+    const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
+    const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
+    const end = today - dateOffsetInMillis;
+    const start = end - intervalInMillis;
+    const startdate = new Date(start).toISOString().split('T')[0];
+    const enddate = new Date(end).toISOString().split('T')[0];
+    params.set('startdate', startdate);
+    params.set('enddate', enddate);
+    params.set('offset', offset);
+    params.set('interval', interval);
   }
 
   const limit = params.get('limit') || '30';
@@ -241,10 +253,18 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  /*
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/vars/dist/spectrum-dark.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/toast/index.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/icon/index.css`)
+  */
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  const html = document.querySelector('html');
+  html.classList.add('spectrum', 'spectrum--dark');
 }
 
 /**

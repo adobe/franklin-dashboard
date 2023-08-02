@@ -18,10 +18,10 @@ export default async function decorate(block) {
 
   // TODO update action attribute to point to correct main page
   block.innerHTML = `
-        <form method="get" action="/screens/experimental/lists">
+        <form method="get" action="/views/rum-dashboard">
             <input type="hidden" name="interval" value="30">
             <input type="hidden" name="offset" value="0">
-            <input type="hidden" name="limit" value="10">
+            <input type="hidden" name="limit" value="100">
             <label for="domainkey">domainkey</label>
             <input id="domainkey" name="domainkey" value="${domainkey}" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
             <label for="url">hostname</label>

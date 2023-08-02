@@ -47,26 +47,18 @@ export default function decorate(block) {
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['topurl', 'source', 'actions', 'views', 'actions_per_view', 'pages'];
+      const cols = ['topurl', 'source', 'views'];
 
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 6; j += 1) {
+      for (let j = 0; j < 3; j += 1) {
         const listGridHeadings = document.createElement('div');
         if (cols[j] === 'topurl') {
           listGridHeadings.textContent = '404 path';
         } else if (cols[j] === 'source') {
           listGridHeadings.textContent = 'Referer';
-        } else if (cols[j] === 'actions') {
-          listGridHeadings.textContent = 'actions?';
         } else if (cols[j] === 'views') {
-          listGridHeadings.textContent = 'views?';
-        } else if (cols[j] === 'actions_per_view') {
-          listGridHeadings.textContent = 'actions_per_view?';
-        } else if (cols[j] === 'pages') {
-          listGridHeadings.textContent = 'pages?';
-        } else {
-          listGridHeadings.textContent = cols[j];
+          listGridHeadings.textContent = 'Estimated Views';
         }
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
@@ -76,19 +68,18 @@ export default function decorate(block) {
       const map404 = {};
       for (let i = 0; i < data.length; i += 1) {
         const {
-          topurl, source, actions, views, pages,
+          topurl, source, views,
         } = data[i];
-        const actionsPerView = data[i].actions_per_view;
         const sourceNew = source || 'empty';
         if (Object.hasOwn(map404, topurl)) {
           const sourceInfo = {
-            sourceNew, actions, views, actionsPerView, pages,
+            sourceNew, views,
           };
           map404[topurl].push(sourceInfo);
         } else {
           const arr = [];
           const sourceInfo = {
-            sourceNew, actions, views, actionsPerView, pages,
+            sourceNew, views,
           };
           arr.push(sourceInfo);
           map404[topurl] = arr;
@@ -113,19 +104,19 @@ export default function decorate(block) {
         listGridRow.append(listGridColumn);
 
         const gridElementArray = [];
-        for (let i = 0; i < 5; i += 1) {
+        for (let i = 0; i < 3; i += 1) {
           gridElementArray.push(document.createElement('div'));
           gridElementArray[i].classList.add('grid', 'list', 'col', cols[i + 1], 'flex');
         }
 
         for (let k = 0; k < val.length; k += 1) {
           const keys = Object.keys(val[k]);
-          for (let l = 0; l < 5; l += 1) {
+          for (let l = 0; l < 3; l += 1) {
             const content = val[k][keys[l]];
             const innerDiv = document.createElement('div');
             innerDiv.classList.add('grid', 'list', 'col', keys[l], 'inner');
             // TODO the source field never shows a link, possible bug
-            if (keys[l] === 'source' && val[k][keys[l]] !== 'empty') {
+            if (keys[l] === 'sourceNew' && val[k][keys[l]] !== 'empty') {
               const srcLink = document.createElement('a');
               srcLink.href = content;
               srcLink.textContent = content;
@@ -136,7 +127,7 @@ export default function decorate(block) {
             gridElementArray[l].append(innerDiv);
           }
         }
-        for (let i = 0; i < 5; i += 1) {
+        for (let i = 0; i < 3; i += 1) {
           listGridRow.append(gridElementArray[i]);
         }
         listGridContainer.append(listGridRow);

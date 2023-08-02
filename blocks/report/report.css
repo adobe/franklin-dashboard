@@ -20,7 +20,7 @@ div.grid.list.container {
 div.grid.list.row {
     display: grid;
     height: 100%;
-    grid-template-columns: 4fr 4fr 1fr 1fr 2fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 10px;
     align-items: center;
     justify-items: center;
@@ -34,6 +34,11 @@ div.grid.list.row:not(.heading){
 div.grid.list.row.heading {
   font-weight: bold;
   background-color: var(--highlight-background-color);
+  border-style: solid;
+}
+
+div.grid.list.col.heading {
+  border-style: solid;
 }
 
 div.grid.list.row.odd {

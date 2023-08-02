@@ -18,7 +18,7 @@ export default async function decorate(block) {
 
   // TODO update action attribute to point to correct main page
   block.innerHTML = `
-        <form method="get" action="/publish/datalist">
+        <form method="get" action="/views/rum-dashboard">
             <input type="hidden" name="interval" value="30">
             <input type="hidden" name="offset" value="0">
             <input type="hidden" name="limit" value="100">

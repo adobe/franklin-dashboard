@@ -34,7 +34,6 @@ div.grid.list.row:not(.heading){
 div.grid.list.row.heading {
   font-weight: bold;
   background-color: var(--highlight-background-color);
-  border-style: solid;
 }
 
 div.grid.list.col.heading {

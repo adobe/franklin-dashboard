@@ -21,6 +21,7 @@ div.grid.list.row {
     display: grid;
     height: 100%;
     grid-template-columns: 3fr 3fr 1fr;
+    border-radius: 5px;
     grid-gap: 10px;
     align-items: center;
     justify-items: center;
@@ -38,6 +39,7 @@ div.grid.list.row.heading {
 
 div.grid.list.col.heading {
   border-style: solid;
+  border-radius: 5px;
 }
 
 div.grid.list.row.odd {
@@ -48,6 +50,7 @@ div.grid.list.col {
     display: flex;
     width: 100%;
     text-overflow: ellipsis;
+    border-radius: 5px;
     overflow: hidden;
     font-size: var(--body-font-size-xs);
     justify-content: center;

@@ -54,9 +54,9 @@ export default function decorate(block) {
       for (let j = 0; j < 3; j += 1) {
         const listGridHeadings = document.createElement('div');
         if (cols[j] === 'topurl') {
-          listGridHeadings.textContent = '404 path';
+          listGridHeadings.textContent = '404 Path';
         } else if (cols[j] === 'source') {
-          listGridHeadings.textContent = 'Referer';
+          listGridHeadings.textContent = 'Referer(s)';
         } else if (cols[j] === 'views') {
           listGridHeadings.textContent = 'Estimated Views';
         }

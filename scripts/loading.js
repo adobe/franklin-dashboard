@@ -1,3 +1,6 @@
+// NOTE This is a legacy loader and should not be used anymore.  Use loader.js instead.
+// TODO Delete this file once all blocks using it are updated.
+
 /**
  * draw a loading graphic in the specified DOM element
  * @param {Element} domObj The target DOM element

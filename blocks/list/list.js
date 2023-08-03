@@ -1,5 +1,6 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { getQueryInfo, queryRequest, getUrlBase } from '../../scripts/scripts.js';
+import { drawLoader, hideLoader } from '../../scripts/loader.js';
 
 export default function decorate(block) {
   let cfg = readBlockConfig(block);
@@ -25,9 +26,7 @@ export default function decorate(block) {
         queryRequest(cfg, getUrlBase(endpoint));
       }, 3000);
 
-      const loaderSpan = document.createElement('div');
-      loaderSpan.className = 'loader';
-      block.append(loaderSpan);
+      drawLoader(block);
     }
   };
 
@@ -37,9 +36,7 @@ export default function decorate(block) {
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;
-      const main = document.querySelector('main');
-      const loader = main.querySelector('.loader');
-      loader.remove();
+      hideLoader(block);
 
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
@@ -78,6 +75,8 @@ export default function decorate(block) {
         listGridHeadingRow.appendChild(listGridHeadings);
       }
       listGridContainer.appendChild(listGridHeadingRow);
+
+      let counter = 0;
 
       for (let i = 0; i < data.length; i += 1) {
         const listGridRow = document.createElement('div');
@@ -154,8 +153,21 @@ export default function decorate(block) {
           listGridRow.append(listGridColumn);
         }
         listGridContainer.append(listGridRow);
+
+        counter = i;
       }
       block.append(listGridContainer);
+
+      if (counter === 0) {
+        const noresults = document.createElement('p');
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('domainkey') && params.has('url')) {
+          noresults.textContent = 'No results found.';
+        } else {
+          noresults.innerHTML = '<i>domainkey</i> and <i>url</i> (hostname) are required.  Please provide <a href="/">here</a>.';
+        }
+        block.append(noresults);
+      }
     }
   };
   getQuery();

@@ -96,7 +96,6 @@ export function getEndpointParams(endpoint) {
  * @param {*} main
  */
 export async function queryRequest(cfg, fullEndpoint, qps = {}) {
-  // let's make a loader
   let offset;
   let interval;
 

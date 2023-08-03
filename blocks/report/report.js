@@ -1,5 +1,6 @@
 import { readBlockConfig } from '../../scripts/lib-franklin.js';
 import { getQueryInfo, queryRequest, getUrlBase } from '../../scripts/scripts.js';
+import { drawLoader, hideLoader } from '../../scripts/loader.js';
 
 export default function decorate(block) {
   let cfg = readBlockConfig(block);
@@ -25,9 +26,7 @@ export default function decorate(block) {
         queryRequest(cfg, getUrlBase(endpoint), { checkpoint: '404' });
       }, 3000);
 
-      const loaderSpan = document.createElement('div');
-      loaderSpan.className = 'loader';
-      block.append(loaderSpan);
+      drawLoader(block);
     }
   };
 
@@ -37,12 +36,7 @@ export default function decorate(block) {
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;
-      document.querySelectorAll('div.loading').forEach((loading) => {
-        loading.style.display = 'none';
-      });
-      const main = document.querySelector('main');
-      const loader = main.querySelector('.loader');
-      loader.remove();
+      hideLoader(block);
 
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
@@ -115,7 +109,6 @@ export default function decorate(block) {
             const content = val[k][keys[l]];
             const innerDiv = document.createElement('div');
             innerDiv.classList.add('grid', 'list', 'col', keys[l], 'inner');
-            // TODO the source field never shows a link, possible bug
             if (keys[l] === 'sourceNew' && val[k][keys[l]] !== 'empty') {
               const srcLink = document.createElement('a');
               srcLink.href = content;
@@ -134,6 +127,17 @@ export default function decorate(block) {
         counter += 1;
       });
       block.append(listGridContainer);
+
+      if (counter === 0) {
+        const noresults = document.createElement('p');
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('domainkey') && params.has('url')) {
+          noresults.textContent = 'No results found.';
+        } else {
+          noresults.innerHTML = '<i>domainkey</i> and <i>url</i> (hostname) are required.  Please provide <a href="/">here</a>.';
+        }
+        block.append(noresults);
+      }
     }
   };
   getQuery();

@@ -1,4 +1,5 @@
 import { getMetadata, decorateIcons } from '../../scripts/lib-franklin.js';
+import { getQueryInfo, queryRequest, getUrlBase } from '../../scripts/scripts.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -111,6 +112,69 @@ export default async function decorate(block) {
 
     const navSections = nav.querySelector('.nav-sections');
     if (navSections) {
+      // conditionally add additional menu for domainkeys which can see all domains
+      const cfg = {};
+      cfg.data = 'dash/auth-all-domains';
+      const endpoint = cfg.data;
+      const flag = `${endpoint}Flag`;
+
+      const getQuery = () => {
+        if (!Object.hasOwn(window, 'gettingQueryInfo')) {
+          getQueryInfo();
+        }
+        if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
+          window.setTimeout(getQuery, 1);
+        } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
+          setTimeout(() => {
+            queryRequest(cfg, getUrlBase(endpoint));
+          }, 50);
+        }
+      };
+
+      const drawAllDomainsMenu = () => {
+        // eslint-disable-next-line max-len
+        if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
+          window.setTimeout(drawAllDomainsMenu, 50);
+        } else if (Object.hasOwn(window, flag) && window[flag] === false) {
+          // query complete
+          const { data } = window.dashboard[endpoint].results;
+          if (data[0] && data[0].auth) {
+            // draw all domains menu
+            const authmenu = document.createElement('li');
+            const authsub = document.createElement('ul');
+            const authsub1 = document.createElement('li');
+            authmenu.classList.add('alldomains');
+            authmenu.textContent = 'All Domains';
+            authmenu.appendChild(authsub);
+            authsub.appendChild(authsub1);
+            authsub1.innerHTML = '<a class="alldomains" href="/all-domains/domain-list">Domain List</a>';
+
+            const menu = navSections.querySelector('ul');
+            menu.appendChild(authmenu);
+
+            // due to the delayed load, the new menu needs to be made functional
+            navSections.querySelectorAll(':scope > ul > li.alldomains').forEach((navSection) => {
+              if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
+              navSection.addEventListener('click', () => {
+                if (isDesktop.matches) {
+                  const expanded = navSection.getAttribute('aria-expanded') === 'true';
+                  toggleAllNavSections(navSections);
+                  navSection.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+                }
+              });
+            });
+
+            // retain querystring for any menu links
+            nav.querySelectorAll('a.alldomains').forEach((link) => {
+              link.href += document.location.search;
+            });
+          }
+        }
+      };
+
+      getQuery();
+      drawAllDomainsMenu();
+
       navSections.querySelectorAll(':scope > ul > li').forEach((navSection) => {
         if (navSection.querySelector('ul')) navSection.classList.add('nav-drop');
         navSection.addEventListener('click', () => {

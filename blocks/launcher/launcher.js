@@ -1,14 +1,14 @@
-// TODO determine if readBlockConfig required for this block
-// import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 /**
- * loads and decorates the top pages block
- * @param {Element} block The top pages block element
+ * loads and decorates the launcher block
+ * @param {Element} block The launcher block element
  */
 export default async function decorate(block) {
-  // TODO determine if any block params required or if autoblocking preferred
   // read block params
-  // const cfg = readBlockConfig(block);
+  const cfg = readBlockConfig(block);
+  const { action } = cfg;
+  const showurl = cfg.url;
 
   // set form defaults if already in URL
   const currentpage = new URL(window.location.href);
@@ -16,17 +16,27 @@ export default async function decorate(block) {
   const url = params.get('url') || '';
   const domainkey = params.get('domainkey') || '';
 
-  // TODO update action attribute to point to correct main page
-  block.innerHTML = `
-        <form method="get" action="/views/rum-dashboard">
-            <input type="hidden" name="interval" value="30">
-            <input type="hidden" name="offset" value="0">
-            <input type="hidden" name="limit" value="100">
-            <label for="domainkey">domainkey</label>
-            <input id="domainkey" name="domainkey" value="${domainkey}" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
-            <label for="url">hostname</label>
-            <input id="url" name="url" value="${url}" placeholder="www.adobe.com">
-            <button>Go</button>
-        </form>
+  // this block is used on two pages
+  // the main page requires a url
+  // and there is a secondary page designed for all domains for which we hide the url
+  let form = `
+    <form method="get" action="${action}">
+        <input type="hidden" name="interval" value="30">
+        <input type="hidden" name="offset" value="0">
+        <input type="hidden" name="limit" value="100">
+        <label for="domainkey">domainkey</label>
+        <input id="domainkey" name="domainkey" value="${domainkey}" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+  `;
+  if (showurl === 'true') {
+    form += `
+        <label for="url">hostname</label>
+        <input id="url" name="url" value="${url}" placeholder="www.adobe.com">
     `;
+  }
+  form += `
+        <button>Go</button>
+    </form>
+  `;
+
+  block.innerHTML = form;
 }

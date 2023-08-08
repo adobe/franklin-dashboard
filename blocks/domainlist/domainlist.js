@@ -85,10 +85,12 @@ export default function decorate(block) {
         col3.textContent = data[i].last_visit;
         const col4 = document.createElement('td');
         col4.classList.add('right');
-        col4.textContent = parseInt(data[i].current_month_visits || 0, 10).toLocaleString('en-US');
+        // show 3 significant digits
+        col4.textContent = parseFloat(parseInt(data[i].current_month_visits || 0, 10).toPrecision(3)).toLocaleString('en-US');
         const col5 = document.createElement('td');
         col5.classList.add('right');
-        col5.textContent = parseInt(data[i].total_visits, 10).toLocaleString('en-US');
+        // show 3 significant digits
+        col5.textContent = parseFloat(parseInt(data[i].total_visits, 10).toPrecision(3)).toLocaleString('en-US');
         row.appendChild(col1);
         row.appendChild(col2);
         row.appendChild(col3);

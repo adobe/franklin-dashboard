@@ -23,7 +23,8 @@ export default function decorate(block) {
       window.setTimeout(getQuery, 1);
     } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
       setTimeout(() => {
-        queryRequest(cfg, getUrlBase(endpoint));
+        // override default run-query limit handling with arbitrarily high number
+        queryRequest(cfg, getUrlBase(endpoint), { limit: '100000' });
       }, 3000);
 
       drawLoader(block);

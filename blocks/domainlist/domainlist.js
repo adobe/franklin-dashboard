@@ -107,7 +107,6 @@ export default function decorate(block) {
 
       if (data.length === 0) {
         const noresults = document.createElement('p');
-        const params = new URLSearchParams(window.location.search);
         if (params.has('domainkey')) {
           noresults.textContent = 'No results found.';
         } else {

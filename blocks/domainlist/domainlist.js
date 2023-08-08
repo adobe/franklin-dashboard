@@ -39,6 +39,9 @@ export default function decorate(block) {
       const { data } = window.dashboard[endpoint].results;
       hideLoader(block);
 
+      const params = new URLSearchParams(window.location.search);
+      const domainkey = params.get('domainkey');
+
       // using a table instead of divs to leverage jquery tablesorter
       const table = document.createElement('table');
       table.classList.add('tablesorter');
@@ -73,7 +76,7 @@ export default function decorate(block) {
       for (let i = 0; i < data.length; i += 1) {
         const row = document.createElement('tr');
         const col1 = document.createElement('td');
-        col1.textContent = data[i].hostname;
+        col1.innerHTML = `<a href='/views/rum-dashboard?domainkey=${domainkey}&url=${data[i].hostname}'>${data[i].hostname}</a>`;
         const col2 = document.createElement('td');
         col2.classList.add('right');
         col2.textContent = data[i].first_visit;

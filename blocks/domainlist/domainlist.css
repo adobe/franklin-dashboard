@@ -1,0 +1,8 @@
+div.section.domainlist-container p {
+    font-size: var(--body-font-size-s);
+    margin-top: 0;
+}
+
+div.section.domainlist-container table .right {
+    text-align: right;
+}

@@ -138,7 +138,7 @@ export default async function decorate(block) {
         } else if (Object.hasOwn(window, flag) && window[flag] === false) {
           // query complete
           const { data } = window.dashboard[endpoint].results;
-          if (data[0] && data[0].auth) {
+          if (data[0] && data[0].read) {
             // draw all domains menu
             const authmenu = document.createElement('li');
             const authsub = document.createElement('ul');

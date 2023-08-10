@@ -105,7 +105,7 @@ export default function decorate(block) {
       // to prevent javascript race condition, call tablesorter only after it loads
       const sorter = () => {
         // eslint-disable-next-line no-undef
-        if (typeof $('table.tablesorter').tablesorter() === 'undefined') {
+        if (typeof $('table.tablesorter').tablesorter === 'undefined') {
           window.setTimeout(sorter, 5);
         } else {
           // eslint-disable-next-line no-undef

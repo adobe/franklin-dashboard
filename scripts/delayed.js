@@ -19,12 +19,20 @@ if (getMetadata('jquery') === 'true') {
   jqueryScript.src = 'https://code.jquery.com/jquery-3.7.0.min.js';
   document.head.appendChild(jqueryScript);
 
-  const sortScript = document.createElement('script');
-  sortScript.type = 'text/javascript';
-  sortScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js';
-  document.head.appendChild(sortScript);
+  // to prevent javascript race condition, load tablesorter only after jQuery loads
+  const sorter = () => {
+    if (typeof window.jQuery === 'undefined') {
+      window.setTimeout(sorter, 5);
+    } else {
+      const sortScript = document.createElement('script');
+      sortScript.type = 'text/javascript';
+      sortScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js';
+      document.head.appendChild(sortScript);
+    }
+  };
+  sorter();
 
-  const sortStyle = document.createElement('link')
+  const sortStyle = document.createElement('link');
   sortStyle.rel = 'stylesheet';
   sortStyle.href = 'https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.default.min.css';
   document.head.appendChild(sortStyle);

@@ -32,9 +32,9 @@ export default function decorate(block) {
   };
 
   const makeList = () => {
-    if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
+    if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag) || typeof window.jQuery === 'undefined') {
       window.setTimeout(makeList, 5);
-    } else if (Object.hasOwn(window, flag) && window[flag] === false) {
+    } else if (Object.hasOwn(window, flag) && window[flag] === false && window.jQuery) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;
       hideLoader(block);
@@ -53,10 +53,10 @@ export default function decorate(block) {
       header1.textContent = 'Domain';
       const header2 = document.createElement('th');
       header2.classList.add('right');
-      header2.textContent = 'First Visit';
+      header2.textContent = 'First RUM';
       const header3 = document.createElement('th');
       header3.classList.add('right');
-      header3.textContent = 'Last Visit';
+      header3.textContent = 'Most Recent RUM';
       const header4 = document.createElement('th');
       header4.classList.add('right');
       header4.textContent = 'Current Month Est. Visits';

@@ -102,8 +102,17 @@ export default function decorate(block) {
 
       // add table to block and add sort functionality
       block.appendChild(table);
-      // eslint-disable-next-line no-undef
-      $('table.tablesorter').tablesorter();
+      // to prevent javascript race condition, call tablesorter only after it loads
+      const sorter = () => {
+        // eslint-disable-next-line no-undef
+        if (typeof $('table.tablesorter').tablesorter() === 'undefined') {
+          window.setTimeout(sorter, 5);
+        } else {
+          // eslint-disable-next-line no-undef
+          $('table.tablesorter').tablesorter();
+        }
+      };
+      sorter();
 
       if (data.length === 0) {
         const noresults = document.createElement('p');

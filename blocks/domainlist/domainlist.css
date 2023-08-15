@@ -6,3 +6,26 @@ div.section.domainlist-container p {
 div.section.domainlist-container table .right {
     text-align: right;
 }
+
+.domainlist label {
+    font-size: var(--body-font-size-s);
+    font-weight: bold;
+    text-align: center;
+    display: block;
+}
+
+.domainlist input, .launcher button {
+    font-size: var(--body-font-size-s);
+    text-align: center;
+    margin: auto;
+    margin-bottom: 16px;
+    width: 30rem;
+}
+
+.domainlist dialog div {
+    text-align: center;
+}
+
+.domainlist button {
+    margin: 8px;
+}

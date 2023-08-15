@@ -5,7 +5,9 @@ import { sampleRUM, getMetadata } from './lib-franklin.js';
 sampleRUM('cwv');
 
 // load echarts library unless the page metadata says otherwise
-if (getMetadata('echarts') !== 'false') {
+// TODO switch logic so echarts is only shown when metadata value is true
+// TODO requires change to relevant page metadata
+if (getMetadata('echarts') !== 'false' || getMetadata('echarts') === 'true') {
   const echartScript = document.createElement('script');
   echartScript.type = 'text/javascript';
   echartScript.src = 'https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js';

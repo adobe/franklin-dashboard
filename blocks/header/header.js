@@ -149,6 +149,12 @@ export default async function decorate(block) {
             authsub.appendChild(authsub1);
             authsub1.innerHTML = '<a class="alldomains" href="/all-domains/domain-list">Domain List</a>';
 
+            if (data[0].write) {
+              const authsub2 = document.createElement('li');
+              authsub.appendChild(authsub2);
+              authsub2.innerHTML = '<a class="alldomains" href="/all-domains/domain-keys">Domain Keys</a>';
+            }
+
             const menu = navSections.querySelector('ul');
             menu.appendChild(authmenu);
 

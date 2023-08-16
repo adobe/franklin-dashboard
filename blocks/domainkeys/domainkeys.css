@@ -1,20 +1,20 @@
-div.section.domainlist-container p {
+div.section.domainkeys-container p {
     font-size: var(--body-font-size-s);
     margin-top: 0;
 }
 
-div.section.domainlist-container table .right {
+div.section.domainkeys-container table .right {
     text-align: right;
 }
 
-.domainlist label {
+.domainkeys label {
     font-size: var(--body-font-size-s);
     font-weight: bold;
     text-align: center;
     display: block;
 }
 
-.domainlist input {
+.domainkeys input {
     font-size: var(--body-font-size-s);
     text-align: center;
     margin: auto;
@@ -22,10 +22,10 @@ div.section.domainlist-container table .right {
     width: 30rem;
 }
 
-.domainlist dialog div {
+.domainkeys div {
     text-align: center;
 }
 
-.domainlist button {
+.domainkeys button {
     margin: 8px;
 }

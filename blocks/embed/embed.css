@@ -1,0 +1,8 @@
+.embed {
+    font-size: var(--body-font-size-s);
+}
+
+div.section.embed-container p {
+    font-size: var(--body-font-size-s);
+    margin-top: 0;
+}

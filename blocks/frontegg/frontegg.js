@@ -83,7 +83,7 @@ export default async function decorate(block) {
               <br>
               id: ${state.auth.user.id}
               <br>
-              access token: ${state.auth.accessToken}
+              access token: ${state.auth.user.accessToken}
             `;
         } else {
           document.getElementById('user-container').innerText = '';

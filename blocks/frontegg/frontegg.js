@@ -79,11 +79,11 @@ export default async function decorate(block) {
 
         if (state.auth.user) {
           document.getElementById('user-container').innerHTML = `
-              email: {state.auth.user.email}
+              email: ${state.auth.user.email}
               <br>
-              id: {state.auth.user.id}
+              id: ${state.auth.user.id}
               <br>
-              access token: {state.auth.accessToken}
+              access token: ${state.auth.accessToken}
             `;
         } else {
           document.getElementById('user-container').innerText = '';

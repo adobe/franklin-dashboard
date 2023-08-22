@@ -18,18 +18,19 @@ export default async function decorate(block) {
 
   const code1 = `
     <div id="app-root" style="display: none">
-      <h1>This is Frontegg Integration in Vanilla Javascript </h1>
       <div id="user-container">
       </div>
       <br/>
       <a id="logout" fe-state="isAuthenticated"><button>Logout</button></a>
       <button id="loginWithRedirect" fe-mode="hosted"  fe-state="!isAuthenticated">
-          Login With Redirect [HostedLogin]
+          Get Domain Key
       </button>
     </div>
   `;
 
   block.innerHTML = code1;
+
+  let readstate;
 
   const initfe = () => {
     if (typeof Frontegg === 'undefined') {
@@ -48,19 +49,6 @@ export default async function decorate(block) {
 
       app.ready(() => {
         console.log('App is ready');
-
-        /**
-         * Uncomment below code for automatic login
-         */
-        // let unsubscribe = app.store.subscribe(()=>{
-        //   const {auth} = app.store.getState();
-        //   if(!auth.isLoading) {
-        //     unsubscribe()
-        //     if (!auth.isAuthenticated) {
-        //       app.loginWithRedirect()
-        //     }
-        //   }
-        // })
       });
 
       /*
@@ -86,12 +74,19 @@ export default async function decorate(block) {
 
       app.store.subscribe(() => {
         const state = app.store.getState();
+        readstate = state;
         document.getElementById('app-root').style.display = state.auth.isLoading ? 'hidden' : 'block';
 
         if (state.auth.user) {
-          document.getElementById('user-container').innerText = state.auth.user.email;
+          document.getElementById('user-container').innerHTML = `
+              email: {state.auth.user.email}
+              <br>
+              id: {state.auth.user.id}
+              <br>
+              access token: {state.auth.accessToken}
+            `;
         } else {
-          document.getElementById('user-container').innerText = 'Not Authenticated';
+          document.getElementById('user-container').innerText = '';
         }
 
         let styleHtml = '';

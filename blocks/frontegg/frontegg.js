@@ -1,5 +1,4 @@
-// import { initialize } from '@frontegg/js';
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
+// import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 /**
  * loads and decorates the frontegg block
@@ -7,7 +6,7 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
  */
 export default async function decorate(block) {
   // read block params
-  const cfg = readBlockConfig(block);
+  // const cfg = readBlockConfig(block);
   // TODO determine block config params
   // const { code } = cfg;
 
@@ -30,12 +29,11 @@ export default async function decorate(block) {
 
   block.innerHTML = code1;
 
-  let readstate;
-
   const initfe = () => {
     if (typeof Frontegg === 'undefined') {
       window.setTimeout(initfe, 5);
     } else {
+      // eslint-disable-next-line no-undef
       const app = Frontegg.initialize({
         contextOptions: {
           baseUrl: 'https://app-51s9vo0yeeq4.frontegg.com', // set your Frontegg environment domain and client ID here
@@ -47,25 +45,15 @@ export default async function decorate(block) {
         hostedLoginBox: true,
       });
 
+      /*
       app.ready(() => {
         console.log('App is ready');
-      });
-
-      /*
-      document.querySelector('[fe-action="open-admin-portal"]').addEventListener('click', () => {
-        app.showAdminPortal();
       });
       */
 
       document.getElementById('loginWithRedirect').addEventListener('click', () => {
         app.loginWithRedirect();
       });
-
-      /*
-      document.getElementById("hostedLoginLogout").addEventListener('click', () => {
-        app.logout();
-      });
-      */
 
       const style = document.createElement('style');
       style.setAttribute('type', 'text/css');
@@ -74,14 +62,11 @@ export default async function decorate(block) {
 
       app.store.subscribe(() => {
         const state = app.store.getState();
-        readstate = state;
         document.getElementById('app-root').style.display = state.auth.isLoading ? 'hidden' : 'block';
 
         if (state.auth.user) {
           document.getElementById('user-container').innerHTML = `
               email: ${state.auth.user.email}
-              <br>
-              id: ${state.auth.user.id}
               <br>
               access token: ${state.auth.user.accessToken}
             `;

@@ -61,13 +61,13 @@ export default function decorate(block) {
         } else if (cols[j] === 'pageviews') {
           listGridHeadings.textContent = 'Page Views';
         } else if (cols[j] === 'avglcp') {
-          listGridHeadings.textContent = 'Avg LCP';
+          listGridHeadings.textContent = 'LCP 75P';
         } else if (cols[j] === 'avgcls') {
-          listGridHeadings.textContent = 'Avg CLS';
+          listGridHeadings.textContent = 'CLS 75P';
         } else if (cols[j] === 'avgfid') {
-          listGridHeadings.textContent = 'Avg FID';
+          listGridHeadings.textContent = 'FID 75P';
         } else if (cols[j] === 'avginp') {
-          listGridHeadings.textContent = 'Avg INP';
+          listGridHeadings.textContent = 'INP 75P';
         } else {
           listGridHeadings.textContent = cols[j];
         }

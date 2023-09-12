@@ -95,15 +95,12 @@ export function getEndpointParams(endpoint) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(cfg, fullEndpoint, qps = {}) {
+export async function queryRequest(endpoint, endpointHost, qps = {}) {
   let offset;
   let interval;
 
-  let endpoint;
   const params = new URLSearchParams(window.location.search);
-  if (Object.hasOwn(cfg, 'data')) {
-    endpoint = cfg.data;
-  } else {
+  if(!endpoint) {
     throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
   }
 
@@ -180,13 +177,28 @@ export async function queryRequest(cfg, fullEndpoint, qps = {}) {
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
+  if(endpoint === 'daily-rum'){ 
+    params.set('exactmatch', true);
+  }
+  if(endpoint === 'github-commits'){
+    const curr_url = params.get('url');
+    let host_name;
+
+    if(curr_url.startsWith('https://') || curr_url.startsWith('http://')){
+      host_name = new URL(curr_url).hostname;
+    }
+    else{
+      host_name = new URL(`https://${curr_url}`).hostname;
+    }
+    params.set('url', host_name);
+  }
   const flag = `${endpoint}Flag`;
   const checkData = () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
-      fetch(`${fullEndpoint}${endpoint}?${params.toString()}`)
+      fetch(`${endpointHost}${endpoint}?${params.toString()}`)
         .then((resp) => resp.json())
         .then((data) => {
           window[flag] = false;

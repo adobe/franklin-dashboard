@@ -188,6 +188,7 @@ export default class CWVBarChart extends BarChart {
         };
         this.configureEchart(opts);
         this.echart.setOption(opts);
+        this.hideLoader(this.cfg.block);
       }
     }
   }

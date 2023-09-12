@@ -23,7 +23,7 @@ export default function decorate(block) {
       window.setTimeout(getQuery, 1);
     } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
       setTimeout(() => {
-        queryRequest(cfg, getUrlBase(endpoint));
+        queryRequest(endpoint, getUrlBase(endpoint));
       }, 3000);
 
       drawLoader(block);

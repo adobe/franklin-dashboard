@@ -1,3 +1,5 @@
+import { hideLoader } from '../../../scripts/loader.js';
+
 export default class Chart {
   /* Member Data
      block: Object;
@@ -33,6 +35,10 @@ export default class Chart {
     new ResizeObserver(() => {
       this.echart.resize();
     }).observe(chartElement);
+  }
+
+  hideLoader(block){
+    hideLoader(block);
   }
 
   drawChart() {

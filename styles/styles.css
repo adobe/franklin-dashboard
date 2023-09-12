@@ -269,13 +269,14 @@ footer {
 .section.charts-container {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   min-height: 300px;
 }
 
 .section.charts-container > .charts-wrapper > .charts.block {
-  display: flex; 
-  align-items: center;
-  justify-content: center;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
 }
 
 .section.charts-container > .charts-wrapper#chart1 {
@@ -310,10 +311,11 @@ footer {
 }
 
 .loader {
+  display: block;
   margin: auto;
-  width: calc(100px - 24px);
+  width: calc(100px - 24px); 
   height: 50vh;
-  position: relative;
+  position: absolute;
   animation: flippx 2s infinite linear;
 }
 

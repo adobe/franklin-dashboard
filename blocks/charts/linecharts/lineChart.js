@@ -31,9 +31,11 @@ export default class LineChart extends Chart {
       this.echart = echarts.init(currBlock);
       this.extraDomOperations(currBlock);
       const endpoint = this.cfg.data;
+      const poi_endpoint = this.cfg['poi-data'];
       const flag = `${endpoint}Flag`;
+      const poiFlag = `${poi_endpoint}Flag`;
 
-      if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
+      if (((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) || (poi_endpoint && ((Object.hasOwn(window, poiFlag) && window[poiFlag] === true) || !Object.hasOwn(window, poiFlag)))) {
         window.setTimeout(this.drawChart.bind(this), 5);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
@@ -75,6 +77,7 @@ export default class LineChart extends Chart {
         };
         this.configureEchart(opts);
         this.echart.setOption(opts);
+        this.hideLoader(this.cfg.block);
       }
     }
   }

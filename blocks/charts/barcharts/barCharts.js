@@ -93,6 +93,7 @@ export default class BarChart extends Chart {
         };
         this.configureEchart(opts);
         this.echart.setOption(opts);
+        this.hideLoader(this.cfg.block);
       }
     }
   }

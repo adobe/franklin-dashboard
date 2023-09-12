@@ -4,6 +4,7 @@
  */
 export function drawLoader(domObj) {
   const loaderSpan = document.createElement('div');
+  loaderSpan.style.display = 'block';
   loaderSpan.className = 'loader';
   domObj.append(loaderSpan);
 }

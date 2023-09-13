@@ -124,14 +124,12 @@ export async function queryRequest(cfg, fullEndpoint, qps = {}) {
   const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) > 1 && parseInt(params.get('offset'), 10) >= 1;
 
   if (dateValid) {
-    const startInput = new Date(params.get('startdate'));
-    const endInput = new Date(params.get('enddate'));
-    const start = (startInput - (startInput % 86400000)) + 86400000; //start of day
-    const end = (endInput - (endInput % 86400000)) + 86400000; //end of day
+    const start = new Date(params.get('startdate'));
+    const end = new Date(params.get('enddate'));
 
     const today = new Date();
 
-    if (start < end) {
+    if (start < end && end <= today) {
       const offs = today - end;
       const intv = Math.abs(end - start);
       offset = offs >= 0 ? Math.ceil(offs / (1000 * 60 * 60 * 24)) : 0;
@@ -144,7 +142,7 @@ export async function queryRequest(cfg, fullEndpoint, qps = {}) {
       params.set('interval', interval);
     } else if (start === end) {
       offset = 0;
-      interval = 1;
+      interval = 0;
     } else {
       offset = -1;
       interval = -1;

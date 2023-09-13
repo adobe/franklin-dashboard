@@ -71,7 +71,7 @@ export default function decorate(block) {
 
   const makeChart = () => {
     let thisChart;
-    if (typeChart === 'line' && (endpoint === 'rum-pageviews' || endpoint === 'sk-daily-users') || endpoint === 'daily-rum') {
+    if (typeChart === 'line' && endpoint === 'daily-rum') {
       thisChart = new CWVLineChart(cfg);
     } else if (typeChart === 'bar' && endpoint === 'rum-dashboard') {
       thisChart = new CWVBarChart(cfg);

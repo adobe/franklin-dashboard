@@ -11,6 +11,11 @@ div.charts-wrapper {
 div [_echarts_instance_] {
     height: 100%;
     width: 100%;
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
 }
 
 div [_echarts_instance_] > div {
@@ -24,17 +29,11 @@ div [_echarts_instance_] > div > canvas {
 }
 
 .section.charts-container > .charts-wrapper > .charts.block {
-     display: flex; 
-     align-items: center; 
-     justify-content: center; 
 }
 
 .section.charts-container > .charts-wrapper{
     aspect-ratio: 1/1;
-    min-height: 275px;
     max-height: 500px;
-    min-width: 400px;
-    flex-basis: 1;
     max-width: 700px;
 }
 

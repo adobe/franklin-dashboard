@@ -44,7 +44,14 @@ export default class LineChart extends Chart {
           loading.style.display = 'none';
         });
 
-        const labels = this.data.map((row) => row[`${this.cfg['label-key']}`]);
+        const lbl = this.cfg['label-key'];
+
+        let labels = this.data.map((row) => {
+          let res = row[`${this.cfg['label-key']}`]
+          return res.length > 10 ? res.substring(0, 10) : res;
+        });
+
+        labels = [...labels.sort()]
         const series = this.data.map((row) => row[`${this.cfg.field}`]);
         const legend = this.cfg.label;
 

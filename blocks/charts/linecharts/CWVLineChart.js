@@ -31,27 +31,46 @@ export default class CWVLineChart extends LineChart {
         if(poi_endpoint && Object.hasOwn(window.dashboard, this.cfg['poi-data']) && this.data){
           const poiMap = {};
           window.dashboard[this.cfg['poi-data']].results.data.forEach((val) => {
-            const {commit_date, commit_url, message} = val;
-            poiMap[commit_date] = {commit_url, message, owner_repo}
+            const {commit_date, commit_url, message, owner_repo} = val;
+            if(!Object.hasOwn(this, 'defaultKey')){
+              this.defaultKey = owner_repo;
+            }
+            if(!Object.hasOwn(poiMap, owner_repo)){
+              let map = {};
+              poiMap[owner_repo] = map;
+            }
+            poiMap[owner_repo][commit_date] = {commit_url: commit_url, message: message};
           })
           this.poi_data = poiMap;
-
         }
 
         var callback = (params) => {
-          if(Object.hasOwn(this.poi_data, params.name)){
-            const { message, commit_url} = this.poi_data[params.name];
+          if(Object.hasOwn(this.poi_data[this.defaultKey], params.name)){
+            const { message, commit_url} = this.poi_data[this.defaultKey][params.name];
             return `${message ? message : 'No Message Available' }<br />
             Commit Date: ${params.name}<br/>
-            <a href="${commit_url}">Click to see Commit </a><br />`
+            <a href="${commit_url}" target='_'>Click To See Commit </a><br />`
           }
-          return '';
         }
+
+        const { good, okay, poor } = this.cfg.perfRanges[this.cfg.field];
 
         const opts = {
           title: {
             text: `${legend}`,
-            x: 'center',
+          },
+          grid: {
+            left: 30,
+            right: 110,
+            bottom: 30,
+            containLabel: true
+          },
+          legend: {
+            orient: 'vertical',
+            left: 10,
+            show: true,
+            width: 30,
+            data: ['a', 'b', 'c', 'd', 'e'],
           },
           tooltip: {
             enterable: true,
@@ -78,12 +97,53 @@ export default class CWVLineChart extends LineChart {
               data: series,
               type: 'line',
               smooth: true,
-              symbol: 'diamond',
+              symbol: 'circle',
               symbolSize: (val, param) => {
-                if(Object.hasOwn(this.poi_data, param.name)){
+                if(Object.hasOwn(this.poi_data[this.defaultKey], param.name)){
                   return 15;
                 }
-              }
+              },
+              markLine: {
+                data: [
+                  {
+                    name: 'Good',
+                    yAxis: `${good[1]}`,
+                    lineStyle: {
+                      width: 10,
+                      normal: {
+                        type: 'dashed',
+                        color: 'green',
+                      },
+                    },
+                    label: {
+                      normal: {
+                        position: 'end',
+                        show: true,
+                      },
+                    },
+                  },
+                  {
+                    name: 'Okay',
+                    yAxis: `${okay[1]}`,
+                    lineStyle: {
+                      width: 10,
+                      normal: {
+                        type: 'dashed',
+                        color: 'red',
+                      },
+                    },
+                    label: {
+                      normal: {
+                        position: 'end',
+                        show: true,
+                      },
+                    },
+                  },
+                ],
+                areaStyle: {
+                  color: '#91cc75',
+                },
+              },
             },
           ],
         };

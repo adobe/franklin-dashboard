@@ -32,7 +32,7 @@ div.grid.list.row.heading {
 }
 
 div.grid.list.col.heading {
-    border-style: solid;
+    /* border-style: solid; */
 }
 
 div.grid.list.row.odd {

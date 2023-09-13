@@ -166,7 +166,7 @@ export default function decorate(block) {
                 listGridColumn.textContent = txtContent;
               }
             }else if(j >= 3){
-              listGridColumn.textContent = 'NULL'
+              listGridColumn.textContent = 'n/a'
             }
           }
           listGridRow.append(listGridColumn);

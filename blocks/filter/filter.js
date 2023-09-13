@@ -168,7 +168,11 @@ function drawFilter(block, cfg) {
   const limit10 = limit === '10' ? 'selected' : '';
   const limit30 = limit === '30' ? 'selected' : '';
   const limit100 = limit === '100' ? 'selected' : '';
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date() // get today's date
+  const tomorrow = new Date(today)
+  tomorrow.setDate(today.getDate() + 1)
+  const maxStartDate = today.toISOString().split('T')[0];
+  const maxEndDate = tomorrow.toISOString().split('T')[0];
 
   // if block config param for sections exists
   // then show only the sections requested
@@ -229,13 +233,13 @@ function drawFilter(block, cfg) {
         <div>
           <label for=startdate>Start Date</label>
           <input type=date id=startdate name=startdate class=noedit
-              min="2020-01-01" max="${today}"
+              min="2020-01-01" max="${maxStartDate}"
               value="${startdate}">
         </div>
         <div>
           <label for=enddate>End Date</label>
           <input type=date id=enddate name=enddate class=noedit
-              min="2020-01-01" max="${today}"
+              min="2020-01-01" max="${maxEndDate}"
               value="${enddate}">
         </div>
         <div id=dateerror class="error center hide">
@@ -270,13 +274,13 @@ export default function decorate(block) {
   // add event listeners
   // interval buttons
   block.querySelector('#int7').addEventListener('click', () => {
-    changeInterval('7', '1', '', '');
+    changeInterval('7', '0', '', '');
   });
   block.querySelector('#int30').addEventListener('click', () => {
-    changeInterval('30', '1', '', '');
+    changeInterval('30', '0', '', '');
   });
   block.querySelector('#int90').addEventListener('click', () => {
-    changeInterval('90', '1', '', '');
+    changeInterval('90', '0', '', '');
   });
   block.querySelector('#intcustom').addEventListener('click', () => {
     changeInterval('-1', '-1', '', '');

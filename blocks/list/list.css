@@ -100,11 +100,27 @@ div.grid.list.col.pageviews {
     font-size: var(--body-font-size-xs);
 }
 
+.noresultbar {
+    height: 100%;
+    background-color: grey;
+    color: white;
+    text-align: center;
+    font-size: var(--body-font-size-xs);
+}
+
 .fail {
     height: 100%;
     width: 100%;
     background-repeat: no-repeat;
     background-color: red;
+}
+
+.noresult {
+    height: 100%;
+    width: 100%;
+    color: white;
+    background-repeat: no-repeat;
+    background-color: grey;
 }
 
 .pass {

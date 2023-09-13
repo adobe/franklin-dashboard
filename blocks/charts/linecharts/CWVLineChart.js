@@ -45,7 +45,7 @@ export default class CWVLineChart extends LineChart {
         }
 
         var callback = (params) => {
-          if(Object.hasOwn(this.poi_data[this.defaultKey], params.name)){
+          if(Object.hasOwn(this, 'poi_data') && Object.hasOwn(this.poi_data[this.defaultKey], params.name)){
             const { message, commit_url} = this.poi_data[this.defaultKey][params.name];
             return `${message ? message : 'No Message Available' }<br />
             Commit Date: ${params.name}<br/>

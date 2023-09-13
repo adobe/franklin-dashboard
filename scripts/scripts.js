@@ -125,7 +125,8 @@ export async function queryRequest(cfg, fullEndpoint, qps = {}) {
 
   if (dateValid) {
     const start = new Date(params.get('startdate'));
-    const end = new Date(params.get('enddate'));
+    const endInput = new Date(params.get('enddate'));
+    const end = (endInput - (endInput % 86400000)) + 86400000;
 
     const today = new Date();
 

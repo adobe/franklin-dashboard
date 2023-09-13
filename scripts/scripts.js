@@ -124,9 +124,10 @@ export async function queryRequest(cfg, fullEndpoint, qps = {}) {
   const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) > 1 && parseInt(params.get('offset'), 10) >= 1;
 
   if (dateValid) {
-    const start = new Date(params.get('startdate'));
+    const startInput = new Date(params.get('startdate'));
     const endInput = new Date(params.get('enddate'));
-    const end = (endInput - (endInput % 86400000)) + 86400000;
+    const start = startInput - (startInput % 86400000); //start of day
+    const end = (endInput - (endInput % 86400000)) + 86400000; //end of day
 
     const today = new Date();
 

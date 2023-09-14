@@ -45,7 +45,7 @@ export default class CWVLineChart extends LineChart {
         }
 
         var callback = (params) => {
-          if(this.poi_data && Object.hasOwn(this.poi_data[this.defaultKey], params.name)){
+          if(Object.keys(this.poi_data).length > 0 && Object.hasOwn(this.poi_data[this.defaultKey], params.name)){
             const { message, commit_url} = this.poi_data[this.defaultKey][params.name];
             return `${message ? message : 'No Message Available' }<br />
             Commit Date: ${params.name}<br/>
@@ -99,7 +99,7 @@ export default class CWVLineChart extends LineChart {
               smooth: true,
               symbol: 'circle',
               symbolSize: (val, param) => {
-                if(this.poi_data && Object.hasOwn(this.poi_data[this.defaultKey], param.name)){
+                if(Object.keys(this.poi_data).length > 0 && Object.hasOwn(this.poi_data[this.defaultKey], param.name)){
                   return 15;
                 }
               },

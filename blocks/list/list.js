@@ -180,7 +180,7 @@ export default function decorate(block) {
         const params = new URLSearchParams(window.location.search);
         const nextUrl = data[i][cols[0]].replace('https://', '');
         params.set('url', nextUrl);
-        chartLink.innerHTML = `<div><a target="_" href="${window.location.host}/views/rum-performance-monitor?${params.toString()}">View Chart</a></div>`;
+        chartLink.innerHTML = `<div><a target="_" href="/views/rum-performance-monitor?${params.toString()}">View Chart</a></div>`;
         chartLink.classList.add('grid', 'list', 'col', 'clickChart');
         listGridRow.append(chartLink);
         listGridContainer.append(listGridRow);

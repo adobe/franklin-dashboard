@@ -92,6 +92,10 @@ export default function decorate(block) {
         const clsOkay = 100 - (clsgood + clsbad);
         const fidOkay = 100 - (fidgood + fidbad);
         const inpOkay = 100 - (inpgood + inpbad);
+        let noresult;
+        if ((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0) {
+          noresult = true;
+        }
         const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
         const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
         const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
@@ -102,24 +106,33 @@ export default function decorate(block) {
             const badPerc = document.createElement('div');
             const goodPerc = document.createElement('div');
             const okayPerc = document.createElement('div');
-            badPerc.classList.add('grid', 'list', 'col', cols[j], 'badbar');
-            goodPerc.classList.add('grid', 'list', 'col', cols[j], 'goodbar');
-            okayPerc.classList.add('grid', 'list', 'col', cols[j], 'okaybar');
-            const badPercentage = `${avgBad}%`;
-            const goodPercentage = `${avgGood}%`;
-            const okayPercentage = `${avgOkay}%`;
-            badPerc.textContent = badPercentage;
-            goodPerc.textContent = goodPercentage;
-            okayPerc.textContent = okayPercentage;
-            badPerc.style.width = badPercentage;
-            goodPerc.style.width = goodPercentage;
-            okayPerc.style.width = okayPercentage;
-            if (avgBad < 10) badPerc.style.color = 'red';
-            if (avgGood < 10) goodPerc.style.color = 'green';
-            if (avgOkay < 10) okayPerc.style.color = 'orange';
-            listGridColumn.appendChild(goodPerc);
-            listGridColumn.appendChild(okayPerc);
-            listGridColumn.appendChild(badPerc);
+            if (!noresult) {
+              badPerc.classList.add('grid', 'list', 'col', cols[j], 'badbar');
+              goodPerc.classList.add('grid', 'list', 'col', cols[j], 'goodbar');
+              okayPerc.classList.add('grid', 'list', 'col', cols[j], 'okaybar');
+              const badPercentage = `${avgBad}%`;
+              const goodPercentage = `${avgGood}%`;
+              const okayPercentage = `${avgOkay}%`;
+              badPerc.textContent = badPercentage;
+              goodPerc.textContent = goodPercentage;
+              okayPerc.textContent = okayPercentage;
+              badPerc.style.width = badPercentage;
+              goodPerc.style.width = goodPercentage;
+              okayPerc.style.width = okayPercentage;
+              if (avgBad < 10) badPerc.style.color = 'red';
+              if (avgGood < 10) goodPerc.style.color = 'green';
+              if (avgOkay < 10) okayPerc.style.color = 'orange';
+              listGridColumn.appendChild(goodPerc);
+              listGridColumn.appendChild(okayPerc);
+              listGridColumn.appendChild(badPerc);
+            } else {
+              const noresultPerc = document.createElement('div');
+              noresultPerc.classList.add('grid', 'list', 'col', cols[j], 'noresultbar');
+              const noresultPercentage = '100%';
+              noresultPerc.textContent = 'Not Enough Traffic';
+              noresultPerc.style.width = noresultPercentage;
+              listGridColumn.appendChild(noresultPerc);
+            }
           } else {
             let txtContent;
             if (cols[j] === 'avglcp') {
@@ -132,12 +145,14 @@ export default function decorate(block) {
               txtContent = data[i][cols[j]];
             }
             if (j >= 3) {
-              if (data[i][cols[j]] <= ranges[cols[j]][0]) {
+              if (data[i][cols[j]] && data[i][cols[j]] <= ranges[cols[j]][0]) {
                 listGridColumn.classList.toggle('pass');
               } else if (
                 data[i][cols[j]] > ranges[cols[j]][0] && data[i][cols[j]] < ranges[cols[j]][1]
               ) {
                 listGridColumn.classList.toggle('okay');
+              } else if (!data[i][cols[j]]) {
+                listGridColumn.classList.toggle('noresult');
               } else {
                 listGridColumn.classList.toggle('fail');
               }
@@ -148,6 +163,8 @@ export default function decorate(block) {
               } else {
                 listGridColumn.textContent = txtContent;
               }
+            } else if (j >= 3) {
+              listGridColumn.textContent = 'n/a';
             }
           }
           listGridRow.append(listGridColumn);

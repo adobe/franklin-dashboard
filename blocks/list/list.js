@@ -93,7 +93,7 @@ export default function decorate(block) {
         const fidOkay = 100 - (fidgood + fidbad);
         const inpOkay = 100 - (inpgood + inpbad);
         let noresult;
-        if((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0){
+        if ((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0) {
           noresult = true;
         }
         const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
@@ -106,7 +106,7 @@ export default function decorate(block) {
             const badPerc = document.createElement('div');
             const goodPerc = document.createElement('div');
             const okayPerc = document.createElement('div');
-            if(!noresult){
+            if (!noresult) {
               badPerc.classList.add('grid', 'list', 'col', cols[j], 'badbar');
               goodPerc.classList.add('grid', 'list', 'col', cols[j], 'goodbar');
               okayPerc.classList.add('grid', 'list', 'col', cols[j], 'okaybar');
@@ -125,11 +125,10 @@ export default function decorate(block) {
               listGridColumn.appendChild(goodPerc);
               listGridColumn.appendChild(okayPerc);
               listGridColumn.appendChild(badPerc);
-            }
-            else{
+            } else {
               const noresultPerc = document.createElement('div');
               noresultPerc.classList.add('grid', 'list', 'col', cols[j], 'noresultbar');
-              const noresultPercentage = `100%`;
+              const noresultPercentage = '100%';
               noresultPerc.textContent = 'Not Enough Traffic';
               noresultPerc.style.width = noresultPercentage;
               listGridColumn.appendChild(noresultPerc);
@@ -152,10 +151,9 @@ export default function decorate(block) {
                 data[i][cols[j]] > ranges[cols[j]][0] && data[i][cols[j]] < ranges[cols[j]][1]
               ) {
                 listGridColumn.classList.toggle('okay');
-              } else if(!data[i][cols[j]]){
-                listGridColumn.classList.toggle('noresult')
-              }
-              else {
+              } else if (!data[i][cols[j]]) {
+                listGridColumn.classList.toggle('noresult');
+              } else {
                 listGridColumn.classList.toggle('fail');
               }
             }
@@ -165,8 +163,8 @@ export default function decorate(block) {
               } else {
                 listGridColumn.textContent = txtContent;
               }
-            }else if(j >= 3){
-              listGridColumn.textContent = 'n/a'
+            } else if (j >= 3) {
+              listGridColumn.textContent = 'n/a';
             }
           }
           listGridRow.append(listGridColumn);

@@ -168,9 +168,9 @@ function drawFilter(block, cfg) {
   const limit10 = limit === '10' ? 'selected' : '';
   const limit30 = limit === '30' ? 'selected' : '';
   const limit100 = limit === '100' ? 'selected' : '';
-  const today = new Date() // get today's date
-  const tomorrow = new Date(today)
-  tomorrow.setDate(today.getDate() + 1)
+  const today = new Date(); // get today's date
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
   const maxStartDate = today.toISOString().split('T')[0];
   const maxEndDate = tomorrow.toISOString().split('T')[0];
 

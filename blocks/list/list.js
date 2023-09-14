@@ -144,7 +144,7 @@ export default function decorate(block) {
             }
             if (txtContent) {
               if (j >= 3) {
-                listGridColumn.textContent = `${txtContent}${metrics[j - 3]}`;
+                listGridColumn.textContent = `${parseFloat(txtContent).toFixed(2).toLocaleString('en-US')}${metrics[j - 3]}`;
               } else {
                 listGridColumn.textContent = txtContent;
               }
@@ -152,6 +152,7 @@ export default function decorate(block) {
           }
           listGridRow.append(listGridColumn);
         }
+        
         listGridContainer.append(listGridRow);
 
         counter = i;

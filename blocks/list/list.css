@@ -10,6 +10,11 @@ div.grid.list.container {
 
 .list-wrapper {
     height: 100%;
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
 }
 
 div.grid.list.row {

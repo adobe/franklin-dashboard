@@ -72,6 +72,26 @@ export default class CWVLineChart extends LineChart {
             width: 30,
             data: ['a', 'b', 'c', 'd', 'e'],
           },
+          toolbox: {
+            feature: {
+              dataZoom: {
+                xAxisIndex: 'none'
+              },
+              restore: {},
+              saveAsImage: {}
+            }
+          },
+          dataZoom: [
+            {
+              type: 'inside',
+              start: 0,
+              end: 100
+            },
+            {
+              start: 0,
+              end: 100
+            }
+          ],
           tooltip: {
             enterable: true,
             trigger: 'item',

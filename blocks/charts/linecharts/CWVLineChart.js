@@ -65,13 +65,6 @@ export default class CWVLineChart extends LineChart {
             bottom: 30,
             containLabel: true
           },
-          legend: {
-            orient: 'vertical',
-            left: 10,
-            show: true,
-            width: 30,
-            data: ['a', 'b', 'c', 'd', 'e'],
-          },
           toolbox: {
             feature: {
               dataZoom: {

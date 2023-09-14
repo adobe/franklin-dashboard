@@ -147,7 +147,7 @@ export default function decorate(block) {
               const params = new URLSearchParams(window.location.search);
               const nextUrl = data[i][cols[0]].replace('https://', '');
               params.set('url', nextUrl);
-              listGridColumn.innerHTML = `<a href="${window.location.host}/views/rum-pageviews?${params.toString()}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
+              listGridColumn.innerHTML = `<a href="/views/rum-pageviews?${params.toString()}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
             } else {
               txtContent = data[i][cols[j]];
             }

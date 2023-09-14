@@ -74,6 +74,10 @@ export default function decorate(block) {
         listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
         listGridHeadingRow.appendChild(listGridHeadings);
       }
+      const chartHeading = document.createElement('div');
+      chartHeading.textContent = 'Chart'
+      chartHeading.classList.add('grid', 'list', 'col', 'heading');
+      listGridHeadingRow.appendChild(chartHeading);
       listGridContainer.appendChild(listGridHeadingRow);
 
       let counter = 0;
@@ -140,7 +144,10 @@ export default function decorate(block) {
             } else if (cols[j] === 'url') {
               listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
             } else if (cols[j] === 'pageviews') {
-              txtContent = parseInt(data[i][cols[j]], 10).toLocaleString('en-US');
+              const params = new URLSearchParams(window.location.search);
+              const nextUrl = data[i][cols[0]].replace('https://', '');
+              params.set('url', nextUrl);
+              listGridColumn.innerHTML = `<a href="${window.location.host}/views/rum-pageviews?${params.toString()}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
             } else {
               txtContent = data[i][cols[j]];
             }
@@ -169,7 +176,13 @@ export default function decorate(block) {
           }
           listGridRow.append(listGridColumn);
         }
-        
+        let chartLink = document.createElement('div');
+        const params = new URLSearchParams(window.location.search);
+        const nextUrl = data[i][cols[0]].replace('https://', '');
+        params.set('url', nextUrl);
+        chartLink.innerHTML = `<div><a target="_" href="${window.location.host}/views/rum-performance-monitor?${params.toString()}">View Chart</a></div>`;
+        chartLink.classList.add('grid', 'list', 'col', 'clickChart');
+        listGridRow.append(chartLink);
         listGridContainer.append(listGridRow);
 
         counter = i;

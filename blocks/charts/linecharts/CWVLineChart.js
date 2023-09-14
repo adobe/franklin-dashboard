@@ -99,7 +99,7 @@ export default class CWVLineChart extends LineChart {
               smooth: true,
               symbol: 'circle',
               symbolSize: (val, param) => {
-                if(Object.hasOwn(this.poi_data[this.defaultKey], param.name)){
+                if(Object.hasOwn(this, 'poi_data') && Object.hasOwn(this.poi_data[this.defaultKey], param.name)){
                   return 15;
                 }
               },

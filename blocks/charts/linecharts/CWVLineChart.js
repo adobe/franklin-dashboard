@@ -82,10 +82,7 @@ export default class CWVLineChart extends LineChart {
           dataZoom: [
             {
               type: 'inside',
-              start: 0,
-              end: 100,
-            },
-            {
+              show: false,
               start: 0,
               end: 100,
             },
@@ -174,7 +171,7 @@ export default class CWVLineChart extends LineChart {
                       name: 'Good',
                       yAxis: `${good[0]}`, // min of green area
                       itemStyle: {
-                        color: 'rgba(221,255,221, 0.5)',
+                        color: 'rgba(221,255,221, 0.18)',
                       },
                     },
                     {

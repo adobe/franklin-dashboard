@@ -65,10 +65,7 @@ export default class LineChart extends Chart {
           dataZoom: [
             {
               type: 'inside',
-              start: 0,
-              end: 100,
-            },
-            {
+              show: false,
               start: 0,
               end: 100,
             },
@@ -101,6 +98,9 @@ export default class LineChart extends Chart {
               type: 'line',
               smooth: true,
               symbol: 'none',
+              itemStyle: {
+                color: '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)
+              }
             },
           ],
         };

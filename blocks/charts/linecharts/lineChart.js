@@ -43,14 +43,14 @@ export default class LineChart extends Chart {
         });
 
         const lbl = this.cfg['label-key'];
+        const reversed = this.data.reverse()
 
-        let labels = this.data.map((row) => {
+        let labels = reversed.map((row) => {
           let res = row[`${this.cfg['label-key']}`]
           return res.length > 10 ? res.substring(0, 10) : res;
         });
 
-        labels = [...labels.sort()]
-        const series = this.data.map((row) => row[`${this.cfg.field}`]);
+        const series = reversed.map((row) => row[`${this.cfg.field}`]);
         const title = this.cfg.label;
         const params = new URLSearchParams(window.location.href);
 

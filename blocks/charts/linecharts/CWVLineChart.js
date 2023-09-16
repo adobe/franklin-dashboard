@@ -22,10 +22,9 @@ export default class CWVLineChart extends LineChart {
         document.querySelectorAll('div.loading').forEach((loading) => {
           loading.style.display = 'none';
         });
-        const reverseData = [...this.data];
 
-        const labels = reverseData.map((row) => row[`${this.cfg['label-key']}`].substr(0, 10));
-        const series = reverseData.map((row) => row[`${this.cfg.field}`]);
+        const labels = this.data.map((row) => row[`${this.cfg['label-key']}`].substr(0, 10));
+        const series = this.data.map((row) => row[`${this.cfg.field}`]);
         const title = this.cfg.label;
         const params = new URLSearchParams(window.location.href);
 

@@ -75,9 +75,6 @@ export default class CWVLineChart extends LineChart {
           },
           toolbox: {
             feature: {
-              dataZoom: {
-                xAxisIndex: 'none',
-              },
               restore: {},
               saveAsImage: {},
             },
@@ -119,6 +116,9 @@ export default class CWVLineChart extends LineChart {
               type: 'line',
               smooth: true,
               symbol: 'circle',
+              lineStyle: {
+                color: '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)
+              },
               symbolSize: (val, param) => {
                 if (Object.keys(this.poi_data).length > 0
                 && Object.hasOwn(this.poi_data[this.defaultKey], param.name)) {
@@ -166,6 +166,34 @@ export default class CWVLineChart extends LineChart {
                 areaStyle: {
                   color: '#91cc75',
                 },
+              },
+              markArea: {
+                data: [
+                  [
+                    {
+                      name: 'Good',
+                      yAxis: `${good[0]}`, // min of green area
+                      itemStyle: {
+                        color: 'rgba(221,255,221, 0.5)',
+                      },
+                    },
+                    {
+                      yAxis: `${good[1]}`, // max of green area area
+                    },
+                  ],
+                  [
+                    {
+                      name: 'Needs Improvement',
+                      yAxis: `${okay[0]}`, // min of green area
+                      itemStyle: {
+                        color: 'rgba(256, 256, 256, 0.1)',
+                      },
+                    },
+                    {
+                      yAxis: `${okay[1]}`, // max of green area area
+                    },
+                  ],
+                ],
               },
             },
           ],

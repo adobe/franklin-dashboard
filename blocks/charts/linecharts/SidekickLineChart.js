@@ -112,13 +112,21 @@ export default class LineChart extends Chart {
             },
             toolbox: {
               feature: {
-                dataZoom: {
-                  xAxisIndex: 'none',
-                },
                 restore: {},
                 saveAsImage: {},
               },
             },
+            dataZoom: [
+                {
+                  type: 'inside',
+                  start: 0,
+                  end: 100,
+                },
+                {
+                  start: 0,
+                  end: 100,
+                },
+              ],
             tooltip: {
               enterable: true,
               trigger: 'item',
@@ -144,6 +152,9 @@ export default class LineChart extends Chart {
             title: {
               text: `${title}\n${params.get('url')}`,
               x: 'center',
+            },
+            lineStyle: {
+                color: '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)
             },
             toolbox: {
               feature: {

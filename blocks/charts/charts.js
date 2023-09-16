@@ -9,7 +9,7 @@ import CWVLineChart from './linecharts/CWVLineChart.js';
 import SidekickLineChart from './linecharts/SidekickLineChart.js';
 
 export default function decorate(block) {
-  //draw the loading graphic
+  // draw the loading graphic
   drawLoader(block);
   const perfRanges = {};
 
@@ -17,10 +17,8 @@ export default function decorate(block) {
   cfg = Object.fromEntries(Object.entries(cfg).map(([k, v]) => [k, typeof v === 'string' ? v.toLowerCase() : v]));
   const typeChart = cfg.type;
   const endpoint = cfg.data;
-  const poi_endpoint = cfg['poi-data'];
-  const poi_field = cfg['poi-field']
-  const legend_endpoint = cfg['legend-data'];
-  const legend_field = cfg['legend-field'];
+  const poiEndpoint = cfg['poi-data'];
+  const legendEndpoint = cfg['legend-data'];
   // As soon as we have endpoint, fire off request for data
   const tableColumn = cfg.field;
   if (Object.hasOwn(cfg, 'good') && Object.hasOwn(cfg, 'okay') && Object.hasOwn(cfg, 'poor')) {
@@ -63,14 +61,14 @@ export default function decorate(block) {
     if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === true) {
       window.setTimeout(getQuery, 1);
     } else if (Object.hasOwn(window, 'gettingQueryInfo') && window.gettingQueryInfo === false) {
-      if(endpoint){
+      if (endpoint) {
         queryRequest(endpoint, getUrlBase(endpoint));
       }
-      if(poi_endpoint){
-        queryRequest(poi_endpoint, getUrlBase(poi_endpoint));
+      if (poiEndpoint) {
+        queryRequest(poiEndpoint, getUrlBase(poiEndpoint));
       }
-      if(legend_endpoint){
-        queryRequest(legend_endpoint, getUrlBase(legend_endpoint));
+      if (legendEndpoint) {
+        queryRequest(legendEndpoint, getUrlBase(legendEndpoint));
       }
     }
   };
@@ -81,9 +79,9 @@ export default function decorate(block) {
       thisChart = new CWVLineChart(cfg);
     } else if (typeChart === 'bar' && endpoint === 'rum-dashboard') {
       thisChart = new CWVBarChart(cfg);
-    } else if (typeChart === 'line' && endpoint.startsWith('sidekick')){
-    thisChart = new SidekickLineChart(cfg);
-    }else if (typeChart === 'bar') {
+    } else if (typeChart === 'line' && endpoint.startsWith('sidekick')) {
+      thisChart = new SidekickLineChart(cfg);
+    } else if (typeChart === 'bar') {
       thisChart = new BarChart(cfg);
     } else if (typeChart === 'line') {
       thisChart = new LineChart(cfg);

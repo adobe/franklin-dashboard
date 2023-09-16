@@ -33,7 +33,8 @@ export default class LineChart extends Chart {
       const endpoint = this.cfg.data;
       const flag = `${endpoint}Flag`;
 
-      if (((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag))) {
+      if (((Object.hasOwn(window, flag) && window[flag] === true)
+       || !Object.hasOwn(window, flag))) {
         window.setTimeout(this.drawChart.bind(this), 5);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
@@ -42,11 +43,10 @@ export default class LineChart extends Chart {
           loading.style.display = 'none';
         });
 
-        const lbl = this.cfg['label-key'];
-        const reversed = this.data.reverse()
+        const reversed = this.data.reverse();
 
-        let labels = reversed.map((row) => {
-          let res = row[`${this.cfg['label-key']}`]
+        const labels = reversed.map((row) => {
+          const res = row[`${this.cfg['label-key']}`];
           return res.length > 10 ? res.substring(0, 10) : res;
         });
 

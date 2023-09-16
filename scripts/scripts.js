@@ -100,7 +100,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   let interval;
 
   const params = new URLSearchParams(window.location.search);
-  if(!endpoint) {
+  if (!endpoint) {
     throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
   }
 
@@ -177,20 +177,19 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
-  if(endpoint === 'daily-rum'){ 
+  if (endpoint === 'daily-rum') {
     params.set('exactmatch', true);
   }
-  if(endpoint === 'github-commits'){
-    const curr_url = params.get('url');
-    let host_name;
+  if (endpoint === 'github-commits') {
+    const currUrl = params.get('url');
+    let hostName;
 
-    if(curr_url.startsWith('https://') || curr_url.startsWith('http://')){
-      host_name = new URL(curr_url).hostname;
+    if (currUrl.startsWith('https://') || currUrl.startsWith('http://')) {
+      hostName = new URL(currUrl).hostname;
+    } else {
+      hostName = new URL(`https://${currUrl}`).hostname;
     }
-    else{
-      host_name = new URL(`https://${curr_url}`).hostname;
-    }
-    params.set('url', host_name);
+    params.set('url', hostName);
   }
   const flag = `${endpoint}Flag`;
   const checkData = () => {

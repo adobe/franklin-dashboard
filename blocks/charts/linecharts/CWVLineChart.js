@@ -10,11 +10,13 @@ export default class CWVLineChart extends LineChart {
       this.echart = echarts.init(currBlock);
       this.extraDomOperations(currBlock);
       const endpoint = this.cfg.data;
-      const poi_endpoint = this.cfg['poi-data'];
+      const poiEndpoint = this.cfg['poi-data'];
       const flag = `${endpoint}Flag`;
-      const poiFlag = `${poi_endpoint}Flag`;
+      const poiFlag = `${poiEndpoint}Flag`;
 
-      if (((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) || (poi_endpoint && ((Object.hasOwn(window, poiFlag) && window[poiFlag] === true) || !Object.hasOwn(window, poiFlag)))) {
+      if (((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag))
+      || (poiEndpoint && ((Object.hasOwn(window, poiFlag) && window[poiFlag] === true)
+    || !Object.hasOwn(window, poiFlag)))) {
         window.setTimeout(this.drawChart.bind(this), 5);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
@@ -28,32 +30,37 @@ export default class CWVLineChart extends LineChart {
         const title = this.cfg.label;
         const params = new URLSearchParams(window.location.href);
 
-        if(poi_endpoint && Object.hasOwn(window.dashboard, poi_endpoint) && this.data){
+        if (poiEndpoint && Object.hasOwn(window.dashboard, poiEndpoint) && this.data) {
           const poiMap = {};
-          window.dashboard[poi_endpoint].results.data.forEach((val) => {
-            const {commit_date, commit_url, message, owner_repo} = val;
-            if(!Object.hasOwn(this, 'defaultKey')){
+          window.dashboard[poiEndpoint].results.data.forEach((val) => {
+            /* eslint-disable camelcase */
+            const {
+              commit_date, commit_url, message, owner_repo,
+            } = val;
+            if (!Object.hasOwn(this, 'defaultKey')) {
               this.defaultKey = owner_repo;
             }
-            if(!Object.hasOwn(poiMap, owner_repo)){
-              let map = {};
+            if (!Object.hasOwn(poiMap, owner_repo)) {
+              const map = {};
               poiMap[owner_repo] = map;
             }
-            poiMap[owner_repo][commit_date] = {commit_url: commit_url, message: message};
-          })
+            poiMap[owner_repo][commit_date] = { commit_url, message };
+          });
           this.poi_data = poiMap;
         }
 
-        var callback = (params) => {
-          if(Object.keys(this.poi_data).length > 0 && Object.hasOwn(this.poi_data[this.defaultKey], params.name)){
-            const { message, commit_url} = this.poi_data[this.defaultKey][params.name];
-            return `${message ? message : 'No Message Available' }<br />
-            Commit Date: ${params.name}<br/>
-            <a href="${commit_url}" target='_'>Click To See Commit </a><br />`
+        const callback = (param) => {
+          if (Object.keys(this.poi_data).length > 0
+          && Object.hasOwn(this.poi_data[this.defaultKey], param.name)) {
+            const { message, commit_url } = this.poi_data[this.defaultKey][param.name];
+            return `${message || 'No Message Available'}<br />
+            Commit Date: ${param.name}<br/>
+            <a href="${commit_url}" target='_'>Click To See Commit </a><br />`;
           }
-        }
+          return null;
+        };
 
-        const { good, okay, poor } = this.cfg.perfRanges[this.cfg.field];
+        const { good, okay } = this.cfg.perfRanges[this.cfg.field];
 
         const opts = {
           title: {
@@ -64,34 +71,34 @@ export default class CWVLineChart extends LineChart {
             left: 30,
             right: 110,
             bottom: 30,
-            containLabel: true
+            containLabel: true,
           },
           toolbox: {
             feature: {
               dataZoom: {
-                xAxisIndex: 'none'
+                xAxisIndex: 'none',
               },
               restore: {},
-              saveAsImage: {}
-            }
+              saveAsImage: {},
+            },
           },
           dataZoom: [
             {
               type: 'inside',
               start: 0,
-              end: 100
+              end: 100,
             },
             {
               start: 0,
-              end: 100
-            }
+              end: 100,
+            },
           ],
           tooltip: {
             enterable: true,
             trigger: 'item',
             formatter: callback,
             confine: true,
-            extraCssText: "width: fit-content; height: fit-content;"
+            extraCssText: 'width: fit-content; height: fit-content;',
           },
           xAxis: {
             type: 'category',
@@ -113,9 +120,11 @@ export default class CWVLineChart extends LineChart {
               smooth: true,
               symbol: 'circle',
               symbolSize: (val, param) => {
-                if(Object.keys(this.poi_data).length > 0 && Object.hasOwn(this.poi_data[this.defaultKey], param.name)){
+                if (Object.keys(this.poi_data).length > 0
+                && Object.hasOwn(this.poi_data[this.defaultKey], param.name)) {
                   return 15;
                 }
+                return 0;
               },
               markLine: {
                 data: [

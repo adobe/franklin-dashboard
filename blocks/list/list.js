@@ -75,7 +75,7 @@ export default function decorate(block) {
         listGridHeadingRow.appendChild(listGridHeadings);
       }
       const chartHeading = document.createElement('div');
-      chartHeading.textContent = 'Chart'
+      chartHeading.textContent = 'Chart';
       chartHeading.classList.add('grid', 'list', 'col', 'heading');
       listGridHeadingRow.appendChild(chartHeading);
       listGridContainer.appendChild(listGridHeadingRow);
@@ -176,7 +176,7 @@ export default function decorate(block) {
           }
           listGridRow.append(listGridColumn);
         }
-        let chartLink = document.createElement('div');
+        const chartLink = document.createElement('div');
         const params = new URLSearchParams(window.location.search);
         const nextUrl = data[i][cols[0]].replace('https://', '');
         params.set('url', nextUrl);

@@ -1,4 +1,4 @@
-import { hideLoader } from '../../../scripts/loader.js';
+import { hideLoader } from '../../scripts/loader.js';
 
 export default class Chart {
   /* Member Data
@@ -37,7 +37,8 @@ export default class Chart {
     }).observe(chartElement);
   }
 
-  hideLoader(block){
+  /* eslint-disable class-methods-use-this */
+  hideLoader(block) {
     hideLoader(block);
   }
 

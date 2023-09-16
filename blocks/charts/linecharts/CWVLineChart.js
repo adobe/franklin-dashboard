@@ -26,11 +26,12 @@ export default class CWVLineChart extends LineChart {
 
         const labels = reverseData.map((row) => row[`${this.cfg['label-key']}`].substr(0, 10));
         const series = reverseData.map((row) => row[`${this.cfg.field}`]);
-        const legend = this.cfg.label;
+        const title = this.cfg.label;
+        const params = new URLSearchParams(window.location.href);
 
-        if(poi_endpoint && Object.hasOwn(window.dashboard, this.cfg['poi-data']) && this.data){
+        if(poi_endpoint && Object.hasOwn(window.dashboard, poi_endpoint) && this.data){
           const poiMap = {};
-          window.dashboard[this.cfg['poi-data']].results.data.forEach((val) => {
+          window.dashboard[poi_endpoint].results.data.forEach((val) => {
             const {commit_date, commit_url, message, owner_repo} = val;
             if(!Object.hasOwn(this, 'defaultKey')){
               this.defaultKey = owner_repo;
@@ -57,7 +58,8 @@ export default class CWVLineChart extends LineChart {
 
         const opts = {
           title: {
-            text: `${legend}`,
+            text: `${title}\n${params.get('url')}`,
+            x: 'center',
           },
           grid: {
             left: 30,

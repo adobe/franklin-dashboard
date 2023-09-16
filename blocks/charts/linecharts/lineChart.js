@@ -31,11 +31,9 @@ export default class LineChart extends Chart {
       this.echart = echarts.init(currBlock);
       this.extraDomOperations(currBlock);
       const endpoint = this.cfg.data;
-      const poi_endpoint = this.cfg['poi-data'];
       const flag = `${endpoint}Flag`;
-      const poiFlag = `${poi_endpoint}Flag`;
 
-      if (((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) || (poi_endpoint && ((Object.hasOwn(window, poiFlag) && window[poiFlag] === true) || !Object.hasOwn(window, poiFlag)))) {
+      if (((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag))) {
         window.setTimeout(this.drawChart.bind(this), 5);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
@@ -53,11 +51,12 @@ export default class LineChart extends Chart {
 
         labels = [...labels.sort()]
         const series = this.data.map((row) => row[`${this.cfg.field}`]);
-        const legend = this.cfg.label;
+        const title = this.cfg.label;
+        const params = new URLSearchParams(window.location.href);
 
         const opts = {
           title: {
-            text: `${legend}`,
+            text: `${title}\n${params.get('url')}`,
             x: 'center',
           },
           xAxis: {

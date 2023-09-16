@@ -12,7 +12,7 @@ div [_echarts_instance_] {
     height: 100%;
     width: 100%;
     box-sizing: border-box;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
     border-radius: 5px;
     background: #fff;
     overflow: hidden;
@@ -26,9 +26,6 @@ div [_echarts_instance_] > div {
 div [_echarts_instance_] > div > canvas {
     height: 100%;
     width: 100%;
-}
-
-.section.charts-container > .charts-wrapper > .charts.block {
 }
 
 .section.charts-container > .charts-wrapper{

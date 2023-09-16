@@ -257,7 +257,7 @@ footer {
   grid-template-columns: 50% 50%;
   grid-template-rows: 20% 45% 45%;
   box-sizing: border-box;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px;
+  box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
   border-radius: 5px;
   background: #fff;
   overflow: hidden;
@@ -270,16 +270,16 @@ footer {
   grid-template-columns: 50% 50%;
   grid-template-rows: 20% 40% 40%;
   box-sizing: border-box;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px;
+  box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
   border-radius: 5px;
   background: #fff;
   overflow: hidden;
 }
 
 @media (min-width: 600px) {
-
   .section.charts-container {
     display: grid;
+
     /* min-height: 300px; */
   }
 

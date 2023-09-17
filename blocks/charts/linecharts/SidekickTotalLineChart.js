@@ -101,7 +101,7 @@ export default class SidekickTotalLineChart extends Chart {
 
           Object.keys(this.legendArray).forEach((val, idx, arr) => {
             if(!Object.hasOwn(dataset, val) && val !== arr[0]){
-                delete this.legendArr[idx];
+                delete this.legendArray[idx];
             }
           });
           opts = {

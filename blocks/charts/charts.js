@@ -7,7 +7,7 @@ import BarChart from './barcharts/barCharts.js';
 import CWVBarChart from './barcharts/CWVBarChart.js';
 import CWVLineChart from './linecharts/CWVLineChart.js';
 import SidekickLineChart from './linecharts/SidekickLineChart.js';
-import SidekickTotalLineChart from './linecharts/SidekickTotalLineCharts.js';
+import SidekickTotalLineChart from './linecharts/SidekickTotalLineChart.js';
 
 export default function decorate(block) {
   // draw the loading graphic

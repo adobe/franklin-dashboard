@@ -67,10 +67,6 @@ export default class SidekickTotalLineChart extends Chart {
           let lastDay;
           const dataset = [];
           let lastRow = {};
-          const seriesType = [];
-          for (let i = 0; i < Object.keys(legendMap).length; i += 1) {
-            seriesType.push({ type: 'line', stack: 'Total' });
-          }
           this.data.forEach((row) => {
             const { day, checkpoint, invocations } = row;
             if (!lastDay) {
@@ -92,6 +88,10 @@ export default class SidekickTotalLineChart extends Chart {
             }
           });
           this.legendArray = legendArr;
+          const seriesType = [];
+          for (let i = 0; i < this.legendArr.length; i += 1) {
+            seriesType.push({ type: 'line', stack: 'Total' });
+          }
           opts = {
             title: {
               text: `Total Sidekick Usage`,

@@ -80,7 +80,7 @@ export default class SidekickTotalLineChart extends Chart {
             if (!Object.hasOwn(lastRow, 'day')) {
               lastRow.day = day;
             }
-            lastRow[checkpoint] = invocations;
+            lastRow[checkpoint] = parseInt(invocations);
             if (!Object.hasOwn(legendMap, checkpoint)) {
               const arr = [];
               legendMap[checkpoint] = arr;
@@ -89,8 +89,8 @@ export default class SidekickTotalLineChart extends Chart {
           });
           this.legendArray = legendArr;
           const seriesType = [];
-          for (let i = 0; i < this.legendArr.length; i += 1) {
-            seriesType.push({ type: 'line', stack: 'Total' });
+          for (let i = 1; i < this.legendArray.length; i += 1) {
+            seriesType.push({ type: 'line' });
           }
           opts = {
             title: {
@@ -118,9 +118,10 @@ export default class SidekickTotalLineChart extends Chart {
             ],
             tooltip: {
               enterable: true,
-              trigger: 'item',
+              trigger: 'axis',
               confine: true,
               extraCssText: 'width: fit-content; height: fit-content;',
+              order: 'valueDesc'
             },
             dataset: {
               dimensions: this.legendArray,

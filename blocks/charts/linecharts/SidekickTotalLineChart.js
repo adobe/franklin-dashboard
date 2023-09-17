@@ -1,6 +1,6 @@
 import Chart from '../chartClass.js';
 
-export default class SidekickLineChart extends Chart {
+export default class SidekickTotalLineChart extends Chart {
   constructor(cfg) {
     super(cfg);
     this.cfg = cfg;
@@ -79,7 +79,7 @@ export default class SidekickLineChart extends Chart {
           let lastRow = {};
           const seriesType = [];
           for (let i = 0; i < Object.keys(legendMap).length; i += 1) {
-            seriesType.push({ type: 'bar', stack: 'Total' });
+            seriesType.push({ type: 'line', stack: 'Total' });
           }
           this.data.forEach((row) => {
             const { day, checkpoint, invocations } = row;
@@ -98,9 +98,12 @@ export default class SidekickLineChart extends Chart {
             this.legendMap[row[legendField]].push(row[`${this.cfg.field}`]);
             this.year_map[row[`${this.cfg['label-key']}`]] = 1;
           });
-          if (endpoint === 'sidekick-by-hostname') {
-            dataset.reverse();
-          }
+
+          Object.keys(this.legendArr).forEach((val, idx, arr) => {
+            if(!Object.hasOwn(dataset, val) && val !== arr[0]){
+                delete this.legendArr[idx];
+            }
+          });
           opts = {
             title: {
               text: `${title}\n${params.get('url')}`,

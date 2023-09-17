@@ -63,16 +63,6 @@ export default class SidekickTotalLineChart extends Chart {
         if (legendEndpoint && Object.hasOwn(window.dashboard, legendEndpoint) && this.data) {
           const legendArr = ['day'];
           const legendMap = {};
-          window.dashboard[legendEndpoint].results.data.forEach((val) => {
-            const { checkpoint } = val;
-            if (!Object.hasOwn(legendMap, checkpoint)) {
-              const arr = [];
-              legendMap[checkpoint] = arr;
-            }
-            legendArr.push(checkpoint);
-            this.legendArray = legendArr;
-            this.legendMap = legendMap;
-          });
           this.year_map = {};
           let lastDay;
           const dataset = [];
@@ -95,15 +85,13 @@ export default class SidekickTotalLineChart extends Chart {
               lastRow.day = day;
             }
             lastRow[checkpoint] = invocations;
-            this.legendMap[row[legendField]].push(row[`${this.cfg.field}`]);
-            this.year_map[row[`${this.cfg['label-key']}`]] = 1;
-          });
-
-          Object.keys(this.legendArray).forEach((val, idx, arr) => {
-            if(!Object.hasOwn(dataset, val) && val !== arr[0]){
-                delete this.legendArray[idx];
+            if (!Object.hasOwn(legendMap, checkpoint)) {
+              const arr = [];
+              legendMap[checkpoint] = arr;
+              legendArr.push(checkpoint);
             }
           });
+          this.legendArray = legendArr;
           opts = {
             title: {
               text: `Total Sidekick Usage`,

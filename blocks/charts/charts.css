@@ -30,8 +30,8 @@ div [_echarts_instance_] > div > canvas {
 
 .section.charts-container > .charts-wrapper{
     aspect-ratio: 1/1;
-    max-height: 600px;
-    max-width: 800px;
+    max-height: 50vh;
+    max-width: 50vw;
 }
 
 .charts div.loading {

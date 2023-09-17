@@ -60,7 +60,7 @@ export default class LineChart extends Chart {
             x: 'center',
           },
           lineStyle: {
-            color: '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)
+            color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
           },
           dataZoom: [
             {
@@ -99,8 +99,8 @@ export default class LineChart extends Chart {
               smooth: true,
               symbol: 'none',
               itemStyle: {
-                color: '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)
-              }
+                color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
+              },
             },
           ],
         };

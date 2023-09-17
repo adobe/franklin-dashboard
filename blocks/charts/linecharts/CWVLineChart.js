@@ -114,7 +114,7 @@ export default class CWVLineChart extends LineChart {
               smooth: true,
               symbol: 'circle',
               lineStyle: {
-                color: '#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)
+                color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
               },
               symbolSize: (val, param) => {
                 if (Object.keys(this.poi_data).length > 0

@@ -106,7 +106,7 @@ export default class SidekickTotalLineChart extends Chart {
           });
           opts = {
             title: {
-              text: `${title}\n${params.get('url')}`,
+              text: `Total Sidekick Usage`,
               x: 'center',
             },
             legend: {

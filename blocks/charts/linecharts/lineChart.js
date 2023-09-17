@@ -33,7 +33,8 @@ export default class LineChart extends Chart {
       const endpoint = this.cfg.data;
       const flag = `${endpoint}Flag`;
 
-      if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
+      if (((Object.hasOwn(window, flag) && window[flag] === true)
+       || !Object.hasOwn(window, flag))) {
         window.setTimeout(this.drawChart.bind(this), 5);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
@@ -42,14 +43,41 @@ export default class LineChart extends Chart {
           loading.style.display = 'none';
         });
 
-        const labels = this.data.map((row) => row[`${this.cfg['label-key']}`]);
-        const series = this.data.map((row) => row[`${this.cfg.field}`]);
-        const legend = this.cfg.label;
+        const reversed = this.data.reverse();
+
+        const labels = reversed.map((row) => {
+          const res = row[`${this.cfg['label-key']}`];
+          return res.length > 10 ? res.substring(0, 10) : res;
+        });
+
+        const series = reversed.map((row) => row[`${this.cfg.field}`]);
+        const title = this.cfg.label;
+        const params = new URLSearchParams(window.location.href);
 
         const opts = {
           title: {
-            text: `${legend}`,
+            text: `${title}\n${params.get('url')}`,
             x: 'center',
+          },
+          lineStyle: {
+            color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
+          },
+          dataZoom: [
+            {
+              type: 'inside',
+              show: false,
+              start: 0,
+              end: 100,
+            },
+          ],
+          toolbox: {
+            feature: {
+              dataZoom: {
+                xAxisIndex: 'none',
+              },
+              restore: {},
+              saveAsImage: {},
+            },
           },
           xAxis: {
             type: 'category',
@@ -70,11 +98,15 @@ export default class LineChart extends Chart {
               type: 'line',
               smooth: true,
               symbol: 'none',
+              itemStyle: {
+                color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
+              },
             },
           ],
         };
         this.configureEchart(opts);
         this.echart.setOption(opts);
+        this.hideLoader(this.cfg.block);
       }
     }
   }

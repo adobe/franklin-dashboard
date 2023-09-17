@@ -10,12 +10,17 @@ div.grid.list.container {
 
 .list-wrapper {
     height: 100%;
+    box-sizing: border-box;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
 }
 
 div.grid.list.row {
     display: grid;
     height: 100%;
-    grid-template-columns: 4fr 2fr 9fr 2fr 2fr 2fr 2fr;
+    grid-template-columns: 4fr 2fr 9fr 2fr 2fr 2fr 2fr 2fr;
     grid-gap: 10px;
     align-items: center;
     justify-items: center;
@@ -32,7 +37,7 @@ div.grid.list.row.heading {
 }
 
 div.grid.list.col.heading {
-    border-style: solid;
+    /* border-style: solid; */
 }
 
 div.grid.list.row.odd {

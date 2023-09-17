@@ -110,7 +110,7 @@ export default class SidekickTotalLineChart extends Chart {
               x: 'center',
             },
             legend: {
-              orient: 'vertical',
+              orient: 'horizontal',
               extraCssText: 'width: fit-content; height: fit-content;',
               bottom: 0,
             },

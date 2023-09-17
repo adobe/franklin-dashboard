@@ -107,14 +107,12 @@ export default class SidekickTotalLineChart extends Chart {
           opts = {
             title: {
               text: `${title}\n${params.get('url')}`,
-              bottom: 0,
               x: 'center',
             },
             legend: {
               orient: 'vertical',
               extraCssText: 'width: fit-content; height: fit-content;',
-              top: '0',
-              left: '0',
+              bottom: 0,
             },
             toolbox: {
               feature: {

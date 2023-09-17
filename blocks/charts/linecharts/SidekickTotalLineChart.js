@@ -99,7 +99,7 @@ export default class SidekickTotalLineChart extends Chart {
             this.year_map[row[`${this.cfg['label-key']}`]] = 1;
           });
 
-          Object.keys(this.legendArr).forEach((val, idx, arr) => {
+          Object.keys(this.legendArray).forEach((val, idx, arr) => {
             if(!Object.hasOwn(dataset, val) && val !== arr[0]){
                 delete this.legendArr[idx];
             }

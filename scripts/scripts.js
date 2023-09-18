@@ -104,39 +104,26 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
   }
 
-  const hasStart = params.has('startdate');
-  const hasEnd = params.has('enddate');
+  let hasStart = params.has('startdate');
+  let hasEnd = params.has('enddate');
   let hasInterval = params.has('interval');
   let hasOffset = params.has('offset');
 
-  // default to interval 30 if params are not set
-  if (!hasStart && !hasEnd && !hasInterval && !hasOffset) {
-    params.set('interval', '30');
-    params.set('offset', '1');
-    hasInterval = true;
-    hasOffset = true;
-  }
-
   const dateValid = hasStart && hasEnd && params.get('startdate').length > 4 && params.get('enddate').length > 4;
-  const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) > 1 && parseInt(params.get('offset'), 10) >= 1;
+  const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) >= 0 && parseInt(params.get('offset'), 10) >= 0;
+
+  let start = new Date(params.get('startdate'));
+  let end = new Date(params.get('enddate'));
+  let startdate = params.get('startdate');
+  let enddate = params.get('enddate');
+  const today = new Date();
 
   if (dateValid) {
-    const start = new Date(params.get('startdate'));
-    const end = new Date(params.get('enddate'));
-
-    const today = new Date();
-
     if (start < end && end <= today) {
       const offs = today - end;
       const intv = Math.abs(end - start);
       offset = offs >= 0 ? Math.ceil(offs / (1000 * 60 * 60 * 24)) : 0;
       interval = Math.ceil(intv / (1000 * 60 * 60 * 24));
-      const startdate = params.get('startdate');
-      const enddate = params.get('enddate');
-      params.set('startdate', startdate);
-      params.set('enddate', enddate);
-      params.set('offset', offset);
-      params.set('interval', interval);
     } else if (start === end) {
       offset = 0;
       interval = 0;
@@ -144,20 +131,20 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
       offset = -1;
       interval = -1;
     }
+    params.set('offset', offset);
+    params.set('interval', interval);
   } else if (intervalValid) {
-    const today = new Date();
     offset = params.get('offset');
     interval = params.get('interval');
     const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
     const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
-    const end = today - dateOffsetInMillis;
-    const start = end - intervalInMillis;
-    const startdate = new Date(start).toISOString().split('T')[0];
-    const enddate = new Date(end).toISOString().split('T')[0];
+    end = today - dateOffsetInMillis;
+    start = end - intervalInMillis;
+    startdate = new Date(start).toISOString().split('T')[0];
+    enddate = new Date(end).toISOString().split('T')[0];
     params.set('startdate', startdate);
     params.set('enddate', enddate);
   } else {
-    const today = new Date();
     offset = 1;
     interval = 30;
     const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
@@ -170,6 +157,17 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     params.set('enddate', enddate);
     params.set('offset', offset);
     params.set('interval', interval);
+  }
+
+  hasStart = params.has('startdate');
+  hasEnd = params.has('enddate');
+  hasInterval = params.has('interval');
+  hasOffset = params.has('offset');
+
+  // default to interval 30 if params are not set
+  if (!hasStart && !hasEnd && !hasInterval && !hasOffset) {
+    params.set('interval', '30');
+    params.set('offset', '1');
   }
 
   const limit = params.get('limit') || '30';

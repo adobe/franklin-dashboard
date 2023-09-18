@@ -82,9 +82,9 @@ export default function decorate(block) {
       thisChart = new CWVBarChart(cfg);
     } else if (typeChart === 'line' && endpoint.startsWith('sidekick')) {
       thisChart = new SidekickLineChart(cfg);
-    } else if(typeChart === 'line' && endpoint.startsWith('multiline')) {
+    } else if (typeChart === 'line' && endpoint.startsWith('multiline')) {
       thisChart = new SidekickTotalLineChart(cfg);
-    }else if (typeChart === 'bar') {
+    } else if (typeChart === 'bar') {
       thisChart = new BarChart(cfg);
     } else if (typeChart === 'line') {
       thisChart = new LineChart(cfg);

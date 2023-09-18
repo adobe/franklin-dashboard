@@ -55,11 +55,11 @@ export default class LineChart extends Chart {
         const params = new URLSearchParams(window.location.href);
 
         const opts = {
-            title: {
-              text: `${title}\n${params.get('url')}`,
-              bottom: 0,
-              x: 'center',
-            },
+          title: {
+            text: `${title}\n${params.get('url')}`,
+            bottom: 0,
+            x: 'center',
+          },
           lineStyle: {
             color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
           },

@@ -8,7 +8,7 @@ export default class CWVLineChart extends LineChart {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
       this.echart = echarts.init(currBlock);
-      if(!Object.hasOwn(window, 'chartGroup')){
+      if (!Object.hasOwn(window, 'chartGroup')) {
         window.chartGroup = [];
       }
       this.echart.group = 'group1';
@@ -65,23 +65,23 @@ export default class CWVLineChart extends LineChart {
             <a href="${commit_url}" target='_'>Click To See Commit </a><br />`;
           }
           return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
-          Date: ${info.axisValue}<br/>`
+          Date: ${info.axisValue}<br/>`;
         };
 
         const { good, okay } = this.cfg.perfRanges[this.cfg.field];
 
         const opts = {
-            title: {
-              text: `${title}\n${params.get('url')}`,
-              right: 0,
-              x: 'center',
-            },
-            legend: {
-              orient: 'horizontal',
-              extraCssText: 'width: fit-content; height: fit-content;',
-              top: '0',
-              left: '0',
-            },
+          title: {
+            text: `${title}\n${params.get('url')}`,
+            right: 0,
+            x: 'center',
+          },
+          legend: {
+            orient: 'horizontal',
+            extraCssText: 'width: fit-content; height: fit-content;',
+            top: '0',
+            left: '0',
+          },
           grid: {
             left: 30,
             right: 110,
@@ -130,7 +130,7 @@ export default class CWVLineChart extends LineChart {
               smooth: false,
               symbol: 'circle',
               lineStyle: {
-                color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`
+                color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
               },
               symbolSize: (val, param) => {
                 if (Object.keys(this.poi_data).length > 0
@@ -199,7 +199,7 @@ export default class CWVLineChart extends LineChart {
                       name: 'Needs Improvement',
                       yAxis: `${okay[0]}`, // min of green area
                       label: {
-                        show: Math.max(series) >= okay[0] ? true : false,
+                        show: Math.max(series) >= okay[0],
                       },
                       itemStyle: {
                         color: 'rgba(256, 255, 256, 0.2)',
@@ -217,12 +217,13 @@ export default class CWVLineChart extends LineChart {
         this.configureEchart(opts);
         this.echart.setOption(opts);
         this.hideLoader(this.cfg.block);
-        if(!Object.hasOwn(window, 'connected')){
+        if (!Object.hasOwn(window, 'connected')) {
           window.connected = 0;
-          window.connected = window.connected + 1;
-        }else{
-          window.connected = window.connected + 1;
-          if(window.connected === 4){
+          window.connected += 1;
+        } else {
+          window.connected += 1;
+          if (window.connected === 4) {
+            /* eslint-disable no-undef */
             echarts.connect('group1');
             echarts.connect(window.chartGroup);
           }

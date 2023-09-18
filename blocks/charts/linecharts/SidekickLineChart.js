@@ -32,13 +32,12 @@ export default class SidekickLineChart extends Chart {
       this.extraDomOperations(currBlock);
       const endpoint = this.cfg.data;
       const legendEndpoint = this.cfg['legend-data'];
-      const legendField = this.cfg['legend-field'];
       const flag = `${endpoint}Flag`;
       const legendFlag = `${legendEndpoint}Flag`;
-      if(!Object.hasOwn(window, 'chartGroup')){
+      if (!Object.hasOwn(window, 'chartGroup')) {
         window.chartGroup = [];
       }
-      if(endpoint !== 'sidekick-by-url' || endpoint !== 'sidekick-by-hostname'){
+      if (endpoint !== 'sidekick-by-url' || endpoint !== 'sidekick-by-hostname') {
         this.echart.group = 'group1';
         window.chartGroup.push(this.echart);
       }
@@ -116,7 +115,7 @@ export default class SidekickLineChart extends Chart {
               orient: 'horizontal',
               extraCssText: 'width: fit-content; height: fit-content;',
               bottom: 0,
-              x: 'left'
+              x: 'left',
             },
             toolbox: {
               feature: {
@@ -133,11 +132,11 @@ export default class SidekickLineChart extends Chart {
               },
             ],
             tooltip: {
-                enterable: true,
-                confine: true,
-                extraCssText: 'width: fit-content; height: fit-content;',
-                order: 'valueDesc'
-              },
+              enterable: true,
+              confine: true,
+              extraCssText: 'width: fit-content; height: fit-content;',
+              order: 'valueDesc',
+            },
             dataset: {
               dimensions: this.legendArray,
               source: dataset,
@@ -156,12 +155,12 @@ export default class SidekickLineChart extends Chart {
               color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
             },
             tooltip: {
-                enterable: true,
-                trigger: 'axis',
-                confine: true,
-                extraCssText: 'width: fit-content; height: fit-content;',
-                order: 'valueDesc'
-              },
+              enterable: true,
+              trigger: 'axis',
+              confine: true,
+              extraCssText: 'width: fit-content; height: fit-content;',
+              order: 'valueDesc',
+            },
             toolbox: {
               feature: {
                 restore: {},
@@ -205,15 +204,16 @@ export default class SidekickLineChart extends Chart {
         this.configureEchart(opts);
         this.echart.setOption(opts);
         this.hideLoader(this.cfg.block);
-        if(!Object.hasOwn(window, 'connected')){
-            window.connected = 0;
-            window.connected = window.connected + 1;
-        }else{
-            window.connected = window.connected + 1;
-            if(window.connected === 3){
-              echarts.connect('group1');
-              echarts.connect(window.chartGroup);
-            }
+        if (!Object.hasOwn(window, 'connected')) {
+          window.connected = 0;
+          window.connected += 1;
+        } else {
+          window.connected += 1;
+          if (window.connected === 3) {
+            /* eslint-disable no-undef */
+            echarts.connect('group1');
+            echarts.connect(window.chartGroup);
+          }
         }
       }
     }

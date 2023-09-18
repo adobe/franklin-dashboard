@@ -57,7 +57,6 @@ export default class LineChart extends Chart {
         const opts = {
           title: {
             text: `${title}\n${params.get('url')}`,
-            bottom: 0,
             x: 'center',
           },
           lineStyle: {

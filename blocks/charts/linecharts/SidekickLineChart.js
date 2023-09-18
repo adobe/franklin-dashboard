@@ -35,6 +35,13 @@ export default class SidekickLineChart extends Chart {
       const legendField = this.cfg['legend-field'];
       const flag = `${endpoint}Flag`;
       const legendFlag = `${legendEndpoint}Flag`;
+      if(!Object.hasOwn(window, 'chartGroup')){
+        window.chartGroup = [];
+      }
+      if(endpoint !== 'sidekick-by-url' || endpoint !== 'sidekick-by-hostname'){
+        this.echart.group = 'group1';
+        window.chartGroup.push(this.echart);
+      }
 
       if (((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag))
       || (legendEndpoint && ((Object.hasOwn(window, legendFlag) && window[legendFlag] === true)
@@ -67,9 +74,9 @@ export default class SidekickLineChart extends Chart {
             const { checkpoint } = val;
             if (!Object.hasOwn(legendMap, checkpoint)) {
               const arr = [];
-              legendMap[checkpoint] = arr;
+              legendMap[checkpoint.substring(9)] = arr;
             }
-            legendArr.push(checkpoint);
+            legendArr.push(checkpoint.substring(9));
             this.legendArray = legendArr;
             this.legendMap = legendMap;
           });
@@ -94,9 +101,7 @@ export default class SidekickLineChart extends Chart {
             if (!Object.hasOwn(lastRow, 'day')) {
               lastRow.day = day;
             }
-            lastRow[checkpoint] = invocations;
-            this.legendMap[row[legendField]].push(row[`${this.cfg.field}`]);
-            this.year_map[row[`${this.cfg['label-key']}`]] = 1;
+            lastRow[checkpoint.substring(9)] = invocations;
           });
           if (endpoint === 'sidekick-by-hostname') {
             dataset.reverse();
@@ -104,14 +109,14 @@ export default class SidekickLineChart extends Chart {
           opts = {
             title: {
               text: `${title}\n${params.get('url')}`,
-              bottom: 0,
+              top: 0,
               x: 'center',
             },
             legend: {
-              orient: 'vertical',
+              orient: 'horizontal',
               extraCssText: 'width: fit-content; height: fit-content;',
-              top: '0',
-              left: '0',
+              bottom: 0,
+              x: 'left'
             },
             toolbox: {
               feature: {
@@ -128,11 +133,11 @@ export default class SidekickLineChart extends Chart {
               },
             ],
             tooltip: {
-              enterable: true,
-              trigger: 'item',
-              confine: true,
-              extraCssText: 'width: fit-content; height: fit-content;',
-            },
+                enterable: true,
+                confine: true,
+                extraCssText: 'width: fit-content; height: fit-content;',
+                order: 'valueDesc'
+              },
             dataset: {
               dimensions: this.legendArray,
               source: dataset,
@@ -150,6 +155,13 @@ export default class SidekickLineChart extends Chart {
             lineStyle: {
               color: `#${(0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)}`,
             },
+            tooltip: {
+                enterable: true,
+                trigger: 'axis',
+                confine: true,
+                extraCssText: 'width: fit-content; height: fit-content;',
+                order: 'valueDesc'
+              },
             toolbox: {
               feature: {
                 restore: {},
@@ -193,6 +205,16 @@ export default class SidekickLineChart extends Chart {
         this.configureEchart(opts);
         this.echart.setOption(opts);
         this.hideLoader(this.cfg.block);
+        if(!Object.hasOwn(window, 'connected')){
+            window.connected = 0;
+            window.connected = window.connected + 1;
+        }else{
+            window.connected = window.connected + 1;
+            if(window.connected === 3){
+              echarts.connect('group1');
+              echarts.connect(window.chartGroup);
+            }
+        }
       }
     }
   }

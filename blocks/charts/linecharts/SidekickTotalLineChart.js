@@ -28,8 +28,13 @@ export default class SidekickTotalLineChart extends Chart {
     } else {
       const currBlock = document.querySelector(`div#${this.cfg.chartId}`);
       // eslint-disable-next-line no-undef
-      this.echart = echarts.init(currBlock);
+      this.echart = echarts.init(currBlock, { renderer: 'canvas' });
       this.extraDomOperations(currBlock);
+      if(!Object.hasOwn(window, 'chartGroup')){
+        window.chartGroup = [];
+      }
+      this.echart.group = 'group1';
+      window.chartGroup.push(this.echart);
       const endpoint = this.cfg.data;
       const legendEndpoint = this.cfg['legend-data'];
       const legendField = this.cfg['legend-field'];
@@ -80,11 +85,11 @@ export default class SidekickTotalLineChart extends Chart {
             if (!Object.hasOwn(lastRow, 'day')) {
               lastRow.day = day;
             }
-            lastRow[checkpoint] = parseInt(invocations);
+            lastRow[checkpoint.substring(9)] = parseInt(invocations);
             if (!Object.hasOwn(legendMap, checkpoint)) {
               const arr = [];
               legendMap[checkpoint] = arr;
-              legendArr.push(checkpoint);
+              legendArr.push(checkpoint.replace('sidekick:', ''));
             }
           });
           this.legendArray = legendArr;
@@ -94,13 +99,15 @@ export default class SidekickTotalLineChart extends Chart {
           }
           opts = {
             title: {
-              text: `Total Sidekick Usage`,
+              text: endpoint === 'multiline-sidekick' ? `Sidekick Usage (ALL URLS)` : `Sidekick Usage (Only *.hlx.*)`,
               x: 'center',
             },
             legend: {
               orient: 'horizontal',
-              extraCssText: 'width: fit-content; height: fit-content;',
+              extraCssText: 'width: 100%; margin: 0px; padding: 0px;',
               bottom: 0,
+              x: 'left',
+              y: 'bottom',
             },
             toolbox: {
               feature: {
@@ -183,6 +190,16 @@ export default class SidekickTotalLineChart extends Chart {
         this.configureEchart(opts);
         this.echart.setOption(opts);
         this.hideLoader(this.cfg.block);
+        if(!Object.hasOwn(window, 'connected')){
+          window.connected = 0;
+          window.connected = window.connected + 1;
+        }else{
+          window.connected = window.connected + 1;
+          if(window.connected === 2){
+            echarts.connect('group1');
+            echarts.connect(window.chartGroup);
+          }
+        }
       }
     }
   }

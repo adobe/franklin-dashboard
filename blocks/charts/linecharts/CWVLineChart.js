@@ -62,7 +62,7 @@ export default class CWVLineChart extends LineChart {
             return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
             ${message || 'No Message Available'}<br />
             Commit Date: ${info.axisValue}<br/>
-            <a href="${commit_url}" target='_'>Click To See Commit </a><br />`;
+            <a href="${commit_url}" target='_blank'>Click To See Commit </a><br />`;
           }
           return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
           Date: ${info.axisValue}<br/>`;

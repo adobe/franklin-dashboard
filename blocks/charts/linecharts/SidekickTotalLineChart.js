@@ -135,7 +135,12 @@ export default class SidekickTotalLineChart extends Chart {
               source: dataset,
             },
             xAxis: { type: 'category' },
-            yAxis: {},
+            yAxis: {
+              type: 'log',
+              min: 'dataMin',
+              max: 'dataMax',
+              logBase: 10,
+            },
             series: seriesType,
           };
         } else {
@@ -172,7 +177,10 @@ export default class SidekickTotalLineChart extends Chart {
               },
             },
             yAxis: {
-              type: 'value',
+              type: 'log',
+              min: 'dataMin',
+              max: 'dataMax',
+              logBase: 10,
             },
             series: [
               {

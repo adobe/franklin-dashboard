@@ -117,10 +117,15 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   let startdate = params.get('startdate');
   let enddate = params.get('enddate');
   const currentDate = new Date();
-  const today = new Date(currentDate.getFullYear()
-  ,currentDate.getMonth()
-  ,currentDate.getDate()
-  ,0, 0, 0, 0);
+  const today = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+    0,
+    0,
+    0,
+    0,
+  );
 
   if (dateValid) {
     if (start < end && end <= today) {
@@ -144,6 +149,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
     end = today - dateOffsetInMillis;
     start = end - intervalInMillis;
+    /* eslint-disable prefer-destructuring */
     startdate = new Date(start).toISOString().split('T')[0];
     enddate = new Date(end).toISOString().split('T')[0];
     params.set('startdate', startdate);
@@ -153,10 +159,10 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     interval = 30;
     const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
     const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
-    const end = today - dateOffsetInMillis;
-    const start = end - intervalInMillis;
-    const startdate = new Date(start).toISOString().split('T')[0];
-    const enddate = new Date(end).toISOString().split('T')[0];
+    end = today - dateOffsetInMillis;
+    start = end - intervalInMillis;
+    startdate = new Date(start).toISOString().split('T')[0];
+    enddate = new Date(end).toISOString().split('T')[0];
     params.set('startdate', startdate);
     params.set('enddate', enddate);
     params.set('offset', offset);

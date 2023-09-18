@@ -7,6 +7,7 @@ import BarChart from './barcharts/barCharts.js';
 import CWVBarChart from './barcharts/CWVBarChart.js';
 import CWVLineChart from './linecharts/CWVLineChart.js';
 import SidekickLineChart from './linecharts/SidekickLineChart.js';
+import SidekickTotalLineChart from './linecharts/SidekickTotalLineChart.js';
 
 export default function decorate(block) {
   // draw the loading graphic
@@ -81,6 +82,8 @@ export default function decorate(block) {
       thisChart = new CWVBarChart(cfg);
     } else if (typeChart === 'line' && endpoint.startsWith('sidekick')) {
       thisChart = new SidekickLineChart(cfg);
+    } else if (typeChart === 'line' && endpoint.startsWith('multiline')) {
+      thisChart = new SidekickTotalLineChart(cfg);
     } else if (typeChart === 'bar') {
       thisChart = new BarChart(cfg);
     } else if (typeChart === 'line') {

@@ -116,7 +116,11 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   let end = new Date(params.get('enddate'));
   let startdate = params.get('startdate');
   let enddate = params.get('enddate');
-  const today = new Date();
+  const currentDate = new Date();
+  const today = new Date(currentDate.getFullYear()
+  ,currentDate.getMonth()
+  ,currentDate.getDate()
+  ,0, 0, 0, 0);
 
   if (dateValid) {
     if (start < end && end <= today) {
@@ -145,7 +149,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     params.set('startdate', startdate);
     params.set('enddate', enddate);
   } else {
-    offset = 1;
+    offset = 0;
     interval = 30;
     const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
     const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
@@ -167,7 +171,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   // default to interval 30 if params are not set
   if (!hasStart && !hasEnd && !hasInterval && !hasOffset) {
     params.set('interval', '30');
-    params.set('offset', '1');
+    params.set('offset', '0');
   }
 
   const limit = params.get('limit') || '30';

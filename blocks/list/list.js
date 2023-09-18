@@ -103,6 +103,7 @@ export default function decorate(block) {
         const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
         const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
         const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
+        let chartFlag = true;
         for (let j = 0; j < 7; j += 1) {
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
@@ -160,6 +161,7 @@ export default function decorate(block) {
                 listGridColumn.classList.toggle('okay');
               } else if (!data[i][cols[j]]) {
                 listGridColumn.classList.toggle('noresult');
+                chartFlag = false;
               } else {
                 listGridColumn.classList.toggle('fail');
               }
@@ -180,7 +182,12 @@ export default function decorate(block) {
         const params = new URLSearchParams(window.location.search);
         const nextUrl = data[i][cols[0]].replace('https://', '');
         params.set('url', nextUrl);
-        chartLink.innerHTML = `<div><a target="_" href="/views/rum-performance-monitor?${params.toString()}">View Chart</a></div>`;
+
+        if (chartFlag) {
+          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}">View Chart</a></div>`;
+        } else {
+          chartLink.innerText = 'No Data';
+        }
         chartLink.classList.add('grid', 'list', 'col', 'clickChart');
         listGridRow.append(chartLink);
         listGridContainer.append(listGridRow);

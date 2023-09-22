@@ -37,19 +37,28 @@ export default class CWVLineChart extends LineChart {
 
         if (poiEndpoint && Object.hasOwn(window.dashboard, poiEndpoint) && this.data) {
           const poiMap = {};
+          let urlMatchFlag = false;
           window.dashboard[poiEndpoint].results.data.forEach((val) => {
             /* eslint-disable camelcase */
             const {
-              commit_date, commit_url, message, owner_repo,
+              url, commit_date, commit_url, message, owner_repo,
             } = val;
             if (!Object.hasOwn(this, 'defaultKey')) {
               this.defaultKey = owner_repo;
             }
+            if(!urlMatchFlag && url === params.get('url')){
+              this.defaultKey = owner_repo;
+              urlMatchFlag = true;
+            }
             if (!Object.hasOwn(poiMap, owner_repo)) {
               const map = {};
               poiMap[owner_repo] = map;
+              poiMap[owner_repo][commit_date] = [];
             }
-            poiMap[owner_repo][commit_date] = { commit_url, message };
+            else if(!Object.hasOwn(poiMap[owner_repo]), commit_date){
+              poiMap[owner_repo][commit_date] = [];
+            }
+            poiMap[owner_repo][commit_date].push({message, commit_url})
           });
           this.poi_data = poiMap;
         }
@@ -58,11 +67,15 @@ export default class CWVLineChart extends LineChart {
           const info = param[0];
           if (Object.keys(this.poi_data).length > 0
           && Object.hasOwn(this.poi_data[this.defaultKey], info.axisValue)) {
-            const { message, commit_url } = this.poi_data[this.defaultKey][info.axisValue];
-            return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
-            ${message || 'No Message Available'}<br />
-            Commit Date: ${info.axisValue}<br/>
-            <a href="${commit_url}" target='_blank'>Click To See Commit </a><br />`;
+            let ret = ``;
+            for(let i = 0; i < this.poi_data[this.defaultKey][info.axisValue].length; i++){
+              const { message, commit_url } = this.poi_data[this.defaultKey][info.axisValue][i];
+              ret += `<b>Commit #${i+1}</b><br />`
+              ret += `${message || 'No Message Available'}<br />
+              Commit Date: ${info.axisValue}<br/>
+              <a href="${commit_url}" target='_blank'>Click To See Commit </a><br />\n\n`;
+            }
+            return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />` + ret;
           }
           return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
           Date: ${info.axisValue}<br/>`;

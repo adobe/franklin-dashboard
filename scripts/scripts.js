@@ -185,19 +185,18 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
-  if (endpoint === 'daily-rum') {
-    params.set('exactmatch', true);
-  }
-  if (endpoint === 'github-commits') {
-    const currUrl = params.get('url');
-    let hostName;
-
-    if (currUrl.startsWith('https://') || currUrl.startsWith('http://')) {
-      hostName = new URL(currUrl).hostname;
-    } else {
-      hostName = new URL(`https://${currUrl}`).hostname;
+  /*
+  Below are specific parameters set for specific queries
+  This is intended as short term solution; will discuss
+  more with data desk engineers to determine a more clever
+  way to specify different parameters; or escalate to repairing
+  queries when needed
+  */
+  if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
+    const currLimit = parseInt(limit, 10);
+    if (currLimit < 500) {
+      params.set('limit', '500');
     }
-    params.set('url', hostName);
   }
   const flag = `${endpoint}Flag`;
   const checkData = () => {

@@ -55,7 +55,7 @@ export default class CWVLineChart extends LineChart {
               poiMap[owner_repo] = map;
               poiMap[owner_repo][commit_date] = [];
             }
-            else if(!Object.hasOwn(poiMap[owner_repo]), commit_date){
+            else if(!(commit_date in poiMap[owner_repo])){
               poiMap[owner_repo][commit_date] = [];
             }
             poiMap[owner_repo][commit_date].push({message, commit_url})
@@ -75,7 +75,7 @@ export default class CWVLineChart extends LineChart {
               Commit Date: ${info.axisValue}<br/>
               <a href="${commit_url}" target='_blank'>Click To See Commit </a><br />\n\n`;
             }
-            return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />` + ret;
+            return `<strong>${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}</strong><br />` + ret;
           }
           return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
           Date: ${info.axisValue}<br/>`;

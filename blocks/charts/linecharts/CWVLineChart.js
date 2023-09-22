@@ -70,11 +70,11 @@ export default class CWVLineChart extends LineChart {
             for (let i = 0; i < this.poi_data[this.defaultKey][info.axisValue].length; i += 1) {
               const { message, commit_url } = this.poi_data[this.defaultKey][info.axisValue][i];
               ret += `<b>Commit #${i + 1}</b><br />`;
-              ret += `${message || 'No Message Available'}<br />
-              Commit Date: ${info.axisValue}<br/>
+              ret += `${message.length > 1 ? `${message}</br>` : ''}
               <a href="${commit_url}" target='_blank'>Click To See Commit </a><br />\n\n`;
             }
-            return `<strong>${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}</strong><br />${ret}`;
+            return `<strong>${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}</strong><br />
+            Commit Date: ${info.axisValue}<br/>${ret}`;
           }
           return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
           Date: ${info.axisValue}<br/>`;

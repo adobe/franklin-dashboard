@@ -46,7 +46,7 @@ export default class CWVLineChart extends LineChart {
             if (!Object.hasOwn(this, 'defaultKey')) {
               this.defaultKey = owner_repo;
             }
-            if(!urlMatchFlag && url === params.get('url')){
+            if (!urlMatchFlag && url === params.get('url')) {
               this.defaultKey = owner_repo;
               urlMatchFlag = true;
             }
@@ -54,11 +54,10 @@ export default class CWVLineChart extends LineChart {
               const map = {};
               poiMap[owner_repo] = map;
               poiMap[owner_repo][commit_date] = [];
-            }
-            else if(!(commit_date in poiMap[owner_repo])){
+            } else if (!(commit_date in poiMap[owner_repo])) {
               poiMap[owner_repo][commit_date] = [];
             }
-            poiMap[owner_repo][commit_date].push({message, commit_url})
+            poiMap[owner_repo][commit_date].push({ message, commit_url });
           });
           this.poi_data = poiMap;
         }
@@ -67,15 +66,15 @@ export default class CWVLineChart extends LineChart {
           const info = param[0];
           if (Object.keys(this.poi_data).length > 0
           && Object.hasOwn(this.poi_data[this.defaultKey], info.axisValue)) {
-            let ret = ``;
-            for(let i = 0; i < this.poi_data[this.defaultKey][info.axisValue].length; i++){
+            let ret = '';
+            for (let i = 0; i < this.poi_data[this.defaultKey][info.axisValue].length; i += 1) {
               const { message, commit_url } = this.poi_data[this.defaultKey][info.axisValue][i];
-              ret += `<b>Commit #${i+1}</b><br />`
+              ret += `<b>Commit #${i + 1}</b><br />`;
               ret += `${message || 'No Message Available'}<br />
               Commit Date: ${info.axisValue}<br/>
               <a href="${commit_url}" target='_blank'>Click To See Commit </a><br />\n\n`;
             }
-            return `<strong>${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}</strong><br />` + ret;
+            return `<strong>${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}</strong><br />${ret}`;
           }
           return `${this.cfg.field.toUpperCase()} Score: ${parseFloat(info.data).toFixed(2)}<br />
           Date: ${info.axisValue}<br/>`;

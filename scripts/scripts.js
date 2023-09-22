@@ -185,7 +185,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
-  /* 
+  /*
   Below are specific parameters set for specific queries
   This is intended as short term solution; will discuss
   more with data desk engineers to determine a more clever
@@ -193,8 +193,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   queries when needed
   */
   if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
-    let currLimit = parseInt(limit, 10);
-    if(currLimit < 500){
+    const currLimit = parseInt(limit, 10);
+    if (currLimit < 500) {
       params.set('limit', '500');
     }
   }

@@ -168,7 +168,9 @@ export default function decorate(block) {
             }
             if (txtContent) {
               if (j >= 3) {
-                listGridColumn.textContent = `${parseFloat(txtContent).toFixed(2).toLocaleString('en-US')}${metrics[j - 3]}`;
+                const numb = parseFloat(txtContent).toFixed(2).toLocaleString('en-US');
+                const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
+                listGridColumn.textContent = `${displayedNumb}${metrics[j - 3]}`;
               } else {
                 listGridColumn.textContent = txtContent;
               }

@@ -133,7 +133,7 @@ export default class CWVLineChart extends LineChart {
             },
           },
           yAxis: {
-            type: 'value',
+            type: 'log',
           },
           series: [
             {

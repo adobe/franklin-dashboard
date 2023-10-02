@@ -21,7 +21,7 @@
 .filter div {
     flex-grow: 1;
     flex-shrink: 1;
-    width: 150px;
+    width: 300px;
     margin: auto;
 }
 
@@ -42,7 +42,7 @@
 }
 
 .filter input {
-    width: fit-content;
+    width: 300px;
     font-size: var(--body-font-size-xs);
 }
 

@@ -334,6 +334,7 @@ export default function decorate(block) {
   });
   block.querySelector('#url').addEventListener('blur', () => {
     focus('url', false);
+    block.querySelector('#url').value = block.querySelector('#url').value.replace(/^http(s)*:\/\//, '');
   });
   block.querySelector('#owner_repo').addEventListener('blur', () => {
     focus('owner_repo', false);

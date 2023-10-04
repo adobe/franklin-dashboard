@@ -149,7 +149,7 @@ function drawFilter(block, cfg) {
   const ownerrepo = params.get('owner_repo') || '';
   const domainkey = params.get('domainkey');
   let interval = params.get('interval') || '30';
-  let offset = params.get('offset') || '1';
+  let offset = params.get('offset') || '0';
   const startdate = params.get('startdate') || '';
   const enddate = params.get('enddate') || '';
   const limit = params.get('limit') || '10';

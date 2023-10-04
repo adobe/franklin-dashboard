@@ -180,6 +180,11 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     params.set('offset', '0');
   }
 
+  // remove http or https prefix in url param if it exists
+  if (params.has('url')) {
+    params.set('url', params.get('url').replace(/^http(s)*:\/\//, ''));
+  }
+
   const limit = params.get('limit') || '30';
   params.set('limit', limit);
   Object.entries(qps).forEach(([k, v]) => {

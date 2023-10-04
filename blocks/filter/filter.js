@@ -149,7 +149,7 @@ function drawFilter(block, cfg) {
   const ownerrepo = params.get('owner_repo') || '';
   const domainkey = params.get('domainkey');
   let interval = params.get('interval') || '30';
-  let offset = params.get('offset') || '1';
+  let offset = params.get('offset') || '0';
   const startdate = params.get('startdate') || '';
   const enddate = params.get('enddate') || '';
   const limit = params.get('limit') || '10';
@@ -334,6 +334,7 @@ export default function decorate(block) {
   });
   block.querySelector('#url').addEventListener('blur', () => {
     focus('url', false);
+    block.querySelector('#url').value = block.querySelector('#url').value.replace(/^http(s)*:\/\//, '');
   });
   block.querySelector('#owner_repo').addEventListener('blur', () => {
     focus('owner_repo', false);

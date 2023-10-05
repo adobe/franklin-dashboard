@@ -86,7 +86,7 @@ export default async function decorate(block) {
               <br>
               access token: ${state.auth.user.accessToken}
               <br>
-              decoded: ${parseJwt(state.auth.user.accessToken)}
+              decoded: ${JSON.stringify(parseJwt(state.auth.user.accessToken))}
             `;
         } else {
           document.getElementById('user-container').innerText = '';

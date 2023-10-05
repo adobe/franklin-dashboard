@@ -1,5 +1,13 @@
-import jwt_decode from 'jwt-decode';
+//import jwt_decode from '../../scripts/jwt-decode.js';
 // import { readBlockConfig } from '../../scripts/lib-franklin.js';
+
+function parseJwt (token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''));
+
+  return JSON.parse(jsonPayload);
+}
 
 /**
  * loads and decorates the frontegg block
@@ -78,7 +86,7 @@ export default async function decorate(block) {
               <br>
               access token: ${state.auth.user.accessToken}
               <br>
-              decoded: ${jwt_decode(state.auth.user.accessToken)}
+              decoded: ${parseJwt(state.auth.user.accessToken)}
             `;
         } else {
           document.getElementById('user-container').innerText = '';

@@ -1,7 +1,10 @@
-//import jwt_decode from '../../scripts/jwt-decode.js';
 // import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
-function parseJwt (token) {
+/**
+ * parses a JWT token
+ * @param {String} token The access token from frontegg
+ */
+function parseJwt(token) {
   const base64Url = token.split('.')[1];
   const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
   const jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => `%${(`00${c.charCodeAt(0).toString(16)}`).slice(-2)}`).join(''));
@@ -24,13 +27,6 @@ export default async function decorate(block) {
   fronteggScript.src = 'https://cdn.jsdelivr.net/npm/@frontegg/js@6.51.0/umd/frontegg.production.min.js';
   document.head.appendChild(fronteggScript);
 
-  /*
-  const jwtScript = document.createElement('script');
-  jwtScript.type = 'application/javascript';
-  jwtScript.src = '/scripts/jwt-decode.js';
-  document.head.appendChild(jwtScript);
-  */
-
   const code1 = `
     <div id="app-root" style="display: none">
       <div id="user-container">
@@ -52,20 +48,11 @@ export default async function decorate(block) {
       // eslint-disable-next-line no-undef
       const app = Frontegg.initialize({
         contextOptions: {
-          baseUrl: 'https://app-51s9vo0yeeq4.frontegg.com', // set your Frontegg environment domain and client ID here
+          baseUrl: 'https://app-51s9vo0yeeq4.frontegg.com',
           clientId: 'fa530c84-bc31-4fef-ab80-22acc71619ef',
-        },
-        authOptions: {
-          // keepSessionAlive: true // Uncomment this in order to maintain the session alive
         },
         hostedLoginBox: true,
       });
-
-      /*
-      app.ready(() => {
-        console.log('App is ready');
-      });
-      */
 
       document.getElementById('loginWithRedirect').addEventListener('click', () => {
         app.loginWithRedirect();
@@ -81,12 +68,60 @@ export default async function decorate(block) {
         document.getElementById('app-root').style.display = state.auth.isLoading ? 'hidden' : 'block';
 
         if (state.auth.user) {
+          // the user has authenticated using the magic link provided by frontegg
+          const { email } = state.auth.user;
+          const emailDomain = email.split('@').pop();
+          const parsedUser = parseJwt(state.auth.user.accessToken);
+
+          // set default domain key options
+          let resp = '';
+          // let dkUrl = emailDomain;
+          // let dkExpiry = '';
+
+          if (parsedUser.email_verified) {
+            if (emailDomain === 'adobe1.com') {
+              // determine options for domain key
+            } else {
+              // generate domain key with no further input required
+              const endpoint = new URL('https://eynvwoxb7l.execute-api.us-east-1.amazonaws.com/helix-services/domainkey-provider/ci98');
+              const body = {
+                domain: emailDomain,
+                token: state.auth.user.accessToken,
+              };
+              fetch(endpoint, {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              }).then((response) => response.json()).then((data) => {
+                resp = JSON.stringify(data);
+                console.log(resp);
+              });
+              /*
+              const json = await res.json();
+              if (!res.ok || json.results.data[0].status !== 'success') {
+                return new Response(`Error while rotating domain keys: ${res.statusText}`, {
+                  status: 503,
+                });
+              }
+              return new Response(JSON.stringify(json.results.data[0]), {
+                status: 201,
+                headers: {
+                  'content-type': 'application/json',
+                },
+              });
+              */
+            }
+          }
           document.getElementById('user-container').innerHTML = `
-              email: ${state.auth.user.email}
+              email: ${email}
               <br>
               access token: ${state.auth.user.accessToken}
               <br>
               decoded: ${JSON.stringify(parseJwt(state.auth.user.accessToken))}
+              <br>
+              resp: ${resp}
             `;
         } else {
           document.getElementById('user-container').innerText = '';

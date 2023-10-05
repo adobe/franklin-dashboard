@@ -83,7 +83,7 @@ export default async function decorate(block) {
               // determine options for domain key
             } else {
               // generate domain key with no further input required
-              const endpoint = new URL('https://eynvwoxb7l.execute-api.us-east-1.amazonaws.com/helix-services/domainkey-provider/ci144');
+              const endpoint = new URL('https://eynvwoxb7l.execute-api.us-east-1.amazonaws.com/helix-services/domainkey-provider/ci149');
               const body = {
                 domain: emailDomain,
                 token: state.auth.user.accessToken,

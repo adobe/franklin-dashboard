@@ -69,7 +69,7 @@ export default async function decorate(block) {
       app.store.subscribe(() => {
         console.log('before app.store.getState');
         const state = app.store.getState();
-        console.log('state is ' + state);
+        console.log('state is ' + JSON.stringify(state));
         document.getElementById('app-root').style.display = state.auth.isLoading ? 'hidden' : 'block';
 
         if (state.auth.user) {

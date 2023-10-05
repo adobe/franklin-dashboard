@@ -88,6 +88,7 @@ export default async function decorate(block) {
                 domain: emailDomain,
                 token: state.auth.user.accessToken,
               };
+              /*
               fetch(endpoint, {
                 method: 'POST',
                 body: JSON.stringify(body),
@@ -98,6 +99,8 @@ export default async function decorate(block) {
                 resp = JSON.stringify(data);
                 console.log(resp);
               });
+              */
+              console.log("logged in");
               /*
               const json = await res.json();
               if (!res.ok || json.results.data[0].status !== 'success') {

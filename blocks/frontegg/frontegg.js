@@ -46,6 +46,7 @@ export default async function decorate(block) {
       window.setTimeout(initfe, 5);
     } else {
       // eslint-disable-next-line no-undef
+      console.log('before initialize');
       const app = Frontegg.initialize({
         contextOptions: {
           baseUrl: 'https://app-51s9vo0yeeq4.frontegg.com',
@@ -53,8 +54,10 @@ export default async function decorate(block) {
         },
         hostedLoginBox: true,
       });
+      console.log('after initialize');
 
       document.getElementById('loginWithRedirect').addEventListener('click', () => {
+        console.log("app.loginWithRedirect");
         app.loginWithRedirect();
       });
 
@@ -64,7 +67,9 @@ export default async function decorate(block) {
       document.getElementsByTagName('head')[0].appendChild(style);
 
       app.store.subscribe(() => {
+        console.log('before app.store.getState');
         const state = app.store.getState();
+        console.log('state is ' + state);
         document.getElementById('app-root').style.display = state.auth.isLoading ? 'hidden' : 'block';
 
         if (state.auth.user) {
@@ -72,6 +77,7 @@ export default async function decorate(block) {
           const { email } = state.auth.user;
           const emailDomain = email.split('@').pop();
           const parsedUser = parseJwt(state.auth.user.accessToken);
+          console.log('jwt parsed');
 
           // set default domain key options
           let resp = '';

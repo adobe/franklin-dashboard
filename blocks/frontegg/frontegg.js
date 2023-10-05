@@ -1,4 +1,4 @@
-import jwtDecode from '../../scripts/jwt-decode.js';
+import jwt_decode from 'jwt-decode';
 // import { readBlockConfig } from '../../scripts/lib-franklin.js';
 
 /**
@@ -16,10 +16,12 @@ export default async function decorate(block) {
   fronteggScript.src = 'https://cdn.jsdelivr.net/npm/@frontegg/js@6.51.0/umd/frontegg.production.min.js';
   document.head.appendChild(fronteggScript);
 
+  /*
   const jwtScript = document.createElement('script');
   jwtScript.type = 'application/javascript';
   jwtScript.src = '/scripts/jwt-decode.js';
   document.head.appendChild(jwtScript);
+  */
 
   const code1 = `
     <div id="app-root" style="display: none">
@@ -76,7 +78,7 @@ export default async function decorate(block) {
               <br>
               access token: ${state.auth.user.accessToken}
               <br>
-              decoded: ${jwtDecode(state.auth.user.accessToken)}
+              decoded: ${jwt_decode(state.auth.user.accessToken)}
             `;
         } else {
           document.getElementById('user-container').innerText = '';

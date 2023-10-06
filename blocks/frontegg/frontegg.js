@@ -66,6 +66,8 @@ export default async function decorate(block) {
       style.innerHTML = '';
       document.getElementsByTagName('head')[0].appendChild(style);
 
+      let keyRequested = false;
+
       app.store.subscribe(() => {
         console.log('before app.store.getState');
         const state = app.store.getState();
@@ -74,64 +76,69 @@ export default async function decorate(block) {
 
         if (state.auth.user) {
           // the user has authenticated using the magic link provided by frontegg
-          const { email } = state.auth.user;
-          const emailDomain = email.split('@').pop();
-          const parsedUser = parseJwt(state.auth.user.accessToken);
-          console.log('jwt parsed');
+          if (!keyRequested) {
+            const { email } = state.auth.user;
+            const emailDomain = email.split('@').pop();
+            const parsedUser = parseJwt(state.auth.user.accessToken);
+            console.log('jwt parsed');
+  
+            // set default domain key options
+            let resp = '';
+            // let dkUrl = emailDomain;
+            // let dkExpiry = '';
+  
+            if (parsedUser.email_verified) {
+              if (emailDomain === 'adobe1.com') {
+                // determine options for domain key
+              } else {
+                // generate domain key with no further input required
+                const endpoint = new URL('https://eynvwoxb7l.execute-api.us-east-1.amazonaws.com/helix-services/domainkey-provider/ci149');
+                const body = {
+                  domain: emailDomain,
+                  token: state.auth.user.accessToken,
+                };
+  
+                keyRequested = true;
 
-          // set default domain key options
-          let resp = '';
-          // let dkUrl = emailDomain;
-          // let dkExpiry = '';
-
-          if (parsedUser.email_verified) {
-            if (emailDomain === 'adobe1.com') {
-              // determine options for domain key
-            } else {
-              // generate domain key with no further input required
-              const endpoint = new URL('https://eynvwoxb7l.execute-api.us-east-1.amazonaws.com/helix-services/domainkey-provider/ci149');
-              const body = {
-                domain: emailDomain,
-                token: state.auth.user.accessToken,
-              };
-              /*
-              fetch(endpoint, {
-                method: 'POST',
-                body: JSON.stringify(body),
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              }).then((response) => response.json()).then((data) => {
-                resp = JSON.stringify(data);
-                console.log(resp);
-              });
-              */
-              console.log("logged in");
-              /*
-              const json = await res.json();
-              if (!res.ok || json.results.data[0].status !== 'success') {
-                return new Response(`Error while rotating domain keys: ${res.statusText}`, {
-                  status: 503,
+                fetch(endpoint, {
+                  method: 'POST',
+                  body: JSON.stringify(body),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                }).then((response) => response.json()).then((data) => {
+                  resp = JSON.stringify(data);
+                  console.log(resp);
                 });
+                
+                console.log("logged in");
+                /*
+                const json = await res.json();
+                if (!res.ok || json.results.data[0].status !== 'success') {
+                  return new Response(`Error while rotating domain keys: ${res.statusText}`, {
+                    status: 503,
+                  });
+                }
+                return new Response(JSON.stringify(json.results.data[0]), {
+                  status: 201,
+                  headers: {
+                    'content-type': 'application/json',
+                  },
+                });
+                */
               }
-              return new Response(JSON.stringify(json.results.data[0]), {
-                status: 201,
-                headers: {
-                  'content-type': 'application/json',
-                },
-              });
-              */
             }
+            document.getElementById('user-container').innerHTML = `
+                email: ${email}
+                <br>
+                access token: ${state.auth.user.accessToken}
+                <br>
+                decoded: ${JSON.stringify(parseJwt(state.auth.user.accessToken))}
+                <br>
+                resp: ${resp}
+              `;
           }
-          document.getElementById('user-container').innerHTML = `
-              email: ${email}
-              <br>
-              access token: ${state.auth.user.accessToken}
-              <br>
-              decoded: ${JSON.stringify(parseJwt(state.auth.user.accessToken))}
-              <br>
-              resp: ${resp}
-            `;
+          
         } else {
           document.getElementById('user-container').innerText = '';
         }

@@ -46,7 +46,6 @@ export default async function decorate(block) {
       window.setTimeout(initfe, 5);
     } else {
       // eslint-disable-next-line no-undef
-      console.log('before initialize');
       const app = Frontegg.initialize({
         contextOptions: {
           baseUrl: 'https://app-51s9vo0yeeq4.frontegg.com',
@@ -54,10 +53,8 @@ export default async function decorate(block) {
         },
         hostedLoginBox: true,
       });
-      console.log('after initialize');
 
       document.getElementById('loginWithRedirect').addEventListener('click', () => {
-        console.log("app.loginWithRedirect");
         app.loginWithRedirect();
       });
 
@@ -69,9 +66,8 @@ export default async function decorate(block) {
       let keyRequested = false;
 
       app.store.subscribe(() => {
-        console.log('before app.store.getState');
         const state = app.store.getState();
-        console.log('state is ' + JSON.stringify(state));
+        console.log(`state is ${JSON.stringify(state)}`);
         document.getElementById('app-root').style.display = state.auth.isLoading ? 'hidden' : 'block';
 
         if (state.auth.user) {
@@ -80,24 +76,23 @@ export default async function decorate(block) {
             const { email } = state.auth.user;
             const emailDomain = email.split('@').pop();
             const parsedUser = parseJwt(state.auth.user.accessToken);
-            console.log('jwt parsed');
-  
+
             // set default domain key options
             let resp = '';
             // let dkUrl = emailDomain;
             // let dkExpiry = '';
-  
+
             if (parsedUser.email_verified) {
               if (emailDomain === 'adobe1.com') {
                 // determine options for domain key
               } else {
                 // generate domain key with no further input required
-                const endpoint = new URL('https://eynvwoxb7l.execute-api.us-east-1.amazonaws.com/helix-services/domainkey-provider/ci149');
+                const endpoint = new URL('https://eynvwoxb7l.execute-api.us-east-1.amazonaws.com/helix-services/domainkey-provider/ci155');
                 const body = {
                   domain: emailDomain,
                   token: state.auth.user.accessToken,
                 };
-  
+
                 keyRequested = true;
 
                 fetch(endpoint, {
@@ -110,8 +105,7 @@ export default async function decorate(block) {
                   resp = JSON.stringify(data);
                   console.log(resp);
                 });
-                
-                console.log("logged in");
+
                 /*
                 const json = await res.json();
                 if (!res.ok || json.results.data[0].status !== 'success') {
@@ -138,7 +132,6 @@ export default async function decorate(block) {
                 resp: ${resp}
               `;
           }
-          
         } else {
           document.getElementById('user-container').innerText = '';
         }

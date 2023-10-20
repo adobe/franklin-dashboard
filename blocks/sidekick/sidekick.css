@@ -1,0 +1,134 @@
+div.grid.list.container {
+    display: grid;
+    grid-gap: 0.2em;
+    width: 100%;
+}
+
+.list-container {
+    height: 100%;
+}
+
+.list-wrapper {
+    height: 100%;
+    box-sizing: border-box;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
+}
+
+div.grid.list.row {
+    /* display: grid; */
+    height: 100%;
+    grid-template-rows: 1fr 1.5fr 1.5fr 1.5fr 1.5fr;
+    grid-gap: 10px;
+    align-items: center;
+    justify-items: center;
+}
+
+div.grid.list.row:not(.heading) {
+    border-color: black;
+    font-size:var(--body-font-size-m);
+}
+
+div.grid.list.row.heading {
+    font-weight: bold;
+    background-color: var(--highlight-background-color);
+}
+
+div.grid.list.row.odd {
+    background-color: var(--overlay-background-color);
+}
+
+div.grid.list.col {
+    display: flex;
+    width: fit-content + 50px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    border-radius: 5px;
+    font-size: var(--body-font-size-xs);
+    justify-content: center;
+    align-items: center;
+}
+
+div.grid.list.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
+    background-color: var(--highlight-background-color);
+}
+
+div.grid.list.col.url {
+    align-items: start;
+    justify-content: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+div.grid.list.col.pageviews {
+    overflow: visible;
+}
+
+.goodbar {
+    height: 100%;
+    background-color: green;
+    text-align: center;
+    font-size: var(--body-font-size-xs);
+}
+
+.okaybar {
+    height: 100%;
+    background-color: orange;
+    color: black;
+    text-align: center;
+    font-size: var(--body-font-size-xs);
+}
+
+.badbar {
+    height: 100%;
+    background-color: red;
+    color: black;
+    text-align: center;
+    font-size: var(--body-font-size-xs);
+}
+
+.noresultbar {
+    height: 100%;
+    background-color: grey;
+    color: white;
+    text-align: center;
+    font-size: var(--body-font-size-xs);
+}
+
+.fail {
+    height: 100%;
+    width: 50px;
+    background-repeat: no-repeat;
+    background-color: red;
+}
+
+.noresult {
+    height: 100%;
+    width: 50px;
+    color: white;
+    background-repeat: no-repeat;
+    background-color: grey;
+}
+
+.pass {
+    height: 100%;
+    width: 50px;
+    background-repeat: no-repeat;
+    background-color: green;
+    color: white;
+}
+
+.okay {
+    height: 100%;
+    width: 50px;
+    background-repeat: no-repeat;
+    background-color: orange;
+}
+
+div.section.list-container p {
+    font-size: var(--body-font-size-s);
+    margin-top: 0;
+}

@@ -1,0 +1,23 @@
+.launcher-sk {
+    font-size: var(--body-font-size-s);
+}
+
+.section.launcher-sk-container div p {
+    text-align: center;
+}
+
+.launcher-sk label {
+    text-align: center;
+    display: block;
+}
+
+.launcher-sk input, .launcher button {
+    text-align: center;
+    margin: auto;
+    margin-bottom: 16px;
+    max-width: 30rem;
+}
+
+.launcher-sk button {
+    display: block;
+}

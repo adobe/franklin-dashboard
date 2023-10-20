@@ -18,9 +18,9 @@ export default async function decorate(block) {
     // TODO update action attribute to point to correct main page
     block.innerHTML = `
     <form method="get" action="${cfg.action}">
-        <input type="hidden" name="interval" value="30">
+        <input type="hidden" name="interval" value="7">
         <input type="hidden" name="offset" value="0">
-        <input type="hidden" name="limit" value="100">
+        <input type="hidden" name="limit" value="1">
         <input type="hidden" name="exactmatch" value=true>
         <input type="hidden" name="url" value="${url}">
         <label for="domainkey">domainkey</label>

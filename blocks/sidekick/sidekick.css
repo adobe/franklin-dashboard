@@ -217,6 +217,7 @@ div.section.sidekick-container p {
 
 .pv.metric.numeric {
     margin: auto;
+    border-style: dashed;
 }
 
 h5, h4, h3, h2, h1 {

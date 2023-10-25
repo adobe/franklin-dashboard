@@ -43,7 +43,7 @@ export default class BarChart extends Chart {
         window.setTimeout(this.drawChart.bind(this), 5);
       } else if (Object.hasOwn(window, flag) && window[flag] === false) {
         // query complete, hide loading graphic
-        this.data = window.dashboard[this.cfg.data].results.data;
+        this.data = [...window.dashboard[this.cfg.data].results.data].reverse();
         document.querySelectorAll('div.loading').forEach((loading) => {
           loading.style.display = 'none';
         });
@@ -91,7 +91,7 @@ export default class BarChart extends Chart {
                 position: 'insideLeft',
                 formatter: '{b}',
                 show: true,
-                color: '#000000',
+                color: 'white',
               },
             },
           ],

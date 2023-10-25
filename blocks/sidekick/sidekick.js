@@ -15,9 +15,6 @@ export default function decorate(block) {
     row.style.display = 'none';
   });
 
-  const header = document.querySelector('.header-wrapper');
-  header.remove();
-
   let makeList;
 
   const getQuery = () => {
@@ -105,7 +102,7 @@ export default function decorate(block) {
           const urlEl = document.createElement('div');
           urlEl.classList.add('url', 'info', 'txt');
           const heading = document.createElement('h4');
-          heading.textContent = `${url}-30 Day Summary`;
+          heading.textContent = `30 Day Stats Summary}`;
           urlEl.appendChild(heading);
   
           const cwvEl = document.createElement('div');

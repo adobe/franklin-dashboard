@@ -219,6 +219,7 @@ div.section.sidekick-container p {
     margin: auto;
 }
 
-h5 {
+h5, h4, h3, h2, h1 {
     margin: auto;
+    width: fit-content;
 }

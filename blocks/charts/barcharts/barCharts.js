@@ -47,6 +47,11 @@ export default class BarChart extends Chart {
         document.querySelectorAll('div.loading').forEach((loading) => {
           loading.style.display = 'none';
         });
+        if(this.data.length === 0){
+          this.hideLoader(this.cfg.block);
+          this.cfg.block.remove();
+          return;
+        }
 
         const labels = this.data.map((row) => row[`${this.cfg['label-key']}`]);
         const series = this.data.map((row) => row[`${this.cfg.field}`]);

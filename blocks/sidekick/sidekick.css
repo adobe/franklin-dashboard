@@ -1,23 +1,59 @@
-div.grid.list.container {
+div.grid.sidekick.container {
     display: grid;
     grid-gap: 0.2em;
     width: 100%;
 }
 
-.list-container {
+.sidekick-container {
     height: 100%;
 }
 
-.list-wrapper {
-    height: 100%;
-    box-sizing: border-box;
-    box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
-    border-radius: 5px;
-    background: #fff;
-    overflow: hidden;
+.block {
+    margin-bottom: 24px;
 }
 
-div.grid.list.row {
+.sidekick.block {
+    display: grid;
+    grid-template-areas: "heading"
+                         "pageviews"
+                         "cwv";
+}
+
+.url.info {
+    display: grid;
+    grid-template-areas: "url"
+                         "pvTitle"
+                         "pvNumber"
+}
+
+.url h3 {
+    grid-area: url;
+}
+
+.url h5 {
+    grid-area: pvTitle;
+}
+
+.url .pv.metric.numeric {
+    grid-area: pvNumber;
+}
+
+.url {
+    grid-area: heading;
+    margin: auto;
+}
+
+.pv {
+    grid-area: pageviews;
+}
+
+.cwv.group {
+    grid-area: cwv;
+    width: 50vw;
+    margin: auto;
+}
+
+div.grid.sidekick.row {
     display: grid; 
     height: 100%;
     grid-template-rows: 1fr 1.5fr 1.5fr 1.5fr 1.5fr;
@@ -26,23 +62,23 @@ div.grid.list.row {
     justify-items: center;
 }
 
-div.grid.list.row:not(.heading) {
+div.grid.sidekick.row:not(.heading) {
     border-color: black;
     font-size:var(--body-font-size-m);
 }
 
-div.grid.list.row.heading {
+div.grid.sidekick.row.heading {
     font-weight: bold;
     background-color: var(--highlight-background-color);
 }
 
-div.grid.list.row.odd {
+div.grid.sidekick.row.odd {
     background-color: var(--overlay-background-color);
 }
 
-div.grid.list.col {
+div.grid.sidekick.col {
     display: flex;
-    width: fit-content + 50px;
+    width: fit-content;
     text-overflow: ellipsis;
     overflow: hidden;
     border-radius: 5px;
@@ -51,11 +87,11 @@ div.grid.list.col {
     align-items: center;
 }
 
-div.grid.list.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
+div.grid.sidekick.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
     background-color: var(--highlight-background-color);
 }
 
-div.grid.list.col.url {
+div.grid.sidekick.col.url {
     align-items: start;
     justify-content: start;
     text-overflow: ellipsis;
@@ -63,8 +99,54 @@ div.grid.list.col.url {
     overflow: hidden;
 }
 
-div.grid.list.col.pageviews {
+div.grid.sidekick.col.pageviews {
     overflow: visible;
+}
+
+.cwv.group {
+    display: grid;
+    grid-template-areas: 'cls inp lcp'
+}
+
+.avglcp {
+    grid-area: lcp;
+    margin: auto;
+}
+
+.avgcls {
+    grid-area: cls;
+    margin: auto;
+}
+
+.avginp {
+    grid-area: inp;
+    margin: auto;
+}
+
+.metric.group {
+    display: grid;
+    grid-template-areas:
+        "title"
+        "stat";
+}
+
+.title {
+    grid-area: title;
+    margin: auto;
+}
+
+.numeric{
+    grid-area: stat;
+    margin: auto;
+}
+
+.metric.numeric:not(.pv) {
+    width: 60px;
+    line-height: 60px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 18px;
+    border: 2px solid #666;
 }
 
 .goodbar {
@@ -100,14 +182,14 @@ div.grid.list.col.pageviews {
 
 .fail {
     height: 100%;
-    width: 50px;
+    width: fit-content;
     background-repeat: no-repeat;
     background-color: red;
 }
 
 .noresult {
     height: 100%;
-    width: 50px;
+    width: fit-content;
     color: white;
     background-repeat: no-repeat;
     background-color: grey;
@@ -115,7 +197,7 @@ div.grid.list.col.pageviews {
 
 .pass {
     height: 100%;
-    width: 50px;
+    width: fit-content;
     background-repeat: no-repeat;
     background-color: green;
     color: white;
@@ -123,12 +205,20 @@ div.grid.list.col.pageviews {
 
 .okay {
     height: 100%;
-    width: 50px;
+    width: fit-content;
     background-repeat: no-repeat;
     background-color: orange;
 }
 
-div.section.list-container p {
+div.section.sidekick-container p {
     font-size: var(--body-font-size-s);
     margin-top: 0;
+}
+
+.pv.metric.numeric {
+    margin: auto;
+}
+
+h5 {
+    margin: auto;
 }

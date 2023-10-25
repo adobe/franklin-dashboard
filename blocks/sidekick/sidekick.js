@@ -15,6 +15,9 @@ export default function decorate(block) {
     row.style.display = 'none';
   });
 
+  const header = document.querySelector('.header-wrapper');
+  header.remove();
+
   let makeList;
 
   const getQuery = () => {
@@ -98,11 +101,11 @@ export default function decorate(block) {
             avginp: [200, 500],
             avgcls: [0.1, 0.25],
           };
-  
+          
           const urlEl = document.createElement('div');
           urlEl.classList.add('url', 'info', 'txt');
-          const heading = document.createElement('h3');
-          heading.textContent = url;
+          const heading = document.createElement('h4');
+          heading.textContent = `${url}-30 Day Summary`;
           urlEl.appendChild(heading);
   
           const cwvEl = document.createElement('div');

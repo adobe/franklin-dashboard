@@ -102,7 +102,7 @@ export default function decorate(block) {
           const urlEl = document.createElement('div');
           urlEl.classList.add('url', 'info', 'txt');
           const heading = document.createElement('h4');
-          heading.textContent = `30 Day Stats Summary`;
+          heading.textContent = `30 Day Report`;
           urlEl.appendChild(heading);
   
           const cwvEl = document.createElement('div');

@@ -8,55 +8,19 @@ div.grid.sidekick.container {
     height: 100%;
 }
 
-.block {
-    margin-bottom: 24px;
-}
-
-.sidekick.block {
-    display: grid;
-    grid-template-areas: "heading"
-                         "pageviews"
-                         "cwv";
-}
-
-.url.info {
-    display: grid;
-    grid-template-areas: "url"
-                         "pvTitle"
-                         "pvNumber"
-}
-
-.url h3 {
-    grid-area: url;
-}
-
-.url h5 {
-    grid-area: pvTitle;
-}
-
-.url .pv.metric.numeric {
-    grid-area: pvNumber;
-}
-
-.url {
-    grid-area: heading;
-    margin: auto;
-}
-
-.pv {
-    grid-area: pageviews;
-}
-
-.cwv.group {
-    grid-area: cwv;
-    width: 50vw;
-    margin: auto;
+.sidekick-wrapper {
+    height: 100%;
+    box-sizing: border-box;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
 }
 
 div.grid.sidekick.row {
-    display: grid; 
+    display: grid;
     height: 100%;
-    grid-template-rows: 1fr 1.5fr 1.5fr 1.5fr 1.5fr;
+    grid-template-columns: 2fr 2fr 2fr 2fr 2fr;
     grid-gap: 10px;
     align-items: center;
     justify-items: center;
@@ -72,13 +36,17 @@ div.grid.sidekick.row.heading {
     background-color: var(--highlight-background-color);
 }
 
+div.grid.sidekick.col.heading {
+    /* border-style: solid; */
+}
+
 div.grid.sidekick.row.odd {
     background-color: var(--overlay-background-color);
 }
 
 div.grid.sidekick.col {
     display: flex;
-    width: fit-content;
+    width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     border-radius: 5px;
@@ -103,50 +71,15 @@ div.grid.sidekick.col.pageviews {
     overflow: visible;
 }
 
-.cwv.group {
-    display: grid;
-    grid-template-areas: 'cls inp lcp'
-}
-
-.avglcp {
-    grid-area: lcp;
-    margin: auto;
-}
-
-.avgcls {
-    grid-area: cls;
-    margin: auto;
-}
-
-.avginp {
-    grid-area: inp;
-    margin: auto;
-}
-
-.metric.group {
-    display: grid;
-    grid-template-areas:
-        "title"
-        "stat";
-}
-
-.title {
-    grid-area: title;
-    margin: auto;
-}
-
-.numeric{
-    grid-area: stat;
-    margin: auto;
-}
-
-.metric.numeric:not(.pv) {
-    width: 60px;
-    line-height: 60px;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 18px;
-    border: 2px solid #666;
+.usrexp {
+    text-overflow: unset;
+    white-space: unset;
+    overflow: unset;
+    display: flex;
+    flex-direction:row;
+    width: 100%;
+    background-color: #b3b3b3;
+    color: white;
 }
 
 .goodbar {
@@ -182,14 +115,14 @@ div.grid.sidekick.col.pageviews {
 
 .fail {
     height: 100%;
-    width: fit-content;
+    width: 100%;
     background-repeat: no-repeat;
     background-color: red;
 }
 
 .noresult {
     height: 100%;
-    width: fit-content;
+    width: 100%;
     color: white;
     background-repeat: no-repeat;
     background-color: grey;
@@ -197,7 +130,7 @@ div.grid.sidekick.col.pageviews {
 
 .pass {
     height: 100%;
-    width: fit-content;
+    width: 100%;
     background-repeat: no-repeat;
     background-color: green;
     color: white;
@@ -205,7 +138,7 @@ div.grid.sidekick.col.pageviews {
 
 .okay {
     height: 100%;
-    width: fit-content;
+    width: 100%;
     background-repeat: no-repeat;
     background-color: orange;
 }
@@ -213,14 +146,4 @@ div.grid.sidekick.col.pageviews {
 div.section.sidekick-container p {
     font-size: var(--body-font-size-s);
     margin-top: 0;
-}
-
-.pv.metric.numeric {
-    margin: auto;
-    border-style: dashed;
-}
-
-h5, h4, h3, h2, h1 {
-    margin: auto;
-    width: fit-content;
 }

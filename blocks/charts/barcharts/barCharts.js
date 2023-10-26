@@ -49,7 +49,7 @@ export default class BarChart extends Chart {
         });
         if(this.data.length === 0){
           this.hideLoader(this.cfg.block);
-          this.cfg.block.parentElement.remove();
+          this.cfg.block.parentElement.parentElement.remove();
           return;
         }
 

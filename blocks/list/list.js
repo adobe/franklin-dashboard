@@ -41,7 +41,7 @@ export default function decorate(block) {
       const listGridContainer = document.createElement('div');
       listGridContainer.classList.add('grid', 'list', 'container');
 
-      const cols = ['url', 'pageviews', 'usrexp', 'avglcp', 'avgcls', 'avgfid', 'avginp'];
+      const cols = ['url', 'pageviews', 'usrexp', 'avglcp', 'avgcls', 'avginp'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -52,22 +52,20 @@ export default function decorate(block) {
 
       const listGridHeadingRow = document.createElement('div');
       listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 7; j += 1) {
+      for (let j = 0; j < 6; j += 1) {
         const listGridHeadings = document.createElement('div');
         if (cols[j] === 'usrexp') {
-          listGridHeadings.textContent = 'Core Web Vitals across visits';
+          listGridHeadings.textContent = 'CWV Across Visits';
         } else if (cols[j] === 'url') {
           listGridHeadings.textContent = 'Path';
         } else if (cols[j] === 'pageviews') {
-          listGridHeadings.textContent = 'Page Views';
+          listGridHeadings.textContent = 'Visits';
         } else if (cols[j] === 'avglcp') {
-          listGridHeadings.textContent = 'LCP 75P';
+          listGridHeadings.textContent = 'LCP';
         } else if (cols[j] === 'avgcls') {
-          listGridHeadings.textContent = 'CLS 75P';
-        } else if (cols[j] === 'avgfid') {
-          listGridHeadings.textContent = 'FID 75P';
+          listGridHeadings.textContent = 'CLS';
         } else if (cols[j] === 'avginp') {
-          listGridHeadings.textContent = 'INP 75P';
+          listGridHeadings.textContent = 'INP';
         } else {
           listGridHeadings.textContent = cols[j];
         }
@@ -75,7 +73,7 @@ export default function decorate(block) {
         listGridHeadingRow.appendChild(listGridHeadings);
       }
       const chartHeading = document.createElement('div');
-      chartHeading.textContent = 'Chart';
+      chartHeading.textContent = 'CWV Chart';
       chartHeading.classList.add('grid', 'list', 'col', 'heading');
       listGridHeadingRow.appendChild(chartHeading);
       listGridContainer.appendChild(listGridHeadingRow);
@@ -94,17 +92,17 @@ export default function decorate(block) {
 
         const lcpOkay = 100 - (lcpgood + lcpbad);
         const clsOkay = 100 - (clsgood + clsbad);
-        const fidOkay = 100 - (fidgood + fidbad);
+        //const fidOkay = 100 - (fidgood + fidbad);
         const inpOkay = 100 - (inpgood + inpbad);
         let noresult;
-        if ((lcpgood + lcpbad + clsgood + clsbad + fidgood + fidbad + inpgood + inpbad) === 0) {
+        if ((lcpgood + lcpbad + clsgood + clsbad + inpgood + inpbad) === 0) {
           noresult = true;
         }
-        const avgOkay = Math.round((lcpOkay + clsOkay + fidOkay + inpOkay) / 4);
-        const avgGood = Math.round((lcpgood + clsgood + fidgood + inpgood) / 4);
-        const avgBad = Math.round((lcpbad + clsbad + fidbad + inpbad) / 4);
+        const avgOkay = Math.round((lcpOkay + clsOkay  + inpOkay) / 3);
+        const avgGood = Math.round((lcpgood + clsgood  + inpgood) / 3);
+        const avgBad = Math.round((lcpbad + clsbad + inpbad) / 3);
         let chartFlag = true;
-        for (let j = 0; j < 7; j += 1) {
+        for (let j = 0; j < 6; j += 1) {
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
           if (cols[j] === 'usrexp') {
@@ -186,7 +184,7 @@ export default function decorate(block) {
         params.set('url', nextUrl);
 
         if (chartFlag) {
-          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}">View Chart</a></div>`;
+          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}">Perf Chart</a></div>`;
         } else {
           chartLink.innerText = 'No Data';
         }
@@ -198,7 +196,7 @@ export default function decorate(block) {
       }
       block.append(listGridContainer);
 
-      if (counter === 0) {
+      if (data.length === 0) {
         const noresults = document.createElement('p');
         const params = new URLSearchParams(window.location.search);
         if (params.has('domainkey') && params.has('url')) {

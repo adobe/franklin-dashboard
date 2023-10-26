@@ -271,7 +271,7 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  //loadHeader(doc.querySelector('header'));
+  loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
@@ -279,6 +279,12 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/vars/dist/spectrum-dark.css`)
   loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/toast/index.css`)
   loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/icon/index.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/icon/index.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/vars/dist/spectrum-global.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/vars/dist/spectrum-medium.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/vars/dist/spectrum-light.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/page/dist/index-vars.css`)
+  loadCSS(`${window.hlx.codeBasePath}/styles/@spectrum-css/button/dist/index-vars.css`)
   */
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
   sampleRUM('lazy');

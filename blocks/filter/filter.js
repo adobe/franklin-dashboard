@@ -153,6 +153,7 @@ function drawFilter(block, cfg) {
   const startdate = params.get('startdate') || '';
   const enddate = params.get('enddate') || '';
   const limit = params.get('limit') || '10';
+  const exactmatch = params.get('exactmatch') || 'false';
 
   if (startdate !== '') {
     interval = '-1';
@@ -204,6 +205,7 @@ function drawFilter(block, cfg) {
       <input type=hidden id=interval name=interval value="${interval}">
       <input type=hidden id=offset name=offset value="${offset}">
       <input type=hidden id=limit name=limit value="${limit}">
+      <input type=hidden id=limit name=exactmatch value="${exactmatch}">
 
       <div id=customurl class="customurl ${securl}">
         <div>

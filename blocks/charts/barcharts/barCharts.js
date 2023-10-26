@@ -77,9 +77,6 @@ export default class BarChart extends Chart {
           },
           toolbox: {
             feature: {
-              dataZoom: {
-                xAxisIndex: 'none',
-              },
               restore: {},
               saveAsImage: {},
             },

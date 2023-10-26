@@ -75,6 +75,15 @@ export default class BarChart extends Chart {
           grid: {
             overflow: 'truncate',
           },
+          toolbox: {
+            feature: {
+              dataZoom: {
+                xAxisIndex: 'none',
+              },
+              restore: {},
+              saveAsImage: {},
+            },
+          },
           xAxis: {
           },
           yAxis: {

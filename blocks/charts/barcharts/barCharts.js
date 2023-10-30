@@ -62,6 +62,7 @@ export default class BarChart extends Chart {
             text: `${legend}`,
             x: 'center',
           },
+          aspectratio: 1,
           tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -82,6 +83,7 @@ export default class BarChart extends Chart {
             },
           },
           xAxis: {
+            type: 'log',
           },
           yAxis: {
             data: labels,

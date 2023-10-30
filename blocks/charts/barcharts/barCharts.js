@@ -62,7 +62,7 @@ export default class BarChart extends Chart {
             text: `${legend}`,
             x: 'center',
           },
-          aspectratio: 1,
+          aspectRatio: 1,
           tooltip: {
             trigger: 'axis',
             axisPointer: {

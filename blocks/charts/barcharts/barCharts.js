@@ -47,7 +47,7 @@ export default class BarChart extends Chart {
         document.querySelectorAll('div.loading').forEach((loading) => {
           loading.style.display = 'none';
         });
-        if(this.data.length === 0){
+        if (this.data.length === 0) {
           this.hideLoader(this.cfg.block);
           this.cfg.block.parentElement.parentElement.remove();
           return;

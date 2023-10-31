@@ -20,10 +20,14 @@ div.grid.list.container {
 div.grid.list.row {
     display: grid;
     height: 100%;
-    grid-template-columns: 4fr 2fr 9fr 2fr 2fr 2fr 2fr 2fr;
+    grid-template-columns: 0fr 2fr 2fr 5fr 2fr 2fr 2fr 2fr;
     grid-gap: 10px;
     align-items: center;
     justify-items: center;
+}
+
+div.grid.list.container.no-before:before {
+    content: none;
 }
 
 div.grid.list.row:not(.heading) {

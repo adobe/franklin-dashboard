@@ -92,14 +92,14 @@ export default function decorate(block) {
 
         const lcpOkay = 100 - (lcpgood + lcpbad);
         const clsOkay = 100 - (clsgood + clsbad);
-        //const fidOkay = 100 - (fidgood + fidbad);
+        // const fidOkay = 100 - (fidgood + fidbad);
         const inpOkay = 100 - (inpgood + inpbad);
         let noresult;
         if ((lcpgood + lcpbad + clsgood + clsbad + inpgood + inpbad) === 0) {
           noresult = true;
         }
-        const avgOkay = Math.round((lcpOkay + clsOkay  + inpOkay) / 3);
-        const avgGood = Math.round((lcpgood + clsgood  + inpgood) / 3);
+        const avgOkay = Math.round((lcpOkay + clsOkay + inpOkay) / 3);
+        const avgGood = Math.round((lcpgood + clsgood + inpgood) / 3);
         const avgBad = Math.round((lcpbad + clsbad + inpbad) / 3);
         let chartFlag = true;
         for (let j = 0; j < 6; j += 1) {

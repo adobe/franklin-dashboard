@@ -5,18 +5,18 @@ import { readBlockConfig } from '../../scripts/lib-franklin.js';
  * @param {Element} block The top pages block element
  */
 export default async function decorate(block) {
-    // TODO determine if any block params required or if autoblocking preferred
-    // read block params
-    const cfg = readBlockConfig(block);
-  
-    // set form defaults if already in URL
-    const currentpage = new URL(window.location.href);
-    const params = currentpage.searchParams;
-    const url = params.get('referrer') || '';
-    const domainkey = params.get('domainkey') || localStorage.getItem('domainkey') || '';
-  
-    // TODO update action attribute to point to correct main page
-    block.innerHTML = `
+  // TODO determine if any block params required or if autoblocking preferred
+  // read block params
+  const cfg = readBlockConfig(block);
+
+  // set form defaults if already in URL
+  const currentpage = new URL(window.location.href);
+  const params = currentpage.searchParams;
+  const url = params.get('referrer') || '';
+  const domainkey = params.get('domainkey') || localStorage.getItem('domainkey') || '';
+
+  // TODO update action attribute to point to correct main page
+  block.innerHTML = `
     <form method="get" action="${cfg.action}">
         <input type="hidden" name="interval" value="30">
         <input type="hidden" name="offset" value="0">
@@ -29,4 +29,4 @@ export default async function decorate(block) {
         <button>Go</button>
     </form>
       `;
-  }
+}

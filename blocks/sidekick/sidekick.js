@@ -36,7 +36,7 @@ export default function decorate(block) {
     const numb = parseFloat(metric).toFixed(2).toLocaleString('en-US');
     const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
     return displayedNumb;
-  }
+  };
 
   const toggleColor = (metric, range, el) => {
     if (metric && metric <= range[0]) {
@@ -51,24 +51,24 @@ export default function decorate(block) {
     } else {
       el.classList.toggle('fail');
     }
-  }
+  };
 
   const createMetricDiv = (metric, col, measurement, range, title) => {
     const metricEl = document.createElement('div');
-    metricEl.classList.add('metric', 'group')
+    metricEl.classList.add('metric', 'group');
     const metricTitle = document.createElement('div');
     const metricNumb = document.createElement('div');
     metricTitle.classList.add(col, 'title');
     metricTitle.textContent = title;
     metricNumb.classList.add(col, 'metric', 'numeric');
-    metricNumb.textContent = metric ? `${col === 'avglcp' ? truncateFloat(metric / 1000.00) : truncateFloat(metric)}${measurement}` : 'N/A'
-    toggleColor(metric, range, metricNumb)
+    metricNumb.textContent = metric ? `${col === 'avglcp' ? truncateFloat(metric / 1000.00) : truncateFloat(metric)}${measurement}` : 'N/A';
+    toggleColor(metric, range, metricNumb);
     metricEl.appendChild(metricTitle);
     metricEl.appendChild(metricNumb);
     return metricEl;
-  }
+  };
 
-  if (endpoint === 'rum-dashboard'){
+  if (endpoint === 'rum-dashboard') {
     makeList = () => {
       if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
         window.setTimeout(makeList, 1000);
@@ -86,28 +86,31 @@ export default function decorate(block) {
             noresults.innerHTML = '<i>domainkey</i> and <i>url</i> (hostname) are required.  Please provide <a href="/">here</a>.';
           }
           block.append(noresults);
-        }
-        else{
+        } else {
           const { url, pageviews } = data[0];
-          const cols = [ 'avglcp', 'avgcls', 'avginp'];
-          const metrics = { avglcp: 's', avgcls:'', avgfid: 'ms', avginp: 'ms' };
-          const titles = {avglcp: 'LCP', avgcls: 'CLS', avgfid: 'FID', avginp: 'INP'};
+          const cols = ['avglcp', 'avgcls', 'avginp'];
+          const metrics = {
+            avglcp: 's', avgcls: '', avgfid: 'ms', avginp: 'ms',
+          };
+          const titles = {
+            avglcp: 'LCP', avgcls: 'CLS', avgfid: 'FID', avginp: 'INP',
+          };
           const ranges = {
             avglcp: [2500, 4000],
             avgfid: [100, 300],
             avginp: [200, 500],
             avgcls: [0.1, 0.25],
           };
-          
+
           const urlEl = document.createElement('div');
           urlEl.classList.add('url', 'info', 'txt');
           const heading = document.createElement('h4');
-          heading.textContent = `30 Day Report`;
+          heading.textContent = '30 Day Report';
           urlEl.appendChild(heading);
-  
+
           const cwvEl = document.createElement('div');
           cwvEl.classList.add('cwv', 'group');
-  
+
           const pvEl = document.createElement('div');
           const pvTitle = document.createElement('h5');
           pvTitle.textContent = 'Page Views';
@@ -116,13 +119,13 @@ export default function decorate(block) {
           pvNumb.textContent = parseInt(pageviews, 10).toLocaleString('en-US');
           urlEl.appendChild(pvTitle);
           urlEl.appendChild(pvNumb);
-  
-          for(let i = 0; i < cols.length; i++){
-            //create sub elements of this div
+
+          for (let i = 0; i < cols.length; i++) {
+            // create sub elements of this div
             const retEl = createMetricDiv(data[0][cols[i]], cols[i], metrics[cols[i]], ranges[cols[i]], titles[cols[i]]);
             cwvEl.appendChild(retEl);
           }
-  
+
           block.append(urlEl);
           block.append(pvEl);
           block.append(cwvEl);

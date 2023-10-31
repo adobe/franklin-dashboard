@@ -54,6 +54,7 @@
 .filter button {
     margin: auto;
     margin-bottom: 5px;
+    color: white;
 }
 
 .filter button.selected {

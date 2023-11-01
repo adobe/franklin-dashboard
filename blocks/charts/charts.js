@@ -53,29 +53,7 @@ export default function decorate(block) {
   canvasWrapper.style.height = '100%';
   canvasWrapper.style.width = '100%';
   canvasWrapper.id = chartId;
-
-  if (typeChart === 'bar' && !document.querySelector(`#page-data-${endpoint}-${typeChart}`)) {
-    const navbar = document.createElement('div');
-    navbar.style = "height: 100%; width: 100%"
-    navbar.innerHTML = `
-    <ul class="nav nav-tabs">
-    <li class='active'><a data-toggle="tab" href="#page-data-${endpoint}-${typeChart}">Page Stats</a></li>
-    <li><a data-toggle="tab" href="#site-data-${endpoint}-${typeChart}">Site Wide Stats</a></li>
-    </ul>
-  
-  <div class="tab-content" style="height: 100%; width: 100%">
-    <div id="page-data-${endpoint}-${typeChart}" class="tab-pane fade in active" style="height: 100%; width: 100%">
-    </div>
-    <div id="site-data-${endpoint}-${typeChart}" class="tab-pane fade" style="height: 100%; width: 100%">
-    </div>
-  </div>`
-    block.appendChild(navbar);
-    const pageDataHandle = document.querySelector(`#page-data-${endpoint}-${typeChart}`);
-    pageDataHandle.appendChild(canvasWrapper);
-  } else{
-      const siteDataHandle = document.querySelector(`#site-data-${endpoint}-${typeChart}`);
-      siteDataHandle.appendChild(canvasWrapper);
-   }
+  currBlock.append(canvasWrapper);
 
   const getQuery = () => {
     if (!Object.hasOwn(window, 'gettingQueryInfo')) {

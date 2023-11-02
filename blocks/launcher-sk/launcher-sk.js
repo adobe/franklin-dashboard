@@ -13,7 +13,7 @@ export default async function decorate(block) {
   const currentpage = new URL(window.location.href);
   const params = currentpage.searchParams;
   const url = params.get('referrer') || null;
-  const hostname = url ? new URL("https://"+url).hostname : null
+  const hostname = url ? new URL("https://"+url).hostname : ''
   const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
   if(domainkey){
     location.replace(`/views/sidekick-insights?${params.toString()}&interval=30&offset=0&limit=10&exactmatch=true&threshold=0&url=${url}`);

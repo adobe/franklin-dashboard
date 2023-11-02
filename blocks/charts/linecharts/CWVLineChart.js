@@ -134,6 +134,7 @@ export default class CWVLineChart extends LineChart {
           },
           yAxis: {
             type: 'log',
+            logBase: 2,
           },
           series: [
             {

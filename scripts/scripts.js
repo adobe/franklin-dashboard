@@ -190,6 +190,14 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   Object.entries(qps).forEach(([k, v]) => {
     params.set(k, v);
   });
+
+  const siteHostname = new URL("https://".concat(params.get('url'))).hostname;
+  const storedDK = localStorage.getItem(siteHostname);
+
+  if(storedDK){
+    params.set('domainkey', storedDK);
+  }
+
   /*
   Below are specific parameters set for specific queries
   This is intended as short term solution; will discuss
@@ -217,6 +225,15 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
             window.dashboard = {};
           }
           window.dashboard[endpoint] = data;
+          if(data.results.data.length > 0){
+            const siteHostname = new URL("https://".concat(params.get('url'))).hostname;
+            const persistedDomainkey = localStorage.getItem(siteHostname);
+            const userProvidedDomainKey = params.get('domainkey');
+
+            if((persistedDomainkey && userProvidedDomainKey) || !persistedDomainkey){
+              localStorage.setItem(siteHostname, userProvidedDomainKey);
+            } 
+          }
         })
         .catch((err) => {
         // eslint-disable-next-line no-console

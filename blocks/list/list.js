@@ -38,10 +38,17 @@ export default function decorate(block) {
       const { data } = window.dashboard[endpoint].results;
       hideLoader(block);
 
-      const listGridContainer = document.createElement('div');
-      listGridContainer.classList.add('grid', 'list', 'container');
+      //set heading rows.
+      const table = document.createElement('table');
+      const tableHead = document.createElement('thead');
+      const trHead = document.createElement('tr');
+      const tableBody = document.createElement('tbody');
+      
+      table.className = "spectrum-Table-scrollable spectrum-Table--sizeXL spectrum-Table--spacious spectrum-Table--emphasized";
+      tableHead.className = "spectrum-Table-head";
+      tableBody.className = "spectrum-Table-body";
 
-      const cols = ['url', 'pageviews', 'usrexp', 'avglcp', 'avgcls', 'avginp'];
+      const cols = ['url', 'pageviews', 'usrexp', 'avglcp', 'avgcls', 'avginp', 'chart'];
       const metrics = ['s', '', 'ms', 'ms'];
       const ranges = {
         avglcp: [2500, 4000],
@@ -49,43 +56,41 @@ export default function decorate(block) {
         avginp: [200, 500],
         avgcls: [0.1, 0.25],
       };
-
-      const listGridHeadingRow = document.createElement('div');
-      listGridHeadingRow.classList.add('grid', 'list', 'row', 'heading');
-      for (let j = 0; j < 6; j += 1) {
-        const listGridHeadings = document.createElement('div');
+      
+      for (let j = 0; j < 7; j += 1) {
+        const th = document.createElement('th');
+        const titleSpan = document.createElement('span');
         if (cols[j] === 'usrexp') {
-          listGridHeadings.textContent = 'CWV Across Visits';
+          titleSpan.textContent = 'CWV Across Visits';
         } else if (cols[j] === 'url') {
-          listGridHeadings.textContent = 'Path';
+          titleSpan.textContent = 'Path';
         } else if (cols[j] === 'pageviews') {
-          listGridHeadings.textContent = 'Visits';
+          titleSpan.textContent = 'Visits';
         } else if (cols[j] === 'avglcp') {
-          listGridHeadings.textContent = 'LCP';
+          titleSpan.textContent = 'LCP';
         } else if (cols[j] === 'avgcls') {
-          listGridHeadings.textContent = 'CLS';
+          titleSpan.textContent = 'CLS';
         } else if (cols[j] === 'avginp') {
-          listGridHeadings.textContent = 'INP';
+          titleSpan.textContent = 'INP';
+        } else if (cols[j] === 'chart'){
+          titleSpan.textContent = "CWV Chart"
         } else {
-          listGridHeadings.textContent = cols[j];
+          titleSpan.textContent = cols[j];
         }
-        listGridHeadings.classList.add('grid', 'list', 'col', 'heading');
-        listGridHeadingRow.appendChild(listGridHeadings);
+        th.className = "spectrum-Table-headCell is-sortable";
+        th.ariaSort = "none";
+        th.tabIndex = "0";
+        titleSpan.className = "spectrum-Table-columnTitle";
+        th.style.textAlign = 'center';
+        th.append(titleSpan);
+        trHead.append(th);
       }
-      const chartHeading = document.createElement('div');
-      chartHeading.textContent = 'CWV Chart';
-      chartHeading.classList.add('grid', 'list', 'col', 'heading');
-      listGridHeadingRow.appendChild(chartHeading);
-      listGridContainer.appendChild(listGridHeadingRow);
-
-      let counter = 0;
+      tableHead.append(trHead);
+      table.append(tableHead);
 
       for (let i = 0; i < data.length; i += 1) {
-        const listGridRow = document.createElement('div');
-        listGridRow.classList.add('grid', 'list', 'row');
-        if ((i % 2) === 1) {
-          listGridRow.classList.add('odd');
-        }
+        const dataRow = document.createElement('tr');
+        dataRow.className = "spectrum-Table-row"
         const {
           lcpgood, lcpbad, clsgood, clsbad, fidgood, fidbad, inpgood, inpbad,
         } = data[i];
@@ -105,6 +110,8 @@ export default function decorate(block) {
         for (let j = 0; j < 6; j += 1) {
           const listGridColumn = document.createElement('div');
           listGridColumn.classList.add('grid', 'list', 'col', cols[j]);
+          const dataItem = document.createElement('td');
+          dataItem.className = "spectrum-Table-cell spectrum-Table-cell--divider";
           if (cols[j] === 'usrexp') {
             const badPerc = document.createElement('div');
             const goodPerc = document.createElement('div');
@@ -128,6 +135,7 @@ export default function decorate(block) {
               listGridColumn.appendChild(goodPerc);
               listGridColumn.appendChild(okayPerc);
               listGridColumn.appendChild(badPerc);
+              dataItem.append(listGridColumn);
             } else {
               const noresultPerc = document.createElement('div');
               noresultPerc.classList.add('grid', 'list', 'col', cols[j], 'noresultbar');
@@ -135,6 +143,7 @@ export default function decorate(block) {
               noresultPerc.textContent = 'Not Enough Traffic';
               noresultPerc.style.width = noresultPercentage;
               listGridColumn.appendChild(noresultPerc);
+              dataItem.append(listGridColumn);
             }
           } else {
             let txtContent;
@@ -150,7 +159,7 @@ export default function decorate(block) {
             } else {
               txtContent = data[i][cols[j]];
             }
-            if (j >= 3) {
+            if (j >= 3 && j < 6) {
               if (data[i][cols[j]] && data[i][cols[j]] <= ranges[cols[j]][0]) {
                 listGridColumn.classList.toggle('pass');
               } else if (
@@ -175,8 +184,9 @@ export default function decorate(block) {
             } else if (j >= 3) {
               listGridColumn.textContent = 'n/a';
             }
+            dataItem.append(listGridColumn);
           }
-          listGridRow.append(listGridColumn);
+          dataRow.append(dataItem);
         }
         const chartLink = document.createElement('div');
         const params = new URLSearchParams(window.location.search);
@@ -189,18 +199,21 @@ export default function decorate(block) {
           chartLink.innerText = 'No Data';
         }
         chartLink.classList.add('grid', 'list', 'col', 'clickChart');
-        listGridRow.append(chartLink);
-        listGridContainer.append(listGridRow);
+        const chartdt = document.createElement('td');
+        chartdt.className = "spectrum-Table-cell spectrum-Table-cell--divider"
+        chartdt.append(chartLink);
+        dataRow.append(chartdt);
+        tableBody.append(dataRow);
+        table.append(tableBody);
 
-        counter = i;
       }
-      block.append(listGridContainer);
+      block.append(table);
 
       if (data.length === 0) {
         const noresults = document.createElement('p');
         const params = new URLSearchParams(window.location.search);
         if (params.has('domainkey') && params.has('url')) {
-          noresults.textContent = 'No results found.';
+          noresults.innerHTML = 'No results found.';
         } else {
           noresults.innerHTML = '<i>domainkey</i> and <i>url</i> (hostname) are required.  Please provide <a href="/">here</a>.';
         }

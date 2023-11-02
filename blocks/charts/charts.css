@@ -29,7 +29,7 @@ div [_echarts_instance_] > div > canvas {
 }
 
 .section.charts-container > .charts-wrapper{
-    aspect-ratio: 1/1;
+    aspect-ratio: 5/2;
     height: 100%;
     width: 100%;
     padding-bottom: 24px;

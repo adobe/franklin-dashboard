@@ -22,17 +22,23 @@
     "@babel/core": "7.21.0",
     "@babel/eslint-parser": "7.19.1",
     "@esm-bundle/chai": "4.3.4-fix.0",
+    "@spectrum-css/actionbar": "^7.0.6",
+    "@spectrum-css/icon": "^4.0.3",
+    "@spectrum-css/page": "^6.0.5",
     "@web/test-runner": "0.15.1",
     "@web/test-runner-commands": "0.6.5",
     "chai": "4.3.7",
     "eslint": "8.35.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.27.5",
+    "loadicons": "^1.0.0",
     "sinon": "15.0.1",
     "stylelint": "15.2.0",
     "stylelint-config-standard": "30.0.1"
   },
   "dependencies": {
-    "@adobe/helix-cli": "^14.26.0"
+    "@adobe/helix-cli": "^14.26.0",
+    "@adobe/spectrum-css-workflow-icons": "^1.5.4",
+    "@spectrum-css/table": "^5.0.6"
   }
 }

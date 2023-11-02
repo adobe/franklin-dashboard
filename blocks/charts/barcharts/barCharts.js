@@ -53,13 +53,36 @@ export default class BarChart extends Chart {
           return;
         }
 
+        const { hostname, url } = this.data[0];
         const labels = this.data.map((row) => row[`${this.cfg['label-key']}`]);
         const series = this.data.map((row) => row[`${this.cfg.field}`]);
         const legend = this.cfg.label;
+        const params = new URLSearchParams(window.location.search);
+
+        let start = new Date(params.get('startdate'));
+        let end = new Date(params.get('enddate'));
+        const interval = params.get('interval');
+        const offset = params.get('offset');
+        const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
+        const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
+        const currentDate = new Date();
+        const today = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          currentDate.getDate(),
+          0,
+          0,
+          0,
+          0,
+        );
+        end = today - dateOffsetInMillis;
+        start = end - intervalInMillis;
+        let startdate = new Date(start).toLocaleDateString().split('T')[0];
+        let enddate = new Date(end).toLocaleDateString().split('T')[0];
 
         const opts = {
           title: {
-            text: `${legend}`,
+            text: `${legend} \n ${hostname ? hostname : url} \n ${startdate} - ${enddate}`,
             x: 'center',
           },
           tooltip: {
@@ -83,6 +106,7 @@ export default class BarChart extends Chart {
           },
           xAxis: {
             type: 'log',
+            logBase: 5,
           },
           yAxis: {
             data: labels,

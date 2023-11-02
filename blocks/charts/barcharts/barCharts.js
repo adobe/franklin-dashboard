@@ -82,7 +82,7 @@ export default class BarChart extends Chart {
 
         let urlCut;
         if(url){
-          urlCut = `${url.length <= 20 ? url : url.replace(/^https?:\/\/[^/]+/i, '').substring(0, 20)}${url.length > 20 ? (url.replace(/^https?:\/\/[^/]+/i, '').length > 20 ? '...' : '') : ''}`
+          urlCut = `${url.length <= 40 ? url : url.replace(/^https?:\/\/[^/]+/i, '').substring(0, 20)}${url.length > 40 ? (url.replace(/^https?:\/\/[^/]+/i, '').length > 40 ? '...' : '') : ''}`
         }
 
         const opts = {

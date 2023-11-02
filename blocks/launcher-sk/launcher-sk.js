@@ -29,7 +29,7 @@ export default async function decorate(block) {
         <input type="hidden" name="threshold" value=0.01>
         <input type="hidden" name="url" value="${url}">
         <label for="domainkey">domainkey</label>
-        <input id="domainkey" name="domainkey" value="${domainkey}" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+        <input id="domainkey" name="domainkey" value="${domainkey ? domainkey : ''}" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
         <button>Go</button>
     </form>
       `;

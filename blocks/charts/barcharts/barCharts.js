@@ -80,9 +80,14 @@ export default class BarChart extends Chart {
         let startdate = new Date(start).toLocaleDateString().split('T')[0];
         let enddate = new Date(end).toLocaleDateString().split('T')[0];
 
+        let urlCut;
+        if(url){
+          urlCut = `${url.replace(/^https?:\/\/[^/]+/i, '').substring(0, 20)}${url.replace(/^https?:\/\/[^/]+/i, '').length > 20 ? '...' : ''}`
+        }
+
         const opts = {
           title: {
-            text: `${legend} \n ${hostname ? hostname : url} \n ${startdate} - ${enddate}`,
+            text: `${legend} \n ${hostname ? hostname : urlCut} \n ${startdate} - ${enddate}`,
             x: 'center',
           },
           tooltip: {

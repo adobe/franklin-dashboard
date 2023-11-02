@@ -150,7 +150,7 @@ export default function decorate(block) {
             if (cols[j] === 'avglcp') {
               txtContent = data[i][cols[j]] / 1000.00;
             } else if (cols[j] === 'url') {
-              listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '')}</a>`;
+              listGridColumn.innerHTML = `<a href='${data[i][cols[j]]}' target="_blank">${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '').substring(0, 20)}${data[i][cols[j]].replace(/^https?:\/\/[^/]+/i, '').length > 20 ? '...' : ''}</a>`;
             } else if (cols[j] === 'pageviews') {
               const params = new URLSearchParams(window.location.search);
               const nextUrl = data[i][cols[0]].replace('https://', '');

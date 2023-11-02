@@ -12,8 +12,12 @@ export default async function decorate(block) {
   // set form defaults if already in URL
   const currentpage = new URL(window.location.href);
   const params = currentpage.searchParams;
-  const url = params.get('referrer') || '';
-  const domainkey = params.get('domainkey') || localStorage.getItem('domainkey') || '';
+  const url = params.get('referrer') || null;
+  const hostname = url ? new URL("https://"+url).hostname : null
+  const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
+  if(domainkey){
+    location.replace(`/views/sidekick-insights?${params.toString()}&interval=30&offset=0&limit=10&exactmatch=true&threshold=0&url=${url}`);
+  }
 
   // TODO update action attribute to point to correct main page
   block.innerHTML = `

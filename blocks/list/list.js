@@ -146,11 +146,6 @@ export default function decorate(block) {
               dataItem.append(listGridColumn);
             }
           } else {
-            const currentpage = new URL(window.location.href);
-            const params = currentpage.searchParams;
-            const url = params.get('referrer') || null;
-            const hostname = url ? new URL(url.startsWith('https://') ? url : "https://"+url).hostname : ''
-            const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
             let txtContent;
             if (cols[j] === 'avglcp') {
               txtContent = data[i][cols[j]] / 1000.00;
@@ -160,7 +155,7 @@ export default function decorate(block) {
               const params = new URLSearchParams(window.location.search);
               const nextUrl = data[i][cols[0]].replace('https://', '');
               params.set('url', nextUrl);
-              listGridColumn.innerHTML = `<a href="/views/rum-pageviews?${params.toString()}&domainkey=${domainkey}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
+              listGridColumn.innerHTML = `<a href="/views/rum-pageviews?${params.toString()}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
             } else {
               txtContent = data[i][cols[j]];
             }
@@ -199,7 +194,7 @@ export default function decorate(block) {
         params.set('url', nextUrl);
 
         if (chartFlag) {
-          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}&domainkey=${domainkey}">Perf Chart</a></div>`;
+          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}">Perf Chart</a></div>`;
         } else {
           chartLink.innerText = 'No Data';
         }

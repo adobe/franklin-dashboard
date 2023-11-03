@@ -146,6 +146,8 @@ export default function decorate(block) {
               dataItem.append(listGridColumn);
             }
           } else {
+            const currentpage = new URL(window.location.href);
+            const params = currentpage.searchParams;
             const url = params.get('referrer') || null;
             const hostname = url ? new URL(url.startsWith('https://') ? url : "https://"+url).hostname : ''
             const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';

@@ -37,9 +37,6 @@ export default function decorate(block) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;
       hideLoader(block);
-      const url = params.get('referrer') || null;
-      const hostname = url ? new URL(url.startsWith('https://') ? url : "https://"+url).hostname : ''
-      const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
 
       //set heading rows.
       const table = document.createElement('table');
@@ -149,6 +146,9 @@ export default function decorate(block) {
               dataItem.append(listGridColumn);
             }
           } else {
+            const url = params.get('referrer') || null;
+            const hostname = url ? new URL(url.startsWith('https://') ? url : "https://"+url).hostname : ''
+            const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
             let txtContent;
             if (cols[j] === 'avglcp') {
               txtContent = data[i][cols[j]] / 1000.00;

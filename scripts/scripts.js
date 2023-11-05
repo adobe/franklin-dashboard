@@ -307,9 +307,6 @@ async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
-
-  const html = document.querySelector('html');
-  html.classList.add('spectrum', 'spectrum--dark');
 }
 
 /**

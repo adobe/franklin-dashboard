@@ -36,6 +36,12 @@ export default function decorate(block) {
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       // query complete, hide loading graphic
       const { data } = window.dashboard[endpoint].results;
+      const currentpage = new URL(window.location.href);
+      const params = currentpage.searchParams;
+      const currURL = params.get('referrer') || null;
+      const hostname = currURL ? new URL(currURL.startsWith('https://') ? url : "https://"+currURL).hostname : ''
+      const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
+
       hideLoader(block);
 
       //set heading rows.
@@ -44,7 +50,7 @@ export default function decorate(block) {
       const trHead = document.createElement('tr');
       const tableBody = document.createElement('tbody');
       
-      table.className = "spectrum-Table-scrollable spectrum-Table--sizeXL spectrum-Table--spacious spectrum-Table--emphasized";
+      table.className = "spectrum-Table-scrollable spectrum-Table--sizeXL";
       tableHead.className = "spectrum-Table-head";
       tableBody.className = "spectrum-Table-body";
 
@@ -155,7 +161,7 @@ export default function decorate(block) {
               const params = new URLSearchParams(window.location.search);
               const nextUrl = data[i][cols[0]].replace('https://', '');
               params.set('url', nextUrl);
-              listGridColumn.innerHTML = `<a href="/views/rum-pageviews?${params.toString()}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
+              listGridColumn.innerHTML = `<a href="/views/rum-pageviews?${params.toString()}&domainkey=${domainkey}">${parseInt(data[i][cols[j]], 10).toLocaleString('en-US')}</a>`;
             } else {
               txtContent = data[i][cols[j]];
             }
@@ -194,13 +200,13 @@ export default function decorate(block) {
         params.set('url', nextUrl);
 
         if (chartFlag) {
-          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}">Perf Chart</a></div>`;
+          chartLink.innerHTML = `<div><a target="_blank" href="/views/rum-performance-monitor?${params.toString()}&domainkey=${domainkey}">Perf Chart</a></div>`;
         } else {
           chartLink.innerText = 'No Data';
         }
         chartLink.classList.add('grid', 'list', 'col', 'clickChart');
         const chartdt = document.createElement('td');
-        chartdt.className = "spectrum-Table-cell spectrum-Table-cell--divider"
+        chartdt.classList.add("spectrum-Table-cell", "spectrum-Table-cell--divider");
         chartdt.append(chartLink);
         dataRow.append(chartdt);
         tableBody.append(dataRow);

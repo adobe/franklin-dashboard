@@ -38,7 +38,7 @@ export default function decorate(block) {
       const { data } = window.dashboard[endpoint].results;
       const currentpage = new URL(window.location.href);
       const params = currentpage.searchParams;
-      const currURL = params.get('referrer') || null;
+      const currURL = params.get('url') || null;
       const hostname = currURL ? new URL(currURL.startsWith('https://') ? url : "https://"+currURL).hostname : ''
       const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
 

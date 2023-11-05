@@ -82,6 +82,9 @@ export default class CWVLineChart extends LineChart {
 
         const { good, okay } = this.cfg.perfRanges[this.cfg.field];
 
+        const pointsAbove = series.filter((el) => el > okay[1]);
+        const percentageAbove = pointsAbove.length/series.length;
+
         const opts = {
           title: {
             text: `${title}\n${params.get('url')}`,
@@ -132,9 +135,8 @@ export default class CWVLineChart extends LineChart {
               rotate: 70,
             },
           },
-          yAxis: {
-            type: 'log',
-            logBase: 2,
+          yAxis: {  
+            type: `${percentageAbove > .30 ? 'log' : 'value'}`,
           },
           series: [
             {
@@ -212,7 +214,7 @@ export default class CWVLineChart extends LineChart {
                       name: 'Needs Improvement',
                       yAxis: `${okay[0]}`, // min of green area
                       label: {
-                        show: Math.max(series) >= okay[0],
+                        show: Math.max(...series) >= okay[0],
                       },
                       itemStyle: {
                         color: 'rgba(256, 255, 256, 0.2)',

@@ -10,15 +10,16 @@ div.grid.list.col {
 }
 
 div.grid.list.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
-    background-color: var(--highlight-background-color);
+    /* background-color: var(--highlight-background-color); */
 }
 
 div.grid.list.col.url {
     align-items: start;
     justify-content: start;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     overflow: hidden;
+    /* background-color: var(--highlight-background-color); */
 }
 
 div.grid.list.col.pageviews {

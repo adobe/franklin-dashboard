@@ -28,6 +28,8 @@
     "@spectrum-css/icon": "^4.0.3",
     "@spectrum-css/page": "^6.0.5",
     "@spectrum-css/progressbar": "^3.0.76",
+    "@spectrum-css/table": "^5.0.6",
+    "@spectrum-css/badge": "^3.1.13",
     "@web/test-runner": "0.15.1",
     "@web/test-runner-commands": "0.6.5",
     "chai": "4.3.7",

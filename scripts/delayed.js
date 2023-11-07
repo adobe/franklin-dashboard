@@ -24,6 +24,7 @@ loadCSS("/styles/spectrum-css/page/dist/index-vars.css");
 loadCSS("/styles/spectrum-css/button/dist/index-vars.css");
 loadCSS("/styles/spectrum-css/table/dist/index-vars.css");
 loadCSS("/styles/spectrum-css/progressbar/dist/index-vars.css");
+loadCSS("/styles/spectrum-css/badge/dist/index-vars.css");
 
 loadScript('/scripts/loadicons/index.js', 'text/javascript');
 loadScript('', 'text/javascript').textContent = `  loadIcons('/styles/spectrum-css/icon/dist/spectrum-css-icons.svg');`

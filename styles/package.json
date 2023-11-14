@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "@spectrum-css/accordion": "^4.0.24",
+    "@spectrum-css/actionbar": "^7.0.8",
+    "@spectrum-css/badge": "^3.1.15",
+    "@spectrum-css/button": "^11.0.15",
+    "@spectrum-css/icon": "^4.0.4",
+    "@spectrum-css/page": "^6.0.7",
+    "@spectrum-css/progressbar": "^3.0.78",
+    "@spectrum-css/table": "^5.0.8",
+    "@spectrum-css/typography": "^5.0.47",
+    "@spectrum-css/vars": "^9.0.8"
+  }
+}

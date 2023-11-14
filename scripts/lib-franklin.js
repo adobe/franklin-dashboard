@@ -524,6 +524,16 @@ export function decorateTemplateAndTheme() {
   if (template) addClasses(document.body, template);
   const theme = getMetadata('theme');
   if (theme) addClasses(document.body, theme);
+  /*
+  loadCSS("/node_modules/@spectrum-css/vars/dist/spectrum-global.css");
+  loadCSS("/node_modules/@spectrum-css/vars/dist/spectrum-medium.css");
+  loadCSS("/node_modules/@spectrum-css/vars/dist/spectrum-light.css");
+  loadCSS("/node_modules/@spectrum-css/page/dist/index-vars.css");
+  loadCSS("/node_modules/@spectrum-css/button/dist/index-vars.css");
+  loadCSS("/node_modules/@spectrum-css/table/dist/index-vars.css");
+  loadCSS("/node_modules/@spectrum-css/progressbar/dist/index-vars.css");
+  loadCSS("/node_modules/@spectrum-css/badge/dist/index-vars.css");
+  */
 }
 
 /**

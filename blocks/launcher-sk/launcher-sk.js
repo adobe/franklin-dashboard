@@ -16,7 +16,7 @@ export default async function decorate(block) {
   const hostname = url ? new URL(url.startsWith('https://') ? url : "https://"+url).hostname : ''
   const domainkey = params.get('domainkey') || hostname ? localStorage.getItem(hostname) : '';
   if(domainkey){
-    location.replace(`/views/sidekick-insights?${params.toString()}&interval=30&offset=0&limit=10&exactmatch=true&threshold=0&url=${url}`);
+    location.replace(`/views/${cfg.action}?${params.toString()}&interval=30&offset=0&limit=10&exactmatch=true&threshold=0&url=${url}`);
   }
 
   // TODO update action attribute to point to correct main page

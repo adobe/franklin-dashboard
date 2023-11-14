@@ -178,7 +178,59 @@ export default function decorate(block) {
         table.append(tableBody);
 
       }
-      block.append(table);
+      //block.append(table);
+      block.parentElement.parentElement.parentElement.outerHTML = `<!-- WAI-ARIA 1.1: Accordion container role changed from "tablist" to "region" -->
+      <div class="spectrum-Accordion spectrum-Accordion--spacious spectrum-Accordion--sizeS" role="region">
+        <div class="spectrum-Accordion-item is-open" role="presentation">
+      
+          <!-- WAI-ARIA 1.1: Item header is a <button> wrapped within a <h3> element, rather than a <div> element with role="tab" -->
+          <h3 class="spectrum-Accordion-itemHeading">
+            <!-- WAI-ARIA 1.1: Item header <button> uses aria-expanded attribute to indicate expanded state. -->
+            <button class="spectrum-Accordion-itemHeader" type="button" id="spectrum-accordion-item-0-header" aria-controls="spectrum-accordion-item-0-content" aria-expanded="true">Recent</button>
+            <span class="spectrum-Accordion-itemIconContainer">
+              <svg class="spectrum-Icon spectrum-UIIcon-ChevronRight75 spectrum-Accordion-itemIndicator" focusable="false" aria-hidden="true">
+                <use xlink:href="#spectrum-css-icon-Chevron75" />
+              </svg>
+            </span>
+          </h3>
+      
+          <!-- WAI-ARIA 1.1: Item content role changed from "tabpanel" to "region" -->
+          <div class="spectrum-Accordion-itemContent" role="region" id="spectrum-accordion-item-0-content" aria-labelledby="spectrum-accordion-item-0-header">Item 1</div>
+        </div>
+        <div class="spectrum-Accordion-item is-disabled" role="presentation">
+          <h3 class="spectrum-Accordion-itemHeading">
+            <button class="spectrum-Accordion-itemHeader" type="button" disabled id="spectrum-accordion-item-1-header" aria-controls="spectrum-accordion-item-1-content" aria-expanded="false">Architecture</button>
+            <span class="spectrum-Accordion-itemIconContainer">
+              <svg class="spectrum-Icon spectrum-UIIcon-ChevronRight75 spectrum-Accordion-itemIndicator" focusable="false" aria-hidden="true">
+                <use xlink:href="#spectrum-css-icon-Chevron75" />
+              </svg>
+            </span>
+          </h3>
+          <div class="spectrum-Accordion-itemContent" role="region" id="spectrum-accordion-item-1-content" aria-labelledby="spectrum-accordion-item-1-header">Item 2</div>
+        </div>
+        <div class="spectrum-Accordion-item" role="presentation">
+          <h3 class="spectrum-Accordion-itemHeading">
+            <button class="spectrum-Accordion-itemHeader" type="button" id="spectrum-accordion-item-2-header" aria-controls="spectrum-accordion-item-2-content" aria-expanded="false">Nature</button>
+            <span class="spectrum-Accordion-itemIconContainer">
+              <svg class="spectrum-Icon spectrum-UIIcon-ChevronRight75 spectrum-Accordion-itemIndicator" focusable="false" aria-hidden="true">
+                <use xlink:href="#spectrum-css-icon-Chevron75" />
+              </svg>
+            </span>
+          </h3>
+          <div class="spectrum-Accordion-itemContent" role="region" id="spectrum-accordion-item-2-content" aria-labelledby="spectrum-accordion-item-2-header">Item 3</div>
+        </div>
+        <div class="spectrum-Accordion-item" role="presentation">
+          <h3 class="spectrum-Accordion-itemHeading">
+            <button class="spectrum-Accordion-itemHeader" type="button" id="spectrum-accordion-item-3-header" aria-controls="spectrum-accordion-item-3-content" aria-expanded="false">Really Long Accordion Item According to Our Predictions</button>
+            <span class="spectrum-Accordion-itemIconContainer">
+              <svg class="spectrum-Icon spectrum-UIIcon-ChevronRight75 spectrum-Accordion-itemIndicator" focusable="false" aria-hidden="true">
+                <use xlink:href="#spectrum-css-icon-Chevron75" />
+              </svg>
+            </span>
+          </h3>
+          <div class="spectrum-Accordion-itemContent" role="region" id="spectrum-accordion-item-3-content" aria-labelledby="spectrum-accordion-item-3-header">Item 4</div>
+        </div>
+      </div>`
 
       if (data.length === 0) {
         const noresults = document.createElement('p');

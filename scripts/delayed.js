@@ -17,14 +17,8 @@ if (getMetadata('echarts') !== 'false') {
   loadScript('https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js', 'text/javascript');
 }
 
-loadCSS("/styles/spectrum-css/vars/dist/spectrum-global.css");
-loadCSS("/styles/spectrum-css/vars/dist/spectrum-medium.css");
-loadCSS("/styles/spectrum-css/vars/dist/spectrum-light.css");
-loadCSS("/styles/spectrum-css/page/dist/index-vars.css");
-loadCSS("/styles/spectrum-css/button/dist/index-vars.css");
-loadCSS("/styles/spectrum-css/table/dist/index-vars.css");
-loadCSS("/styles/spectrum-css/progressbar/dist/index-vars.css");
-loadCSS("/styles/spectrum-css/badge/dist/index-vars.css");
+loadScript('/node_modules/loadicons/index.js', 'text/javascript');
+loadScript('', 'text/javascript').textContent = `  loadIcons('/node_modules/@spectrum-css/icon/dist/spectrum-css-icons.svg');`
 
-loadScript('/scripts/loadicons/index.js', 'text/javascript');
-loadScript('', 'text/javascript').textContent = `  loadIcons('/styles/spectrum-css/icon/dist/spectrum-css-icons.svg');`
+const html = document.querySelector('html');
+html.className = "spectrum spectrum--medium spectrum--light"

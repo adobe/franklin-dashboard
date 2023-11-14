@@ -8,7 +8,7 @@
     "lint:css": "stylelint blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
     "start": "npx hlx up",
-    "spectrum": "npm install ./ && rm -rf styles/spectrum-css && mv node_modules/@spectrum-css styles/spectrum-css"
+    "spectrum": "npm install ./ && rm -rf styles/spectrum-css && mv node_modules/@spectrum-css styles/spectrum-css && mv node_modules/@spectrum-web-components scripts/spectrum-web"
   },
   "repository": {
     "type": "git",
@@ -25,11 +25,11 @@
     "@babel/eslint-parser": "7.19.1",
     "@esm-bundle/chai": "4.3.4-fix.0",
     "@spectrum-css/actionbar": "^7.0.6",
+    "@spectrum-css/badge": "^3.1.13",
     "@spectrum-css/icon": "^4.0.3",
-    "@spectrum-css/page": "^6.0.5",
+    "@spectrum-css/page": "^6.0.6",
     "@spectrum-css/progressbar": "^3.0.76",
     "@spectrum-css/table": "^5.0.6",
-    "@spectrum-css/badge": "^3.1.13",
     "@web/test-runner": "0.15.1",
     "@web/test-runner-commands": "0.6.5",
     "chai": "4.3.7",
@@ -42,6 +42,11 @@
     "stylelint-config-standard": "30.0.1"
   },
   "dependencies": {
-    "@adobe/helix-cli": "^14.26.0"
+    "@adobe/helix-cli": "^14.26.0",
+    "@spectrum-css/accordion": "^4.0.24",
+    "@spectrum-css/button": "^11.0.14",
+    "@spectrum-css/typography": "^5.0.46",
+    "@spectrum-css/vars": "^9.0.8",
+    "@spectrum-web-components/accordion": "^0.39.4"
   }
 }

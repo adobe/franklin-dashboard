@@ -1,21 +1,22 @@
-@import '/node_modules/@spectrum-css/button/dist/index-vars.css'
-
-div.grid.list.col {
+div.info{
     display: flex;
+    flex-direction: row;
     width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     /*border-radius: 5px;*/
-    font-size: var(--body-font-size-xs);
+    font-size: var(--body-font-size-XL);
     justify-content: center;
     align-items: center;
 }
 
-div.grid.list.col:not(.url, .usrexp, .heading, .avgcls, .avginp, .avglcp, .avgfid) {
-    background-color: var(--highlight-background-color);
+div.pvLabel, div.pvNumb {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 
-div.grid.list.col.url {
+div.grid.info.col.url {
     align-items: start;
     justify-content: start;
     text-overflow: ellipsis;
@@ -24,7 +25,7 @@ div.grid.list.col.url {
     background-color: var(--highlight-background-color);
 }
 
-div.grid.list.col.pageviews {
+div.grid.info.col.pageviews {
     overflow: visible;
 }
 
@@ -100,7 +101,7 @@ div.grid.list.col.pageviews {
     background-color: orange;
 }
 
-div.section.list-container p {
+div.section.info-container p {
     /* font-size: var(--body-font-size-s); */
     margin-top: 0;
 }

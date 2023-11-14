@@ -12,6 +12,17 @@ const loadScript = (src, type) => {
   return thisScript;
 }
 
+loadCSS("/node_modules/@spectrum-css/vars/dist/spectrum-global.css")
+loadCSS("/node_modules/@spectrum-css/vars/dist/spectrum-global.css")
+loadCSS("/node_modules/@spectrum-css/vars/dist/spectrum-medium.css")
+loadCSS("/node_modules/@spectrum-css/vars/dist/spectrum-light.css")
+loadCSS("/node_modules/@spectrum-css/page/dist/index-vars.css")
+loadCSS("/node_modules/@spectrum-css/button/dist/index-vars.css")
+loadCSS("/node_modules/@spectrum-css/table/dist/index-vars.css")
+loadCSS("/node_modules/@spectrum-css/progressbar/dist/index-vars.css")
+loadCSS("/node_modules/@spectrum-css/badge/dist/index-vars.css")
+loadCSS("/node_modules/@spectrum-css/accordion/dist/index-vars.css")
+
 // load echarts library unless the page metadata says otherwise
 if (getMetadata('echarts') !== 'false') {
   loadScript('https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js', 'text/javascript');

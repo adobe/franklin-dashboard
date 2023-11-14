@@ -179,7 +179,7 @@ export default function decorate(block) {
 
       }
       //block.append(table);
-      block.parentElement.parentElement.parentElement.outerHTML = `<!-- WAI-ARIA 1.1: Accordion container role changed from "tablist" to "region" -->
+      block.parentElement.outerHTML = `<!-- WAI-ARIA 1.1: Accordion container role changed from "tablist" to "region" -->
       <div class="spectrum-Accordion spectrum-Accordion--spacious spectrum-Accordion--sizeS" role="region">
         <div class="spectrum-Accordion-item is-open" role="presentation">
       

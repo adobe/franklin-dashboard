@@ -1,14 +1,36 @@
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<script src="/scripts/lib-franklin.js" type="module"></script>
-<script src="/scripts/scripts.js" type="module"></script>
-<link rel="stylesheet" href="/styles/styles.css"/>
-<link rel="icon" href="data:,">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{space_name}} - Assets</title>
+    <link rel="canonical" href="https://{{host}}/">
 
-<script defer="defer" src="/static/js/main.js"></script>
+    <meta name="x-space-id" content="{{space_id}}">
+    <meta name="x-company-id" content="{{company_id}}">
+    <meta name="x-space-name" content="{{space_name}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link href="/static/css/main.css" rel="stylesheet">
+    <script defer src="/static/js/main.js"></script>
+    <link href="/static/css/main.css" rel="stylesheet">
 
-<!-- custom style to handle <main> with react -->
-<style>
-    main { height: 100%; }
-</style>
+    <style>
+        main { height: 100%; }
+    </style>
+
+    <link rel="icon" href="data:,">
+    <link rel="apple-touch-icon" href="/icons/favicon.png" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <main></main>
+
+    <!-- Gainsight PX Tag-->
+    <script type="text/javascript">
+      (function(n,t,a,e,co){var i="aptrinsic";n[i]=n[i]||function(){
+          (n[i].q=n[i].q||[]).push(arguments)},n[i].p=e;n[i].c=co;
+          var r=t.createElement("script");r.async=!0,r.src=a+"?a="+e;
+          var c=t.getElementsByTagName("script")[0];c.parentNode.insertBefore(r,c)
+      })(window,document,"https://web-sdk.aptrinsic.com/api/aptrinsic.js","{{Gainsight-Tag-Key}}");
+    </script>
+  </body>
+</html>

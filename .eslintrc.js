@@ -1,4 +1,4 @@
-module.exports = {
+/*module.exports = {
   root: true,
   extends: 'airbnb-base',
   env: {
@@ -18,4 +18,4 @@ module.exports = {
       js: 'always',
     }],
   },
-};
+};*/

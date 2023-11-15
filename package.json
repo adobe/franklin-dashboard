@@ -5,10 +5,14 @@
   "description": "Franklin statistical dashboard",
   "scripts": {
     "lint:js": "eslint .",
-    "lint:css": "stylelint blocks/**/*.css styles/*.css",
+    "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
     "lint": "npm run lint:js && npm run lint:css",
-    "start": "npx hlx up",
-    "spectrum": "npm install ./ && rm -rf styles/spectrum-css && mv node_modules/@spectrum-css styles/spectrum-css && mv node_modules/@spectrum-web-components scripts/spectrum-web"
+    "test": "echo \"Trust me\"",
+    "start": "react-scripts start",
+    "build:clean": "npx rimraf static",
+    "build:react": "react-app-rewired build",
+    "build:static": "cp -r build/static .",
+    "build": "npm run build:react && npm run build:clean && npm run build:static"
   },
   "repository": {
     "type": "git",
@@ -24,25 +28,43 @@
     "@babel/core": "7.21.0",
     "@babel/eslint-parser": "7.19.1",
     "@esm-bundle/chai": "4.3.4-fix.0",
-    "@spectrum-css/actionbar": "^7.0.6",
-    "@spectrum-css/badge": "^3.1.13",
-    "@spectrum-css/icon": "^4.0.3",
-    "@spectrum-css/page": "^6.0.6",
-    "@spectrum-css/progressbar": "^3.0.76",
-    "@spectrum-css/table": "^5.0.6",
-    "@spectrum-css/accordion": "^4.0.24",
-    "@spectrum-css/button": "^11.0.14",
-    "@spectrum-css/typography": "^5.0.46",
-    "@spectrum-css/vars": "^9.0.8",
+    "@react-spectrum/accordion": "^3.0.0-alpha.20",
+    "@react-spectrum/autocomplete": "^3.0.0-alpha.17",
+    "@react-spectrum/tag": "^3.0.0-beta.4",
+    "@react-spectrum/theme-express": "^3.0.0-alpha.1",
+    "@react-spectrum/toast": "^3.0.0-alpha.1",
+    "@spectrum-icons/workflow": "^4.0.6",
     "@web/test-runner": "0.15.1",
     "@web/test-runner-commands": "0.6.5",
     "chai": "4.3.7",
+    "create-react-app": "^1.2.1",
     "eslint": "8.35.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.27.5",
     "loadicons": "^1.0.0",
+    "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
+    "react-aria": "^3.23.1",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
     "sinon": "15.0.1",
     "stylelint": "15.2.0",
-    "stylelint-config-standard": "30.0.1"
+    "stylelint-config-standard": "30.0.1",
+    "web-vitals": "^3.5.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@adobe/helix-cli": "^14.26.0"
   }
 }

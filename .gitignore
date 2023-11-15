@@ -2,8 +2,6 @@
 coverage/*
 logs/*
 node_modules/*
-!node_modules/@adobe/spectrum-css-workflow-icons
-!node_modules/@spectrum-css/
 
 helix-importer-ui
 .DS_Store

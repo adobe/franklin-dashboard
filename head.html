@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>{{space_name}} - Assets</title>
+    <title>Datadesk Dashboard</title>
     <link rel="canonical" href="https://{{host}}/">
-
-    <meta name="x-space-id" content="{{space_id}}">
-    <meta name="x-company-id" content="{{company_id}}">
-    <meta name="x-space-name" content="{{space_name}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <script defer src="/static/js/main.js"></script>
     <link href="/static/css/main.css" rel="stylesheet">
 
     <style>
+        html { height: 100%  }
+        body { height: 100%  }
         main { height: 100%; }
     </style>
 
@@ -20,17 +18,5 @@
     <link rel="apple-touch-icon" href="/icons/favicon.png" />
   </head>
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-
-    <main></main>
-
-    <!-- Gainsight PX Tag-->
-    <script type="text/javascript">
-      (function(n,t,a,e,co){var i="aptrinsic";n[i]=n[i]||function(){
-          (n[i].q=n[i].q||[]).push(arguments)},n[i].p=e;n[i].c=co;
-          var r=t.createElement("script");r.async=!0,r.src=a+"?a="+e;
-          var c=t.getElementsByTagName("script")[0];c.parentNode.insertBefore(r,c)
-      })(window,document,"https://web-sdk.aptrinsic.com/api/aptrinsic.js","{{Gainsight-Tag-Key}}");
-    </script>
   </body>
 </html>

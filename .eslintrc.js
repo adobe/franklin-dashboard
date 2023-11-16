@@ -10,6 +10,10 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
   },
+  ignorePatterns: [
+    'scripts/spectrum-web/**/*',
+    'styles/spectrum-css/**/*',
+  ],
   rules: {
     // allow reassigning param
     'no-param-reassign': [2, { props: false }],

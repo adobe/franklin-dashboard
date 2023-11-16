@@ -19,6 +19,6 @@ npm run lint
 
 ## Local development
 
-1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
+1. Install Dependencies: `npm install`
 2. Start Franklin Proxy: `npm start` (opens your browser at `http://localhost:3000`)
 3. Open the `franklin-dashboard` directory in your favorite IDE and start coding :)

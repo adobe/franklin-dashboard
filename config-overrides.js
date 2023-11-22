@@ -10,19 +10,18 @@
  * governing permissions and limitations under the License.
  */
 module.exports = function override(config) {
-    // get rid of hash for js files
-    // eslint-disable-next-line no-param-reassign
-    config.output = {
-      ...config.output, // copy all settings
-      filename: 'static/js/[name].js',
-      chunkFilename: 'static/js/[name].chunk.js',
-    };
-  
-    // Get rid of hash for css files
-    const miniCssExtractPlugin = config.plugins.find((element) => element.constructor.name === 'MiniCssExtractPlugin');
-    miniCssExtractPlugin.options.filename = 'static/css/[name].css';
-    miniCssExtractPlugin.options.chunkFilename = 'static/css/[name].css';
-  
-    return config;
+  // get rid of hash for js files
+  // eslint-disable-next-line no-param-reassign
+  config.output = {
+    ...config.output, // copy all settings
+    filename: 'static/js/[name].js',
+    chunkFilename: 'static/js/[name].chunk.js',
   };
-  
+
+  // Get rid of hash for css files
+  const miniCssExtractPlugin = config.plugins.find((element) => element.constructor.name === 'MiniCssExtractPlugin');
+  miniCssExtractPlugin.options.filename = 'static/css/[name].css';
+  miniCssExtractPlugin.options.chunkFilename = 'static/css/[name].css';
+
+  return config;
+};

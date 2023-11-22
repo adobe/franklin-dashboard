@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {Button, lightTheme, Provider} from '@adobe/react-spectrum';
+import {lightTheme, Provider} from '@adobe/react-spectrum';
 import './index.css';
 import App from './App';
 

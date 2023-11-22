@@ -5,7 +5,9 @@
   "description": "Franklin statistical dashboard",
   "scripts": {
     "lint:js": "eslint .",
+    "lint:fix": "eslint --fix .",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
+    "lint:css:fix": "stylelint --fix 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
     "lint": "npm run lint:js && npm run lint:css",
     "test": "echo \"Trust me\"",
     "start": "react-scripts start",
@@ -45,6 +47,7 @@
     "@storybook/react": "^7.5.3",
     "@storybook/react-webpack5": "^7.5.3",
     "@storybook/testing-library": "^0.2.2",
+    "@testing-library/jest-dom": "^6.1.4",
     "@web/test-runner": "0.15.1",
     "@web/test-runner-commands": "0.6.5",
     "babel-plugin-named-exports-order": "^0.0.2",

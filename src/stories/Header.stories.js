@@ -1,4 +1,4 @@
-import { Header } from './Header';
+import { Header } from './Header.jsx';
 
 export default {
   title: 'Example/Header',

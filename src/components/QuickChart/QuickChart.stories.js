@@ -1,5 +1,6 @@
 import QuickChart from './QuickChart.jsx';
-import domainKey from './domainKey.js';
+
+const domainKey = require('./domainKey.js').default;
 
 export default {
   title: 'Design System/QuickChart',

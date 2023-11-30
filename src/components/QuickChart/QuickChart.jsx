@@ -31,8 +31,8 @@ const QuickChart = ({
   return (
 
     <>
-    {!loaded && <>Loading ...</>}
-    <img ref={ref} onLoad={onLoad} src={chartUri} alt="" />
+      {!loaded && <>Loading ...</>}
+      <img ref={ref} onLoad={onLoad} src={chartUri} alt="" />
     </>
   );
 };

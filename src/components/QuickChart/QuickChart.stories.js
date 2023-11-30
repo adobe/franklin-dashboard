@@ -1,4 +1,5 @@
 import QuickChart from './QuickChart.jsx';
+import domainKey from './domainKey.js';
 
 export default {
   title: 'Design System/QuickChart',
@@ -9,18 +10,16 @@ export default {
   },
 };
 
-const emptyDomainKey = '';
-
 export const aemdotlive = {
   args: {
     url: 'www.aem.live',
-    domainKey: emptyDomainKey,
+    domainKey,
   },
 };
 
 export const adobedotcom = {
   args: {
     url: 'www.adobe.com',
-    domainKey: emptyDomainKey,
+    domainKey,
   },
 };

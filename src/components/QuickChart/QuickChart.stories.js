@@ -1,6 +1,6 @@
 import QuickChart from './QuickChart.jsx';
-
-const domainKey = require('./domainKey.js').default;
+// eslint-disable-next-line import/no-unresolved
+import domainKey from './domainKey.js';
 
 export default {
   title: 'Design System/QuickChart',

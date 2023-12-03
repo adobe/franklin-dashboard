@@ -5,14 +5,18 @@
   "description": "Franklin statistical dashboard",
   "scripts": {
     "lint:js": "eslint .",
+    "lint:fix": "eslint --fix .",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
+    "lint:css:fix": "stylelint --fix 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
     "lint": "npm run lint:js && npm run lint:css",
     "test": "echo \"Trust me\"",
     "start": "react-scripts start",
     "build:clean": "npx rimraf static",
     "build:react": "react-app-rewired build",
     "build:static": "cp -r build/static .",
-    "build": "npm run build:react && npm run build:clean && npm run build:static"
+    "build": "npm run build:react && npm run build:clean && npm run build:static",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "repository": {
     "type": "git",
@@ -34,22 +38,43 @@
     "@react-spectrum/theme-express": "^3.0.0-alpha.1",
     "@react-spectrum/toast": "^3.0.0-alpha.1",
     "@spectrum-icons/workflow": "^4.0.6",
+    "@storybook/addon-essentials": "^7.5.3",
+    "@storybook/addon-interactions": "^7.5.3",
+    "@storybook/addon-links": "^7.5.3",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.3",
+    "@storybook/preset-create-react-app": "^7.5.3",
+    "@storybook/react": "^7.5.3",
+    "@storybook/react-webpack5": "^7.5.3",
+    "@storybook/testing-library": "^0.2.2",
+    "@testing-library/jest-dom": "^6.1.4",
     "@web/test-runner": "0.15.1",
     "@web/test-runner-commands": "0.6.5",
+    "babel-plugin-named-exports-order": "^0.0.2",
     "chai": "4.3.7",
     "create-react-app": "^1.2.1",
     "eslint": "8.35.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-storybook": "^0.6.15",
     "loadicons": "^1.0.0",
-    "react": "^18.2.0",
+    "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
     "react-aria": "^3.23.1",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "sinon": "15.0.1",
+    "storybook": "^7.5.3",
     "stylelint": "15.2.0",
-    "stylelint-config-standard": "30.0.1"
+    "stylelint-config-standard": "30.0.1",
+    "vite": "^5.0.0",
+    "webpack": "^5.89.0"
+  },
+  "dependencies": {
+    "@adobe/helix-cli": "^14.26.0",
+    "@adobe/react-spectrum": "^3.32.2",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "react": "^18.2.0"
   },
   "browserslist": {
     "production": [
@@ -63,9 +88,22 @@
       "last 1 safari version"
     ]
   },
-  "dependencies": {
-    "@adobe/helix-cli": "^14.26.0",
-    "@adobe/react-spectrum": "^3.32.2",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended",
+      "plugin:storybook/recommended",
+      "plugin:storybook/recommended",
+      "plugin:storybook/recommended"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   }
 }

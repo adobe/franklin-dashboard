@@ -10,7 +10,7 @@
     "lint:css:fix": "stylelint --fix 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
     "lint": "npm run lint:js && npm run lint:css",
     "test": "echo \"Trust me\"",
-    "start": "react-scripts start",
+    "start": "PUBLIC_URL=/ react-scripts start",
     "build:clean": "npx rimraf static",
     "build:react": "react-app-rewired build",
     "build:static": "cp -r build/static .",
@@ -40,6 +40,7 @@
     "@spectrum-icons/workflow": "^4.0.6",
     "@storybook/addon-essentials": "^7.5.3",
     "@storybook/addon-interactions": "^7.5.3",
+    "@storybook/addon-knobs": "^7.0.2",
     "@storybook/addon-links": "^7.5.3",
     "@storybook/addon-onboarding": "^1.0.8",
     "@storybook/blocks": "^7.5.3",
@@ -57,11 +58,11 @@
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-storybook": "^0.6.15",
+    "interpolate-html-plugin": "^4.0.0",
     "loadicons": "^1.0.0",
     "prop-types": "^15.8.1",
     "react-app-rewired": "^2.2.1",
     "react-aria": "^3.23.1",
-    "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "sinon": "15.0.1",
     "storybook": "^7.5.3",
@@ -74,7 +75,12 @@
     "@adobe/helix-cli": "^14.26.0",
     "@adobe/react-spectrum": "^3.32.2",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "react-router-dom": "^6.20.1",
+    "recharts": "^2.10.3",
+    "web-vitals": "^3.5.0"
   },
   "browserslist": {
     "production": [

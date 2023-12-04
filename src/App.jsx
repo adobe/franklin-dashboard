@@ -1,21 +1,36 @@
-import { Grid, minmax, View } from '@adobe/react-spectrum';
-import { ToastContainer } from '@react-spectrum/toast';
-import React, { Suspense } from 'react';
+import React from 'react';
+import {
+  createBrowserRouter,
+  RouterProvider,
+
+} from 'react-router-dom';
+
 import './App.css';
-import { Sidebar } from './components/Sidebar';
 
-function App() {
-  return (
-    <Grid areas={['sidebar content']} columns={['1fr', '6fr']} rows={['auto']} height="100vh" gap="size-100">
-        <View gridArea="sidebar">
-          <Sidebar></Sidebar>
-        </View>
+import DashboardDataDeskLanding from './components/views/DashboardDataDeskLanding.jsx';
+import Dashboard404Report from './components/views/Dashboard404Report.jsx';
+import DashboardRumView from './components/views/DashboardRUMView.jsx';
+import DashboardSidekickView from './components/views/DashboardSidekickView.jsx';
 
-        <View backgroundColor="purple-600" gridArea="content">
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <DashboardDataDeskLanding />,
+  },
+  {
+    path: '404-reports',
+    element: <Dashboard404Report />,
+  },
+  {
+    path: 'rum-dashboard',
+    element: <DashboardRumView />,
+  },
+  {
+    path: 'sidekick-dashboard',
+    element: <DashboardSidekickView />,
+  },
+]);
 
-        </View>
-    </Grid>
-  );
-}
+const App = () => <RouterProvider router={router} />;
 
 export default App;

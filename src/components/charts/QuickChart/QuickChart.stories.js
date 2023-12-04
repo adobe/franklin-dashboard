@@ -3,7 +3,7 @@ import QuickChart from './QuickChart.jsx';
 import domainKey from './domainKey.js';
 
 export default {
-  title: 'Design System/QuickChart',
+  title: 'Design System/Charts/QuickChart',
   component: QuickChart,
   tags: ['autodocs'],
   parameters: {

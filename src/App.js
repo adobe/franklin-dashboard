@@ -1,13 +1,17 @@
-import { Route, Routes, useLocation, useNavigate} from 'react-router-dom';
-import { lightTheme, Provider, Tabs, TabList, TabPanels, Item, Text, Divider} from '@adobe/react-spectrum';
+import {
+  Route, Routes, useLocation, useNavigate,
+} from 'react-router-dom';
+import {
+  lightTheme, Provider, Tabs, TabList, TabPanels, Item, Text, Divider,
+} from '@adobe/react-spectrum';
 import HomeIcon from '@spectrum-icons/workflow/Home';
-import ChartIcon from '@spectrum-icons/workflow/GraphTrend'
+import ChartIcon from '@spectrum-icons/workflow/GraphTrend';
 import { useState } from 'react';
-import { Home } from "components/Home";
+import { Home } from 'components/Home';
 import { Filter } from 'components/Filters';
 
 function AppTabs() {
-  let { pathname } = useLocation();
+  const { pathname } = useLocation();
 
   return (
     <Tabs position={'fixed'} isEmphasized selectedKey={pathname}>
@@ -28,7 +32,7 @@ function AppTabs() {
 }
 
 function App() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <Provider navigate={navigate} theme={lightTheme} colorScheme='light'>
       <Routes>

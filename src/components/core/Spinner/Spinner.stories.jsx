@@ -1,3 +1,4 @@
+import { Provider, defaultTheme } from '@adobe/react-spectrum';
 import Spinner from './Spinner.jsx';
 
 export default {
@@ -9,19 +10,22 @@ export default {
   },
 };
 
-export const spinnerLoadingDefault = {
-  args: {},
-};
+export const spinnerLoadingDefault = () => (
+  <Provider theme={defaultTheme}>
+    <Spinner />
+  </Provider>
+);
 
-export const spinnerLoadingWithParam = {
-  args: {
-    loading: true,
-  },
-};
+export const spinnerLoadingWithParam = () => (
+  <Provider theme={defaultTheme}>
+    <Spinner loading />
+  </Provider>
+);
 
-export const spinnerLoaded = {
-  args: {
-    loading: false,
-    children: 'Loaded',
-  },
-};
+export const spinnerLoaded = () => (
+  <Provider theme={defaultTheme}>
+    <Spinner loading={false}>
+      <h1>Loaded!</h1>
+    </Spinner>
+  </Provider>
+);

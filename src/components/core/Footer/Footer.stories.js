@@ -1,3 +1,4 @@
+import { Provider, defaultTheme } from '@adobe/react-spectrum';
 import Footer from './Footer.jsx';
 
 export default {
@@ -9,6 +10,8 @@ export default {
   },
 };
 
-export const footerDefault = {
-  args: {},
-};
+export const footerDefault = () => (
+    <Provider theme={defaultTheme}>
+        <Footer />
+    </Provider>
+);

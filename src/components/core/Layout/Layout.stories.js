@@ -1,3 +1,4 @@
+import { Provider, defaultTheme } from '@adobe/react-spectrum';
 import Layout from './Layout.jsx';
 
 export default {
@@ -9,6 +10,8 @@ export default {
   },
 };
 
-export const layoutDefault = {
-  args: {},
-};
+export const layoutDefault = () => (
+    <Provider theme={defaultTheme} colorScheme='light'>
+        <Layout />
+    </Provider>
+);

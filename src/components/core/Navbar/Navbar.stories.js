@@ -1,3 +1,4 @@
+import { Provider, defaultTheme } from '@adobe/react-spectrum';
 import Navbar from './Navbar.jsx';
 
 export default {
@@ -9,6 +10,8 @@ export default {
   },
 };
 
-export const navbarDefault = {
-  args: {},
-};
+export const navbarDefault = () => (
+    <Provider colorScheme='light' theme={defaultTheme}>
+        <Navbar />
+    </Provider>
+);

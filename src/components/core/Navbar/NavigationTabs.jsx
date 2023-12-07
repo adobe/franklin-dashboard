@@ -52,6 +52,16 @@ const NavigationTabs = () => {
         >
             Sidekick Dashboard
         </Button>
+        &nbsp;&nbsp;
+        <Button variant={currentTab === 'rum-monitor' ? 'cta' : 'primary'}
+            onClick={() => {
+              if (navigate) {
+                navigate('/rum-monitor');
+              }
+            }}
+        >
+            RUM Monitor
+        </Button>
         </div>
       {/* <Tabs
         aria-label="DataDesk navbar navigation"

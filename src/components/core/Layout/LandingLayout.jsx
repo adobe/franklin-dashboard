@@ -4,9 +4,11 @@ import DashboardFooter from '../Footer/Footer.jsx';
 const LandingLayout = ({
   children,
 }) => (
+  <>
     <DashboardNavbar hasNavigation={false} />
-      {children}
+    {children}
     <DashboardFooter />
+  </>
 );
 
 export default LandingLayout;

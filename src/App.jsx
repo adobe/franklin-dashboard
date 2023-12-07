@@ -10,6 +10,7 @@ import DashboardDataDeskLanding from './components/views/DashboardDataDeskLandin
 import Dashboard404Report from './components/views/Dashboard404Report.jsx';
 import DashboardRumView from './components/views/DashboardRUMView.jsx';
 import DashboardSidekickView from './components/views/DashboardSidekickView.jsx';
+import DashboardRUMPerformanceMonitor from './components/views/DashboardRUMPerformanceMonitor/DashboardRUMPerformanceMonitor.jsx';
 
 import './App.css';
 
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
   {
     path: 'sidekick-dashboard',
     element: <DashboardSidekickView />,
+  },
+  {
+    path: 'rum-performance-monitor',
+    element: <DashboardRUMPerformanceMonitor />,
   },
 ]);
 

@@ -2,7 +2,7 @@
     "git.ignoreLimitWarning": true,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
-    },
+      },
     "eslint.validate": [
         "javascript",
         "javascriptreact"

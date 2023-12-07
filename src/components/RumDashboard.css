@@ -1,6 +1,4 @@
-#filter {
-    display: flex;
-    flex-wrap: wrap;
+#tableview {
     gap: 0 10px;
     min-height: 100px;
     box-sizing: border-box;

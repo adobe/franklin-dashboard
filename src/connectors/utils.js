@@ -1,14 +1,98 @@
+import { useCollator } from '@adobe/react-spectrum';
+
+/**
+ * Gets information on queries from rum-queries.json
+ */
+export function getQueryInfo() {
+  window.gettingQueryInfo = true;
+  fetch('/configs/rum-queries.json')
+    .then((resp) => resp.json())
+    .then((data) => {
+      window.urlBase = {};
+      window.urlBase = data.data;
+      window.gettingQueryInfo = false;
+    });
+}
+
+/**
+   * configuration that selects correct base of url for a particular endpoint
+   * @param {String} endpoint
+   * @returns
+   */
+export function getUrlBase(endpoint) {
+  const urlObj = window.urlBase.find((config) => config.endpoint === endpoint);
+  return urlObj.base;
+}
+
+/**
+ * takes block and preemptively fires off requests for resources in worker thread
+ * @param {*} main
+ */
+export async function queryRequest(endpoint, endpointHost, qps = {}) {
+  const pms = await bidirectionalConversion(endpoint, qps);
+
+  // remove http or https prefix in url param if it exists
+  if (pms.has('url')) {
+    pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
+  }
+
+  const limit = pms.get('limit') || '30';
+  pms.set('limit', limit);
+
+  /*
+    Below are specific parameters set for specific queries
+    This is intended as short term solution; will discuss
+    more with data desk engineers to determine a more clever
+    way to specify different parameters; or escalate to repairing
+    queries when needed
+    */
+  if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
+    const currLimit = parseInt(limit, 10);
+    if (currLimit < 500) {
+      pms.set('limit', '500');
+    }
+  }
+  const flag = `${endpoint}Flag`;
+  const checkData = () => {
+    if (Object.hasOwn(window, flag) && window[flag] === true) {
+      window.setTimeout(checkData, 5);
+    } else if (!Object.hasOwn(window, flag)) {
+      window[flag] = true;
+      fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
+        .then((resp) => resp.json())
+        .then((data) => {
+          window[flag] = false;
+          if (!Object.hasOwn(window, 'dashboard')) {
+            window.dashboard = {};
+          }
+          window.dashboard[endpoint] = data;
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error('API Call Has Failed, Check that inputs are correct', err.message);
+        });
+    }
+  };
+  checkData();
+}
+
 /**
  * bidirectional conversion startdate/enddate to offset/interval
  */
-async function bidirectionalConversion() {
+async function bidirectionalConversion(endpoint, qps = {}) {
   let offset;
   let interval;
 
   const params = new URLSearchParams(window.location.search);
-  // if (!endpoint) {
-  //   throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
-  // }
+  if (!endpoint) {
+    throw new Error('No Endpoint Provided, No Data to be retrieved for Block');
+  }
+
+  Object.entries(qps).forEach(([k, v]) => {
+    if (!params.has(k)) {
+      params.set(k, v);
+    }
+  });
 
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');
@@ -90,57 +174,18 @@ async function bidirectionalConversion() {
 }
 
 /**
- * takes block and preemptively fires off requests for resources in worker thread
- * @param {*} main
+ * a sort function for TableView React Component.
  */
-async function queryRequest(endpoint, endpointHost, qps = {}) {
-  const pms = await bidirectionalConversion();
-
-  // remove http or https prefix in url param if it exists
-  if (pms.has('url')) {
-    pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
-  }
-
-  const limit = pms.get('limit') || '30';
-  pms.set('limit', limit);
-  Object.entries(qps).forEach(([k, v]) => {
-    pms.set(k, v);
-  });
-  /*
-    Below are specific parameters set for specific queries
-    This is intended as short term solution; will discuss
-    more with data desk engineers to determine a more clever
-    way to specify different parameters; or escalate to repairing
-    queries when needed
-    */
-  if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
-    const currLimit = parseInt(limit, 10);
-    if (currLimit < 500) {
-      pms.set('limit', '500');
-    }
-  }
-  const flag = `${endpoint}Flag`;
-  const checkData = () => {
-    if (Object.hasOwn(window, flag) && window[flag] === true) {
-      window.setTimeout(checkData, 5);
-    } else if (!Object.hasOwn(window, flag)) {
-      window[flag] = true;
-      fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
-        .then((resp) => resp.json())
-        .then((data) => {
-          window[flag] = false;
-          if (!Object.hasOwn(window, 'dashboard')) {
-            window.dashboard = {};
-          }
-          window.dashboard[endpoint] = data;
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.error('API Call Has Failed, Check that inputs are correct', err.message);
-        });
-    }
+export async function sort({ items, sortDescriptor }) {
+  return {
+    items: items.sort((a, b) => {
+      const first = a[sortDescriptor.column];
+      const second = b[sortDescriptor.column];
+      let cmp = collator.compare(first, second);
+      if (sortDescriptor.direction === 'descending') {
+        cmp *= -1;
+      }
+      return cmp;
+    }),
   };
-  checkData();
 }
-
-export default queryRequest;

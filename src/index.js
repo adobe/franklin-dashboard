@@ -1,21 +1,13 @@
-/* eslint-disable import/extensions */
-// eslint-disable-next-line no-unused-vars
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import './index.css';
-// eslint-disable-next-line no-unused-vars
-import App from './App.jsx';
-// import reportWebVitals from './reportWebVitals.js';
+import App from './App';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const rootEl = document.getElementsByTagName('main')[0] || document.getElementById('root');
+const root = ReactDOM.createRoot(rootEl);
 root.render(
-  <React.StrictMode>
+  <BrowserRouter>
     <App />
-  </React.StrictMode>,
+  </BrowserRouter>,
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();

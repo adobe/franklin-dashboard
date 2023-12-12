@@ -4,8 +4,8 @@ import {
 
 const DashboardLineChart = ({
   data,
-  height = window.innerHeight * 0.5,
-  width = window.innerWidth * 0.5,
+  height = window.innerHeight * 0.35,
+  width = window.innerWidth * 0.35,
   title = '',
   datakey = 'AVGLCP',
   domain = 'www.adobe.com',
@@ -19,8 +19,8 @@ const DashboardLineChart = ({
 
       <LineChart
           title='RUM Performance Monitor'
-          width={500}
-          height={300}
+          width='100%'
+          height='100%'
           data={data}
           syncId={syncId}
           margin={{
@@ -37,7 +37,7 @@ const DashboardLineChart = ({
 
           <br />
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="name" angle={-45} />
           <YAxis />
           <Tooltip />
           <Legend />

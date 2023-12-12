@@ -1,8 +1,17 @@
 import { Grid, View } from '@adobe/react-spectrum';
+import { useState, useEffect } from 'react';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
 import LineChart from '../../charts/LineChart/LineChart.jsx';
+import { DashboardQueryFilter } from 'controllers/Filters/DashboardQueryFilter.jsx';
+import "./DashboardRUMPerformanceMonitor.css"
 
 const DashboardRUMPerformanceMonitor = () => {
+  const [data, setData] = useState([]);
+  const [fetchFlag, setFetchFlag] = useState(false);
+
+  useEffect(() => {
+    console.log('data has changed');
+  }, [data, fetchFlag]);
   const domain = 'www.adobe.com';
 
   const dataChart1 = [
@@ -67,18 +76,21 @@ const DashboardRUMPerformanceMonitor = () => {
 
   return (
     <DashboardLayout>
-     <h1>RUM Performance Monitor</h1>
-
         <Grid
             areas={[
-              'chart1 chart2',
-              'chart3 chart4',
+              'sidebar chart1 chart2',
+              'sidebar chart3 chart4',
             ]}
-            columns={['2fr', '2fr']}
-            height="80vh"
-            gap="size-100"
+            columns={['.5fr', '6fr']} rows={['auto']} height="87vh" width="100vw" columnGap={'size-100'} id="chartview"
             >
-            <View gridArea="chart1">
+              <View gridArea="sidebar" height="100%">
+                <DashboardQueryFilter hasCheckpoint={true}
+                data={data} setter={setData} dataEndpoint={'rum-dashboard'}
+                apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6232'}
+                dataFlag={fetchFlag} flagSetter={setFetchFlag}>
+                </DashboardQueryFilter>
+            </View>
+            <View gridArea="chart1" height="100%">
                 <LineChart data={dataChart1}
                 title='(LCP) Largest Contentful Paint - 75p'
                 datakey='AVGLCP'
@@ -87,7 +99,7 @@ const DashboardRUMPerformanceMonitor = () => {
 
                 />
             </View>
-            <View gridArea="chart2">
+            <View gridArea="chart2" height="100%">
                 <LineChart data={dataChart2}
                 datakey='AVGFID'
                 title='(FID) First Input Delay - 75p'
@@ -96,7 +108,7 @@ const DashboardRUMPerformanceMonitor = () => {
 
                 />
             </View>
-            <View gridArea="chart3"
+            <View gridArea="chart3" height="100%"
             >
                 <LineChart data={dataChart3} title='(INP) Interaction to Next Paint - 75p'
                 domain={domain}
@@ -104,7 +116,7 @@ const DashboardRUMPerformanceMonitor = () => {
                 syncId='name'
  />
             </View>
-            <View gridArea="chart4"
+            <View gridArea="chart4" height="100%"
             >
                 <LineChart data={dataChart4} title='(CLS) Cumulative Layout Shift - 75p'
                 domain={domain}

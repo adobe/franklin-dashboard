@@ -24,7 +24,7 @@ const NavigationTabs = () => {
           padding: '.7em',
         }}>
         <Button variant={currentTab === '404-reports' ? 'cta' : 'primary'}
-            onClick={() => {
+            onPress={() => {
               if (navigate) {
                 navigate('/404-reports');
               }
@@ -34,7 +34,7 @@ const NavigationTabs = () => {
         </Button>
         &nbsp;&nbsp;
         <Button variant={currentTab === 'rum-dashboard' ? 'cta' : 'primary'}
-            onClick={() => {
+            onPress={() => {
               if (navigate) {
                 navigate('/rum-dashboard');
               }
@@ -44,7 +44,7 @@ const NavigationTabs = () => {
         </Button>
         &nbsp;&nbsp;
         <Button variant={currentTab === 'sidekick-dashboard' ? 'cta' : 'primary'}
-            onClick={() => {
+            onPress={() => {
               if (navigate) {
                 navigate('/sidekick-dashboard');
               }
@@ -54,7 +54,7 @@ const NavigationTabs = () => {
         </Button>
         &nbsp;&nbsp;
         <Button variant={currentTab === 'rum-monitor' ? 'cta' : 'primary'}
-            onClick={() => {
+            onPress={() => {
               if (navigate) {
                 navigate('/rum-monitor');
               }

@@ -1,19 +1,23 @@
 import React from 'react';
 import {
+  BrowserRouter,
   createBrowserRouter,
   RouterProvider,
+  useNavigate,
+  Route,
+  Routes,
 } from 'react-router-dom';
 
 import { Provider, defaultTheme } from '@adobe/react-spectrum';
 
-import DashboardDataDeskLanding from './components/views/DashboardDataDeskLanding.jsx';
-import Dashboard404Report from './components/views/Dashboard404Report.jsx';
-import DashboardRumView from './components/views/DashboardRUMView.jsx';
-import DashboardSidekickView from './components/views/DashboardSidekickView.jsx';
+import DashboardDataDeskLanding from './components/views/DashboardDataDeskLanding/DashboardDataDeskLanding.jsx';
+import Dashboard404Report from './components/views/Dashboard404Report/Dashboard404Report.jsx';
+import DashboardRumView from './components/views/DashboardRUMView/DashboardRUMView.jsx';
 import DashboardRUMPerformanceMonitor from './components/views/DashboardRUMPerformanceMonitor/DashboardRUMPerformanceMonitor.jsx';
 
 import './App.css';
 
+/*
 const router = createBrowserRouter([
   {
     path: '/',
@@ -28,19 +32,26 @@ const router = createBrowserRouter([
     element: <DashboardRumView />,
   },
   {
-    path: 'sidekick-dashboard',
-    element: <DashboardSidekickView />,
-  },
-  {
     path: 'rum-performance-monitor',
     element: <DashboardRUMPerformanceMonitor />,
   },
 ]);
+*/
 
-const App = () => (
-  <Provider theme={defaultTheme} colorScheme='light'>
-    <RouterProvider router={router} />
-  </Provider>
-);
+function App(){
+
+  let navigate = useNavigate();
+
+  return(
+    <Provider theme={defaultTheme} colorScheme='light' router={{navigate}}>
+        <Routes>
+          <Route path='/' element={<DashboardDataDeskLanding/>}></Route>
+          <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
+          <Route path='/rum-dashboard' element={<DashboardRumView/>} index></Route>
+          <Route path='/rum-monitor' element={<DashboardRUMPerformanceMonitor/>}></Route>
+        </Routes>
+    </Provider>
+  )
+};
 
 export default App;

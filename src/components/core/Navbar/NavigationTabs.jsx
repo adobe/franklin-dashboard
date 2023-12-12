@@ -43,16 +43,6 @@ const NavigationTabs = () => {
             RUM Dashboard
         </Button>
         &nbsp;&nbsp;
-        <Button variant={currentTab === 'sidekick-dashboard' ? 'cta' : 'primary'}
-            onPress={() => {
-              if (navigate) {
-                navigate('/sidekick-dashboard');
-              }
-            }}
-        >
-            Sidekick Dashboard
-        </Button>
-        &nbsp;&nbsp;
         <Button variant={currentTab === 'rum-monitor' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {

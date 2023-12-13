@@ -4,7 +4,7 @@ import {
 } from '@adobe/react-spectrum';
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useEffect } from 'react';
-import { queryRequest } from 'connectors/utils';
+import { queryRequest } from '../../connectors/utils.js';
 import './DashboardQueryFilter.css';
 import FilterIcon from '@spectrum-icons/workflow/Filter';
 

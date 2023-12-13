@@ -17,33 +17,11 @@ import DashboardRUMPerformanceMonitor from './components/views/DashboardRUMPerfo
 
 import './App.css';
 
-/*
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <DashboardDataDeskLanding />,
-  },
-  {
-    path: '404-reports',
-    element: <Dashboard404Report />,
-  },
-  {
-    path: 'rum-dashboard',
-    element: <DashboardRumView />,
-  },
-  {
-    path: 'rum-performance-monitor',
-    element: <DashboardRUMPerformanceMonitor />,
-  },
-]);
-*/
+function App() {
+  const navigate = useNavigate();
 
-function App(){
-
-  let navigate = useNavigate();
-
-  return(
-    <Provider theme={defaultTheme} colorScheme='light' router={{navigate}}>
+  return (
+    <Provider theme={defaultTheme} colorScheme='light' router={{ navigate }}>
         <Routes>
           <Route path='/' element={<DashboardRumView/>}></Route>
           <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
@@ -51,7 +29,7 @@ function App(){
           <Route path='/rum-monitor' element={<DashboardRUMPerformanceMonitor/>}></Route>
         </Routes>
     </Provider>
-  )
-};
+  );
+}
 
 export default App;

@@ -5,10 +5,10 @@ import DashboardFooter from '../Footer/Footer.jsx';
 const DashboardLayout = ({
   children,
 }) => (
-    <Provider theme={defaultTheme} colorScheme='light' minHeight="100%" maxHeight={"100%"}>
+    <Provider theme={defaultTheme} colorScheme='light' minHeight="100%" maxHeight={'100%'}>
       <DashboardNavbar />
         {children}
-      <DashboardFooter /> 
+      <DashboardFooter />
     </Provider>
 );
 

@@ -1,4 +1,4 @@
-import { useCollator } from '@adobe/react-spectrum';
+import { collator } from '@adobe/react-spectrum';
 
 /**
  * Gets information on queries from rum-queries.json
@@ -25,58 +25,6 @@ export function getUrlBase(endpoint) {
 }
 
 /**
- * takes block and preemptively fires off requests for resources in worker thread
- * @param {*} main
- */
-export async function queryRequest(endpoint, endpointHost, qps = {}) {
-  const pms = await bidirectionalConversion(endpoint, qps);
-
-  // remove http or https prefix in url param if it exists
-  if (pms.has('url')) {
-    pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
-  }
-
-  const limit = pms.get('limit') || '30';
-  pms.set('limit', limit);
-
-  /*
-    Below are specific parameters set for specific queries
-    This is intended as short term solution; will discuss
-    more with data desk engineers to determine a more clever
-    way to specify different parameters; or escalate to repairing
-    queries when needed
-    */
-  if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
-    const currLimit = parseInt(limit, 10);
-    if (currLimit < 500) {
-      pms.set('limit', '500');
-    }
-  }
-  const flag = `${endpoint}Flag`;
-  const checkData = () => {
-    if (Object.hasOwn(window, flag) && window[flag] === true) {
-      window.setTimeout(checkData, 5);
-    } else if (!Object.hasOwn(window, flag)) {
-      window[flag] = true;
-      fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
-        .then((resp) => resp.json())
-        .then((data) => {
-          window[flag] = false;
-          if (!Object.hasOwn(window, 'dashboard')) {
-            window.dashboard = {};
-          }
-          window.dashboard[endpoint] = data;
-        })
-        .catch((err) => {
-          // eslint-disable-next-line no-console
-          console.error('API Call Has Failed, Check that inputs are correct', err.message);
-        });
-    }
-  };
-  checkData();
-}
-
-/**
  * bidirectional conversion startdate/enddate to offset/interval
  */
 async function bidirectionalConversion(endpoint, qps = {}) {
@@ -93,7 +41,6 @@ async function bidirectionalConversion(endpoint, qps = {}) {
       params.set(k, v);
     }
   });
-
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');
   let hasInterval = params.has('interval');
@@ -188,4 +135,56 @@ export async function sort({ items, sortDescriptor }) {
       return cmp;
     }),
   };
+}
+
+/**
+ * takes block and preemptively fires off requests for resources in worker thread
+ * @param {*} main
+ */
+export async function queryRequest(endpoint, endpointHost, qps = {}) {
+  const pms = await bidirectionalConversion(endpoint, qps);
+
+  // remove http or https prefix in url param if it exists
+  if (pms.has('url')) {
+    pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
+  }
+
+  const limit = pms.get('limit') || '30';
+  pms.set('limit', limit);
+
+  /*
+    Below are specific parameters set for specific queries
+    This is intended as short term solution; will discuss
+    more with data desk engineers to determine a more clever
+    way to specify different parameters; or escalate to repairing
+    queries when needed
+    */
+  if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
+    const currLimit = parseInt(limit, 10);
+    if (currLimit < 500) {
+      pms.set('limit', '500');
+    }
+  }
+  const flag = `${endpoint}Flag`;
+  const checkData = () => {
+    if (Object.hasOwn(window, flag) && window[flag] === true) {
+      window.setTimeout(checkData, 5);
+    } else if (!Object.hasOwn(window, flag)) {
+      window[flag] = true;
+      fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
+        .then((resp) => resp.json())
+        .then((data) => {
+          window[flag] = false;
+          if (!Object.hasOwn(window, 'dashboard')) {
+            window.dashboard = {};
+          }
+          window.dashboard[endpoint] = data;
+        })
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error('API Call Has Failed, Check that inputs are correct', err.message);
+        });
+    }
+  };
+  checkData();
 }

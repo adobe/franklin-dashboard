@@ -1,4 +1,4 @@
-import { collator } from '@adobe/react-spectrum';
+import { useCollator } from '@adobe/react-spectrum';
 
 /**
  * Gets information on queries from rum-queries.json
@@ -124,6 +124,8 @@ async function bidirectionalConversion(endpoint, qps = {}) {
  * a sort function for TableView React Component.
  */
 export async function sort({ items, sortDescriptor }) {
+  const collator = useCollator();
+
   return {
     items: items.sort((a, b) => {
       const first = a[sortDescriptor.column];

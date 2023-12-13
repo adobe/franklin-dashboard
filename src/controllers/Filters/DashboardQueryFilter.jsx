@@ -1,16 +1,18 @@
 import {
-  Flex, DateRangePicker, TextField, Form, ButtonGroup, Button, Divider, NumberField, Text,
+  Flex, DateRangePicker, TextField, Form, ButtonGroup, Button, NumberField, Text,
   useDateFormatter,
 } from '@adobe/react-spectrum';
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useEffect } from 'react';
-import { queryRequest } from '../../connectors/utils.js';
-import './DashboardQueryFilter.css';
+// eslint-disable-next-line
 import FilterIcon from '@spectrum-icons/workflow/Filter';
 
-export function DashboardQueryFilter({
+import { queryRequest } from '../../connectors/utils.js';
+import './DashboardQueryFilter.css';
+
+const DashboardQueryFilter = ({
   hasCheckpoint, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter,
-}) {
+}) => {
   const [range, setRange] = React.useState({
     start: parseDate('2020-07-03'),
     end: parseDate('2020-07-10'),
@@ -24,7 +26,7 @@ export function DashboardQueryFilter({
 
   const formatter = useDateFormatter({ dateStyle: 'long' });
   const flag = 'rum-dashboardFlag';
-  let execCount = 0;
+  // let execCount = 0;
 
   const getQuery = (cfg = {}) => {
     const {
@@ -41,13 +43,13 @@ export function DashboardQueryFilter({
       if (Object.hasOwn(window, flag) && window[flag] === true) {
         setter([]);
         flagSetter(window[flag]);
-        execCount += 1;
+        // execCount += 1;
       }
       window.setTimeout(() => { updateData(cfg); }, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       flagSetter(window[flag]);
       // query complete, hide loading graphic
-      data = window.dashboard[dataEndpoint].results.data;
+      // data = window.dashboard[dataEndpoint].results.data;
       setFilterData(window.dashboard[dataEndpoint].results.data);
 
       // If this domainkey works, store it in local storage
@@ -62,17 +64,27 @@ export function DashboardQueryFilter({
     e.preventDefault();
 
     // Get form data as an object.
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+    const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
       start, end, ckpt, inputUrl, domainkey, limit,
-    } = data;
+    } = formData;
 
     const currentpage = new URL(window.location.href);
     const params = currentpage.searchParams;
     const url = inputUrl || params.get('url');
-    const hostname = url ? new URL(url.startsWith('https://') ? url : `https://${url}`).hostname : '';
-    const key = domainkey || (params.get('domainkey') ? params.get('domainkey') : hostname ? localStorage.getItem(hostname) : '');
+    let hostname = '';
+    if (url) {
+      if (url.startsWith('https://')) {
+        hostname = new URL(url).hostname;
+      } else {
+        hostname = new URL(`https://${url}`).hostname;
+      }
+    }
 
+    let key = domainkey || params.get('domainkey') || '';
+    if (!domainkey && !params.get('domainkey') && hostname) {
+      key = localStorage.getItem(hostname) || '';
+    }
     const configuration = {
       url: inputUrl,
       hostname,
@@ -103,7 +115,7 @@ export function DashboardQueryFilter({
   return (
         <>
             <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}>
-                <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>
+                <Text marginTop="size-250"><FilterIcon size='XL' /></Text>
                 <Form onSubmit={onSubmit} method='get'>
                     <DateRangePicker
                         label="Date Range"
@@ -134,4 +146,6 @@ export function DashboardQueryFilter({
             </Flex>
         </>
   );
-}
+};
+
+export default DashboardQueryFilter;

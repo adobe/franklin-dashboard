@@ -23,6 +23,16 @@ const NavigationTabs = () => {
         <div style={{
           padding: '.7em',
         }}>
+          <Button variant={currentTab === 'rum-dashboard' ? 'cta' : 'primary'}
+            onPress={() => {
+              if (navigate) {
+                navigate('/rum-dashboard');
+              }
+            }}
+        >
+            RUM Dashboard
+        </Button>
+        &nbsp;&nbsp;
         <Button variant={currentTab === '404-reports' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
@@ -31,16 +41,6 @@ const NavigationTabs = () => {
             }}
         >
             404 Reports
-        </Button>
-        &nbsp;&nbsp;
-        <Button variant={currentTab === 'rum-dashboard' ? 'cta' : 'primary'}
-            onPress={() => {
-              if (navigate) {
-                navigate('/rum-dashboard');
-              }
-            }}
-        >
-            RUM Dashboard
         </Button>
         &nbsp;&nbsp;
         <Button variant={currentTab === 'rum-monitor' ? 'cta' : 'primary'}
@@ -53,31 +53,6 @@ const NavigationTabs = () => {
             RUM Monitor
         </Button>
         </div>
-      {/* <Tabs
-        aria-label="DataDesk navbar navigation"
-        onSelectionChange={(tab) => {
-          const currentTab = window.location.pathname.split('/')[1];
-
-          // push history
-          if (currentTab !== tab) {
-            setTimeout(() => {
-              // check history location
-              // console.log(window.location.
-
-              if (navigate) {
-                // navigate(`/${tab}`);
-              }
-            }, 100);
-          }
-        }}
-      >
-        <TabList>
-          <Item key="404-reports">404 Reports</Item>
-          <Item key="rum-dashboard">RUM Dashboard</Item>
-          <Item key="sidekick-dashboard">Sidekick Dashboard</Item>
-        </TabList>
-      </Tabs> */}
-
     </Provider>
 
   );

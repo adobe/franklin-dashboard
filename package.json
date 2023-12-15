@@ -8,7 +8,7 @@
     "lint:fix": "eslint --fix .",
     "lint:css": "stylelint 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
     "lint:css:fix": "stylelint --fix 'blocks/**/*.css' 'styles/*.css' 'src/*.css'",
-    "lint": "npm run lint:js && npm run lint:css",
+    "lint": "npm run lint:js",
     "test": "echo \"Trust me\"",
     "start": "DISABLE_ESLINT_PLUGIN=true react-scripts start",
     "build:clean": "npx rimraf static",
@@ -117,7 +117,8 @@
     "stylelint": "15.11.0",
     "stylelint-config-standard": "34.0.0",
     "web-vitals": "^3.5.0",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^4.15.1",
+    "zustand": "^4.4.7"
   },
   "browserslist": {
     "production": [

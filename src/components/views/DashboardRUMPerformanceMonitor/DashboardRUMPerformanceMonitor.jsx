@@ -1,17 +1,9 @@
 import { Grid, View } from '@adobe/react-spectrum';
-import { useState, useEffect } from 'react';
-import { DashboardQueryFilter } from '../../../controllers/Filters/DashboardQueryFilter.jsx';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
 import LineChart from '../../charts/LineChart/LineChart.jsx';
 import './DashboardRUMPerformanceMonitor.css';
 
 const DashboardRUMPerformanceMonitor = () => {
-  const [data, setData] = useState([]);
-  const [fetchFlag, setFetchFlag] = useState(false);
-
-  useEffect(() => {
-    console.log('data has changed');
-  }, [data, fetchFlag]);
   const domain = 'www.adobe.com';
 
   const dataChart1 = [
@@ -78,18 +70,11 @@ const DashboardRUMPerformanceMonitor = () => {
     <DashboardLayout>
         <Grid
             areas={[
-              'sidebar chart1 chart2',
-              'sidebar chart3 chart4',
+              'chart1 chart2',
+              'chart3 chart4',
             ]}
-            columns={['.5fr', '6fr']} rows={['auto']} height="87vh" width="100vw" columnGap={'size-100'} id="chartview"
+            columns={['2fr', '2fr']} rows={['auto']} height="87vh" width="100vw" columnGap='size-100' id="chartview"
             >
-              <View gridArea="sidebar" height="100%">
-                <DashboardQueryFilter hasCheckpoint={true}
-                data={data} setter={setData} dataEndpoint={'rum-dashboard'}
-                apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6232'}
-                dataFlag={fetchFlag} flagSetter={setFetchFlag}>
-                </DashboardQueryFilter>
-            </View>
             <View gridArea="chart1" height="100%">
                 <LineChart data={dataChart1}
                 title='(LCP) Largest Contentful Paint - 75p'

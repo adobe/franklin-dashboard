@@ -1,8 +1,7 @@
 import { Grid, View, Flex } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
-import { DashboardQueryFilter } from '../../../controllers/Filters/DashboardQueryFilter';
+// import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
-
 
 export function RumDashboardMain() {
   const [data, setData] = useState([]);
@@ -33,15 +32,14 @@ export function RumDashboardMain() {
   };
 
   return (
-        <Grid areas={['sidebar content1',
-          'sidebar content1']} columns={['.5fr', '6fr']} rows={['auto']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
-            <View gridArea="sidebar" height="100%">
+        <Grid areas={['content1', 'content1']} columns={['1fr', '1fr']} rows={['auto']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
+            {/* <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpoint={true}
               data={data} setter={setData} dataEndpoint={'rum-dashboard'}
               apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6232'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag}>
               </DashboardQueryFilter>
-            </View>
+            </View> */}
 
             <View gridArea="content1" width="100%" height="100%" overflow="hidden">
               <Flex width="100%" height="100%">

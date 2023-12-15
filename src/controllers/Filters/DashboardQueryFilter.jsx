@@ -10,14 +10,37 @@ import FilterIcon from '@spectrum-icons/workflow/Filter';
 import { queryRequest } from '../../connectors/utils.js';
 import './DashboardQueryFilter.css';
 
-const DashboardQueryFilter = ({
-  hasCheckpoint, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter,
-}) => {
+export function DashboardQueryFilter({
+  hasCheckpoint, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, config, configSetter
+}) {
+  const globalPage = new URL(window.location.href);
+  const globalParams = globalPage.searchParams;
   const [range, setRange] = React.useState({
-    start: parseDate('2020-07-03'),
-    end: parseDate('2020-07-10'),
+    start: globalParams.get('startdate') ? parseDate(globalParams.get('startdate')) : parseDate('2020-07-03'),
+    end: globalParams.get('enddate') ? parseDate(globalParams.get('enddate')) : parseDate('2020-07-10'),
   });
   const [filterData, setFilterData] = React.useState([]);
+
+  useEffect(() => {
+    checkParams();
+  }, [config])
+
+  const checkParams = () => {
+    const params = globalPage.searchParams;
+    if(params.get('domainkey') && params.get('startdate') && params.get('enddate') && params.get('url') && params.get('limit')){
+      const paramCfg = {
+        url: params.get('url'),
+        domainkey: params.get('domainkey'),
+        startdate: params.get('stardate'),
+        enddate: params.get('enddate'),
+        apiEndpoint: 'https://helix-pages.anywhere.run/helix-services/run-query@ci6481/rum-dashboard',
+        dataEndpoint: 'daily-rum',
+        limit: params.get('limit')
+      };
+      getQuery(paramCfg);
+      updateData(paramCfg);
+    }
+  }
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
@@ -25,16 +48,17 @@ const DashboardQueryFilter = ({
   }, [data, filterData, dataFlag]);
 
   const formatter = useDateFormatter({ dateStyle: 'long' });
-  const flag = 'rum-dashboardFlag';
-  // let execCount = 0;
+  const flag = `${dataEndpoint}Flag`;
+  let execCount = 0;
 
   const getQuery = (cfg = {}) => {
     const {
       url, domainkey, startdate, enddate, hostname, limit,
     } = cfg;
-    queryRequest(dataEndpoint, apiEndpoint, {
+    const config = {
       domainkey, url, startdate, enddate, hostname, limit,
-    });
+    }
+    queryRequest(dataEndpoint, apiEndpoint, config);
   };
 
   const updateData = (cfg = {}) => {
@@ -108,20 +132,24 @@ const DashboardQueryFilter = ({
 
     setRange({ start: parseDate(start), end: parseDate(end) });
 
+    if(configSetter){
+      configSetter(configuration);
+    }
     getQuery(configuration);
     updateData(configuration);
   };
 
   return (
         <>
-            <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}>
-                <Text marginTop="size-250"><FilterIcon size='XL' /></Text>
-                <Form onSubmit={onSubmit} method='get'>
+            <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}> 
+                <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>
+                <Form onSubmit={onSubmit} method='get' isRequired>
                     <DateRangePicker
                         label="Date Range"
                         startName="start"
                         endName="end"
                         maxValue={today(getLocalTimeZone())}
+                        defaultValue={{start: globalParams.get('startdate') ? parseDate(globalParams.get('startdate')) : null, end: globalParams.get('enddate') ? parseDate(globalParams.get('enddate')) : null}}
                         isRequired
                     />
                     <p>
@@ -132,12 +160,12 @@ const DashboardQueryFilter = ({
                       )
                       : '--'}
                     </p>
-                    <TextField name='inputUrl' label="Url" autoFocus isRequired></TextField>
-                    <TextField name='domainkey' label='Domain Key' autoFocus></TextField>
+                    <TextField name='inputUrl' label="Url" defaultValue={globalParams.get('url') ? globalParams.get('url') : '' } autoFocus isRequired></TextField>
+                    <TextField name='domainkey' label='Domain Key' defaultValue={globalParams.get('domainkey') ? globalParams.get('domainkey') : '' } type='password' autoFocus></TextField>
                     {(hasCheckpoint
                         && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired></TextField>
                     )}
-                    <NumberField name='limit' label="Limit" defaultValue={30} minValue={10} />
+                    <NumberField name='limit' label="Limit" defaultValue={globalParams.get('limit') ? globalParams.get('limit') : '30' } minValue={10} />
                     <ButtonGroup>
                         <Button type="submit" variant="primary">Submit</Button>
                         <Button type="reset" variant="secondary">Reset</Button>

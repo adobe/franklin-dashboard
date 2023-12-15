@@ -11,9 +11,11 @@ import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import MoreCircle from '@spectrum-icons/workflow/MoreCircle';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export function RumTableView({
-  data, dataFlag, columns, columnHeadings,
+  data, dataFlag, columns, columnHeadings, config, configSetter
 }) {
   if (data.length > 0) {
     const ranges = {
@@ -22,6 +24,7 @@ export function RumTableView({
       avginp: [200, 500],
       avgcls: [0.1, 0.25],
     };
+    let navigate = useNavigate();
     return (
       data.length > 0
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
@@ -105,9 +108,18 @@ export function RumTableView({
                                     })
                                 )}
                                 <Cell>
-                                    <Button variant="primary">
+                                    <Button variant="primary" target='_blank' onPress={() => 
+                                    {
+                                      if (navigate) {
+                                        configSetter(config)
+                                        const openInNewTab = (url) => {
+                                          window.open(url, '_blank', 'noreferrer');
+                                        };                                      
+                                        navigate(`/rum-monitor?domainkey=${config.domainkey}&startdate=${config.startdate}&enddate=${config.enddate}&limit=${config.limit}&url=${rum.url}`);
+                                      }
+                                    }}>
                                         <MoreCircle />
-                                        <Text>Report</Text>
+                                        <Text>CWV Charts</Text>
                                     </Button></Cell>
                             </Row>)
                     }

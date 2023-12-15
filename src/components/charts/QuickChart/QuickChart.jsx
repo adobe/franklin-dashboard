@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import config from './chartServiceConfig.js';
 
 const useImageLoaded = () => {
   const [loaded, setLoaded] = useState(false);

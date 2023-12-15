@@ -1,14 +1,15 @@
 import { Grid, View, Flex } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
-// import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
+import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
 
 export function RumDashboardMain() {
   const [data, setData] = useState([]);
   const [fetchFlag, setFetchFlag] = useState(false);
+  const [config, setConfig] = useState({});
 
   useEffect(() => {
-    console.log('data has changed');
+    console.log('Dashboard View');
   }, [data, fetchFlag]);
 
   const columns = ['url', 'avgcls', 'avginp', 'avglcp', 'pageviews'];
@@ -32,18 +33,21 @@ export function RumDashboardMain() {
   };
 
   return (
-        <Grid areas={['content1', 'content1']} columns={['1fr', '1fr']} rows={['auto']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
-            {/* <View gridArea="sidebar" height="100%">
-              <DashboardQueryFilter hasCheckpoint={true}
+        <Grid areas={['sidebar content1',
+          'sidebar content1']} columns={['.5fr', '6fr']} rows={['auto']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
+            <View gridArea="sidebar" height="100%">
+              <DashboardQueryFilter hasCheckpoint={false}
               data={data} setter={setData} dataEndpoint={'rum-dashboard'}
-              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6232'}
-              dataFlag={fetchFlag} flagSetter={setFetchFlag}>
+              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6488'}
+              dataFlag={fetchFlag} flagSetter={setFetchFlag} config={config} configSetter={setConfig}>
               </DashboardQueryFilter>
-            </View> */}
+            </View>
 
             <View gridArea="content1" width="100%" height="100%" overflow="hidden">
               <Flex width="100%" height="100%">
-                <RumTableView data={data} dataFlag={fetchFlag} width="100%" height="100%" columns={columns} columnHeadings={columnHeadings}></RumTableView>
+                <RumTableView 
+                data={data} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns} 
+                columnHeadings={columnHeadings} config={config} configSetter={setConfig}/>
               </Flex>
             </View>
         </Grid>

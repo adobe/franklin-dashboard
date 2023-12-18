@@ -33,10 +33,14 @@ export function RumDashboardMain() {
   };
 
   return (
-        <Grid areas={['sidebar content1',
-          'sidebar content1']} columns={['.5fr', '6fr']} rows={['auto']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
+        <Grid areas={['heading heading',
+          'sidebar content1',
+          'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
+            <View gridArea={'heading'}>
+              <h1>Rum Dashboard</h1>
+            </View>
             <View gridArea="sidebar" height="100%">
-              <DashboardQueryFilter hasCheckpoint={false}
+              <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}
               data={data} setter={setData} dataEndpoint={'rum-dashboard'}
               apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6488'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag} config={config} configSetter={setConfig}>
@@ -46,7 +50,7 @@ export function RumDashboardMain() {
             <View gridArea="content1" width="100%" height="100%" overflow="hidden">
               <Flex width="100%" height="100%">
                 <RumTableView 
-                data={data} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns} 
+                data={data} setter={setData} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns} 
                 columnHeadings={columnHeadings} config={config} configSetter={setConfig}/>
               </Flex>
             </View>

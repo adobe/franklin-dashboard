@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Provider,
   Button,
@@ -43,14 +42,14 @@ const NavigationTabs = () => {
             404 Reports
         </Button>
         &nbsp;&nbsp;
-        <Button variant={currentTab === 'rum-monitor' ? 'cta' : 'primary'}
+        <Button variant={currentTab === 'pageviews-report' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
-                navigate('/rum-monitor');
+                navigate('/pageviews-report');
               }
             }}
         >
-            RUM Monitor
+            Pageviews Chart
         </Button>
         </div>
     </Provider>

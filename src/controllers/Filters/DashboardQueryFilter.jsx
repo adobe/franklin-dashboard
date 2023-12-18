@@ -6,41 +6,21 @@ import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useEffect } from 'react';
 // eslint-disable-next-line
 import FilterIcon from '@spectrum-icons/workflow/Filter';
-
 import { queryRequest } from '../../connectors/utils.js';
 import './DashboardQueryFilter.css';
+import { useStore, initStore } from 'stores/global.js';
+import { useNavigate } from 'react-router-dom';
+import { intervalOffsetToDates } from '../../connectors/utils.js';
 
 export function DashboardQueryFilter({
-  hasCheckpoint, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, config, configSetter
+  hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter
 }) {
-  const globalPage = new URL(window.location.href);
-  const globalParams = globalPage.searchParams;
   const [range, setRange] = React.useState({
-    start: globalParams.get('startdate') ? parseDate(globalParams.get('startdate')) : parseDate('2020-07-03'),
-    end: globalParams.get('enddate') ? parseDate(globalParams.get('enddate')) : parseDate('2020-07-10'),
+    start: parseDate('2023-07-03'),
+    end: parseDate('2023-07-10'),
   });
   const [filterData, setFilterData] = React.useState([]);
-
-  useEffect(() => {
-    checkParams();
-  }, [config])
-
-  const checkParams = () => {
-    const params = globalPage.searchParams;
-    if(params.get('domainkey') && params.get('startdate') && params.get('enddate') && params.get('url') && params.get('limit')){
-      const paramCfg = {
-        url: params.get('url'),
-        domainkey: params.get('domainkey'),
-        startdate: params.get('stardate'),
-        enddate: params.get('enddate'),
-        apiEndpoint: 'https://helix-pages.anywhere.run/helix-services/run-query@ci6481/rum-dashboard',
-        dataEndpoint: 'daily-rum',
-        limit: params.get('limit')
-      };
-      getQuery(paramCfg);
-      updateData(paramCfg);
-    }
-  }
+  const { reportUrl, setReportUrl, globalUrl, domainKey } = useStore();
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
@@ -48,38 +28,36 @@ export function DashboardQueryFilter({
   }, [data, filterData, dataFlag]);
 
   const formatter = useDateFormatter({ dateStyle: 'long' });
-  const flag = `${dataEndpoint}Flag`;
-  let execCount = 0;
+  const navigate = useNavigate();
 
   const getQuery = (cfg = {}) => {
     const {
-      url, domainkey, startdate, enddate, hostname, limit,
+      url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP
     } = cfg;
+    
     const config = {
-      domainkey, url, startdate, enddate, hostname, limit,
+      domainkey, url, startdate, enddate, hostname, limit, checkpoint
     }
-    queryRequest(dataEndpoint, apiEndpoint, config);
+    if(dataEP === 'rum-pageviews'){
+      queryRequest('rum-dashboard/pageviews', apiEP, config);
+    }
+    queryRequest(dataEP, apiEP, config);
   };
 
   const updateData = (cfg = {}) => {
-    const { hostname, domainkey } = cfg;
+    const { dataEP } = cfg;
+    const flag = `${dataEP}Flag`;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       if (Object.hasOwn(window, flag) && window[flag] === true) {
         setter([]);
         flagSetter(window[flag]);
-        // execCount += 1;
       }
       window.setTimeout(() => { updateData(cfg); }, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
       flagSetter(window[flag]);
       // query complete, hide loading graphic
       // data = window.dashboard[dataEndpoint].results.data;
-      setFilterData(window.dashboard[dataEndpoint].results.data);
-
-      // If this domainkey works, store it in local storage
-      if (window.dashboard[dataEndpoint].results.data.length > 0) {
-        localStorage.setItem(hostname, domainkey);
-      }
+      setFilterData(window.dashboard[dataEP].results.data);
     }
   };
 
@@ -90,12 +68,10 @@ export function DashboardQueryFilter({
     // Get form data as an object.
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
-      start, end, ckpt, inputUrl, domainkey, limit,
+      start, end, inputUrl, domainkey, ckpt, limit,
     } = formData;
 
-    const currentpage = new URL(window.location.href);
-    const params = currentpage.searchParams;
-    const url = inputUrl || params.get('url');
+    let url = inputUrl;
     let hostname = '';
     if (url) {
       if (url.startsWith('https://')) {
@@ -105,18 +81,17 @@ export function DashboardQueryFilter({
       }
     }
 
-    let key = domainkey || params.get('domainkey') || '';
-    if (!domainkey && !params.get('domainkey') && hostname) {
-      key = localStorage.getItem(hostname) || '';
-    }
+    const startdate = start;
+    const enddate = end;
+
     const configuration = {
-      url: inputUrl,
+      url,
       hostname,
-      domainkey: key,
-      startdate: start,
-      enddate: end,
-      apiEndpoint,
-      dataEndpoint,
+      domainkey,
+      startdate,
+      enddate,
+      apiEP: apiEndpoint,
+      dataEP: dataEndpoint,
       limit,
     };
 
@@ -126,8 +101,13 @@ export function DashboardQueryFilter({
     }
 
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
+      const flag = `${dataEndpoint}Flag`;
       delete window.dashboard[dataEndpoint];
       delete window[flag];
+
+      if(dataEndpoint === 'rum-pageviews'){
+        delete window['rum-dashboard/pageviewsFlag'];
+      }
     }
 
     setRange({ start: parseDate(start), end: parseDate(end) });
@@ -135,8 +115,12 @@ export function DashboardQueryFilter({
     if(configSetter){
       configSetter(configuration);
     }
+    if(dataEndpoint === 'rum-sources'){
+      configuration['checkpoint'] = '404';
+    }
     getQuery(configuration);
     updateData(configuration);
+    setReportUrl(inputUrl);
   };
 
   return (
@@ -149,7 +133,7 @@ export function DashboardQueryFilter({
                         startName="start"
                         endName="end"
                         maxValue={today(getLocalTimeZone())}
-                        defaultValue={{start: globalParams.get('startdate') ? parseDate(globalParams.get('startdate')) : null, end: globalParams.get('enddate') ? parseDate(globalParams.get('enddate')) : null}}
+                        defaultValue={range}
                         isRequired
                     />
                     <p>
@@ -160,15 +144,24 @@ export function DashboardQueryFilter({
                       )
                       : '--'}
                     </p>
-                    <TextField name='inputUrl' label="Url" defaultValue={globalParams.get('url') ? globalParams.get('url') : '' } autoFocus isRequired></TextField>
-                    <TextField name='domainkey' label='Domain Key' defaultValue={globalParams.get('domainkey') ? globalParams.get('domainkey') : '' } type='password' autoFocus></TextField>
-                    {(hasCheckpoint
-                        && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired></TextField>
+                    {(
+                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired></TextField>
                     )}
-                    <NumberField name='limit' label="Limit" defaultValue={globalParams.get('limit') ? globalParams.get('limit') : '30' } minValue={10} />
+                    {(
+                      hasDomainkeyField && <TextField name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus></TextField>
+                    )}
+                    {(
+                      hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired></TextField>
+                    )}
+                    <NumberField name='limit' label="Limit" minValue={10} />
                     <ButtonGroup>
                         <Button type="submit" variant="primary">Submit</Button>
-                        <Button type="reset" variant="secondary">Reset</Button>
+                        <Button type="reset" variant="secondary" onClick={() => {
+                          initStore();
+                          navigate('/');
+                        }}>
+                          Sign Out
+                        </Button>
                     </ButtonGroup>
                 </Form>
             </Flex>

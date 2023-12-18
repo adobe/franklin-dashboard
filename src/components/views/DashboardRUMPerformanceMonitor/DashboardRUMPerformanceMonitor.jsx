@@ -1,31 +1,27 @@
 import { Grid, View, Flex } from '@adobe/react-spectrum';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
 import { DashboardQueryFilter } from 'controllers/Filters/DashboardQueryFilter.jsx';
 import "./DashboardRUMPerformanceMonitor.css"
 import { DashboardChartView } from './DashboardChartView.jsx';
+import { useStore } from 'stores/global.js';
 
 const DashboardRUMPerformanceMonitor = () => {
   const [data, setData] = useState([]);
   const [fetchFlag, setFetchFlag] = useState(false);
-  
-  useEffect(() => {
-    console.log('Performance Monitor');
-  }, [data, fetchFlag]);
 
   return (
     <DashboardLayout>
-        <Grid
-            areas={[
-              'sidebar charts charts',
-              'sidebar charts charts',
-            ]}
-            columns={['.5fr', '6fr']} rows={['auto']} height="87vh" width="100%" columnGap={'size-100'} id="chartview"
-            >
+    <Grid areas={['heading heading',
+    'sidebar charts',
+    'sidebar charts']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
+            <View gridArea={'heading'}>
+                <h1>Pageviews Chart</h1>
+            </View>
             <View gridArea="sidebar" height="100%">
-              <DashboardQueryFilter hasCheckpoint={false}
-              data={data} setter={setData} dataEndpoint={'daily-rum'}
-              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6488/rum-dashboard'}
+              <DashboardQueryFilter hasCheckpoint={false} hasDomainkeyField={true} hasUrlField={true} isReport={true}
+              data={data} setter={setData} dataEndpoint={'rum-pageviews'}
+              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6502'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag}>
               </DashboardQueryFilter>
             </View>

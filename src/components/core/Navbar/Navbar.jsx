@@ -26,15 +26,6 @@ const DashboardNavbar = ({
         {globalUrl && <div style={{
           float: 'right', minWidth: '300px', display: 'flex', padding: '.7em',
         }}>
-          <TagGroup aria-label="Static TagGroup items example" >
-           <Item>{globalUrl}</Item>
-        </TagGroup>
-        <Button onClick={() => {
-          initStore();
-          navigate('/');
-        }}>
-          Sign Out
-        </Button>
         </div>
         }
     </div>

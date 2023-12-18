@@ -1,20 +1,19 @@
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList
 } from 'recharts';
+import { useStore } from 'stores/global';
 
-const DashboardStackedBarChart = ({
+export function DashboardStackedBarChart({
   data,
-  height = window.innerHeight * 0.5,
-  width = window.innerWidth * 0.5,
-}) => (
-      <div style={{
-        height,
-        width,
-      }}>
+  x_datakey,
+  y_datakey,
+}){
+  const { globalUrl } = useStore();
+  return (
         <ResponsiveContainer width="100%" height="100%">
         <BarChart
-          width={500}
-          height={300}
+          width="100%"
+          height="100%"
           data={data}
           margin={{
             top: 20,
@@ -24,15 +23,13 @@ const DashboardStackedBarChart = ({
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <XAxis dataKey={x_datakey} tickFormatter={(value, index) => { return value.substring(0, 10)}} tick={{fontSize: '12px'}} angle={-45} reversed={true}/>
+          <YAxis label={{ value: 'Pageviews', angle: -90, position: 'insideLeft' }} />
+          <Bar dataKey={y_datakey} fill="#8884d8">
+            <LabelList dataKey={y_datakey} position="top" />
+          </Bar>
           <Tooltip />
-          <Legend />
-          <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-          <Bar dataKey="uv" stackId="a" fill="#82ca9d" />
         </BarChart>
       </ResponsiveContainer>
-      </div>
 
-);
-export default DashboardStackedBarChart;
+)};

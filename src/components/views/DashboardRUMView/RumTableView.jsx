@@ -10,12 +10,12 @@ import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
-import MoreCircle from '@spectrum-icons/workflow/MoreCircle';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useStore } from 'stores/global';
+import { performReactRefresh } from 'react-refresh';
 
 export function RumTableView({
-  data, dataFlag, columns, columnHeadings, config, configSetter
+  data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {
     const ranges = {
@@ -25,6 +25,7 @@ export function RumTableView({
       avgcls: [0.1, 0.25],
     };
     let navigate = useNavigate();
+    const { setReportUrl, setStartDate, setEndDate, setGlobalUrl, setReportGenerated } = useStore();
     return (
       data.length > 0
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
@@ -49,7 +50,6 @@ export function RumTableView({
                           );
                         })
                     )}
-                    <Column align="center"><Text>Details</Text></Column>
                 </TableHeader>
                 <TableBody>
                     {
@@ -107,21 +107,8 @@ export function RumTableView({
                                                 </Cell>;
                                     })
                                 )}
-                                <Cell>
-                                    <Button variant="primary" target='_blank' onPress={() => 
-                                    {
-                                      if (navigate) {
-                                        configSetter(config)
-                                        const openInNewTab = (url) => {
-                                          window.open(url, '_blank', 'noreferrer');
-                                        };                                      
-                                        navigate(`/rum-monitor?domainkey=${config.domainkey}&startdate=${config.startdate}&enddate=${config.enddate}&limit=${config.limit}&url=${rum.url}`);
-                                      }
-                                    }}>
-                                        <MoreCircle />
-                                        <Text>CWV Charts</Text>
-                                    </Button></Cell>
-                            </Row>)
+                            </Row>
+                          )
                     }
                 </TableBody>
             </TableView>

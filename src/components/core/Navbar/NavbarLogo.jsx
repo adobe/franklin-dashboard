@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { Image } from '@adobe/react-spectrum';
 
 const NavbarLogo = () => {
   let navigate = null;
@@ -16,7 +17,7 @@ const NavbarLogo = () => {
             navigate('/');
           }
         }}>
-          @datadesk<span style={{ color: 'blue', fontWeight: 'bold', fontSize: '800' }}>beta</span>
+          @Datadesk
           </h3>
   );
 };

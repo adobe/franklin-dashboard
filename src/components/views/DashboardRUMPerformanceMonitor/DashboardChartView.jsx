@@ -1,60 +1,37 @@
-import { ProgressBar, Content, Heading, IllustratedMessage, View, Grid} from '@adobe/react-spectrum';
+import { ProgressBar, Content, Heading, IllustratedMessage, View, Grid, Badge} from '@adobe/react-spectrum';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
-import LineChart from '../../Charts/LineChart/LineChart';
+import {DashboardLineChart} from '../../Charts/LineChart/LineChart';
+import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
+import { useStore } from 'stores/global';
+import { useEffect, useState } from 'react';
+import './DashboardChartView.css';
 
 export function DashboardChartView({
-    data, dataFlag,
+    data, dataFlag
   }) {
-    const ranges = {
-        avglcp: [2.5, 4.0],
-        avgfid: [100, 300],
-        avginp: [200, 500],
-        avgcls: [0.1, 0.25],
-      };
+    const { reportUrl } = useStore();
     if (data.length > 0) {
         return (
             <Grid
             areas={[
-              'chart1 chart2',
-              'chart3 chart4',
+              'title',
+              'chart1',
             ]}
-            columns={['.5fr', '6fr']} rows={['auto']} height="87vh" width="100%" columnGap={'size-100'} id="chartview"
+             height="100%" width="100%" columnGap={'size-100'} id="chartview"
+             rows={['.1fr', '5fr']} columns={['auto']}
             >
-                <View gridArea="chart1" margin="auto">
-                <LineChart data={data}
-                title='(LCP) Largest Contentful Paint - 75p'
-                x_datakey='date'
-                y_datakey='avglcp'
-                good_score={ranges['avglcp'][0]}
-                bad_score={ranges['avglcp'][1]}
-                syncId='date'/>
+                <View gridArea="title" width="100%">
+                    <h2 style={{textAlign: 'center'}}>
+                      {'Your website: '} {<a href={window.dashboard['rum-dashboard/pageviews'].results.data[0].hostname}>{window.dashboard['rum-dashboard/pageviews'].results.data[0].hostname}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{fontSize: '15px'}} alignSelf='center' variant='info'>{parseInt(window.dashboard['rum-dashboard/pageviews'].results.data[0].pageviews, 10).toLocaleString('en-US')}</Badge>{' visits in the selected date range'}
+                    </h2>
+                    <h2 style={{textAlign: 'center'}}>Pageviews Chart</h2>
+                    <h4 style={{textAlign: 'center'}}>{reportUrl}</h4>
                 </View>
-                <View gridArea="chart2" margin="auto">
-                    <LineChart data={data}
-                    title='(FID) First Input Delay - 75p'
-                    x_datakey='date'
-                    y_datakey='avgfid'
-                    good_score={ranges['avgfid'][0]}
-                    bad_score={ranges['avgfid'][1]}
-                    syncId='date'/>
-                </View>
-                <View gridArea="chart3" margin="auto">
-                    <LineChart data={data} 
-                    title='(INP) Interaction to Next Paint - 75p'
-                    x_datakey='date'
-                    y_datakey='avginp'
-                    good_score={ranges['avginp'][0]}
-                    bad_score={ranges['avginp'][1]}
-                    syncId='date'/>
-                </View>
-                <View gridArea="chart4" margin="auto">
-                <LineChart data={data} 
-                title='(CLS) Cumulative Layout Shift - 75p'
-                x_datakey='date'
-                y_datakey='avgcls'
-                good_score={ranges['avgcls'][0]}
-                bad_score={ranges['avgcls'][1]}
-                syncId='date'/>
+                <View gridArea="chart1" margin="auto" height="100%" width="90%">
+                <DashboardLineChart data={data}
+                title='Pageviews'
+                x_datakey='time'
+                y_datakey='pageviews'/>
                 </View>
             </Grid>
         )

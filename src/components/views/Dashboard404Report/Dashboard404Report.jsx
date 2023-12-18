@@ -1,8 +1,9 @@
 import DashboardLayout from '../../core/Layout/Layout.jsx';
+import {RumDashboardMain} from '../Dashboard404Report/Dashboard404ReportMain.jsx';
 
 const Dashboard404Report = () => (
   <DashboardLayout>
-      <h1>Dashboard 404</h1>
+      <RumDashboardMain></RumDashboardMain>
   </DashboardLayout>
 );
 

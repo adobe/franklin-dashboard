@@ -24,6 +24,28 @@ export function getUrlBase(endpoint) {
   return urlObj.base;
 }
 
+export function intervalOffsetToDates(interval, offset){
+  const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
+  const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
+  const today = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+    0,
+    0,
+    0,
+    0,
+  );
+  let end;
+  end = today - dateOffsetInMillis;
+  start = end - intervalInMillis;
+  /* eslint-disable prefer-destructuring */
+  startdate = new Date(start).toISOString().split('T')[0];
+  enddate = new Date(end).toISOString().split('T')[0];
+
+  return {start: startdate, end: enddate};
+}
+
 /**
  * bidirectional conversion startdate/enddate to offset/interval
  */
@@ -82,24 +104,17 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   } else if (intervalValid) {
     offset = params.get('offset');
     interval = params.get('interval');
-    const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
-    const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
-    end = today - dateOffsetInMillis;
-    start = end - intervalInMillis;
-    /* eslint-disable prefer-destructuring */
-    startdate = new Date(start).toISOString().split('T')[0];
-    enddate = new Date(end).toISOString().split('T')[0];
+    const dates = intervalOffsetToDates(interval, offset);
+    startdate = dates['start'];
+    enddate = dates['end'];
     params.set('startdate', startdate);
     params.set('enddate', enddate);
   } else {
     offset = 0;
     interval = 30;
-    const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
-    const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
-    end = today - dateOffsetInMillis;
-    start = end - intervalInMillis;
-    startdate = new Date(start).toISOString().split('T')[0];
-    enddate = new Date(end).toISOString().split('T')[0];
+    const dates = intervalOffsetToDates(interval, offset);
+    startdate = dates['start'];
+    enddate = dates['end'];
     params.set('startdate', startdate);
     params.set('enddate', enddate);
     params.set('offset', offset);
@@ -151,7 +166,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
 
-  const limit = pms.get('limit') || '30';
+  const limit = (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '') ? pms.get('limit') : '30';
   pms.set('limit', limit);
 
   /*
@@ -163,9 +178,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     */
   if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
     const currLimit = parseInt(limit, 10);
-    if (currLimit < 500) {
       pms.set('limit', '500');
-    }
   }
   const flag = `${endpoint}Flag`;
   const checkData = () => {

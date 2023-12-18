@@ -19,10 +19,10 @@ function App() {
   return (
     <Provider theme={defaultTheme} colorScheme='light' router={{ navigate }}>
         <Routes>
-          <Route path='/' element={<DashboardDataDeskLanding/>}></Route>
+          <Route path='/' element={<DashboardDataDeskLanding/>} index></Route>
           <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
-          <Route path='/rum-dashboard' element={<DashboardRumView/>} index></Route>
-          <Route path='/rum-monitor' element={<DashboardRUMPerformanceMonitor/>}></Route>
+          <Route path='/rum-dashboard' element={<DashboardRumView/>}></Route>
+          <Route path='/pageviews-report' element={<DashboardRUMPerformanceMonitor/>}></Route>
         </Routes>
     </Provider>
   );

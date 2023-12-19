@@ -3,8 +3,6 @@ import {
 } from 'recharts';
 import './LineChart.css'
 
-import { useStore } from 'stores/global';
-
 export function DashboardLineChart({
   data,
   height = '100%',
@@ -25,8 +23,8 @@ export function DashboardLineChart({
           data={data.slice(1)}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={x_datakey} tickFormatter={(value, index) => { return value.substring(0, 10)}} tick={{fontSize: '12px'}} angle={-45} />
-          <YAxis />
+          <XAxis dataKey={x_datakey} tickFormatter={(value, index) => { return value.substring(0, 10)}} tick={{fontSize: '12px'}} angle={-45} reversed={true}/>
+          <YAxis scale='auto'/>
           <Tooltip />
           <Legend />
           <Line type="monotone" dataKey={y_datakey} stroke="#8884d8" activeDot={{ r: 24 }} />

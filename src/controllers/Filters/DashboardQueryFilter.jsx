@@ -189,7 +189,7 @@ export function DashboardQueryFilter({
                     {(
                       hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired></TextField>
                     )}
-                    <NumberField name='limit' label="Limit" minValue={10} />
+                    <NumberField name='limit' label="Limit" minValue={10} defaultValue={30}/>
                     <ButtonGroup>
                         <Button type="submit" variant="primary">Submit</Button>
                         <Button type="reset" variant="secondary" onClick={() => {

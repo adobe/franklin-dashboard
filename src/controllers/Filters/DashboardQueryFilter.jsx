@@ -15,12 +15,13 @@ import { intervalOffsetToDates } from '../../connectors/utils.js';
 export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter
 }) {
+  const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState({
-    start: parseDate('2023-07-03'),
-    end: parseDate('2023-07-10'),
+    start: parseDate(dates['start']),
+    end: parseDate(dates['end']),
   });
   const [filterData, setFilterData] = React.useState([]);
-  const { reportUrl, setReportUrl, globalUrl, domainKey } = useStore();
+  const { setReportUrl, globalUrl, domainKey } = useStore();
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
@@ -60,6 +61,40 @@ export function DashboardQueryFilter({
       setFilterData(window.dashboard[dataEP].results.data);
     }
   };
+
+  useEffect(() => {
+    let url = localStorage.getItem('globalUrl');
+    let hostname = '';
+    if (url) {
+      if (url.startsWith('https://')) {
+        hostname = new URL(url).hostname;
+      } else {
+        hostname = new URL(`https://${url}`).hostname;
+      }
+    }
+
+    const dates = intervalOffsetToDates(0, 30);
+    const startdate = dates['start'];
+    const enddate = dates['end'];
+
+    const configuration = {
+      url,
+      domainkey: localStorage.getItem('domainKey'),
+      startdate,
+      enddate,
+      hostname: hostname,
+      apiEP: apiEndpoint,
+      dataEP: dataEndpoint,
+      limit: '30',
+    };
+
+    if(dataEndpoint === 'rum-pageviews'){
+      configuration['checkpoint'] = '404'
+    }
+
+    getQuery(configuration);
+    updateData(configuration);
+  }, []);
 
   const onSubmit = (e) => {
     // Prevent default browser page refresh.

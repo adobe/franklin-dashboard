@@ -1,10 +1,9 @@
 import { Grid, View, Flex } from '@adobe/react-spectrum';
 import { useState } from 'react';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
-import { DashboardQueryFilter } from 'controllers/Filters/DashboardQueryFilter.jsx';
+import {DashboardQueryFilter} from 'controllers/Filters/DashboardQueryFilter.jsx';
 import "./DashboardRUMPerformanceMonitor.css"
 import { DashboardChartView } from './DashboardChartView.jsx';
-import { useStore } from 'stores/global.js';
 
 const DashboardRUMPerformanceMonitor = () => {
   const [data, setData] = useState([]);

@@ -9,7 +9,6 @@ export function RumDashboardMain() {
   const [config, setConfig] = useState({});
 
   useEffect(() => {
-    console.log('Dashboard View');
   }, [data, fetchFlag]);
 
   const columns = ['url', 'avgcls', 'avginp', 'avglcp', 'pageviews'];

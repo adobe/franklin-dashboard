@@ -88,7 +88,7 @@ export function DashboardQueryFilter({
       limit: '30',
     };
 
-    if(dataEndpoint === 'rum-pageviews'){
+    if(dataEndpoint === 'rum-sources'){
       configuration['checkpoint'] = '404'
     }
 

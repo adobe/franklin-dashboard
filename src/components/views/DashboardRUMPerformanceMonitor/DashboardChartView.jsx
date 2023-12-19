@@ -8,7 +8,7 @@ import { useStore } from '../../../stores/global';
 
 import { DashboardLineChart } from '../../charts/LineChart/LineChart.jsx';
 import './DashboardChartView.css';
-import Dashboard404Report from '../Dashboard404Report/Dashboard404Report';
+// import Dashboard404Report from '../Dashboard404Report/Dashboard404Report';
 
 export function DashboardChartView({
   data, dataFlag,

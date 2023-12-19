@@ -94,6 +94,7 @@ export function DashboardQueryFilter({
 
     getQuery(configuration);
     updateData(configuration);
+    setReportUrl(url);
   }, []);
 
   const onSubmit = (e) => {

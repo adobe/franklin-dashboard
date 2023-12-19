@@ -12,7 +12,6 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from 'stores/global';
-import { performReactRefresh } from 'react-refresh';
 
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter

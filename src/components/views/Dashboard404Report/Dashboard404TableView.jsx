@@ -4,11 +4,6 @@ import {
     Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, Button,
   } from '@adobe/react-spectrum';
   import './Dashboard404TableView.css';
-  import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
-  import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
-  import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
-  import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
-  import AlertTriangle from '@spectrum-icons/workflow/Alert';
   import NotFound from '@spectrum-icons/illustrations/NotFound';
   import { useStore } from 'stores/global';
   
@@ -16,13 +11,6 @@ import {
     data, dataFlag, columns, columnHeadings
   }) {
     if (data.length > 0) {
-      const ranges = {
-        avglcp: [2.5, 4.00],
-        avgfid: [100, 300],
-        avginp: [200, 500],
-        avgcls: [0.1, 0.25],
-      };
-      const { setReportUrl, setStartDate, setEndDate, setGlobalUrl, setReportGenerated } = useStore();
       return (
         data.length > 0
               && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview404'>
@@ -34,7 +22,7 @@ import {
                               return <Column align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
                             }
                             return (
-                                  <Column align="center">
+                                  <Column align="start">
                                       <ContextualHelp variant="info">
                                           <Heading>{columnHeadings[key][0]}</Heading>
                                           <Divider size='M'></Divider>

@@ -3,6 +3,15 @@ import {
 } from 'recharts';
 import './LineChart.css'
 
+function getMinMax(data, y_datakey){
+  let max = 0;
+  data.forEach((item) => {
+    const currData = item[y_datakey];
+    max = Math.max(max, parseInt(currData, 10));
+  })
+  return [0, max];
+}
+
 export function DashboardLineChart({
   data,
   height = '100%',
@@ -24,11 +33,10 @@ export function DashboardLineChart({
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey={x_datakey} tickFormatter={(value, index) => { return value.substring(0, 10)}} tick={{fontSize: '12px'}} angle={-45} reversed={true}/>
-          <YAxis scale='auto'/>
+          <YAxis domain={getMinMax(data, y_datakey)} scale='auto'/>
           <Tooltip />
-          <Legend />
+          <Legend display={'false'}/>
           <Line type="monotone" dataKey={y_datakey} stroke="#8884d8" activeDot={{ r: 24 }} />
-          {/* <Line type="monotone" dataKey="uv" stroke="#82ca9d" /> */}
         </LineChart>
       </ResponsiveContainer>
       </div>

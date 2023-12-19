@@ -23,8 +23,8 @@ export function DashboardStackedBarChart({
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey={x_datakey} tickFormatter={(value, index) => { return value.substring(0, 10)}} tick={{fontSize: '12px'}} angle={-45} reversed={true}/>
-          <YAxis label={{ value: 'Pageviews', angle: -90, position: 'insideLeft' }} />
+          <XAxis dataKey={x_datakey} tickFormatter={(value, index) => { return value.substring(0, 10)}} tick={{fontSize: '12px'}} reversed={true} interval={0}/>
+          <YAxis interval={0} label={{ value: 'Pageviews', angle: -90, position: 'insideLeft' }} />
           <Bar dataKey={y_datakey} fill="#8884d8">
             <LabelList dataKey={y_datakey} position="top" />
           </Bar>

@@ -1,9 +1,11 @@
 import { Grid, View, Flex } from '@adobe/react-spectrum';
 import { useState } from 'react';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
-import {DashboardQueryFilter} from 'controllers/Filters/DashboardQueryFilter.jsx';
-import "./DashboardRUMPerformanceMonitor.css"
+// import {DashboardQueryFilter} from 'controllers/Filters/DashboardQueryFilter.jsx';
+import { DashboardQueryFilter } from '../../../controllers/Filters/DashboardQueryFilter.jsx';
 import { DashboardChartView } from './DashboardChartView.jsx';
+
+import './DashboardRUMPerformanceMonitor.css';
 
 const DashboardRUMPerformanceMonitor = () => {
   const [data, setData] = useState([]);
@@ -12,8 +14,8 @@ const DashboardRUMPerformanceMonitor = () => {
   return (
     <DashboardLayout>
     <Grid areas={['heading heading',
-    'sidebar charts',
-    'sidebar charts']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
+      'sidebar charts',
+      'sidebar charts']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
             <View gridArea={'heading'}>
                 <h1>Pageviews Chart</h1>
             </View>

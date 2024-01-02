@@ -22,7 +22,7 @@ const DashboardRUMPerformanceMonitor = () => {
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpoint={false} hasDomainkeyField={true} hasUrlField={true} isReport={true}
               data={data} setter={setData} dataEndpoint={'rum-pageviews'}
-              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6502'}
+              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6535'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag}>
               </DashboardQueryFilter>
             </View>

@@ -21,12 +21,12 @@ export function DashboardQueryFilter({
     end: parseDate(dates['end']),
   });
   const [filterData, setFilterData] = React.useState([]);
-  const { setReportUrl, globalUrl, domainKey } = useStore();
+  const { setReportUrl, setGlobalUrl, globalUrl, reportUrl, domainKey, setDomainKey } = useStore();
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
     }
-  }, [data, filterData, dataFlag]);
+  }, [data, filterData, dataFlag, reportUrl, globalUrl]);
 
   const formatter = useDateFormatter({ dateStyle: 'long' });
   const navigate = useNavigate();
@@ -63,38 +63,69 @@ export function DashboardQueryFilter({
   };
 
   useEffect(() => {
-    let url = localStorage.getItem('globalUrl');
-    let hostname = '';
-    if (url) {
-      if (url.startsWith('https://')) {
-        hostname = new URL(url).hostname;
-      } else {
-        hostname = new URL(`https://${url}`).hostname;
+    const getHostname = (url) => {
+      let hostname = '';
+      if (url) {
+        if (url.startsWith('https://')) {
+          hostname = new URL(url).hostname;
+        } else {
+          hostname = new URL(`https://${url}`).hostname;
+        }
       }
+      return hostname;
     }
+
+    //check query parameters if this is a shareLink
+    const urlParameters = new URLSearchParams(window.location.search);
+    const domainkeyParam = urlParameters.get('domainkey');
+    const startdateParam = urlParameters.get('startdate');
+    const enddateParam = urlParameters.get('enddate');
+    const urlParam = urlParameters.get('url');
+    let urlLimit = urlParameters.get('limit');
+    urlLimit = urlLimit ? urlLimit : '30';
 
     const dates = intervalOffsetToDates(0, 30);
     const startdate = dates['start'];
     const enddate = dates['end'];
+    let configuration;
+    let hostname;
 
-    const configuration = {
-      url,
-      domainkey: localStorage.getItem('domainKey'),
-      startdate,
-      enddate,
-      hostname: hostname,
-      apiEP: apiEndpoint,
-      dataEP: dataEndpoint,
-      limit: '30',
-    };
+    if(domainkeyParam && startdateParam && enddateParam && urlParam){
+      hostname = getHostname(urlParam)
+      configuration = {
+        url: urlParam,
+        domainkey: domainkeyParam,
+        startdate: startdateParam,
+        enddate: enddateParam,
+        hostname: hostname,
+        apiEP: apiEndpoint,
+        dataEP: dataEndpoint,
+        limit: urlLimit,
+      };
+    }else{
+      const thisUrl = localStorage.getItem('globalUrl');
+      hostname = getHostname(thisUrl);
+      configuration = {
+        url: localStorage.getItem('globalUrl'),
+        domainkey: localStorage.getItem('domainKey'),
+        startdate,
+        enddate,
+        hostname: hostname,
+        apiEP: apiEndpoint,
+        dataEP: dataEndpoint,
+        limit: '30',
+      };
+    }
 
     if(dataEndpoint === 'rum-sources'){
       configuration['checkpoint'] = '404'
     }
-
     getQuery(configuration);
     updateData(configuration);
-    setReportUrl(url);
+    setRange({ start: parseDate(configuration['startdate']), end: parseDate(configuration['enddate']) });
+    setDomainKey(configuration['domainkey']);
+    setReportUrl(configuration['url']);
+    setGlobalUrl(configuration['url']);
   }, []);
 
   const onSubmit = (e) => {
@@ -146,17 +177,18 @@ export function DashboardQueryFilter({
       }
     }
 
-    setRange({ start: parseDate(start), end: parseDate(end) });
-
     if(configSetter){
       configSetter(configuration);
     }
-    if(dataEndpoint === 'rum-sources'){
+    if(dataEndpoint === 'dash/rum-sources-aggregated'){
       configuration['checkpoint'] = '404';
     }
     getQuery(configuration);
     updateData(configuration);
-    setReportUrl(inputUrl);
+    setRange({ start: parseDate(configuration['startdate']), end: parseDate(configuration['enddate']) });
+    setDomainKey(configuration['domainkey']);
+    setReportUrl(configuration['url']);
+    setGlobalUrl(configuration['url']);
   };
 
   return (
@@ -181,7 +213,7 @@ export function DashboardQueryFilter({
                       : '--'}
                     </p>
                     {(
-                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired></TextField>
+                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={reportUrl} isRequired></TextField>
                     )}
                     {(
                       hasDomainkeyField && <TextField name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus></TextField>

@@ -1,6 +1,6 @@
 import { ProgressBar, Content, Heading, IllustratedMessage, View, Grid, Badge, Divider} from '@adobe/react-spectrum';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
-import {DashboardLineChart} from '../../Charts/LineChart/LineChart';
+import { DashboardLineChart } from 'components/charts/LineChart/LineChart';
 import { useStore } from 'stores/global';
 import './DashboardChartView.css';
 

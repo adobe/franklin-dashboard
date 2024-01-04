@@ -63,9 +63,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   }
 
   Object.entries(qps).forEach(([k, v]) => {
-    if (!params.has(k)) {
       params.set(k, v);
-    }
   });
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');
@@ -166,7 +164,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const pms = await bidirectionalConversion(endpoint, qps);
 
   // remove http or https prefix in url param if it exists
-  if (pms.has('url')) {
+  if (pms.has('url')) {  
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
 

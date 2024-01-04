@@ -28,7 +28,7 @@ export function RumDashboardMain() {
             <View>
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}
               data={data} setter={setData} dataEndpoint={'dash/rum-sources-aggregated'}
-              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6551'}
+              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6555'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag} config={config} configSetter={setConfig}>
               </DashboardQueryFilter>
             </View>

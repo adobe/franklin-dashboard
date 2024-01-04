@@ -42,13 +42,13 @@ import {
                                   {(
                                       columns.map((col) => {
                                         if (col === 'topurl') {
-                                          return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
+                                          return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
                                         }
                                         if (col === 'source') {
                                             if(rum[col].startsWith('https://')){
-                                                return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>
+                                                return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>
                                             }
-                                            return <Cell>{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</Cell>;
+                                            return <Cell>{rum[col]}</Cell>;
                                           }
                                         return (
                                         <Cell width="size-1000">

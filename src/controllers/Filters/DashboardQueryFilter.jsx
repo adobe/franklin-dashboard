@@ -1,11 +1,14 @@
 import {
   Flex, DatePicker, TextField, Form, ButtonGroup, Button, NumberField, Text,
-  useDateFormatter,
+  useDateFormatter, DialogTrigger, Dialog, Content
 } from '@adobe/react-spectrum';
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useEffect } from 'react';
 // eslint-disable-next-line
 import FilterIcon from '@spectrum-icons/workflow/Filter';
+import ShareIcon from '@spectrum-icons/workflow/Share';
+import SendIcon from '@spectrum-icons/workflow/Send';
+import LogOut from '@spectrum-icons/workflow/LogOut';
 import { queryRequest } from '../../connectors/utils.js';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from 'stores/global.js';
@@ -16,6 +19,7 @@ export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter
 }) {
   const [filterData, setFilterData] = React.useState([]);
+  const [currentParams, setCurrentParams] = React.useState({})
   const { setGlobalUrl, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate } = useStore();
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState({
@@ -87,7 +91,7 @@ export function DashboardQueryFilter({
     const enddateParam = urlParameters.get('enddate');
     const urlParam = urlParameters.get('url');
     let urlLimit = urlParameters.get('limit');
-    urlLimit = urlLimit ? urlLimit : '30';
+    urlLimit = urlLimit ? urlLimit : '100';
 
     const dates = intervalOffsetToDates(0, 30);
     const startdate = range.start.toString();
@@ -120,7 +124,7 @@ export function DashboardQueryFilter({
         hostname: hostname,
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
-        limit: '30',
+        limit: '100',
       };
     }
 
@@ -183,11 +187,29 @@ export function DashboardQueryFilter({
     updateData(configuration);
   };
 
+  const copyToClipboard = async () => {
+    const params = new URLSearchParams(window.location.search);
+    const qps = {domainkey: domainKey, url: globalUrl, startdate: startDate, enddate: endDate}
+    Object.entries(qps).forEach(([k, v]) => {
+        params.set(k, v);
+    });
+    try {
+        const permissions = await navigator.permissions.query({name: "clipboard-write"})
+        if (permissions.state === "granted" || permissions.state === "prompt") {
+            await navigator.clipboard.writeText(window.location.hostname + '?' + params.toString());
+        } else {
+            throw new Error("Can't access the clipboard. Check your browser permissions.")
+        }
+    } catch (error) {
+        alert('Error copying to clipboard:', error);
+    }
+};
+
   return globalUrl && (
         <>
             <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}> 
                 <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>
-                <Form onSubmit={onSubmit} method='get' isRequired>
+                <Form onSubmit={onSubmit} method='get' UNSAFE_style={{alignItems: 'center'}} isRequired>
                   <DatePicker
                     label="Start Date"
                     name="start"
@@ -210,16 +232,25 @@ export function DashboardQueryFilter({
                     {(
                       hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired></TextField>
                     )}
-                    <NumberField name='limit' label="Limit" minValue={10} defaultValue={30}/>
-                    <ButtonGroup>
-                        <Button type="submit" variant="primary">Submit</Button>
-                        <Button type="reset" variant="secondary" onClick={() => {
+                    <ButtonGroup UNSAFE_style={{alignItems: 'center'}}>
+                        <Button type="submit" style='outline' variant="accent"><SendIcon/><Text>Submit</Text></Button>
+                        <Button type="reset" style='outline' variant="negative" onClick={() => {
                           initStore();
                           navigate('/');
                         }}>
-                          Sign Out
+                          <LogOut/> <Text>Sign Out</Text>
                         </Button>
                     </ButtonGroup>
+                    <DialogTrigger type='popover'>
+                    <Button style='outline' onClick={() => {copyToClipboard()}}>
+                        <ShareIcon/> <Text>Share Link</Text>
+                    </Button>                      
+                      <Dialog>
+                        <Content>
+                          Link Copied!
+                        </Content>
+                      </Dialog>
+                    </DialogTrigger>
                 </Form>
             </Flex>
         </>

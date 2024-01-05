@@ -168,7 +168,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
 
-  const limit = (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '') ? pms.get('limit') : '30';
+  const limit = (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '') ? pms.get('limit') : '150';
   pms.set('limit', limit);
 
   /*

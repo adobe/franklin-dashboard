@@ -40,7 +40,7 @@ export function DashboardQueryFilter({
       domainkey, url, startdate, enddate, hostname, limit, checkpoint
     }
     if(dataEP === 'rum-pageviews'){
-      queryRequest('rum-dashboard/pageviews', apiEP, config);
+      queryRequest('dash/pageviews', apiEP, config);
     }
     queryRequest(dataEP, apiEP, config);
   };

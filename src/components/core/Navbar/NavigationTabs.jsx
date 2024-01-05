@@ -2,10 +2,15 @@ import {
   Provider,
   Button,
   defaultTheme,
+  TooltipTrigger,
+  Tooltip,
 } from '@adobe/react-spectrum';
 import { useNavigate } from 'react-router-dom';
+import { useStore } from '../../../stores/global.js';
 
 const NavigationTabs = () => {
+  const { globalUrl } = useStore();
+
   const currentTab = window.location.pathname.split('/')[1];
 
   let navigate = null;
@@ -21,8 +26,11 @@ const NavigationTabs = () => {
     <Provider colorScheme="light" theme={defaultTheme}>
         <div style={{
           padding: '.7em',
+          minWidth: '500px',
         }}>
-          <Button variant={currentTab === 'rum-dashboard' ? 'cta' : 'primary'}
+
+        <TooltipTrigger delay={0}>
+        <Button variant={currentTab === 'rum-dashboard' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
                 navigate('/rum-dashboard');
@@ -31,7 +39,11 @@ const NavigationTabs = () => {
         >
             RUM Dashboard
         </Button>
+          <Tooltip>Explore RUM Dashboard for {globalUrl}</Tooltip>
+        </TooltipTrigger>
         &nbsp;&nbsp;
+
+        <TooltipTrigger delay={0}>
         <Button variant={currentTab === '404-reports' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
@@ -41,7 +53,11 @@ const NavigationTabs = () => {
         >
             404 Reports
         </Button>
+          <Tooltip>Explore 404 reports for {globalUrl}</Tooltip>
+        </TooltipTrigger>
         &nbsp;&nbsp;
+
+        <TooltipTrigger delay={0}>
         <Button variant={currentTab === 'pageviews-report' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
@@ -51,6 +67,9 @@ const NavigationTabs = () => {
         >
             Pageviews Chart
         </Button>
+          <Tooltip>Explore Pageviews for {globalUrl}</Tooltip>
+        </TooltipTrigger>
+
         </div>
     </Provider>
 

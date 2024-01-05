@@ -1,5 +1,5 @@
 import {
-  Flex, DateRangePicker, TextField, Form, ButtonGroup, Button, NumberField, Text,
+  Flex, DatePicker, TextField, Form, ButtonGroup, Button, NumberField, Text,
   useDateFormatter,
 } from '@adobe/react-spectrum';
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
@@ -15,18 +15,18 @@ import { intervalOffsetToDates } from '../../connectors/utils.js';
 export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter
 }) {
+  const [filterData, setFilterData] = React.useState([]);
+  const { setGlobalUrl, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate } = useStore();
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState({
     start: parseDate(dates['start']),
     end: parseDate(dates['end']),
   });
-  const [filterData, setFilterData] = React.useState([]);
-  const { setReportUrl, setGlobalUrl, globalUrl, reportUrl, domainKey, setDomainKey } = useStore();
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
     }
-  }, [data, filterData, dataFlag, reportUrl, globalUrl]);
+  }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
   const formatter = useDateFormatter({ dateStyle: 'long' });
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ export function DashboardQueryFilter({
   };
 
   const updateData = (cfg = {}) => {
-    const { dataEP } = cfg;
+    const { dataEP, url, domainkey, startdate, enddate } = cfg;
     const flag = `${dataEP}Flag`;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       if (Object.hasOwn(window, flag) && window[flag] === true) {
@@ -59,22 +59,27 @@ export function DashboardQueryFilter({
       // query complete, hide loading graphic
       // data = window.dashboard[dataEndpoint].results.data;
       setFilterData(window.dashboard[dataEP].results.data);
+      setRange({ start: parseDate(startdate), end: parseDate(enddate) });
+      setDomainKey(domainkey);
+      setGlobalUrl(url);
+      setStartDate(parseDate(startdate));
+      setEndDate(parseDate(enddate));
     }
   };
 
-  useEffect(() => {
-    const getHostname = (url) => {
-      let hostname = '';
-      if (url) {
-        if (url.startsWith('https://')) {
-          hostname = new URL(url).hostname;
-        } else {
-          hostname = new URL(`https://${url}`).hostname;
-        }
+  const getHostname = (url) => {
+    let hostname = '';
+    if (url) {
+      if (url.startsWith('https://')) {
+        hostname = new URL(url).hostname;
+      } else {
+        hostname = new URL(`https://${url}`).hostname;
       }
-      return hostname;
     }
+    return hostname;
+  }
 
+  useEffect(() => {
     //check query parameters if this is a shareLink
     const urlParameters = new URLSearchParams(window.location.search);
     const domainkeyParam = urlParameters.get('domainkey');
@@ -85,12 +90,14 @@ export function DashboardQueryFilter({
     urlLimit = urlLimit ? urlLimit : '30';
 
     const dates = intervalOffsetToDates(0, 30);
-    const startdate = dates['start'];
-    const enddate = dates['end'];
+    const startdate = range.start.toString();
+    const enddate = range.end.toString();
     let configuration;
     let hostname;
 
     if(domainkeyParam && startdateParam && enddateParam && urlParam){
+      setDomainKey(domainkeyParam);
+      setGlobalUrl(urlParam);
       hostname = getHostname(urlParam)
       configuration = {
         url: urlParam,
@@ -117,15 +124,11 @@ export function DashboardQueryFilter({
       };
     }
 
-    if(dataEndpoint === 'rum-sources'){
+    if(dataEndpoint === 'dash/rum-sources-aggregated'){
       configuration['checkpoint'] = '404'
     }
     getQuery(configuration);
     updateData(configuration);
-    setRange({ start: parseDate(configuration['startdate']), end: parseDate(configuration['enddate']) });
-    setDomainKey(configuration['domainkey']);
-    setReportUrl(configuration['url']);
-    setGlobalUrl(configuration['url']);
   }, []);
 
   const onSubmit = (e) => {
@@ -138,15 +141,8 @@ export function DashboardQueryFilter({
       start, end, inputUrl, domainkey, ckpt, limit,
     } = formData;
 
-    let url = inputUrl;
-    let hostname = '';
-    if (url) {
-      if (url.startsWith('https://')) {
-        hostname = new URL(url).hostname;
-      } else {
-        hostname = new URL(`https://${url}`).hostname;
-      }
-    }
+    const url = inputUrl;
+    const hostname = getHostname(url);
 
     const startdate = start;
     const enddate = end;
@@ -185,35 +181,28 @@ export function DashboardQueryFilter({
     }
     getQuery(configuration);
     updateData(configuration);
-    setRange({ start: parseDate(configuration['startdate']), end: parseDate(configuration['enddate']) });
-    setDomainKey(configuration['domainkey']);
-    setReportUrl(configuration['url']);
-    setGlobalUrl(configuration['url']);
   };
 
-  return (
+  return globalUrl && (
         <>
             <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}> 
                 <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>
                 <Form onSubmit={onSubmit} method='get' isRequired>
-                    <DateRangePicker
-                        label="Date Range"
-                        startName="start"
-                        endName="end"
-                        maxValue={today(getLocalTimeZone())}
-                        defaultValue={range}
-                        isRequired
+                  <DatePicker
+                    label="Start Date"
+                    name="start"
+                    defaultValue={range.start}
+                    isRequired
                     />
-                    <p>
-                        Selected date: {range
-                      ? formatter.formatRange(
-                        range.start.toDate(getLocalTimeZone()),
-                        range.end.toDate(getLocalTimeZone()),
-                      )
-                      : '--'}
-                    </p>
+                  <DatePicker
+                    label="End Date"
+                    name="end"
+                    defaultValue={range.end}
+                    maxValue={today(getLocalTimeZone())}
+                    isRequired
+                    />
                     {(
-                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={reportUrl} isRequired></TextField>
+                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired></TextField>
                     )}
                     {(
                       hasDomainkeyField && <TextField name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus></TextField>

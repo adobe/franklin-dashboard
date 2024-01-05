@@ -33,7 +33,7 @@ export function DashboardLineChart({
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey={x_datakey} tickFormatter={(value, index) => { return value.substring(0, 10)}} tick={{fontSize: '12px'}} angle={-45} reversed={true}/>
-          <YAxis domain={getMinMax(data, y_datakey)} scale='auto'/>
+          <YAxis domain={getMinMax(data, y_datakey)} scale='auto' fontSize={'12px'}/>
           <Tooltip />
           <Legend display={'false'}/>
           <Line type="monotone" dataKey={y_datakey} stroke="#8884d8" activeDot={{ r: 24 }} />

@@ -5,8 +5,8 @@ export const useStore = create((set) => ({
   globalUrl: null,
   reportUrl: null,
   reportGenerated: null,
-  startdate: null,
-  enddate: null,
+  startDate: null,
+  endDate: null,
 
   setDomainKey: (value) => {
     // save to localstorage

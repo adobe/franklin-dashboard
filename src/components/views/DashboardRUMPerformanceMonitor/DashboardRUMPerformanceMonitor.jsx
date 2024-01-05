@@ -1,5 +1,5 @@
 import { Grid, View, Flex } from '@adobe/react-spectrum';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
 // import {DashboardQueryFilter} from 'controllers/Filters/DashboardQueryFilter.jsx';
 import { DashboardQueryFilter } from '../../../controllers/Filters/DashboardQueryFilter.jsx';
@@ -10,6 +10,9 @@ import './DashboardRUMPerformanceMonitor.css';
 const DashboardRUMPerformanceMonitor = () => {
   const [data, setData] = useState([]);
   const [fetchFlag, setFetchFlag] = useState(false);
+
+  useEffect(() => {
+  }, [data, fetchFlag]);
 
   return (
     <DashboardLayout>

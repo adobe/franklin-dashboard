@@ -56,6 +56,9 @@ export function RumTableView({
                                 {(
                                     columns.map((col) => {
                                       if (col === 'url') {
+                                        if(rum[col] === 'Other'){
+                                          return <Cell>{rum[col]}</Cell>;
+                                        }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
                                         const currCol = col === 'avglcp' && rum[col] ? rum[col] / 1000 : rum[col];

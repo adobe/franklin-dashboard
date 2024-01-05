@@ -23,7 +23,7 @@ export function DashboardChartView({
             >
                 <View gridArea="title" width="100%">
                     <h2 style={{ textAlign: 'center' }}>
-                      {'Your website: '} {<a href={window.dashboard['dash/pageviews'].results.data[0].hostname}>{window.dashboard['dash/pageviews'].results.data[0].hostname}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(window.dashboard['dash/pageviews'].results.data[0].pageviews, 10).toLocaleString('en-US')}</Badge>{' visits in the selected date range ' + formatter.formatRange(
+                      {'Your website: '} {<a href={window.dashboard['dash/pageviews'].results.data[0].hostname}>{window.dashboard['dash/pageviews'].results.data[0].hostname}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(window.dashboard['dash/pageviews'].results.data[0].pageviews, 10).toLocaleString('en-US')}</Badge>{' between ' + formatter.formatRange(
                         startDate.toDate(getLocalTimeZone()),
                         endDate.toDate(getLocalTimeZone()),
                       )}

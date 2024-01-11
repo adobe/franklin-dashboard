@@ -14,7 +14,7 @@ import LogOut from '@spectrum-icons/workflow/LogOut';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from 'stores/global.js';
 import { useNavigate } from 'react-router-dom';
-import { queryRequest, intervalOffsetToDates } from '../../connectors/utils.js';
+import { queryRequest, intervalOffsetToDates, getDataDates } from '../../connectors/utils.js';
 
 export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter,
@@ -22,22 +22,24 @@ export function DashboardQueryFilter({
   const [filterData, setFilterData] = React.useState([]);
   const [currentParams, setCurrentParams] = React.useState({});
   const {
-    setGlobalUrl, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate,
+    setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate,
   } = useStore();
   const dates = intervalOffsetToDates(0, 30);
-  const [range, setRange] = React.useState({
-    start: parseDate(dates.start),
-    end: parseDate(dates.end),
+  const [range, setRange] = React.useState(() => {
+    let currDataDates = getDataDates(dataEndpoint);
+    const currStart = currDataDates['start'] ? parseDate(currDataDates['start']) : null;
+    const currEnd = currDataDates['end'] ? parseDate(currDataDates['end']) : null;
+    return {
+      start: currStart ? currStart : parseDate(dates.start),
+      end: currEnd ? currEnd : parseDate(dates.end),
+    }
   });
   const [changedForm, setChangedForm] = React.useState(false);
   useEffect(() => {
-    if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
+    if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
     }
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
-
-  const formatter = useDateFormatter({ dateStyle: 'long' });
-  const navigate = useNavigate();
 
   const getQuery = (cfg = {}) => {
     const {
@@ -47,9 +49,6 @@ export function DashboardQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    if (dataEP === 'rum-pageviews') {
-      queryRequest('dash/pageviews', apiEP, config);
-    }
     queryRequest(dataEP, apiEP, config);
   };
 
@@ -69,7 +68,12 @@ export function DashboardQueryFilter({
       // query complete, hide loading graphic
       // data = window.dashboard[dataEndpoint].results.data;
       setFilterData(window.dashboard[dataEP].results.data);
-      setRange({ start: parseDate(startdate), end: parseDate(enddate) });
+      const currDates = getDataDates(dataEndpoint);
+      const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
+      const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
+      if(currStart && currEnd){
+        setRange({ start: parseDate(getDataDates(dataEndpoint)['start']), end: parseDate(getDataDates(dataEndpoint)['end']) });
+      }
       setDomainKey(domainkey);
       setGlobalUrl(url);
       setStartDate(parseDate(startdate));
@@ -87,6 +91,7 @@ export function DashboardQueryFilter({
         hostname = new URL(`https://${url}`).hostname;
       }
     }
+    setHostName(hostname);
     return hostname;
   };
 
@@ -135,9 +140,10 @@ export function DashboardQueryFilter({
       };
     }
 
-    if (dataEndpoint === 'dash/rum-sources-aggregated') {
+    if (dataEndpoint === 'rum-sources') {
       configuration.checkpoint = '404';
     }
+
     getQuery(configuration);
     updateData(configuration);
   }, []);
@@ -178,16 +184,12 @@ export function DashboardQueryFilter({
       const flag = `${dataEndpoint}Flag`;
       delete window.dashboard[dataEndpoint];
       delete window[flag];
-
-      if (dataEndpoint === 'rum-pageviews') {
-        delete window['rum-dashboard/pageviewsFlag'];
-      }
     }
 
     if (configSetter) {
       configSetter(configuration);
     }
-    if (dataEndpoint === 'dash/rum-sources-aggregated') {
+    if (dataEndpoint === 'rum-sources') {
       configuration.checkpoint = '404';
     }
     getQuery(configuration);

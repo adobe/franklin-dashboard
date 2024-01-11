@@ -50,6 +50,22 @@ export function intervalOffsetToDates(offset, interval){
   return {start: startdate, end: enddate};
 }
 
+export function getDataDates(endpoint){
+  if(Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, endpoint) && Object.hasOwn(window.dashboard[endpoint], 'results')){
+    const reqParams = window['dashboard'][endpoint]['meta']['data'];
+      let offset, interval;
+      reqParams.forEach((params) => {
+        const { name, value } = params;
+        if(name === 'offset') offset = value;
+        if(name === 'interval') interval = value;
+      });
+
+      offset -= 1;
+      return intervalOffsetToDates(offset, interval);
+  }
+return {};
+}
+
 /**
  * bidirectional conversion startdate/enddate to offset/interval
  */

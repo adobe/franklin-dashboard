@@ -20,7 +20,6 @@ export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
-  const [currentParams, setCurrentParams] = React.useState({});
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate,
   } = useStore();
@@ -29,11 +28,29 @@ export function DashboardQueryFilter({
     let currDataDates = getDataDates(dataEndpoint);
     const currStart = currDataDates['start'] ? parseDate(currDataDates['start']) : null;
     const currEnd = currDataDates['end'] ? parseDate(currDataDates['end']) : null;
-    return {
-      start: currStart ? currStart : parseDate(dates.start),
-      end: currEnd ? currEnd : parseDate(dates.end),
+    const urlParameters = new URLSearchParams(window.location.search);
+    const domainkeyParam = urlParameters.get('domainkey');
+    const startdateParam = urlParameters.get('startdate');
+    const enddateParam = urlParameters.get('enddate');
+    const urlParam = urlParameters.get('url');
+    let returnObj;
+
+    if(domainkeyParam && startdateParam && enddateParam && urlParam){
+      returnObj = {
+        start: parseDate(startdateParam), 
+        end: parseDate(enddateParam)
+      }
+    } else {
+        returnObj = {
+        start: currStart ? currStart : parseDate(dates.start),
+        end: currEnd ? currEnd : parseDate(dates.end),
+      }
     }
+    setStartDate(returnObj.start);
+    setEndDate(returnObj.end);
+    return returnObj;
   });
+
   const [changedForm, setChangedForm] = React.useState(false);
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
@@ -73,11 +90,11 @@ export function DashboardQueryFilter({
       const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
       if(currStart && currEnd){
         setRange({ start: parseDate(getDataDates(dataEndpoint)['start']), end: parseDate(getDataDates(dataEndpoint)['end']) });
+        setStartDate(currStart);
+        setEndDate(currEnd);
       }
       setDomainKey(domainkey);
       setGlobalUrl(url);
-      setStartDate(parseDate(startdate));
-      setEndDate(parseDate(enddate));
     }
     setChangedForm(false);
   };

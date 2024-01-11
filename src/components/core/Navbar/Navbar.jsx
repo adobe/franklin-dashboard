@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import {
   TagGroup, Item, Button, Text,
   Tooltip, TooltipTrigger,
@@ -18,6 +18,10 @@ const DashboardNavbar = ({
   const {
     globalUrl, domainKey, startDate, endDate,
   } = useStore();
+
+  useEffect(() => {
+    
+  }, [startDate, endDate, globalUrl, domainKey])
 
   let navigate = null;
 

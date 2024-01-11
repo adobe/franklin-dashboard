@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom';
 
 import { Provider, defaultTheme } from '@adobe/react-spectrum';
+import { ToastContainer } from '@react-spectrum/toast';
 
 import DashboardDataDeskLanding from './components/views/DashboardDataDeskLanding/DashboardDataDeskLanding.jsx';
 import Dashboard404Report from './components/views/Dashboard404Report/Dashboard404Report.jsx';
@@ -24,6 +25,7 @@ function App() {
           <Route path='/rum-dashboard' element={<DashboardRumView/>}></Route>
           <Route path='/pageviews-report' element={<DashboardRUMPerformanceMonitor/>}></Route>
         </Routes>
+        <ToastContainer />
     </Provider>
   );
 }

@@ -1,56 +1,61 @@
 import {
   Flex, DatePicker, TextField, Form, ButtonGroup, Button, NumberField, Text,
-  useDateFormatter, DialogTrigger, Dialog, Content
+  useDateFormatter, DialogTrigger, Dialog, Content,
 } from '@adobe/react-spectrum';
+import { ToastQueue } from '@react-spectrum/toast';
+
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 // eslint-disable-next-line
 import FilterIcon from '@spectrum-icons/workflow/Filter';
 import ShareIcon from '@spectrum-icons/workflow/Share';
-import SendIcon from '@spectrum-icons/workflow/Send';
+import SearchIcon from '@spectrum-icons/workflow/Search';
 import LogOut from '@spectrum-icons/workflow/LogOut';
-import { queryRequest } from '../../connectors/utils.js';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from 'stores/global.js';
 import { useNavigate } from 'react-router-dom';
-import { intervalOffsetToDates } from '../../connectors/utils.js';
+import { queryRequest, intervalOffsetToDates, getDataDates } from '../../connectors/utils.js';
 
 export function DashboardQueryFilter({
-  hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter
+  hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
-  const [currentParams, setCurrentParams] = React.useState({})
-  const { setGlobalUrl, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate } = useStore();
+  const [currentParams, setCurrentParams] = React.useState({});
+  const {
+    setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate,
+  } = useStore();
   const dates = intervalOffsetToDates(0, 30);
-  const [range, setRange] = React.useState({
-    start: parseDate(dates['start']),
-    end: parseDate(dates['end']),
+  const [range, setRange] = React.useState(() => {
+    let currDataDates = getDataDates(dataEndpoint);
+    const currStart = currDataDates['start'] ? parseDate(currDataDates['start']) : null;
+    const currEnd = currDataDates['end'] ? parseDate(currDataDates['end']) : null;
+    return {
+      start: currStart ? currStart : parseDate(dates.start),
+      end: currEnd ? currEnd : parseDate(dates.end),
+    }
   });
+  const [changedForm, setChangedForm] = React.useState(false);
   useEffect(() => {
-    if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
+    if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
     }
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
-  const formatter = useDateFormatter({ dateStyle: 'long' });
-  const navigate = useNavigate();
-
   const getQuery = (cfg = {}) => {
     const {
-      url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP
+      url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP,
     } = cfg;
-    
+
     const config = {
-      domainkey, url, startdate, enddate, hostname, limit, checkpoint
-    }
-    if(dataEP === 'rum-pageviews'){
-      queryRequest('dash/pageviews', apiEP, config);
-    }
+      domainkey, url, startdate, enddate, hostname, limit, checkpoint,
+    };
     queryRequest(dataEP, apiEP, config);
   };
 
   const updateData = (cfg = {}) => {
-    const { dataEP, url, domainkey, startdate, enddate } = cfg;
+    const {
+      dataEP, url, domainkey, startdate, enddate,
+    } = cfg;
     const flag = `${dataEP}Flag`;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       if (Object.hasOwn(window, flag) && window[flag] === true) {
@@ -63,12 +68,18 @@ export function DashboardQueryFilter({
       // query complete, hide loading graphic
       // data = window.dashboard[dataEndpoint].results.data;
       setFilterData(window.dashboard[dataEP].results.data);
-      setRange({ start: parseDate(startdate), end: parseDate(enddate) });
+      const currDates = getDataDates(dataEndpoint);
+      const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
+      const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
+      if(currStart && currEnd){
+        setRange({ start: parseDate(getDataDates(dataEndpoint)['start']), end: parseDate(getDataDates(dataEndpoint)['end']) });
+      }
       setDomainKey(domainkey);
       setGlobalUrl(url);
       setStartDate(parseDate(startdate));
       setEndDate(parseDate(enddate));
     }
+    setChangedForm(false);
   };
 
   const getHostname = (url) => {
@@ -80,18 +91,19 @@ export function DashboardQueryFilter({
         hostname = new URL(`https://${url}`).hostname;
       }
     }
+    setHostName(hostname);
     return hostname;
-  }
+  };
 
   useEffect(() => {
-    //check query parameters if this is a shareLink
+    // check query parameters if this is a shareLink
     const urlParameters = new URLSearchParams(window.location.search);
     const domainkeyParam = urlParameters.get('domainkey');
     const startdateParam = urlParameters.get('startdate');
     const enddateParam = urlParameters.get('enddate');
     const urlParam = urlParameters.get('url');
     let urlLimit = urlParameters.get('limit');
-    urlLimit = urlLimit ? urlLimit : '100';
+    urlLimit = urlLimit || '100';
 
     const dates = intervalOffsetToDates(0, 30);
     const startdate = range.start.toString();
@@ -99,21 +111,21 @@ export function DashboardQueryFilter({
     let configuration;
     let hostname;
 
-    if(domainkeyParam && startdateParam && enddateParam && urlParam){
+    if (domainkeyParam && startdateParam && enddateParam && urlParam) {
       setDomainKey(domainkeyParam);
       setGlobalUrl(urlParam);
-      hostname = getHostname(urlParam)
+      hostname = getHostname(urlParam);
       configuration = {
         url: urlParam,
         domainkey: domainkeyParam,
         startdate: startdateParam,
         enddate: enddateParam,
-        hostname: hostname,
+        hostname,
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
         limit: urlLimit,
       };
-    }else{
+    } else {
       const thisUrl = localStorage.getItem('globalUrl');
       hostname = getHostname(thisUrl);
       configuration = {
@@ -121,16 +133,17 @@ export function DashboardQueryFilter({
         domainkey: localStorage.getItem('domainKey'),
         startdate,
         enddate,
-        hostname: hostname,
+        hostname,
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
         limit: '100',
       };
     }
 
-    if(dataEndpoint === 'dash/rum-sources-aggregated'){
-      configuration['checkpoint'] = '404'
+    if (dataEndpoint === 'rum-sources') {
+      configuration.checkpoint = '404';
     }
+
     getQuery(configuration);
     updateData(configuration);
   }, []);
@@ -171,90 +184,68 @@ export function DashboardQueryFilter({
       const flag = `${dataEndpoint}Flag`;
       delete window.dashboard[dataEndpoint];
       delete window[flag];
-
-      if(dataEndpoint === 'rum-pageviews'){
-        delete window['rum-dashboard/pageviewsFlag'];
-      }
     }
 
-    if(configSetter){
+    if (configSetter) {
       configSetter(configuration);
     }
-    if(dataEndpoint === 'dash/rum-sources-aggregated'){
-      configuration['checkpoint'] = '404';
+    if (dataEndpoint === 'rum-sources') {
+      configuration.checkpoint = '404';
     }
     getQuery(configuration);
     updateData(configuration);
   };
 
-  const copyToClipboard = async () => {
-    const params = new URLSearchParams(window.location.search);
-    const qps = {domainkey: domainKey, url: globalUrl, startdate: startDate, enddate: endDate}
-    Object.entries(qps).forEach(([k, v]) => {
-        params.set(k, v);
-    });
-    try {
-        const permissions = await navigator.permissions.query({name: "clipboard-write"})
-        if (permissions.state === "granted" || permissions.state === "prompt") {
-            await navigator.clipboard.writeText(window.location.hostname + '?' + params.toString());
-        } else {
-            throw new Error("Can't access the clipboard. Check your browser permissions.")
-        }
-    } catch (error) {
-        alert('Error copying to clipboard:', error);
-    }
-};
+  const setChanged = useCallback(() => {
+    setChangedForm(true);
+  }, []);
 
   return globalUrl && (
         <>
-            <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}> 
+            <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}>
                 <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>
-                <Form onSubmit={onSubmit} method='get' UNSAFE_style={{alignItems: 'center'}} isRequired>
+                <Form onSubmit={onSubmit} method='get' UNSAFE_style={{ alignItems: 'center' }} isRequired>
                   <DatePicker
                     label="Start Date"
                     name="start"
                     defaultValue={range.start}
                     isRequired
-                    />
+                    onChange={setChanged}
+                  />
                   <DatePicker
                     label="End Date"
                     name="end"
                     defaultValue={range.end}
                     maxValue={today(getLocalTimeZone())}
                     isRequired
+                    onChange={setChanged}
                     />
                     {(
-                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired></TextField>
+                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
+                        onChange={setChanged}
+                      />
                     )}
                     {(
-                      hasDomainkeyField && <TextField name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus></TextField>
+                      hasDomainkeyField && <TextField
+                        name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus
+                          onChange={setChanged}
+                        />
                     )}
                     {(
-                      hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired></TextField>
+                      hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired
+                        onChange={setChanged}
+                      />
                     )}
-                    <ButtonGroup UNSAFE_style={{alignItems: 'center'}}>
-                        <Button type="submit" style='outline' variant="accent"><SendIcon/><Text>Submit</Text></Button>
-                        <Button type="reset" style='outline' variant="negative" onClick={() => {
-                          initStore();
-                          navigate('/');
-                        }}>
-                          <LogOut/> <Text>Sign Out</Text>
-                        </Button>
-                    </ButtonGroup>
-                    <DialogTrigger type='popover'>
-                    <Button style='outline' onClick={() => {copyToClipboard()}}>
-                        <ShareIcon/> <Text>Share Link</Text>
-                    </Button>                      
-                      <Dialog>
-                        <Content>
-                          Link Copied!
-                        </Content>
-                      </Dialog>
-                    </DialogTrigger>
+
+                    <br />
+                    <Button
+                      isDisabled={!changedForm}
+                      type="submit" variant="cta"><SearchIcon/><Text>Search</Text>
+                    </Button>
                 </Form>
             </Flex>
         </>
   );
-};
+}
 
 export default DashboardQueryFilter;

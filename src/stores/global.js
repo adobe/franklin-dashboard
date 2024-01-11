@@ -2,6 +2,7 @@ import { create } from 'zustand';
 
 export const useStore = create((set) => ({
   domainKey: null,
+  hostName: null,
   globalUrl: null,
   reportUrl: null,
   reportGenerated: null,
@@ -16,6 +17,15 @@ export const useStore = create((set) => ({
     }
 
     set(() => ({ domainKey: value }));
+  },
+  setHostName: (value) => {
+    // save to localstorage
+
+    if (value) {
+      localStorage.setItem('hostName', value);
+    }
+
+    set(() => ({ hostName: value }));
   },
   setGlobalUrl: (value) => {
     // save to localstorage

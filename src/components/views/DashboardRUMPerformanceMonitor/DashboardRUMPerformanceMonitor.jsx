@@ -25,13 +25,13 @@ const DashboardRUMPerformanceMonitor = () => {
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpoint={false} hasDomainkeyField={true} hasUrlField={true} isReport={true}
               data={data} setter={setData} dataEndpoint={'rum-pageviews'}
-              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci6563'}
+              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@v3'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag}>
               </DashboardQueryFilter>
             </View>
             <View gridArea="charts" width="100%" height="100%" overflow="hidden">
               <Flex width="100%" height="100%">
-                <DashboardChartView data={data} dataFlag={fetchFlag}></DashboardChartView>
+                <DashboardChartView data={data} dataFlag={fetchFlag} dataEndpoint={'rum-pageviews'}></DashboardChartView>
               </Flex>
             </View>
         </Grid>

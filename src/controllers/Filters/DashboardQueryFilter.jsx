@@ -32,13 +32,21 @@ export function DashboardQueryFilter({
     const domainkeyParam = urlParameters.get('domainkey');
     const startdateParam = urlParameters.get('startdate');
     const enddateParam = urlParameters.get('enddate');
+    const interval = urlParameters.get('interval');
+    const offset = urlParameters.get('offset');
     const urlParam = urlParameters.get('url');
     let returnObj;
 
-    if(domainkeyParam && startdateParam && enddateParam && urlParam){
+    if(domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam){
+      let urlDates;
+      if(interval && offset){
+        urlDates = intervalOffsetToDates(offset, interval);
+      }else{
+        urlDates = { start: startdateParam, end: enddateParam };
+      }
       returnObj = {
-        start: parseDate(startdateParam), 
-        end: parseDate(enddateParam)
+        start: parseDate(urlDates['start']), 
+        end: parseDate(urlDates['end'])
       }
     } else {
         returnObj = {
@@ -119,9 +127,11 @@ export function DashboardQueryFilter({
     const domainkeyParam = urlParameters.get('domainkey');
     const startdateParam = urlParameters.get('startdate');
     const enddateParam = urlParameters.get('enddate');
+    const interval = urlParameters.get('interval');
+    const offset = urlParameters.get('offset');
     const urlParam = urlParameters.get('url');
     let urlLimit = urlParameters.get('limit');
-    urlLimit = urlLimit || '100';
+    urlLimit = urlLimit ? urlLimit : '2000';
 
     const dates = intervalOffsetToDates(0, 30);
     const startdate = range.start.toString();
@@ -129,15 +139,21 @@ export function DashboardQueryFilter({
     let configuration;
     let hostname;
 
-    if (domainkeyParam && startdateParam && enddateParam && urlParam) {
+    if (domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam) {
       setDomainKey(domainkeyParam);
       setGlobalUrl(urlParam);
+      let urlDates;
+      if(interval && offset){
+        urlDates = intervalOffsetToDates(offset, interval);
+      } else {
+        urlDates = { start: startdateParam, end: enddateParam };
+      }
       hostname = getHostname(urlParam);
       configuration = {
         url: urlParam,
         domainkey: domainkeyParam,
-        startdate: startdateParam,
-        enddate: enddateParam,
+        startdate: urlDates['start'],
+        enddate: urlDates['end'],
         hostname,
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,

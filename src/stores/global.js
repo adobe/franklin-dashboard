@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export const useStore = create((set) => ({
   domainKey: null,
   hostName: null,
+  dataEndpoint: null,
   globalUrl: null,
   reportUrl: null,
   reportGenerated: null,
@@ -26,6 +27,15 @@ export const useStore = create((set) => ({
     }
 
     set(() => ({ hostName: value }));
+  },
+  setDataEndpoint: (value) => {
+    // save to localstorage
+
+    if (value) {
+      localStorage.setItem('dataEndpoint', value);
+    }
+
+    set(() => ({ dataEndpoint: value }));
   },
   setGlobalUrl: (value) => {
     // save to localstorage
@@ -84,6 +94,12 @@ export const initStore = () => {
   setDomainKey(null);
   setGlobalUrl(null);
   setReportUrl(null);
+  if(Object.hasOwn(window, 'dashboard')){
+    Object.keys(window['dashboard']).forEach((endpoint) => {
+      delete window[`${endpoint}Flag`];
+    })
+  }
+  delete window['dashboard'];
 };
 
 export const initializeStoreFromLocalStorage = () => {

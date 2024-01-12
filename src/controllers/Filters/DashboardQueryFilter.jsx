@@ -21,7 +21,7 @@ export function DashboardQueryFilter({
 }) {
   const [filterData, setFilterData] = React.useState([]);
   const {
-    setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate,
+    setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate, setDataEndpoint
   } = useStore();
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState(() => {
@@ -90,11 +90,12 @@ export function DashboardQueryFilter({
       const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
       if(currStart && currEnd){
         setRange({ start: parseDate(getDataDates(dataEndpoint)['start']), end: parseDate(getDataDates(dataEndpoint)['end']) });
-        setStartDate(currStart);
-        setEndDate(currEnd);
       }
       setDomainKey(domainkey);
       setGlobalUrl(url);
+      setDataEndpoint(dataEndpoint);
+      setStartDate(currStart);
+      setEndDate(currEnd);
     }
     setChangedForm(false);
   };
@@ -255,10 +256,9 @@ export function DashboardQueryFilter({
                     )}
 
                     <br />
-                    <Button
-                      isDisabled={!changedForm}
-                      type="submit" variant="cta"><SearchIcon/><Text>Search</Text>
-                    </Button>
+                      <Button
+                        type="submit" variant="cta"><SearchIcon/><Text>Search</Text>
+                      </Button>
                 </Form>
             </Flex>
         </>

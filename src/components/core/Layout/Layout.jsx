@@ -8,6 +8,7 @@ import DashboardFooter from '../Footer/Footer.jsx';
 const DashboardLayout = ({
   children,
   hasNavigation = true,
+  data,
 }) => {
   let navigate = null;
 
@@ -30,7 +31,7 @@ const DashboardLayout = ({
     } else if (window.location.pathname === '/' && localStorage.getItem('domainKey') !== null) {
       navigate('/rum-dashboard');
     }
-  }, [navigate, domainKey]);
+  }, [navigate, domainKey, data]);
 
   return (
     <Provider theme={defaultTheme} colorScheme='light' minHeight="100vh">

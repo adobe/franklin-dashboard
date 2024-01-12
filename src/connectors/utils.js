@@ -51,7 +51,7 @@ export function intervalOffsetToDates(offset, interval){
 }
 
 export function getDataDates(endpoint){
-  if(Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, endpoint) && Object.hasOwn(window.dashboard[endpoint], 'results')){
+  if(Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, endpoint) && Object.hasOwn(window.dashboard[endpoint], 'meta')){
     const reqParams = window['dashboard'][endpoint]['meta']['data'];
       let offset, interval;
       reqParams.forEach((params) => {

@@ -9,19 +9,16 @@ import ShareIcon from '@spectrum-icons/workflow/Share';
 import { ToastQueue } from '@react-spectrum/toast';
 import NavigationTabs from './NavigationTabs.jsx';
 import NavbarLogo from './NavbarLogo.jsx';
-
+import { getDataDates } from 'connectors/utils.js';
 import { useStore, initStore } from '../../../stores/global.js';
+import { parseDate } from '@internationalized/date';
 
 const DashboardNavbar = ({
   hasNavigation = true,
 }) => {
   const {
-    globalUrl, domainKey, startDate, endDate,
+    globalUrl, domainKey, startDate, endDate, dataEndpoint
   } = useStore();
-
-  useEffect(() => {
-    
-  }, [startDate, endDate, globalUrl, domainKey])
 
   let navigate = null;
 
@@ -32,12 +29,15 @@ const DashboardNavbar = ({
     console.log('useNavigate not available');
   }
 
-  const copyToClipboard = useCallback(async () => {
-    const params = new URLSearchParams(window.location.search);
-
+  const copyToClipboard = async () => {
+    const params = new URLSearchParams();
+    const currDates = getDataDates(dataEndpoint);
+    const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
+    const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
     const qps = {
-      domainkey: domainKey, url: globalUrl, startdate: startDate, enddate: endDate,
+      domainkey: domainKey, url: globalUrl, startdate: currStart ? currStart : startDate, enddate: currEnd ? currEnd : endDate,
     };
+
     Object.entries(qps).forEach(([k, v]) => {
       params.set(k, v);
     });
@@ -58,7 +58,7 @@ const DashboardNavbar = ({
 
       // alert('Error copying to clipboard:', error);
     }
-  }, [domainKey, globalUrl]);
+  };
 
   return (
     <div style={{ padding: '1.5em', display: 'flex' }}

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
 import DomainKeyForm from '../../forms/DomainKeyForm/DomainKeyForm.jsx';
 import Card from '../../core/Card/Card.jsx';
-import { useStore } from '../../../stores/global.js';
+import { useStore, initStore } from '../../../stores/global.js';
 
 const DashboardDataDeskLanding = () => {
   const {
@@ -35,6 +35,7 @@ const DashboardDataDeskLanding = () => {
                       inputUrl: formGlobalKey,
                       domainkey: formDomainKey,
                     }) => {
+                      initStore();
                       setGlobalUrl(formGlobalKey);
                       setDomainKey(formDomainKey);
                       navigate('/rum-dashboard');

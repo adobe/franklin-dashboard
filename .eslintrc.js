@@ -10,6 +10,12 @@ module.exports = {
     sourceType: 'module',
     requireConfigFile: false,
   },
+  ignorePatterns: [
+    'stories/*.jsx',
+    'stories/*.js',
+    'static/**/*',
+    'setupTests.js',
+  ],
   rules: {
     // allow reassigning param
     'no-param-reassign': [2, { props: false }],
@@ -17,5 +23,10 @@ module.exports = {
     'import/extensions': ['error', {
       js: 'always',
     }],
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
   },
 };

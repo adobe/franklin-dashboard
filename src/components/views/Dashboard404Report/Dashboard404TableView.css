@@ -1,0 +1,8 @@
+#tableview404 {
+    gap: 0 10px;
+    min-height: 100px;
+    box-sizing: border-box;
+    box-shadow: rgb(0 0 0 / 10%) 0 0 20px;
+    border-radius: 5px;
+    overflow: hidden;
+}

@@ -83,7 +83,7 @@ export default class CWVLineChart extends LineChart {
         const { good, okay } = this.cfg.perfRanges[this.cfg.field];
 
         const pointsAbove = series.filter((el) => el > okay[1]);
-        const percentageAbove = pointsAbove.length/series.length;
+        const percentageAbove = pointsAbove.length / series.length;
 
         const opts = {
           title: {
@@ -135,8 +135,8 @@ export default class CWVLineChart extends LineChart {
               rotate: 70,
             },
           },
-          yAxis: {  
-            type: `${percentageAbove > .30 ? 'log' : 'value'}`,
+          yAxis: {
+            type: `${percentageAbove > 0.30 ? 'log' : 'value'}`,
           },
           series: [
             {

@@ -53,7 +53,7 @@ export function RumTableView({
                                         return (
                                         <Cell width="size-1000">
                                             <Badge width="size-1000" alignSelf='center' variant='info'>
-                                                <Text>{rum[col]}</Text>
+                                                <Text>{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>
                                             </Badge>
                                         </Cell>
                                         );

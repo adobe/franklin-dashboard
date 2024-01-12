@@ -20,6 +20,10 @@ const DashboardNavbar = ({
     globalUrl, domainKey, startDate, endDate, dataEndpoint
   } = useStore();
 
+  useEffect(() => {
+
+  }, [startDate, endDate, globalUrl, domainKey]);
+
   let navigate = null;
 
   try {
@@ -38,25 +42,46 @@ const DashboardNavbar = ({
       domainkey: domainKey, url: globalUrl, startdate: currStart ? currStart : startDate, enddate: currEnd ? currEnd : endDate,
     };
 
+    if (!Object.entries) {
+      Object.entries = (obj) => Object.keys(obj).map((key) => [key, obj[key]]);
+    }
+
     Object.entries(qps).forEach(([k, v]) => {
       params.set(k, v);
     });
+
     try {
-      const permissions = await navigator.permissions.query({ name: 'clipboard-write' });
-      if (permissions.state === 'granted' || permissions.state === 'prompt') {
+      if (navigator.clipboard) {
+        // Check for Clipboard API support
         await navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}?${params.toString()}`);
         ToastQueue.positive('Copied to clipboard', {
           timeout: 3000,
         });
+      } else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
+        // Fallback for browsers that don't support Clipboard API
+        const textArea = document.createElement('textarea');
+        textArea.value = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        document.body.appendChild(textArea);
+        textArea.select();
+
+        // Use newer document.execCommand('copy') method
+        const successful = document.execCommand('copy');
+        if (successful) {
+          ToastQueue.positive('Copied to clipboard', {
+            timeout: 3000,
+          });
+        } else {
+          throw new Error("Couldn't copy to clipboard. Check your browser permissions.");
+        }
+
+        document.body.removeChild(textArea);
       } else {
-        throw new Error("Can't access the clipboard. Check your browser permissions.");
+        throw new Error("Clipboard API and document.execCommand('copy') not supported");
       }
     } catch (error) {
       ToastQueue.negative('Error copying to clipboard', {
         timeout: 3000,
       });
-
-      // alert('Error copying to clipboard:', error);
     }
   };
 

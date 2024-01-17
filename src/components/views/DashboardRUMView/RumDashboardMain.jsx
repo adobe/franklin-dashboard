@@ -48,19 +48,19 @@ export function RumDashboardMain() {
                       <Badge width="size-500" variant="positive">
                         <CheckmarkCircle aria-label="Pass" />
                       </Badge>
-                      <Text>This page is performing very well.</Text>
+                      <Text>This page is performing very well in the selected date range.</Text>
                     </Flex>
                     <Flex direction={'column'} alignItems={'center'}>
                       <Badge width="size-500" variant="yellow">
                         <AlertTriangle aria-label="Okay" />
                       </Badge>
-                      <Text>This page needs improvement. Please bring this up with developers.</Text>
+                      <Text>Based on the selected date range, this page may need some improvement. Please bring this up with developers.</Text>
                     </Flex>
                     <Flex direction={'column'} alignItems={'center'}>
                       <Badge width="size-500" variant="negative">
                         <CloseCircle aria-label="Pass" />
                       </Badge>
-                      <Text>This site is underperforming and requires developers to diagnose and correct the issue.</Text>
+                      <Text>This page is severely underperforming in selected date range and may require developers to diagnose and correct the issue.</Text>
                     </Flex>
                     <Flex direction={'column'} alignItems={'center'}>
                       <Badge width="size-1000" variant="neutral">

@@ -67,7 +67,7 @@ export function RumDashboardMain() {
                         <SentimentNeutral aria-label="N/A" />
                         <Text>N/A</Text>
                       </Badge>
-                      <Text>Not Enough Data</Text>
+                      <Text>There is not enough data, please wait until there is more traffic to this page.</Text>
                     </Flex>
                   </Flex>
               </Well>

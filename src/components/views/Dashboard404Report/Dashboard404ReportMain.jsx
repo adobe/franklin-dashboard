@@ -1,4 +1,4 @@
-import { Grid, View, Flex } from '@adobe/react-spectrum';
+import { Grid, View, Flex, Well } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './Dashboard404TableView';
@@ -23,7 +23,10 @@ export function RumDashboardMain() {
     'sidebar content1',
     'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
             <View gridArea={'heading'}>
-                <h1>404 Report</h1>
+              <Well UNSAFE_style={{textAlign: 'center'}}>
+                Having pages that return 404 status codes, means they cannot be found on your server. This means if another website has a link to your page, then that traffic gets directed to a broken link.
+                Below we detect the broken links in the <b>404 URL</b> column and where the visit originated from in the <b>Source</b> column, followed by how many people visited via that particular route.
+              </Well>
             </View>
             <View>
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}

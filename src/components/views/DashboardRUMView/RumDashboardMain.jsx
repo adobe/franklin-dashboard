@@ -4,7 +4,7 @@ import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFil
 import { RumTableView } from './RumTableView';
 import {Well} from '@adobe/react-spectrum'
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
-import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
+import Info from '@spectrum-icons/workflow/Info';
 import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
@@ -43,7 +43,8 @@ export function RumDashboardMain() {
           'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
             <View gridArea={'heading'}>
               <Well UNSAFE_style={{textAlign: 'center'}}>
-                <Flex alignItems={'center'} gridArea={'heading'} width='100%' columnGap={'size-3000'}>
+                <Flex alignItems={'center'} gridArea={'heading'} width='100%' columnGap={'size-1600'}>
+                    <Info size='XXL'></Info>
                     <Flex direction={'column'} alignItems={'center'}>
                       <Badge width="size-500" variant="positive">
                         <CheckmarkCircle aria-label="Pass" />

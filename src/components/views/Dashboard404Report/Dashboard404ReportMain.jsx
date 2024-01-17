@@ -25,7 +25,7 @@ export function RumDashboardMain() {
             <View gridArea={'heading'}>
               <Well UNSAFE_style={{textAlign: 'center'}}>
                 Having pages that return 404 status codes, means they cannot be found on your server. This means if another website has a link to your page, then that traffic gets directed to a broken link.
-                Below we detect the broken links in the <b>404 URL</b> column and where the visit originated from in the <b>Source</b> column, followed by how many people visited via that particular route.
+                Below we detect the broken links, listed below in the <b>404 URL</b> column, and we report where the visit originated from in the <b>Source</b> column, followed by how many <b>Pageviews</b> were received to that link via that particular <b>Source</b>.
               </Well>
             </View>
             <View>

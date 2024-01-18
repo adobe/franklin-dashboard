@@ -24,7 +24,7 @@ export function RumDashboardMain() {
     'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
             <View gridArea={'heading'}>
               <Well UNSAFE_style={{textAlign: 'center'}}>
-                <Text>To repair any links that show up in the <b>404 URL</b> column below, open up your site's <code>redirects.xslx</code> and add a redirect from the url in the <b>404 URL</b></Text>
+                <Text>To repair any links that show up in the <b>404 URL</b> column below, open up your site's <code>redirects.xslx</code> and add a redirect from the url reported in the <b>404 URL</b> column below.</Text>
               </Well>
             </View>
             <View>

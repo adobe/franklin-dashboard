@@ -61,7 +61,7 @@ export function RumDashboardMain() {
                     <Badge width="size-500" variant="negative">
                       <CloseCircle aria-label="Pass" margin={'auto'}/>
                     </Badge>
-                    <Text>Page has performance degradation, discuss with developers.</Text>
+                    <Text>Page has severe performance degradation, discuss with developers.</Text>
                   </Flex>
                   <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
                     <Badge width="size-1000" variant="neutral">

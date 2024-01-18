@@ -66,7 +66,6 @@ export function RumDashboardMain() {
                   <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
                     <Badge width="size-1000" variant="neutral">
                       <SentimentNeutral aria-label="N/A" margin={'auto'}/>
-                      <Text>N/A</Text>
                     </Badge>
                     <Text>There is not enough data.</Text>
                   </Flex>

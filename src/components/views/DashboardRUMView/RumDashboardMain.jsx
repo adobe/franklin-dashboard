@@ -1,4 +1,4 @@
-import { Grid, View, Flex, Badge, Text, Heading } from '@adobe/react-spectrum';
+import { Grid, View, Flex, Badge, Text, Heading, ContextualHelp, fitContent} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
@@ -41,37 +41,38 @@ export function RumDashboardMain() {
         <Grid areas={['heading heading',
           'sidebar content1',
           'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
-            <View gridArea={'heading'}>
-              <Well UNSAFE_style={{textAlign: 'center'}}>
-                <Flex alignItems={'center'} gridArea={'heading'} width='100%' columnGap={'size-1600'}>
-                    <Info size='XXL'></Info>
-                    <Flex direction={'column'} alignItems={'center'}>
-                      <Badge width="size-500" variant="positive">
-                        <CheckmarkCircle aria-label="Pass" />
-                      </Badge>
-                      <Text>This page is performing very well in the selected date range.</Text>
-                    </Flex>
-                    <Flex direction={'column'} alignItems={'center'}>
-                      <Badge width="size-500" variant="yellow">
-                        <AlertTriangle aria-label="Okay" />
-                      </Badge>
-                      <Text>Based on the selected date range, this page may need some improvement. Please bring this up with developers.</Text>
-                    </Flex>
-                    <Flex direction={'column'} alignItems={'center'}>
-                      <Badge width="size-500" variant="negative">
-                        <CloseCircle aria-label="Pass" />
-                      </Badge>
-                      <Text>This page is severely underperforming in the selected date range and may require developers to diagnose and correct the issue.</Text>
-                    </Flex>
-                    <Flex direction={'column'} alignItems={'center'}>
-                      <Badge width="size-1000" variant="neutral">
-                        <SentimentNeutral aria-label="N/A" />
-                        <Text>N/A</Text>
-                      </Badge>
-                      <Text>There is not enough data, please wait until there is more traffic to this page.</Text>
-                    </Flex>
+            <View gridArea={'heading'} margin="auto">
+            <ContextualHelp variant="info" placement='bottom end'>
+              <Heading>Legend</Heading>
+              <Flex gridArea={'heading'} width='100%' direction={'column'} gap={'size-150'}>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-500" variant="positive">
+                      <CheckmarkCircle aria-label="Pass" margin={'auto'}/>
+                    </Badge>
+                    <Text>This page is performing well, keep it up.</Text>
                   </Flex>
-              </Well>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-500" variant="yellow">
+                      <AlertTriangle aria-label="Okay" margin={'auto'}/>
+                    </Badge>
+                    <Text>Page needs improvement, discuss with developers.</Text>
+                  </Flex>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-500" variant="negative">
+                      <CloseCircle aria-label="Pass" margin={'auto'}/>
+                    </Badge>
+                    <Text>Page has performance degradation, discuss with developers.</Text>
+                  </Flex>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-1000" variant="neutral">
+                      <SentimentNeutral aria-label="N/A" margin={'auto'}/>
+                      <Text>N/A</Text>
+                    </Badge>
+                    <Text>There is not enough data.</Text>
+                  </Flex>
+                </Flex>
+              </ContextualHelp>
+              <Text>What does this mean?</Text>
             </View>
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}

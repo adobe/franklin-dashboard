@@ -64,7 +64,7 @@ export function RumDashboardMain() {
                     <Text>Page has severe performance degradation, discuss with developers.</Text>
                   </Flex>
                   <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
-                    <Badge width="size-1000" variant="neutral">
+                    <Badge width="size-500" variant="neutral">
                       <SentimentNeutral aria-label="N/A" margin={'auto'}/>
                     </Badge>
                     <Text>There is not enough data.</Text>

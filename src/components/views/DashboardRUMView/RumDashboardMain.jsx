@@ -67,7 +67,7 @@ export function RumDashboardMain() {
                     <Badge width="size-500" variant="neutral">
                       <SentimentNeutral aria-label="N/A" margin={'auto'}/>
                     </Badge>
-                    <Text>There is not enough data.</Text>
+                    <Text>This page does not have enough data, try again later.</Text>
                   </Flex>
                 </Flex>
               </ContextualHelp>

@@ -1,7 +1,14 @@
-import { Grid, View, Flex } from '@adobe/react-spectrum';
+import { Grid, View, Flex, Badge, Text, Heading, ContextualHelp, fitContent} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
+import {Well} from '@adobe/react-spectrum'
+import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
+import Info from '@spectrum-icons/workflow/Info';
+import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
+import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
+import AlertTriangle from '@spectrum-icons/workflow/Alert';
+
 
 export function RumDashboardMain() {
   const [data, setData] = useState([]);
@@ -15,7 +22,6 @@ export function RumDashboardMain() {
   const columnHeadings = {
     pageviews: ['Pageviews', `Total visits to a url in date range chosen. Cut off is the end date of the range; i.e, 
     if you choose 1/1/2023 - 1/2/2023 you will only see results with dates that are less than 1/2/2023 not inclusive.`],
-    rumshare: ['Percentage of Traffic', 'Percentage of the overall visits to a site, that went to this url, in chosen date range. '],
     avgcls: ['Cumulative Layout Shift', `CLS measures the sum total of all individual layout shift scores for every 
     unexpected layout shift that occurs during the entire lifespan of the page. The score is zero to any positive 
     number, where zero means no shifting and the larger the number, the more layout shift on the page. This is important
@@ -35,8 +41,37 @@ export function RumDashboardMain() {
         <Grid areas={['heading heading',
           'sidebar content1',
           'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
-            <View gridArea={'heading'}>
-              <h1>Rum Dashboard</h1>
+            <View gridArea={'heading'} margin="auto">
+            <ContextualHelp variant="info" placement='bottom end'>
+              <Heading>Legend</Heading>
+              <Flex gridArea={'heading'} width='100%' direction={'column'} gap={'size-150'}>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-500" variant="positive">
+                      <CheckmarkCircle aria-label="Pass" margin={'auto'}/>
+                    </Badge>
+                    <Text>This page is performing well, keep it up.</Text>
+                  </Flex>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-500" variant="yellow">
+                      <AlertTriangle aria-label="Okay" margin={'auto'}/>
+                    </Badge>
+                    <Text>Page needs improvement, discuss with developers.</Text>
+                  </Flex>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-500" variant="negative">
+                      <CloseCircle aria-label="Pass" margin={'auto'}/>
+                    </Badge>
+                    <Text>Page has severe performance degradation, discuss with developers.</Text>
+                  </Flex>
+                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
+                    <Badge width="size-500" variant="neutral">
+                      <SentimentNeutral aria-label="N/A" margin={'auto'}/>
+                    </Badge>
+                    <Text>This page does not have enough data, try again later.</Text>
+                  </Flex>
+                </Flex>
+              </ContextualHelp>
+              <Text>What does this mean?</Text>
             </View>
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}

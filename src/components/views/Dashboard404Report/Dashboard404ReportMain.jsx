@@ -1,4 +1,4 @@
-import { Grid, View, Flex } from '@adobe/react-spectrum';
+import { Grid, View, Flex, Well, Dialog, Heading, DialogTrigger, ActionButton, Header, Divider, Content, Text } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './Dashboard404TableView';
@@ -23,7 +23,9 @@ export function RumDashboardMain() {
     'sidebar content1',
     'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
             <View gridArea={'heading'}>
-                <h1>404 Report</h1>
+              <Well UNSAFE_style={{textAlign: 'center'}}>
+                <Text>To repair any links that show up in the <b>404 URL</b> column below, open up your site's <code>redirects.xslx</code> and add a redirect from the url reported in the <b>404 URL</b> column below.</Text>
+              </Well>
             </View>
             <View>
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}

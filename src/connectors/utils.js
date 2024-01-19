@@ -24,11 +24,7 @@ export function getUrlBase(endpoint) {
   return urlObj.base;
 }
 
-export function intervalOffsetToDates(offset, interval){
-  let start;
-  let end;
-  let startdate;
-  let enddate;
+export function intervalOffsetToDates(offset, interval) {
   const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
   const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
   const currentDate = new Date();
@@ -41,29 +37,30 @@ export function intervalOffsetToDates(offset, interval){
     0,
     0,
   );
-  end = today - dateOffsetInMillis;
-  start = end - intervalInMillis;
+  const end = today - dateOffsetInMillis;
+  const start = end - intervalInMillis;
   /* eslint-disable prefer-destructuring */
-  startdate = new Date(start).toISOString().split('T')[0];
-  enddate = new Date(end).toISOString().split('T')[0];
+  const startdate = new Date(start).toISOString().split('T')[0];
+  const enddate = new Date(end).toISOString().split('T')[0];
 
-  return {start: startdate, end: enddate};
+  return { start: startdate, end: enddate };
 }
 
-export function getDataDates(endpoint){
-  if(Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, endpoint) && Object.hasOwn(window.dashboard[endpoint], 'meta')){
-    const reqParams = window['dashboard'][endpoint]['meta']['data'];
-      let offset, interval;
-      reqParams.forEach((params) => {
-        const { name, value } = params;
-        if(name === 'offset') offset = value;
-        if(name === 'interval') interval = value;
-      });
+export function getDataDates(endpoint) {
+  if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, endpoint) && Object.hasOwn(window.dashboard[endpoint], 'meta')) {
+    const reqParams = window.dashboard[endpoint].meta.data;
+    let offset; let
+      interval;
+    reqParams.forEach((params) => {
+      const { name, value } = params;
+      if (name === 'offset') offset = value;
+      if (name === 'interval') interval = value;
+    });
 
-      offset -= 1;
-      return intervalOffsetToDates(offset, interval);
+    offset -= 1;
+    return intervalOffsetToDates(offset, interval);
   }
-return {};
+  return {};
 }
 
 /**
@@ -79,7 +76,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   }
 
   Object.entries(qps).forEach(([k, v]) => {
-      params.set(k, v);
+    params.set(k, v);
   });
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');
@@ -89,8 +86,8 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   const dateValid = hasStart && hasEnd && params.get('startdate').length > 4 && params.get('enddate').length > 4;
   const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) >= 0 && parseInt(params.get('offset'), 10) >= 0;
 
-  let start = new Date(params.get('startdate'));
-  let end = new Date(params.get('enddate'));
+  const start = new Date(params.get('startdate'));
+  const end = new Date(params.get('enddate'));
   let startdate = params.get('startdate');
   let enddate = params.get('enddate');
   const currentDate = new Date();
@@ -123,16 +120,16 @@ async function bidirectionalConversion(endpoint, qps = {}) {
     offset = params.get('offset');
     interval = params.get('interval');
     const dates = intervalOffsetToDates(interval, offset);
-    startdate = dates['start'];
-    enddate = dates['end'];
+    startdate = dates.start;
+    enddate = dates.end;
     params.set('startdate', startdate);
     params.set('enddate', enddate);
   } else {
     offset = 0;
     interval = 30;
     const dates = intervalOffsetToDates(interval, offset);
-    startdate = dates['start'];
-    enddate = dates['end'];
+    startdate = dates.start;
+    enddate = dates.end;
     params.set('startdate', startdate);
     params.set('enddate', enddate);
     params.set('offset', offset);
@@ -180,7 +177,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const pms = await bidirectionalConversion(endpoint, qps);
 
   // remove http or https prefix in url param if it exists
-  if (pms.has('url')) {  
+  if (pms.has('url')) {
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
 
@@ -195,8 +192,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     queries when needed
     */
   if (endpoint === 'github-commits' || endpoint === 'rum-pageviews' || endpoint === 'daily-rum') {
-    const currLimit = parseInt(limit, 10);
-      pms.set('limit', '500');
+    pms.set('limit', '500');
   }
   const flag = `${endpoint}Flag`;
   const checkData = () => {

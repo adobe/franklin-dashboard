@@ -48,34 +48,34 @@ export const useStore = create((set) => ({
   setReportUrl: (value) => {
     // save to localstorage
 
-    if(value){
+    if (value) {
       localStorage.setItem('reportUrl', value);
     }
-    set(() => ({reportUrl: value}));
+    set(() => ({ reportUrl: value }));
   },
   setStartDate: (value) => {
     // save to localstorage
 
-    if(value){
+    if (value) {
       localStorage.setItem('startDate', value);
     }
-    set(() => ({startDate: value}));
+    set(() => ({ startDate: value }));
   },
   setEndDate: (value) => {
     // save to localstorage
 
-    if(value){
+    if (value) {
       localStorage.setItem('endDate', value);
     }
-    set(() => ({endDate: value}));
+    set(() => ({ endDate: value }));
   },
   setReportGenerated: (value) => {
     // save to localstorage
 
-    if(value){
+    if (value) {
       localStorage.setItem('reportGenerated', value);
     }
-    set(() => ({reportGenerated: value}));
+    set(() => ({ reportGenerated: value }));
   },
 }));
 
@@ -94,12 +94,12 @@ export const initStore = () => {
   setDomainKey(null);
   setGlobalUrl(null);
   setReportUrl(null);
-  if(Object.hasOwn(window, 'dashboard')){
-    Object.keys(window['dashboard']).forEach((endpoint) => {
+  if (Object.hasOwn(window, 'dashboard')) {
+    Object.keys(window.dashboard).forEach((endpoint) => {
       delete window[`${endpoint}Flag`];
-    })
+    });
   }
-  delete window['dashboard'];
+  delete window.dashboard;
 };
 
 export const initializeStoreFromLocalStorage = () => {

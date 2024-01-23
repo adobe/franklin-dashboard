@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-globals */
-if (/hlx\\.live$/.test(location.hostname) || /hlx\\.page$/.test(location.hostname)) {
+/* eslint-disable prefer-regex-literals */
+if (new RegExp('hlx\\.live$').test(location.hostname) || new RegExp('hlx\\.page$').test(location.hostname)) {
   const queryParams = new URLSearchParams(location.search);
   const newQp = new URLSearchParams();
   const qpList = ['domainkey', 'startdate', 'enddate', 'url'];

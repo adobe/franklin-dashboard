@@ -12,7 +12,7 @@ if (new RegExp("hlx\\.live$").test(location.hostname) || new RegExp("hlx\\.page$
     });
 
     if(requiredQueryParamsFlag){
-        location.href = "https://data.aem.live" + newQp.toString();
+        location.href = "https://data.aem.live?" + newQp.toString();
     }else{
         location.href = "https://data.aem.live";
     }

@@ -6,7 +6,7 @@ if (new RegExp('hlx\\.live$').test(location.hostname) || new RegExp('hlx\\.page$
   const qpList = ['domainkey', 'startdate', 'enddate', 'url'];
   let requiredQueryParamsFlag = true;
   qpList.forEach((qp) => {
-    if (!queryParams.has(qp) || queryParams.get(qp) === null) {
+    if (!queryParams.has(qp) || queryParams.get(qp) === null || queryParams.get(qp) === '') {
       requiredQueryParamsFlag = false;
     } else {
       newQp.set(qp, queryParams.get(qp));

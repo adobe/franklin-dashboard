@@ -5,7 +5,28 @@
     <link rel="canonical" href="https://{{host}}/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <script defer type="application/javascript" src="/scripts/redirect.js"></script>
+    <script async type="text/javascript">
+        if (new RegExp('hlx\\.live$').test(location.hostname) || new RegExp('hlx\\.page$').test(location.hostname)) {
+          const queryParams = new URLSearchParams(location.search);
+          const newQp = new URLSearchParams();
+          const qpList = ['domainkey', 'startdate', 'enddate', 'url'];
+          let requiredQueryParamsFlag = true;
+          qpList.forEach((qp) => {
+            if (queryParams.has(qp) && queryParams.get(qp) !== null && queryParams.get(qp).length > 0) {
+              newQp.set(qp, queryParams.get(qp));
+            } else {
+              requiredQueryParamsFlag = false;
+            }
+          });
+
+          if (requiredQueryParamsFlag) {
+            location.href = `https://data.aem.live/rum-dashboard?+${newQp.toString()}`;
+          } else {
+            location.href = 'https://data.aem.live';
+          }
+        }
+    </script>
+
     <script defer src="/static/js/main.js"></script>
     <link href="/static/css/main.css" rel="stylesheet">
 

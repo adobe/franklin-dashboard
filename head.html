@@ -11,6 +11,7 @@
         const newQp = new URLSearchParams();
         const qpList = ['domainkey', 'startdate', 'enddate', 'url'];
         let requiredQueryParamsFlag = true;
+        console.log('We made it to the ForEach');
         qpList.forEach((qp) => {
           if (!queryParams.has(qp) || queryParams.get(qp) === null || queryParams.get(qp) === '') {
             requiredQueryParamsFlag = false;
@@ -18,11 +19,14 @@
             newQp.set(qp, queryParams.get(qp));
           }
         });
+        console.log("Out of For Loop")
 
         if (requiredQueryParamsFlag) {
           location.href = "https://data.aem.live/rum-dashboard?"+newQp.toString();
+          console.log('Changing with QP')
         } else {
           location.href = 'https://data.aem.live';
+          console.log('Change to Not QP')
         }
       }
       `

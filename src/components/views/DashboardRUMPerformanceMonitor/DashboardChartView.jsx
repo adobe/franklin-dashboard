@@ -9,18 +9,20 @@ import './DashboardChartView.css';
 import { getDataDates } from 'connectors/utils';
 
 export function DashboardChartView({
-  data, dataFlag, dataEndpoint
+  data, dataFlag, dataEndpoint,
 }) {
-  const { globalUrl, startDate, endDate, setStartDate, setEndDate, hostName } = useStore();
+  const {
+    globalUrl, startDate, endDate, setStartDate, setEndDate, hostName,
+  } = useStore();
   const formatter = useDateFormatter({ dateStyle: 'long' });
 
-  if (data.length > 0) {
+  if (data && data.length > 0) {
     let totalPageViews = 0;
     data.forEach((pageview) => {
       totalPageViews += parseInt(pageview.pageviews, 10);
-    })
+    });
 
-    const {start, end} = getDataDates(dataEndpoint);
+    const { start, end } = getDataDates(dataEndpoint);
     const currStart = start ? parseDate(start) : null;
     const currEnd = end ? parseDate(end) : null;
 
@@ -35,7 +37,7 @@ export function DashboardChartView({
             >
                 <View gridArea="title" width="100%">
                     <h2 style={{ textAlign: 'center' }}>
-                      {'Your website: '} {<a href={'https://'+hostName}>{hostName}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
+                      {'Your website: '} {<a href={`https://${hostName}`}>{hostName}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
                         currStart.toDate(getLocalTimeZone()),
                         currEnd.toDate(getLocalTimeZone()),
                       )}`}
@@ -53,16 +55,21 @@ export function DashboardChartView({
             </Grid>
     );
   }
-  if (dataFlag) {
+
+  if (dataFlag || !data) {
     return (
-            <ProgressBar margin="auto" label="Loading…" isIndeterminate />
+        <ProgressBar margin="auto" label="Loading…" isIndeterminate />
+    );
+  } if (dataFlag === flag && data?.length === 0) {
+    return (
+      <IllustratedMessage margin="auto">
+          <NotFound />
+          <Heading>No results</Heading>
+          <Content>Use Filters</Content>
+      </IllustratedMessage>
     );
   }
   return (
-        <IllustratedMessage margin="auto">
-            <NotFound />
-            <Heading>No results</Heading>
-            <Content>Use Filters</Content>
-        </IllustratedMessage>
+      <ProgressBar margin="auto" label="Loading…" isIndeterminate />
   );
 }

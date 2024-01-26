@@ -12,9 +12,9 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 
 export function RumTableView({
-  data, dataFlag, columns, columnHeadings, config, configSetter, setter
+  data, dataFlag, columns, columnHeadings, config, configSetter, setter,
 }) {
-  if (data.length > 0) {
+  if (data) {
     const ranges = {
       avglcp: [2.5, 4.00],
       avgfid: [100, 300],
@@ -25,9 +25,9 @@ export function RumTableView({
       avglcp: 's',
       avginp: 'ms',
       avgcls: '',
-    }
+    };
     return (
-      data.length > 0
+      data && data?.length > 0
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
@@ -36,7 +36,7 @@ export function RumTableView({
                             const hostname = data[0][key] ? new URL(data[0][key].startsWith('https://') ? data[0][key] : `https://${data[0][key]}`).hostname : '';
                             return <Column align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
                           }
-                          if(key !== 'pageviews') {
+                          if (key !== 'pageviews') {
                             return (
                                 <Column align="center">
                                     <ContextualHelp variant="info">
@@ -51,8 +51,8 @@ export function RumTableView({
                                     </ContextualHelp>
                                     <Text>{columnHeadings[key][0]}</Text>
                                 </Column>
-                          );
-                        } else{
+                            );
+                          }
                           return (
                             <Column align="center">
                                 <ContextualHelp variant="info">
@@ -64,8 +64,7 @@ export function RumTableView({
                                 </ContextualHelp>
                                 <Text>{columnHeadings[key][0]}</Text>
                             </Column>
-                      );
-                        }
+                          );
                         })
                     )}
                 </TableHeader>
@@ -75,7 +74,7 @@ export function RumTableView({
                                 {(
                                     columns.map((col) => {
                                       if (col === 'url') {
-                                        if(rum[col] === 'Other'){
+                                        if (rum[col] === 'Other') {
                                           return <Cell>{rum[col]}</Cell>;
                                         }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
@@ -128,13 +127,14 @@ export function RumTableView({
                                                 </Cell>;
                                     })
                                 )}
-                            </Row>
-                          )
+                            </Row>)
                     }
                 </TableBody>
             </TableView>
     );
-  } if (dataFlag) {
+  }
+
+  if (dataFlag || !data) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

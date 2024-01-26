@@ -55,16 +55,21 @@ export function DashboardChartView({
             </Grid>
     );
   }
+
   if (dataFlag || !data) {
     return (
-            <ProgressBar margin="auto" label="Loading…" isIndeterminate />
+        <ProgressBar margin="auto" label="Loading…" isIndeterminate />
+    );
+  } if (dataFlag === flag && data?.length === 0) {
+    return (
+      <IllustratedMessage margin="auto">
+          <NotFound />
+          <Heading>No results</Heading>
+          <Content>Use Filters</Content>
+      </IllustratedMessage>
     );
   }
   return (
-        <IllustratedMessage margin="auto">
-            <NotFound />
-            <Heading>No results</Heading>
-            <Content>Use Filters</Content>
-        </IllustratedMessage>
+      <ProgressBar margin="auto" label="Loading…" isIndeterminate />
   );
 }

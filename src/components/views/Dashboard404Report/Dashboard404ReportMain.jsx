@@ -1,10 +1,12 @@
-import { Grid, View, Flex, Well, Dialog, Heading, DialogTrigger, ActionButton, Header, Divider, Content, Text } from '@adobe/react-spectrum';
+import {
+  Grid, View, Flex, Well, Dialog, Heading, DialogTrigger, ActionButton, Header, Divider, Content, Text,
+} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './Dashboard404TableView';
 
 export function RumDashboardMain() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [fetchFlag, setFetchFlag] = useState(false);
   const [config, setConfig] = useState({});
 
@@ -20,10 +22,10 @@ export function RumDashboardMain() {
 
   return (
     <Grid areas={['heading heading',
-    'sidebar content1',
-    'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
+      'sidebar content1',
+      'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
             <View gridArea={'heading'}>
-              <Well UNSAFE_style={{textAlign: 'center'}}>
+              <Well UNSAFE_style={{ textAlign: 'center' }}>
                 <Text>To repair any links that show up in the <b>404 URL</b> column below, open up your site's <code>redirects.xslx</code> and add a redirect from the url reported in the <b>404 URL</b> column below.</Text>
               </Well>
             </View>
@@ -37,8 +39,8 @@ export function RumDashboardMain() {
 
             <View gridArea="content1" width="100%" height="100%" overflow="hidden">
               <Flex width="100%" height="100%">
-                <RumTableView 
-                data={data} setter={setData} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns} 
+                <RumTableView
+                data={data} setter={setData} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns}
                 columnHeadings={columnHeadings} config={config} configSetter={setConfig}/>
               </Flex>
             </View>

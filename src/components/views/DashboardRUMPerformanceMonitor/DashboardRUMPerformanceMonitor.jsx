@@ -8,7 +8,7 @@ import { DashboardChartView } from './DashboardChartView.jsx';
 import './DashboardRUMPerformanceMonitor.css';
 
 const DashboardRUMPerformanceMonitor = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [fetchFlag, setFetchFlag] = useState(false);
 
   useEffect(() => {

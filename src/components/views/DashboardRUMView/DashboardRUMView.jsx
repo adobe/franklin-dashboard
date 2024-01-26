@@ -4,7 +4,7 @@ import './RumDashboardMain.css';
 
 const DashboardRUMView = () => (
     <DashboardLayout>
-        <RumDashboardMain></RumDashboardMain>
+        <RumDashboardMain />
     </DashboardLayout>
 );
 

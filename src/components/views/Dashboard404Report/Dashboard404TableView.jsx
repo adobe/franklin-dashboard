@@ -10,7 +10,7 @@ import { useStore } from 'stores/global';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings,
 }) {
-  if (data.length > 0) {
+  if (data) {
     return (
       data.length > 0
               && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview404'>
@@ -64,16 +64,18 @@ export function RumTableView({
                   </TableBody>
               </TableView>
     );
-  } if (dataFlag) {
+  }
+
+  if (dataFlag || !data) {
     return (
               <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );
   }
   return (
-              <IllustratedMessage margin="auto">
-                  <NotFound />
-                  <Heading>No results</Heading>
-                  <Content>Use Filters</Content>
-              </IllustratedMessage>
+      <IllustratedMessage margin="auto">
+          <NotFound />
+          <Heading>No results</Heading>
+          <Content>Use Filters</Content>
+      </IllustratedMessage>
   );
 }

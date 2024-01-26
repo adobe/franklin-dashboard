@@ -1,22 +1,20 @@
-import { Grid, View, Flex, Badge, Text, Heading, ContextualHelp, fitContent} from '@adobe/react-spectrum';
+import {
+  Grid, View, Flex, Badge, Text, Heading, ContextualHelp, fitContent,
+  Well,
+} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
-import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
-import { RumTableView } from './RumTableView';
-import {Well} from '@adobe/react-spectrum'
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
 import Info from '@spectrum-icons/workflow/Info';
 import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
-
+import { RumTableView } from './RumTableView';
+import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 
 export function RumDashboardMain() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [fetchFlag, setFetchFlag] = useState(false);
   const [config, setConfig] = useState({});
-
-  useEffect(() => {
-  }, [data, fetchFlag]);
 
   const columns = ['url', 'avglcp', 'avgcls', 'avginp', 'pageviews'];
   const columnHeadings = {
@@ -83,8 +81,8 @@ export function RumDashboardMain() {
 
             <View gridArea="content1" width="100%" height="100%" overflow="hidden">
               <Flex width="100%" height="100%">
-                <RumTableView 
-                data={data} setter={setData} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns} 
+                <RumTableView
+                data={data} setter={setData} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns}
                 columnHeadings={columnHeadings} config={config} configSetter={setConfig}/>
               </Flex>
             </View>

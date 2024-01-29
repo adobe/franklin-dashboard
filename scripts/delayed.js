@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { sampleRUM, getMetadata } from './lib-franklin.js';
+import { sampleRUM, getMetadata } from '../src/lib-franklin.js/index.js';
 
 // Core Web Vitals RUM collection
 sampleRUM('cwv');

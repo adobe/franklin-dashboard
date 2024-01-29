@@ -1,4 +1,5 @@
 import { useCollator } from '@adobe/react-spectrum';
+import { sampleRUM } from '../lib-franklin';
 
 /**
  * Gets information on queries from rum-queries.json
@@ -208,6 +209,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
             window.dashboard = {};
           }
           window.dashboard[endpoint] = data;
+          const rumData = { source: endpoint, target: pms.get('url') }
+          sampleRUM('datadesk', rumData);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console

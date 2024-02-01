@@ -132,14 +132,14 @@ export function DashboardQueryFilter({
     let configuration;
     let hostname;
 
-    if (domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam) {
+    if (domainkeyParam && urlParam) {
       setDomainKey(domainkeyParam);
       setGlobalUrl(urlParam);
       let urlDates;
       if(interval && offset){
         urlDates = intervalOffsetToDates(offset, interval);
       } else {
-        urlDates = { start: startdateParam, end: enddateParam };
+        urlDates = { start: startdateParam ? startdateParam : startdate, end: enddateParam ? enddateParam : enddate };
       }
       hostname = getHostname(urlParam);
       configuration = {
@@ -159,26 +159,7 @@ export function DashboardQueryFilter({
       getQuery(configuration);
       updateData(configuration);
     } else {
-      const thisUrl = localStorage.getItem('globalUrl');
-      hostname = getHostname(thisUrl);
-      configuration = {
-        url: localStorage.getItem('globalUrl'),
-        domainkey: localStorage.getItem('domainKey'),
-        startdate,
-        enddate,
-        hostname,
-        apiEP: apiEndpoint,
-        dataEP: dataEndpoint,
-        limit: '100',
-      };
-      const newQp = new URLSearchParams();
-      newQp.set('url', configuration.url);
-      newQp.set('domainkey', configuration.domainkey);
-      newQp.set('startdate', configuration.startdate);
-      newQp.set('enddate', configuration.enddate);
-      if(configuration.limit) newQp.set('limit', configuration.limit);
-  
-      location.href = `https://data.aem.live${location.pathname}?${newQp.toString()}`;
+      location.href = 'https://data.aem.live';
     }
   }, []);
 

@@ -238,3 +238,14 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   };
   checkData();
 }
+
+export function handleRedirect(url, domainkey, startdate, enddate, ckpt, limit){
+  const newQp = new URLSearchParams();
+  newQp.set('url', url);
+  newQp.set('domainkey', domainkey);
+  newQp.set('startdate', startdate);
+  newQp.set('enddate', enddate);
+  if(ckpt) newQp.set('checkpoint', ckpt);
+  if(limit) newQp.set('limit', limit);
+  location.href = `https://${location.hostname}${location.pathname}?${newQp.toString()}`
+}

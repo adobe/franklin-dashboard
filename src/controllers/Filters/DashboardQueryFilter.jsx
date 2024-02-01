@@ -9,7 +9,7 @@ import FilterIcon from '@spectrum-icons/workflow/Filter';
 import SearchIcon from '@spectrum-icons/workflow/Search';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from 'stores/global.js';
-import { queryRequest, intervalOffsetToDates, getDataDates } from '../../connectors/utils.js';
+import { queryRequest, intervalOffsetToDates, getDataDates, handleRedirect } from '../../connectors/utils.js';
 
 export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter,
@@ -153,11 +153,16 @@ export function DashboardQueryFilter({
       if (dataEndpoint === 'rum-sources') {
         configuration.checkpoint = '404';
       }
-  
-      getQuery(configuration);
-      updateData(configuration);
+      
+      if(domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam){
+        getQuery(configuration);
+        updateData(configuration);
+      }
+      else{
+        handleRedirect(url, domainkey, startdate, enddate, ckpt, limit);
+      }
     } else {
-      location.href = 'https://data.aem.live';
+      location.href = `https://${location.hostname}`;
     }
   }, []);
 
@@ -175,15 +180,7 @@ export function DashboardQueryFilter({
     const startdate = start;
     const enddate = end;
 
-    const newQp = new URLSearchParams();
-    newQp.set('url', url);
-    newQp.set('domainkey', domainkey);
-    newQp.set('startdate', startdate);
-    newQp.set('enddate', enddate);
-    if(ckpt) newQp.set('checkpoint', ckpt);
-    if(limit) newQp.set('limit', limit);
-
-    location.href = `https://data.aem.live${location.pathname}?${newQp.toString()}`;
+    handleRedirect(url, domainkey, startdate, enddate, ckpt, limit);
   };
 
   return globalUrl && (

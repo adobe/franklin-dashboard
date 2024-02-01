@@ -38,41 +38,8 @@ export function RumDashboardMain() {
   };
 
   return (
-        <Grid areas={['heading heading',
-          'sidebar content1',
+        <Grid areas={['sidebar content1',
           'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
-            <View gridArea={'heading'} margin="auto">
-            <ContextualHelp variant="info" placement='bottom end'>
-              <Heading>Legend</Heading>
-              <Flex gridArea={'heading'} width='100%' direction={'column'} gap={'size-150'}>
-                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
-                    <Badge width="size-500" variant="positive">
-                      <CheckmarkCircle aria-label="Pass" margin={'auto'}/>
-                    </Badge>
-                    <Text>This page is performing well, keep it up.</Text>
-                  </Flex>
-                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
-                    <Badge width="size-500" variant="yellow">
-                      <AlertTriangle aria-label="Okay" margin={'auto'}/>
-                    </Badge>
-                    <Text>Page needs improvement, discuss with developers.</Text>
-                  </Flex>
-                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
-                    <Badge width="size-500" variant="negative">
-                      <CloseCircle aria-label="Pass" margin={'auto'}/>
-                    </Badge>
-                    <Text>Page has severe performance degradation, discuss with developers.</Text>
-                  </Flex>
-                  <Flex direction={'row'} alignItems={'center'} gap={'size-150'}>
-                    <Badge width="size-500" variant="neutral">
-                      <SentimentNeutral aria-label="N/A" margin={'auto'}/>
-                    </Badge>
-                    <Text>This page does not have enough data, try again later.</Text>
-                  </Flex>
-                </Flex>
-              </ContextualHelp>
-              <Text>What does this mean?</Text>
-            </View>
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}
               data={data} setter={setData} dataEndpoint={'rum-dashboard'}

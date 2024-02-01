@@ -35,16 +35,13 @@ export function DashboardChartView({
             >
                 <View gridArea="title" width="100%">
                     <h2 style={{ textAlign: 'center' }}>
-                      {'Your website: '} {<a href={'https://'+hostName}>{hostName}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
+                      {<a href={'https://'+hostName}>{hostName}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
                         currStart.toDate(getLocalTimeZone()),
                         currEnd.toDate(getLocalTimeZone()),
                       )}`}
                     </h2>
-                    <Divider size='M'></Divider>
-                    <h2 style={{ textAlign: 'center' }}>Pageviews Chart</h2>
-                    <h2 style={{ textAlign: 'center' }}>{globalUrl}</h2>
                 </View>
-                <View gridArea="chart1" margin="auto" height="100%" width="90%">
+                <View gridArea="chart1" height="100%" width="90%">
                 <DashboardLineChart data={data}
                 title='Pageviews'
                 x_datakey='time'

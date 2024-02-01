@@ -210,7 +210,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
           }
           window.dashboard[endpoint] = data;
           const rumData = { source: endpoint, target: pms.get('url') }
-          sampleRUM('datadesk', rumData);
+          //sampleRUM('datadesk', rumData);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console

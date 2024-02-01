@@ -59,7 +59,6 @@ export function DashboardQueryFilter({
     return returnObj;
   });
 
-  const [changedForm, setChangedForm] = React.useState(false);
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
@@ -105,7 +104,6 @@ export function DashboardQueryFilter({
       setStartDate(currStart);
       setEndDate(currEnd);
     }
-    setChangedForm(false);
   };
 
   const getHostname = (url) => {
@@ -198,41 +196,17 @@ export function DashboardQueryFilter({
     const startdate = start;
     const enddate = end;
 
-    const configuration = {
-      url,
-      hostname,
-      domainkey,
-      startdate,
-      enddate,
-      apiEP: apiEndpoint,
-      dataEP: dataEndpoint,
-      limit,
-    };
+    const qpList = ['domainkey', 'startdate', 'enddate', 'url'];
+    const newQp = new URLSearchParams();
+    newQp.set('url', url);
+    newQp.set('domainkey', domainkey);
+    newQp.set('startdate', startdate);
+    newQp.set('enddate', enddate);
+    if(ckpt) newQp.set('checkpoint', ckpt);
+    if(limit) newQp.set('limit', limit);
 
-    // conditional params
-    if (hasCheckpoint) {
-      configuration.ckpt = ckpt;
-    }
-
-    if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
-      const flag = `${dataEndpoint}Flag`;
-      delete window.dashboard[dataEndpoint];
-      delete window[flag];
-    }
-
-    if (configSetter) {
-      configSetter(configuration);
-    }
-    if (dataEndpoint === 'rum-sources') {
-      configuration.checkpoint = '404';
-    }
-    getQuery(configuration);
-    updateData(configuration);
+    location.href = `${location.host}?${newQp.toString()}`;
   };
-
-  const setChanged = useCallback(() => {
-    setChangedForm(true);
-  }, []);
 
   return globalUrl && (
         <>
@@ -244,7 +218,6 @@ export function DashboardQueryFilter({
                     name="start"
                     defaultValue={range.start}
                     isRequired
-                    onChange={setChanged}
                   />
                   <DatePicker
                     label="End Date"
@@ -252,22 +225,18 @@ export function DashboardQueryFilter({
                     defaultValue={range.end}
                     maxValue={today(getLocalTimeZone())}
                     isRequired
-                    onChange={setChanged}
                     />
                     {(
                       hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
-                        onChange={setChanged}
                       />
                     )}
                     {(
                       hasDomainkeyField && <TextField
                         name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus
-                          onChange={setChanged}
                         />
                     )}
                     {(
                       hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired
-                        onChange={setChanged}
                       />
                     )}
 

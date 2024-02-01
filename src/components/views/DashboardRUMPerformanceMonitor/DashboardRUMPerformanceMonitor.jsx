@@ -16,12 +16,8 @@ const DashboardRUMPerformanceMonitor = () => {
 
   return (
     <DashboardLayout>
-    <Grid areas={['heading heading',
-      'sidebar charts',
+    <Grid areas={['sidebar charts',
       'sidebar charts']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
-            <View gridArea={'heading'}>
-                <h1>Pageviews Chart</h1>
-            </View>
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpoint={false} hasDomainkeyField={true} hasUrlField={true} isReport={true}
               data={data} setter={setData} dataEndpoint={'rum-pageviews'}

@@ -77,7 +77,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   }
 
   Object.entries(qps).forEach(([k, v]) => {
-    params.set(k, v);
+    if(params.get(k)) params.set(k, v);
   });
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');

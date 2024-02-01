@@ -36,8 +36,8 @@ export function DashboardChartView({
                 <View gridArea="title" width="100%">
                     <h2 style={{ textAlign: 'center' }}>
                       {<a href={'https://'+hostName}>{hostName}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
-                        currStart.toDate(getLocalTimeZone()),
-                        currEnd.toDate(getLocalTimeZone()),
+                        currStart.toDate('UTC'),
+                        currEnd.toDate('UTC'),
                       )}`}
                     </h2>
                 </View>

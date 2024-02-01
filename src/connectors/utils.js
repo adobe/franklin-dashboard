@@ -26,8 +26,6 @@ export function getUrlBase(endpoint) {
 }
 
 export function intervalOffsetToDates(offset, interval) {
-  const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
-  const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
   const currentDate = new Date();
   const today = new Date(
     currentDate.getFullYear(),
@@ -38,8 +36,28 @@ export function intervalOffsetToDates(offset, interval) {
     0,
     0,
   );
-  const end = today - dateOffsetInMillis;
-  const start = end - intervalInMillis;
+  const end = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+    0,
+    0,
+    0,
+    0,
+  ); 
+
+  const start = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    currentDate.getDate(),
+    0,
+    0,
+    0,
+    0,
+  ); 
+  
+  end.setUTCDate(today.getDate() - offset);
+  start.setUTCDate(end.getDate() - interval);
   /* eslint-disable prefer-destructuring */
   const startdate = new Date(start).toISOString().split('T')[0];
   const enddate = new Date(end).toISOString().split('T')[0];

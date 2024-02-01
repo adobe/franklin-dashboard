@@ -203,7 +203,7 @@ export function DashboardQueryFilter({
     if(ckpt) newQp.set('checkpoint', ckpt);
     if(limit) newQp.set('limit', limit);
 
-    location.href = `${location.host}?${newQp.toString()}`;
+    location.href = `https://${location.host}?${newQp.toString()}`;
   };
 
   return globalUrl && (

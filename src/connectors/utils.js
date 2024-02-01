@@ -1,5 +1,5 @@
 import { useCollator } from '@adobe/react-spectrum';
-import { sampleRUM } from '../lib-franklin';
+import sampleRUM from '../lib-franklin.js';
 
 /**
  * Gets information on queries from rum-queries.json
@@ -77,7 +77,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   }
 
   Object.entries(qps).forEach(([k, v]) => {
-    if(params.get(k)) params.set(k, v);
+    if (params.get(k)) params.set(k, v);
   });
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');
@@ -209,8 +209,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
             window.dashboard = {};
           }
           window.dashboard[endpoint] = data;
-          const rumData = { source: endpoint, target: pms.get('url') }
-          //sampleRUM('datadesk', rumData);
+          const rumData = { source: endpoint, target: pms.get('url') };
+          sampleRUM('datadesk', rumData);
         })
         .catch((err) => {
           // eslint-disable-next-line no-console

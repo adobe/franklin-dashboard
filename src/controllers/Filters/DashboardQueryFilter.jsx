@@ -126,9 +126,7 @@ export function DashboardQueryFilter({
     let urlLimit = urlParameters.get('limit');
     urlLimit = urlLimit ? urlLimit : '2000';
 
-    const dates = intervalOffsetToDates(0, 30);
-    const startdate = range.start.toString();
-    const enddate = range.end.toString();
+    const dates = intervalOffsetToDates(0, 30);;
     let configuration;
     let hostname;
 
@@ -139,7 +137,7 @@ export function DashboardQueryFilter({
       if(interval && offset){
         urlDates = intervalOffsetToDates(offset, interval);
       } else {
-        urlDates = { start: startdateParam ? startdateParam : startdate, end: enddateParam ? enddateParam : enddate };
+        urlDates = { start: startdateParam ? startdateParam : dates['start'], end: enddateParam ? enddateParam : dates['end'] };
       }
       hostname = getHostname(urlParam);
       configuration = {

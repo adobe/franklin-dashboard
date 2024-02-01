@@ -6,12 +6,9 @@ import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useCallback, useEffect } from 'react';
 // eslint-disable-next-line
 import FilterIcon from '@spectrum-icons/workflow/Filter';
-import ShareIcon from '@spectrum-icons/workflow/Share';
 import SearchIcon from '@spectrum-icons/workflow/Search';
-import LogOut from '@spectrum-icons/workflow/LogOut';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from 'stores/global.js';
-import { useNavigate } from 'react-router-dom';
 import { queryRequest, intervalOffsetToDates, getDataDates } from '../../connectors/utils.js';
 
 export function DashboardQueryFilter({
@@ -155,6 +152,12 @@ export function DashboardQueryFilter({
         dataEP: dataEndpoint,
         limit: urlLimit,
       };
+      if (dataEndpoint === 'rum-sources') {
+        configuration.checkpoint = '404';
+      }
+  
+      getQuery(configuration);
+      updateData(configuration);
     } else {
       const thisUrl = localStorage.getItem('globalUrl');
       hostname = getHostname(thisUrl);
@@ -168,14 +171,15 @@ export function DashboardQueryFilter({
         dataEP: dataEndpoint,
         limit: '100',
       };
+      const newQp = new URLSearchParams();
+      newQp.set('url', configuration.url);
+      newQp.set('domainkey', configuration.domainkey);
+      newQp.set('startdate', configuration.startdate);
+      newQp.set('enddate', configuration.enddate);
+      if(configuration.limit) newQp.set('limit', configuration.limit);
+  
+      location.href = `https://data.aem.live${location.pathname}?${newQp.toString()}`;
     }
-
-    if (dataEndpoint === 'rum-sources') {
-      configuration.checkpoint = '404';
-    }
-
-    getQuery(configuration);
-    updateData(configuration);
   }, []);
 
   const onSubmit = (e) => {
@@ -189,12 +193,9 @@ export function DashboardQueryFilter({
     } = formData;
 
     const url = inputUrl;
-    const hostname = getHostname(url);
-
     const startdate = start;
     const enddate = end;
 
-    const qpList = ['domainkey', 'startdate', 'enddate', 'url'];
     const newQp = new URLSearchParams();
     newQp.set('url', url);
     newQp.set('domainkey', domainkey);
@@ -203,7 +204,7 @@ export function DashboardQueryFilter({
     if(ckpt) newQp.set('checkpoint', ckpt);
     if(limit) newQp.set('limit', limit);
 
-    location.href = `https://${location.host}?${newQp.toString()}`;
+    location.href = `https://data.aem.live${location.pathname}?${newQp.toString()}`;
   };
 
   return globalUrl && (

@@ -159,7 +159,7 @@ export function DashboardQueryFilter({
         updateData(configuration);
       }
       else{
-        handleRedirect(url, domainkey, startdate, enddate, ckpt, limit);
+        handleRedirect(configuration.url, configuration.domainkey, configuration.startdate, configuration.enddate, configuration.limit);
       }
     } else {
       location.href = `https://data.aem.live/`;
@@ -180,7 +180,7 @@ export function DashboardQueryFilter({
     const startdate = start;
     const enddate = end;
 
-    handleRedirect(url, domainkey, startdate, enddate, ckpt, limit);
+    handleRedirect(url, domainkey, startdate, enddate, limit);
   };
 
   return globalUrl && (

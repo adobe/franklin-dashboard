@@ -22,6 +22,8 @@ const NavigationTabs = () => {
     console.log('useNavigate not available');
   }
 
+  const currentQueryParameters = new URLSearchParams(location.search);
+
   return (
     <Provider colorScheme="light" theme={defaultTheme}>
         <div style={{
@@ -33,7 +35,7 @@ const NavigationTabs = () => {
         <Button variant={currentTab === 'rum-dashboard' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
-                navigate('/rum-dashboard');
+                navigate(`/rum-dashboard?${currentQueryParameters.toString()}`);
               }
             }}
         >
@@ -47,7 +49,7 @@ const NavigationTabs = () => {
         <Button variant={currentTab === '404-reports' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
-                navigate('/404-reports');
+                navigate(`/404-reports?${currentQueryParameters.toString()}`);
               }
             }}
         >
@@ -61,7 +63,7 @@ const NavigationTabs = () => {
         <Button variant={currentTab === 'pageviews-report' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
-                navigate('/pageviews-report');
+                navigate(`/pageviews-report?${currentQueryParameters.toString()}`);
               }
             }}
         >

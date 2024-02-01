@@ -162,7 +162,7 @@ export function DashboardQueryFilter({
         handleRedirect(url, domainkey, startdate, enddate, ckpt, limit);
       }
     } else {
-      location.href = `https://${location.hostname}`;
+      location.href = `https://data.aem.live/`;
     }
   }, []);
 

@@ -38,7 +38,7 @@ const DashboardDataDeskLanding = () => {
                       initStore();
                       setGlobalUrl(formGlobalKey);
                       setDomainKey(formDomainKey);
-                      navigate('/rum-dashboard');
+                      navigate('/rum-dashboard?url=formGlobalKey&domainkey=formDomainKey');
                     }}
                 />
                 <span>{domainkey}</span>

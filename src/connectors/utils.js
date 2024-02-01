@@ -120,7 +120,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   } else if (intervalValid) {
     offset = params.get('offset');
     interval = params.get('interval');
-    const dates = intervalOffsetToDates(interval, offset);
+    const dates = intervalOffsetToDates(offset, interval);
     startdate = dates.start;
     enddate = dates.end;
     params.set('startdate', startdate);
@@ -128,7 +128,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   } else {
     offset = 0;
     interval = 30;
-    const dates = intervalOffsetToDates(interval, offset);
+    const dates = intervalOffsetToDates(offset, interval);
     startdate = dates.start;
     enddate = dates.end;
     params.set('startdate', startdate);

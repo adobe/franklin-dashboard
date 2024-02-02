@@ -18,10 +18,6 @@
               requiredQueryParamsFlag = false;
             }
           });
-          if(!newQp.has('startdate') && !newQp.has('enddate')){
-            newQp.set('offset', 0);
-            newQp.set('interval', 30);
-          }
 
           if (requiredQueryParamsFlag) {
             location.href = `https://data.aem.live/rum-dashboard?${newQp.toString()}`;

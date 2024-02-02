@@ -20,7 +20,7 @@ export function DashboardChartView({
       totalPageViews += parseInt(pageview.pageviews, 10);
     })
 
-    const {start, end} = getDataDates(dataEndpoint);
+    const {start, end} = getDataDates();
     const currStart = start ? parseDate(start) : null;
     const currEnd = end ? parseDate(end) : null;
 

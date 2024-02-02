@@ -20,7 +20,7 @@ export function DashboardQueryFilter({
   } = useStore();
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState(() => {
-    let currDataDates = getDataDates(dataEndpoint);
+    let currDataDates = getDataDates();
     const currStart = currDataDates['start'] ? parseDate(currDataDates['start']) : null;
     const currEnd = currDataDates['end'] ? parseDate(currDataDates['end']) : null;
     const urlParameters = new URLSearchParams(window.location.search);
@@ -87,11 +87,11 @@ export function DashboardQueryFilter({
       // query complete, hide loading graphic
       // data = window.dashboard[dataEndpoint].results.data;
       setFilterData(window.dashboard[dataEP].results.data);
-      const currDates = getDataDates(dataEndpoint);
+      const currDates = getDataDates();
       const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
       const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
       if(currStart && currEnd){
-        setRange({ start: parseDate(getDataDates(dataEndpoint)['start']), end: parseDate(getDataDates(dataEndpoint)['end']) });
+        setRange({ start: parseDate(getDataDates()['start']), end: parseDate(getDataDates()['end']) });
       }
       setDomainKey(domainkey);
       setGlobalUrl(url);

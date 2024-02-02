@@ -1,20 +1,15 @@
 import {
-  Flex, DatePicker, TextField, Form, ButtonGroup, Button, NumberField, Text,
-  useDateFormatter, DialogTrigger, Dialog, Content,
+  Flex, DatePicker, TextField, Form, Button, Text
 } from '@adobe/react-spectrum';
-import { ToastQueue } from '@react-spectrum/toast';
 
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useCallback, useEffect } from 'react';
 // eslint-disable-next-line
 import FilterIcon from '@spectrum-icons/workflow/Filter';
-import ShareIcon from '@spectrum-icons/workflow/Share';
 import SearchIcon from '@spectrum-icons/workflow/Search';
-import LogOut from '@spectrum-icons/workflow/LogOut';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from 'stores/global.js';
-import { useNavigate } from 'react-router-dom';
-import { queryRequest, intervalOffsetToDates, getDataDates } from '../../connectors/utils.js';
+import { queryRequest, intervalOffsetToDates, getDataDates, handleRedirect } from '../../connectors/utils.js';
 
 export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter,
@@ -25,7 +20,7 @@ export function DashboardQueryFilter({
   } = useStore();
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState(() => {
-    let currDataDates = getDataDates(dataEndpoint);
+    let currDataDates = getDataDates();
     const currStart = currDataDates['start'] ? parseDate(currDataDates['start']) : null;
     const currEnd = currDataDates['end'] ? parseDate(currDataDates['end']) : null;
     const urlParameters = new URLSearchParams(window.location.search);
@@ -59,7 +54,6 @@ export function DashboardQueryFilter({
     return returnObj;
   });
 
-  const [changedForm, setChangedForm] = React.useState(false);
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
@@ -93,11 +87,11 @@ export function DashboardQueryFilter({
       // query complete, hide loading graphic
       // data = window.dashboard[dataEndpoint].results.data;
       setFilterData(window.dashboard[dataEP].results.data);
-      const currDates = getDataDates(dataEndpoint);
+      const currDates = getDataDates();
       const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
       const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
       if(currStart && currEnd){
-        setRange({ start: parseDate(getDataDates(dataEndpoint)['start']), end: parseDate(getDataDates(dataEndpoint)['end']) });
+        setRange({ start: parseDate(getDataDates()['start']), end: parseDate(getDataDates()['end']) });
       }
       setDomainKey(domainkey);
       setGlobalUrl(url);
@@ -105,7 +99,6 @@ export function DashboardQueryFilter({
       setStartDate(currStart);
       setEndDate(currEnd);
     }
-    setChangedForm(false);
   };
 
   const getHostname = (url) => {
@@ -133,20 +126,18 @@ export function DashboardQueryFilter({
     let urlLimit = urlParameters.get('limit');
     urlLimit = urlLimit ? urlLimit : '2000';
 
-    const dates = intervalOffsetToDates(0, 30);
-    const startdate = range.start.toString();
-    const enddate = range.end.toString();
+    const dates = intervalOffsetToDates(0, 30);;
     let configuration;
     let hostname;
 
-    if (domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam) {
+    if (domainkeyParam && urlParam) {
       setDomainKey(domainkeyParam);
       setGlobalUrl(urlParam);
       let urlDates;
       if(interval && offset){
         urlDates = intervalOffsetToDates(offset, interval);
       } else {
-        urlDates = { start: startdateParam, end: enddateParam };
+        urlDates = { start: startdateParam ? startdateParam : dates['start'], end: enddateParam ? enddateParam : dates['end'] };
       }
       hostname = getHostname(urlParam);
       configuration = {
@@ -159,27 +150,20 @@ export function DashboardQueryFilter({
         dataEP: dataEndpoint,
         limit: urlLimit,
       };
+      if (dataEndpoint === 'rum-sources') {
+        configuration.checkpoint = '404';
+      }
+      
+      if(domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam){
+        getQuery(configuration);
+        updateData(configuration);
+      }
+      else{
+        handleRedirect(configuration.url, configuration.domainkey, configuration.startdate, configuration.enddate, configuration.limit);
+      }
     } else {
-      const thisUrl = localStorage.getItem('globalUrl');
-      hostname = getHostname(thisUrl);
-      configuration = {
-        url: localStorage.getItem('globalUrl'),
-        domainkey: localStorage.getItem('domainKey'),
-        startdate,
-        enddate,
-        hostname,
-        apiEP: apiEndpoint,
-        dataEP: dataEndpoint,
-        limit: '100',
-      };
+      location.href = `https://data.aem.live/`;
     }
-
-    if (dataEndpoint === 'rum-sources') {
-      configuration.checkpoint = '404';
-    }
-
-    getQuery(configuration);
-    updateData(configuration);
   }, []);
 
   const onSubmit = (e) => {
@@ -193,46 +177,11 @@ export function DashboardQueryFilter({
     } = formData;
 
     const url = inputUrl;
-    const hostname = getHostname(url);
-
     const startdate = start;
     const enddate = end;
 
-    const configuration = {
-      url,
-      hostname,
-      domainkey,
-      startdate,
-      enddate,
-      apiEP: apiEndpoint,
-      dataEP: dataEndpoint,
-      limit,
-    };
-
-    // conditional params
-    if (hasCheckpoint) {
-      configuration.ckpt = ckpt;
-    }
-
-    if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint)) {
-      const flag = `${dataEndpoint}Flag`;
-      delete window.dashboard[dataEndpoint];
-      delete window[flag];
-    }
-
-    if (configSetter) {
-      configSetter(configuration);
-    }
-    if (dataEndpoint === 'rum-sources') {
-      configuration.checkpoint = '404';
-    }
-    getQuery(configuration);
-    updateData(configuration);
+    handleRedirect(url, domainkey, startdate, enddate, limit);
   };
-
-  const setChanged = useCallback(() => {
-    setChangedForm(true);
-  }, []);
 
   return globalUrl && (
         <>
@@ -244,7 +193,6 @@ export function DashboardQueryFilter({
                     name="start"
                     defaultValue={range.start}
                     isRequired
-                    onChange={setChanged}
                   />
                   <DatePicker
                     label="End Date"
@@ -252,22 +200,18 @@ export function DashboardQueryFilter({
                     defaultValue={range.end}
                     maxValue={today(getLocalTimeZone())}
                     isRequired
-                    onChange={setChanged}
                     />
                     {(
                       hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
-                        onChange={setChanged}
                       />
                     )}
                     {(
                       hasDomainkeyField && <TextField
                         name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus
-                          onChange={setChanged}
                         />
                     )}
                     {(
                       hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired
-                        onChange={setChanged}
                       />
                     )}
 

@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <script async type="text/javascript">
-        if (new RegExp('hlx\\.live$').test(location.hostname) || new RegExp('hlx\\.page$').test(location.hostname)) {
+        if ((new RegExp('hlx\\.live$').test(location.hostname) || new RegExp('hlx\\.page$').test(location.hostname))) {
           const queryParams = new URLSearchParams(location.search);
           const newQp = new URLSearchParams();
-          const qpList = ['domainkey', 'startdate', 'enddate', 'url'];
+          const qpList = ['domainkey', 'url'];
           let requiredQueryParamsFlag = true;
           qpList.forEach((qp) => {
             if (queryParams.has(qp) && queryParams.get(qp) !== null && queryParams.get(qp).length > 0) {
@@ -20,7 +20,7 @@
           });
 
           if (requiredQueryParamsFlag) {
-            location.href = `https://data.aem.live/rum-dashboard?+${newQp.toString()}`;
+            location.href = `https://data.aem.live/rum-dashboard?${newQp.toString()}`;
           } else {
             location.href = 'https://data.aem.live';
           }

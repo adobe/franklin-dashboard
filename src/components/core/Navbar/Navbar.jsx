@@ -35,7 +35,7 @@ const DashboardNavbar = ({
 
   const copyToClipboard = async () => {
     const params = new URLSearchParams();
-    const currDates = getDataDates(dataEndpoint);
+    const currDates = getDataDates();
     const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
     const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
     const qps = {

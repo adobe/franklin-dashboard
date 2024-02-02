@@ -1,6 +1,6 @@
+/* eslint-disable no-restricted-globals */
 import { useCollator } from '@adobe/react-spectrum';
-import { sampleRUM } from '../lib-franklin';
-
+import sampleRUM from '../lib-franklin.js';
 /**
  * Gets information on queries from rum-queries.json
  */
@@ -47,21 +47,11 @@ export function intervalOffsetToDates(offset, interval) {
   return { start: startdate, end: enddate };
 }
 
-export function getDataDates(endpoint) {
-  if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, endpoint) && Object.hasOwn(window.dashboard[endpoint], 'meta')) {
-    const reqParams = window.dashboard[endpoint].meta.data;
-    let offset; let
-      interval;
-    reqParams.forEach((params) => {
-      const { name, value } = params;
-      if (name === 'offset') offset = value;
-      if (name === 'interval') interval = value;
-    });
-
-    offset -= 1;
-    return intervalOffsetToDates(offset, interval);
-  }
-  return {};
+export function getDataDates() {
+  const pms = new URLSearchParams(location.search);
+  const startdate = pms.get('startdate');
+  const enddate = pms.get('enddate');
+  return { start: startdate, end: enddate };
 }
 
 /**
@@ -77,7 +67,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   }
 
   Object.entries(qps).forEach(([k, v]) => {
-    params.set(k, v);
+    if (params.get(k)) params.set(k, v);
   });
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');
@@ -120,7 +110,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   } else if (intervalValid) {
     offset = params.get('offset');
     interval = params.get('interval');
-    const dates = intervalOffsetToDates(interval, offset);
+    const dates = intervalOffsetToDates(offset, interval);
     startdate = dates.start;
     enddate = dates.end;
     params.set('startdate', startdate);
@@ -128,7 +118,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   } else {
     offset = 0;
     interval = 30;
-    const dates = intervalOffsetToDates(interval, offset);
+    const dates = intervalOffsetToDates(offset, interval);
     startdate = dates.start;
     enddate = dates.end;
     params.set('startdate', startdate);
@@ -182,7 +172,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
 
-  const limit = (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '') ? pms.get('limit') : '150';
+  const limit = (pms.get('limit') && (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '')) ? pms.get('limit') : '150';
   pms.set('limit', limit);
 
   /*
@@ -209,7 +199,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
             window.dashboard = {};
           }
           window.dashboard[endpoint] = data;
-          const rumData = { source: endpoint, target: pms.get('url') }
+          const rumData = { source: endpoint, target: pms.get('url') };
           sampleRUM('datadesk', rumData);
         })
         .catch((err) => {
@@ -219,4 +209,14 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     }
   };
   checkData();
+}
+
+export function handleRedirect(url, domainkey, startdate, enddate, limit) {
+  const newQp = new URLSearchParams();
+  newQp.set('url', url);
+  newQp.set('domainkey', domainkey);
+  newQp.set('startdate', startdate);
+  newQp.set('enddate', enddate);
+  if (limit) newQp.set('limit', limit);
+  location.href = `https://${location.hostname}${location.pathname}?${newQp.toString()}`;
 }

@@ -4,6 +4,7 @@ import DashboardLayout from '../../core/Layout/Layout.jsx';
 import DomainKeyForm from '../../forms/DomainKeyForm/DomainKeyForm.jsx';
 import Card from '../../core/Card/Card.jsx';
 import { useStore, initStore } from '../../../stores/global.js';
+import { intervalOffsetToDates } from 'connectors/utils.js';
 
 const DashboardDataDeskLanding = () => {
   const {
@@ -38,7 +39,8 @@ const DashboardDataDeskLanding = () => {
                       initStore();
                       setGlobalUrl(formGlobalKey);
                       setDomainKey(formDomainKey);
-                      navigate('/rum-dashboard');
+                      const dates = intervalOffsetToDates(0, 30);
+                      navigate(`rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates['start']}&enddate=${dates['end']}`);
                     }}
                 />
                 <span>{domainkey}</span>

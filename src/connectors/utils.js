@@ -1,6 +1,6 @@
+/* eslint-disable no-restricted-globals */
 import { useCollator } from '@adobe/react-spectrum';
 import sampleRUM from '../lib-franklin.js';
-
 /**
  * Gets information on queries from rum-queries.json
  */
@@ -47,11 +47,11 @@ export function intervalOffsetToDates(offset, interval) {
   return { start: startdate, end: enddate };
 }
 
-export function getDataDates(endpoint) {
+export function getDataDates() {
   const pms = new URLSearchParams(location.search);
   const startdate = pms.get('startdate');
   const enddate = pms.get('enddate');
-  return {start: startdate, end: enddate};
+  return { start: startdate, end: enddate };
 }
 
 /**
@@ -211,12 +211,12 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   checkData();
 }
 
-export function handleRedirect(url, domainkey, startdate, enddate, limit){
+export function handleRedirect(url, domainkey, startdate, enddate, limit) {
   const newQp = new URLSearchParams();
   newQp.set('url', url);
   newQp.set('domainkey', domainkey);
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);
-  if(limit) newQp.set('limit', limit);
-  location.href = `https://${location.hostname}${location.pathname}?${newQp.toString()}`
+  if (limit) newQp.set('limit', limit);
+  location.href = `https://${location.hostname}${location.pathname}?${newQp.toString()}`;
 }

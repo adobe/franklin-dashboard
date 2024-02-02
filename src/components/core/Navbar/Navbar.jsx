@@ -88,7 +88,6 @@ const DashboardNavbar = ({
   return (
     <div style={{ padding: '1.5em', display: 'flex' }}
     >
-        <NavbarLogo />
         {hasNavigation && <NavigationTabs />}
         {globalUrl && <div style={{
           width: '-webkit-fill-available', minWidth: '300px', display: 'flex', flexDirection: 'row-reverse', padding: '.7em',

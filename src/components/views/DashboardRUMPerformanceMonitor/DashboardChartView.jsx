@@ -12,7 +12,7 @@ export function DashboardChartView({
   data, dataFlag, dataEndpoint
 }) {
   const { globalUrl, startDate, endDate, setStartDate, setEndDate, hostName } = useStore();
-  const formatter = useDateFormatter({ dateStyle: 'long' });
+  const formatter = useDateFormatter({ dateStyle: 'short' });
 
   if (data.length > 0) {
     let totalPageViews = 0;

@@ -26,6 +26,8 @@ export function getUrlBase(endpoint) {
 }
 
 export function intervalOffsetToDates(offset, interval) {
+  const dateOffsetInMillis = (24 * 60 * 60 * 1000) * offset;
+  const intervalInMillis = (24 * 60 * 60 * 1000) * interval;
   const currentDate = new Date();
   const today = new Date(
     currentDate.getFullYear(),
@@ -36,28 +38,8 @@ export function intervalOffsetToDates(offset, interval) {
     0,
     0,
   );
-  const end = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    currentDate.getDate(),
-    0,
-    0,
-    0,
-    0,
-  ); 
-
-  const start = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    currentDate.getDate(),
-    0,
-    0,
-    0,
-    0,
-  ); 
-  
-  end.setUTCDate(today.getDate() - offset);
-  start.setUTCDate(end.getDate() - interval);
+  const end = today - dateOffsetInMillis;
+  const start = end - intervalInMillis;
   /* eslint-disable prefer-destructuring */
   const startdate = new Date(start).toISOString().split('T')[0];
   const enddate = new Date(end).toISOString().split('T')[0];
@@ -66,20 +48,10 @@ export function intervalOffsetToDates(offset, interval) {
 }
 
 export function getDataDates(endpoint) {
-  if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, endpoint) && Object.hasOwn(window.dashboard[endpoint], 'meta')) {
-    const reqParams = window.dashboard[endpoint].meta.data;
-    let offset; let
-      interval;
-    reqParams.forEach((params) => {
-      const { name, value } = params;
-      if (name === 'offset') offset = value;
-      if (name === 'interval') interval = value;
-    });
-
-    offset -= 1;
-    return intervalOffsetToDates(offset, interval);
-  }
-  return {};
+  const pms = new URLSearchParams(location.search);
+  const startdate = pms.get('startdate');
+  const enddate = pms.get('enddate');
+  return {start: startdate, end: enddate};
 }
 
 /**

@@ -1,7 +1,7 @@
 import {
   Flex, DatePicker, TextField, Form, Button, Text
 } from '@adobe/react-spectrum';
-
+import { useNavigate } from 'react-router-dom';
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useCallback, useEffect } from 'react';
 // eslint-disable-next-line
@@ -18,6 +18,13 @@ export function DashboardQueryFilter({
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate, setDataEndpoint
   } = useStore();
+  let navigate = null;
+  try {
+    navigate = useNavigate();
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('useNavigate not available');
+  }
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState(() => {
     let currDataDates = getDataDates();
@@ -162,7 +169,8 @@ export function DashboardQueryFilter({
         handleRedirect(configuration.url, configuration.domainkey, configuration.startdate, configuration.enddate, configuration.limit);
       }
     } else {
-      location.href = `https://data.aem.live`;
+      initStore();
+      navigate('/')
     }
   }, []);
 

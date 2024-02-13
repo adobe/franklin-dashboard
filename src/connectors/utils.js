@@ -77,20 +77,9 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   const dateValid = hasStart && hasEnd && params.get('startdate').length > 4 && params.get('enddate').length > 4;
   const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) >= 0 && parseInt(params.get('offset'), 10) >= 0;
 
-  const start = new Date(params.get('startdate'));
-  const end = new Date(params.get('enddate'));
   let startdate = params.get('startdate');
   let enddate = params.get('enddate');
-  const currentDate = new Date();
-  const today = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth(),
-    currentDate.getDate(),
-    0,
-    0,
-    0,
-    0,
-  );
+
   if (intervalValid) {
     offset = params.get('offset');
     interval = params.get('interval');

@@ -40,7 +40,7 @@ const DashboardDataDeskLanding = () => {
                       setGlobalUrl(formGlobalKey);
                       setDomainKey(formDomainKey);
                       const dates = intervalOffsetToDates(0, 30);
-                      location.href = `http://${location.hostname}:${location.port}/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates['start']}&enddate=${dates['end']}`;
+                      location.href = `https://${location.hostname}/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates['start']}&enddate=${dates['end']}`;
                     }}
                 />
                 <span>{domainkey}</span>

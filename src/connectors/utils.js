@@ -71,8 +71,8 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   });
   let hasStart = params.has('startdate');
   let hasEnd = params.has('enddate');
-  let hasInterval = params.has('interval');
-  let hasOffset = params.has('offset');
+  const hasInterval = params.has('interval');
+  const hasOffset = params.has('offset');
 
   const dateValid = hasStart && hasEnd && params.get('startdate').length > 4 && params.get('enddate').length > 4;
   const intervalValid = hasInterval && hasOffset && parseInt(params.get('interval'), 10) >= 0 && parseInt(params.get('offset'), 10) >= 0;
@@ -91,7 +91,7 @@ async function bidirectionalConversion(endpoint, qps = {}) {
     0,
     0,
   );
-if (intervalValid) {
+  if (intervalValid) {
     offset = params.get('offset');
     interval = params.get('interval');
     const dates = intervalOffsetToDates(offset, interval);
@@ -99,7 +99,7 @@ if (intervalValid) {
     enddate = dates.end;
     params.set('startdate', startdate);
     params.set('enddate', enddate);
-  } else if(!intervalValid && !dateValid){
+  } else if (!intervalValid && !dateValid) {
     offset = 0;
     interval = 30;
     const dates = intervalOffsetToDates(offset, interval);
@@ -112,7 +112,7 @@ if (intervalValid) {
   hasStart = params.has('startdate');
   hasEnd = params.has('enddate');
 
-  if(!hasStart && !hasEnd){
+  if (!hasStart && !hasEnd) {
     offset = 0;
     interval = 30;
     const dates = intervalOffsetToDates(offset, interval);

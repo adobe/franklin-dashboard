@@ -202,5 +202,5 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit) {
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);
   if (limit) newQp.set('limit', limit);
-  location.href = `http://${location.hostname}${location.pathname}?${newQp.toString()}`;
+  location.href = `https://${location.hostname}${location.pathname}?${newQp.toString()}`;
 }

@@ -111,6 +111,9 @@ async function bidirectionalConversion(endpoint, qps = {}) {
     params.set('enddate', enddate);
   }
 
+  params.set('interval', -1);
+  params.set('offset', -1);
+
   return params;
 }
 

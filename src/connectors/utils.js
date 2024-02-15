@@ -111,29 +111,8 @@ async function bidirectionalConversion(endpoint, qps = {}) {
     params.set('enddate', enddate);
   }
 
-  if(endpoint === 'rum-pageviews'){
-    const currentDate = new Date();
-    const start = new Date(params.get('startdate'));
-    const end = new Date(params.get('enddate'));
-    const today = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth(),
-      currentDate.getDate(),
-      0,
-      0,
-      0,
-      0,
-    );
-    const offs = today - end;
-    const intv = Math.abs(end - start);
-    offset = offs >= 0 ? Math.ceil(offs / (1000 * 60 * 60 * 24)) : 0;
-    interval = Math.ceil(intv / (1000 * 60 * 60 * 24)); 
-    params.set('interval', interval);
-    params.set('offset', offset)   
-  } else{
-    params.set('interval', -1);
-    params.set('offset', -1);
-  }
+  params.set('interval', -1);
+  params.set('offset', -1);
 
   return params;
 }

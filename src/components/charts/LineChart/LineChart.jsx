@@ -30,9 +30,9 @@ export function DashboardLineChart({
           height={height}
           data={data}
         >
-          <XAxis type={'category'} dataKey={x_datakey} tickFormatter={(value, index) => new Date(value).toLocaleDateString('en-US')} tick={{ fontSize: '12px' }} angle={-45} reversed={true}/>
-          <YAxis domain={getMinMax(data, y_datakey)} tickFormatter={(value, index) => parseInt(value, 10).toLocaleString('en-US')} scale='auto' fontSize={'12px'}/>
-          <Tooltip formatter={(value, index) => parseInt(value, 10).toLocaleString('en-US')} />
+          <XAxis type={'category'} dataKey={x_datakey} tickFormatter={(value, index) => new Date(value).toISOString().split('T')[0]} tick={{ fontSize: '12px' }} angle={-30} reversed={true}/>
+          <YAxis domain={getMinMax(data, y_datakey)} tickFormatter={(value, index) => parseInt(value, 10)} scale='auto' fontSize={'12px'}/>
+          <Tooltip formatter={(value, index) => parseInt(value, 10)} />
           <Line type="monotone" dataKey={y_datakey} strokeWidth={3} stroke="#8884d8" dot={false} />
         </LineChart>
       </ResponsiveContainer>

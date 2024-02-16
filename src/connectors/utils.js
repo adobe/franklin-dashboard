@@ -186,12 +186,14 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   checkData();
 }
 
-export function handleRedirect(url, domainkey, startdate, enddate, limit) {
+export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone) {
   const newQp = new URLSearchParams();
   newQp.set('url', url);
   newQp.set('domainkey', domainkey);
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);
+  if (timezone==='null' || timezone==='undefined' || timezone==null) timezone = '';
+  newQp.set('timezone', timezone);
   if (limit) newQp.set('limit', limit);
-  location.href = `https://${location.hostname}${location.pathname}?${newQp.toString()}`;
+  location.href = `${location.pathname}?${newQp.toString()}`;
 }

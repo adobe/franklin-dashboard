@@ -61,6 +61,9 @@ export function DashboardQueryFilter({
     return returnObj;
   });
 
+  let timezone = new URLSearchParams(window.location.search).get('timezone');
+  if (timezone==='null' || timezone==null) timezone = '';
+
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
@@ -181,14 +184,14 @@ export function DashboardQueryFilter({
     // Get form data as an object.
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
-      start, end, inputUrl, domainkey, ckpt, limit,
+      start, end, inputUrl, domainkey, ckpt, limit, timezone,
     } = formData;
 
     const url = inputUrl;
     const startdate = start;
     const enddate = end;
 
-    handleRedirect(url, domainkey, startdate, enddate, limit);
+    handleRedirect(url, domainkey, startdate, enddate, limit, timezone);
   };
 
   return globalUrl && (
@@ -208,25 +211,32 @@ export function DashboardQueryFilter({
                     defaultValue={range.end}
                     maxValue={today(getLocalTimeZone())}
                     isRequired
+                  />
+                  {(
+                    hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
                     />
-                    {(
-                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
+                  )}
+                  {(
+                    hasDomainkeyField && <TextField
+                      name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus
                       />
-                    )}
-                    {(
-                      hasDomainkeyField && <TextField
-                        name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus
-                        />
-                    )}
-                    {(
-                      hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired
-                      />
-                    )}
-
-                    <br />
-                      <Button
-                        type="submit" variant="cta"><SearchIcon/><Text>Search</Text>
-                      </Button>
+                  )}
+                  {(
+                    hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired
+                    />
+                  )}
+                  {(
+                    <TextField name='timezone' label="Timezone" autoFocus defaultValue={timezone} isDisabled isRequired={false}
+                    />
+                  )}
+                  {(
+                    <TextField name='timezone' defaultValue={timezone} isReadOnly isHidden
+                    />
+                  )}
+                  <br />
+                  <Button
+                    type="submit" variant="cta"><SearchIcon/><Text>Search</Text>
+                  </Button>
                 </Form>
             </Flex>
         </>

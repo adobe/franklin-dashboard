@@ -38,8 +38,14 @@ const DashboardNavbar = ({
     const currDates = getDataDates();
     const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
     const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
+    let timeZone = new URLSearchParams(window.location.search).get('timezone');
+    if (timeZone==='null' || timeZone==='undefined' || timeZone==null) timeZone = '';
     const qps = {
-      domainkey: domainKey, url: globalUrl, startdate: currStart ? currStart : startDate, enddate: currEnd ? currEnd : endDate,
+      domainkey: domainKey,
+      url: globalUrl,
+      startdate: currStart ? currStart : startDate,
+      enddate: currEnd ? currEnd : endDate,
+      timezone: timeZone ? timeZone : '',
     };
 
     if (!Object.entries) {

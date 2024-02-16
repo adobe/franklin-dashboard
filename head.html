@@ -20,9 +20,11 @@
           });
 
           if (requiredQueryParamsFlag) {
-            location.href = `/rum-dashboard?${newQp.toString()}`;
+            console.log('redirect 1');
+            //location.href = `/rum-dashboard?${newQp.toString()}`;
           } else {
-            location.href = '/';
+            console.log('redirect 2');
+            //location.href = '/';
           }
         }
     </script>

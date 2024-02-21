@@ -10,7 +10,6 @@ const DashboardDataDeskLanding = () => {
   const {
     setDomainKey,
     setGlobalUrl,
-    setReportUrl,
     domainkey,
   } = useStore();
 

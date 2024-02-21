@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
     <script async type="text/javascript">
-      /*
-        if ((new RegExp('hlx\\.live$').test(location.hostname) || new RegExp('hlx\\.page$').test(location.hostname))) {
+        if (location.hostname.startsWith('main') && (new RegExp('hlx\\.live$').test(location.hostname) || new RegExp('hlx\\.page$').test(location.hostname))) {
           const queryParams = new URLSearchParams(location.search);
           const newQp = new URLSearchParams();
           const qpList = ['domainkey', 'url'];
@@ -21,14 +20,11 @@
           });
 
           if (requiredQueryParamsFlag) {
-            console.log('redirect 1');
-            //location.href = `/rum-dashboard?${newQp.toString()}`;
+            location.href = `https://data.aem.live/rum-dashboard?${newQp.toString()}`;
           } else {
-            console.log('redirect 2');
-            //location.href = '/';
+            location.href = 'https://data.aem.live';
           }
         }
-      */
     </script>
 
     <script defer src="/static/js/main.js"></script>

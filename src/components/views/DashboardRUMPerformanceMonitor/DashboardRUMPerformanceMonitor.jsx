@@ -1,7 +1,6 @@
 import { Grid, View, Flex } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardLayout from '../../core/Layout/Layout.jsx';
-// import {DashboardQueryFilter} from 'controllers/Filters/DashboardQueryFilter.jsx';
 import { DashboardQueryFilter } from '../../../controllers/Filters/DashboardQueryFilter.jsx';
 import { DashboardChartView } from './DashboardChartView.jsx';
 

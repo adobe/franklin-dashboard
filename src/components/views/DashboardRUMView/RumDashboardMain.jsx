@@ -1,13 +1,7 @@
-import { Grid, View, Flex, Badge, Text, Heading, ContextualHelp, fitContent} from '@adobe/react-spectrum';
+import { Grid, View, Flex} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
-import {Well} from '@adobe/react-spectrum'
-import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
-import Info from '@spectrum-icons/workflow/Info';
-import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
-import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
-import AlertTriangle from '@spectrum-icons/workflow/Alert';
 
 
 export function RumDashboardMain() {

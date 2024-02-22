@@ -1,22 +1,27 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/extensions */
 import {
-  Flex, DatePicker, TextField, Form, Button, Text
+  Flex, DatePicker, TextField, Form, Button, Text,
 } from '@adobe/react-spectrum';
 import { useNavigate } from 'react-router-dom';
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
-import React, { useCallback, useEffect } from 'react';
-// eslint-disable-next-line
+import React, { useEffect } from 'react';
 import FilterIcon from '@spectrum-icons/workflow/Filter';
 import SearchIcon from '@spectrum-icons/workflow/Search';
 import './DashboardQueryFilter.css';
-import { useStore, initStore } from 'stores/global.js';
-import { queryRequest, intervalOffsetToDates, getDataDates, handleRedirect } from '../../connectors/utils.js';
+import { useStore, initStore } from '../../stores/global.js';
+import {
+  queryRequest, intervalOffsetToDates, getDataDates, handleRedirect,
+} from '../../connectors/utils.js';
 
 export function DashboardQueryFilter({
-  hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint, apiEndpoint, data, setter, dataFlag, flagSetter, configSetter,
+  hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
+  apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
   const {
-    setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey, setStartDate, setEndDate, startDate, endDate, setDataEndpoint
+    setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,
+    setStartDate, setEndDate, startDate, endDate, setDataEndpoint,
   } = useStore();
   let navigate = null;
   try {
@@ -27,9 +32,9 @@ export function DashboardQueryFilter({
   }
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState(() => {
-    let currDataDates = getDataDates();
-    const currStart = currDataDates['start'] ? parseDate(currDataDates['start']) : null;
-    const currEnd = currDataDates['end'] ? parseDate(currDataDates['end']) : null;
+    const currDataDates = getDataDates();
+    const currStart = currDataDates.start ? parseDate(currDataDates.start) : null;
+    const currEnd = currDataDates.end ? parseDate(currDataDates.end) : null;
     const urlParameters = new URLSearchParams(window.location.search);
     const domainkeyParam = urlParameters.get('domainkey');
     const startdateParam = urlParameters.get('startdate');
@@ -39,27 +44,30 @@ export function DashboardQueryFilter({
     const urlParam = urlParameters.get('url');
     let returnObj;
 
-    if(domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam){
+    if (domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam) {
       let urlDates;
-      if(interval && offset){
+      if (interval && offset) {
         urlDates = intervalOffsetToDates(offset, interval);
-      }else{
+      } else {
         urlDates = { start: startdateParam, end: enddateParam };
       }
       returnObj = {
-        start: parseDate(urlDates['start']), 
-        end: parseDate(urlDates['end'])
-      }
+        start: parseDate(urlDates.start),
+        end: parseDate(urlDates.end),
+      };
     } else {
-        returnObj = {
-        start: currStart ? currStart : parseDate(dates.start),
-        end: currEnd ? currEnd : parseDate(dates.end),
-      }
+      returnObj = {
+        start: currStart || parseDate(dates.start),
+        end: currEnd || parseDate(dates.end),
+      };
     }
     setStartDate(returnObj.start);
     setEndDate(returnObj.end);
     return returnObj;
   });
+
+  let timezone = new URLSearchParams(window.location.search).get('timezone');
+  if (timezone === 'null' || timezone == null) timezone = '';
 
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
@@ -80,7 +88,7 @@ export function DashboardQueryFilter({
 
   const updateData = (cfg = {}) => {
     const {
-      dataEP, url, domainkey, startdate, enddate,
+      dataEP, url, domainkey,
     } = cfg;
     const flag = `${dataEP}Flag`;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
@@ -95,10 +103,10 @@ export function DashboardQueryFilter({
       // data = window.dashboard[dataEndpoint].results.data;
       setFilterData(window.dashboard[dataEP].results.data);
       const currDates = getDataDates();
-      const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
-      const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
-      if(currStart && currEnd){
-        setRange({ start: parseDate(getDataDates()['start']), end: parseDate(getDataDates()['end']) });
+      const currStart = currDates.start ? parseDate(currDates.start) : null;
+      const currEnd = currDates.end ? parseDate(currDates.end) : null;
+      if (currStart && currEnd) {
+        setRange({ start: parseDate(getDataDates().start), end: parseDate(getDataDates().end) });
       }
       setDomainKey(domainkey);
       setGlobalUrl(url);
@@ -131,9 +139,8 @@ export function DashboardQueryFilter({
     const offset = urlParameters.get('offset');
     const urlParam = urlParameters.get('url');
     let urlLimit = urlParameters.get('limit');
-    urlLimit = urlLimit ? urlLimit : '2000';
+    urlLimit = urlLimit || '2000';
 
-    const dates = intervalOffsetToDates(0, 30);;
     let configuration;
     let hostname;
 
@@ -141,17 +148,17 @@ export function DashboardQueryFilter({
       setDomainKey(domainkeyParam);
       setGlobalUrl(urlParam);
       let urlDates;
-      if(interval && offset){
+      if (interval && offset) {
         urlDates = intervalOffsetToDates(offset, interval);
       } else {
-        urlDates = { start: startdateParam ? startdateParam : dates['start'], end: enddateParam ? enddateParam : dates['end'] };
+        urlDates = { start: startdateParam || dates.start, end: enddateParam || dates.end };
       }
       hostname = getHostname(urlParam);
       configuration = {
         url: urlParam,
         domainkey: domainkeyParam,
-        startdate: urlDates['start'],
-        enddate: urlDates['end'],
+        startdate: urlDates.start,
+        enddate: urlDates.end,
         hostname,
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
@@ -160,17 +167,24 @@ export function DashboardQueryFilter({
       if (dataEndpoint === 'rum-sources') {
         configuration.checkpoint = '404';
       }
-      
-      if(domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam){
+
+      if (
+        domainkeyParam && ((startdateParam && enddateParam) || (interval && offset)) && urlParam
+      ) {
         getQuery(configuration);
         updateData(configuration);
-      }
-      else{
-        handleRedirect(configuration.url, configuration.domainkey, configuration.startdate, configuration.enddate, configuration.limit);
+      } else {
+        handleRedirect(
+          configuration.url,
+          configuration.domainkey,
+          configuration.startdate,
+          configuration.enddate,
+          configuration.limit,
+        );
       }
     } else {
       initStore();
-      navigate('/')
+      navigate('/');
     }
   }, []);
 
@@ -181,14 +195,14 @@ export function DashboardQueryFilter({
     // Get form data as an object.
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
-      start, end, inputUrl, domainkey, ckpt, limit,
+      start, end, inputUrl, domainkey, limit,
     } = formData;
 
     const url = inputUrl;
     const startdate = start;
     const enddate = end;
 
-    handleRedirect(url, domainkey, startdate, enddate, limit);
+    handleRedirect(url, domainkey, startdate, enddate, limit, timezone);
   };
 
   return globalUrl && (
@@ -208,25 +222,32 @@ export function DashboardQueryFilter({
                     defaultValue={range.end}
                     maxValue={today(getLocalTimeZone())}
                     isRequired
+                  />
+                  {(
+                    hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
                     />
-                    {(
-                      hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
+                  )}
+                  {(
+                    hasDomainkeyField && <TextField
+                      name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus
                       />
-                    )}
-                    {(
-                      hasDomainkeyField && <TextField
-                        name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus
-                        />
-                    )}
-                    {(
-                      hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired
-                      />
-                    )}
-
-                    <br />
-                      <Button
-                        type="submit" variant="cta"><SearchIcon/><Text>Search</Text>
-                      </Button>
+                  )}
+                  {(
+                    hasCheckpoint && <TextField name='ckpt' label="Checkpoint" autoFocus isRequired
+                    />
+                  )}
+                  {(
+                    <TextField name='timezone' label="Timezone" autoFocus defaultValue={timezone} isDisabled isRequired={false}
+                    />
+                  )}
+                  {(
+                    <TextField name='timezone' defaultValue={timezone} isReadOnly isHidden
+                    />
+                  )}
+                  <br />
+                  <Button
+                    type="submit" variant="cta"><SearchIcon/><Text>Search</Text>
+                  </Button>
                 </Form>
             </Flex>
         </>

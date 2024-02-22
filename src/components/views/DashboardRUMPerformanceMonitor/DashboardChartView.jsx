@@ -1,17 +1,15 @@
 import {
-  ProgressBar, Content, Heading, IllustratedMessage, View, Grid, Badge, Divider, useDateFormatter,
+  ProgressBar, Content, Heading, IllustratedMessage, View, Grid, Badge, useDateFormatter,
 } from '@adobe/react-spectrum';
-import { getLocalTimeZone, parseDate } from '@internationalized/date';
+import { parseDate } from '@internationalized/date';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import { DashboardLineChart } from 'components/charts/LineChart/LineChart';
-import { useStore } from 'stores/global';
 import './DashboardChartView.css';
 import { getDataDates } from 'connectors/utils';
 
 export function DashboardChartView({
-  data, dataFlag, dataEndpoint
+  data, dataFlag
 }) {
-  const { globalUrl, startDate, endDate, setStartDate, setEndDate, hostName } = useStore();
   const formatter = useDateFormatter({ dateStyle: 'short' });
 
   if (data.length > 0) {
@@ -23,6 +21,9 @@ export function DashboardChartView({
     const {start, end} = getDataDates();
     const currStart = start ? parseDate(start) : null;
     const currEnd = end ? parseDate(end) : null;
+    const urlParameters = new URLSearchParams(location.search)
+    const url = urlParameters.get('url').replace('https://', '');
+
 
     return start && end && (
             <Grid
@@ -35,7 +36,7 @@ export function DashboardChartView({
             >
                 <View gridArea="title" width="100%">
                     <h2 style={{ textAlign: 'center' }}>
-                      {<a href={'https://'+hostName}>{hostName}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
+                      {<a href={'https://'+url}>{url}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
                         currStart.toDate(),
                         currEnd.toDate(),
                       )}`}

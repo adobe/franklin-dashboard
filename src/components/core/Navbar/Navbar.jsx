@@ -1,23 +1,24 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/extensions */
 import { useEffect } from 'react';
 import {
-   Button, Text,
-  Tooltip, TooltipTrigger,
+  Button, Text, Tooltip, TooltipTrigger,
 } from '@adobe/react-spectrum';
 import { useNavigate } from 'react-router-dom';
 import LogOut from '@spectrum-icons/workflow/LogOut';
 import ShareIcon from '@spectrum-icons/workflow/Share';
 import { ToastQueue } from '@react-spectrum/toast';
-import NavigationTabs from './NavigationTabs.jsx';
-import NavbarLogo from './NavbarLogo.jsx';
-import { getDataDates } from 'connectors/utils.js';
-import { useStore, initStore } from '../../../stores/global.js';
 import { parseDate } from '@internationalized/date';
+import { getDataDates } from '../../../connectors/utils.js';
+import NavigationTabs from './NavigationTabs.jsx';
+// import NavbarLogo from './NavbarLogo.jsx';
+import { useStore, initStore } from '../../../stores/global.js';
 
 const DashboardNavbar = ({
   hasNavigation = true,
 }) => {
   const {
-    globalUrl, domainKey, startDate, endDate, dataEndpoint
+    globalUrl, domainKey, startDate, endDate, dataEndpoint,
   } = useStore();
 
   useEffect(() => {
@@ -36,10 +37,16 @@ const DashboardNavbar = ({
   const copyToClipboard = async () => {
     const params = new URLSearchParams();
     const currDates = getDataDates();
-    const currStart = currDates['start'] ? parseDate(currDates['start']) : null;
-    const currEnd = currDates['end'] ? parseDate(currDates['end']) : null;
+    const currStart = currDates.start ? parseDate(currDates.start) : null;
+    const currEnd = currDates.end ? parseDate(currDates.end) : null;
+    let timeZone = new URLSearchParams(window.location.search).get('timezone');
+    if (timeZone === 'null' || timeZone === 'undefined' || timeZone == null) timeZone = '';
     const qps = {
-      domainkey: domainKey, url: globalUrl, startdate: currStart ? currStart : startDate, enddate: currEnd ? currEnd : endDate,
+      domainkey: domainKey,
+      url: globalUrl,
+      startdate: currStart || startDate,
+      enddate: currEnd || endDate,
+      timezone: timeZone || '',
     };
 
     if (!Object.entries) {

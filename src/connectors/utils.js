@@ -113,6 +113,11 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   params.set('interval', -1);
   params.set('offset', -1);
 
+  // add timezone param if it is not present
+  if (!params.has('timezone')) {
+    params.set('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
+
   return params;
 }
 
@@ -194,6 +199,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);
   if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezoneParam = '';
+  if (timezoneParam === '') timezoneParam = Intl.DateTimeFormat().resolvedOptions().timeZone;
   newQp.set('timezone', timezoneParam);
   if (limit) newQp.set('limit', limit);
   location.href = `${location.pathname}?${newQp.toString()}`;

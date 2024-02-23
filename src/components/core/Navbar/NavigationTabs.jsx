@@ -23,6 +23,10 @@ const NavigationTabs = () => {
   }
 
   const currentQueryParameters = new URLSearchParams(location.search);
+  // add timezone param if it is not present
+  if (!currentQueryParameters.has('timezone')) {
+    currentQueryParameters.set('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
 
   return (
     <Provider colorScheme="light" theme={defaultTheme}>

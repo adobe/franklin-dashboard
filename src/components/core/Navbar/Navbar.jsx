@@ -41,6 +41,7 @@ const DashboardNavbar = ({
     const currEnd = currDates.end ? parseDate(currDates.end) : null;
     let timeZone = new URLSearchParams(window.location.search).get('timezone');
     if (timeZone === 'null' || timeZone === 'undefined' || timeZone == null) timeZone = '';
+    if (timeZone === '') timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const qps = {
       domainkey: domainKey,
       url: globalUrl,

@@ -147,6 +147,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
   pms.set("source",".form");
+  pms.set('checkpoint', 'viewblock');
   console.log("----source value .form ");
   const limit = (pms.get('limit') && (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '')) ? pms.get('limit') : '150';
   pms.set('limit', limit);

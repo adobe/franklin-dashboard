@@ -193,6 +193,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   newQp.set('domainkey', domainkey);
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);
+  newQp.set('source', ".form");
   if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezoneParam = '';
   newQp.set('timezone', timezoneParam);
   if (limit) newQp.set('limit', limit);

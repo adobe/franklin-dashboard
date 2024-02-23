@@ -14,7 +14,7 @@ export function RumDashboardMain() {
 
   const columns = ['url', 'avglcp', 'avgcls', 'avginp', 'pageviews'];
   const columnHeadings = {
-    pageviews: ['Formviews', `Total form rendered to a url in date range chosen. Cut off is the end date of the range; i.e, 
+    pageviews: ['Pageviews', `Total visits to a url in date range chosen. Cut off is the end date of the range; i.e, 
     if you choose 1/1/2023 - 1/2/2023 you will only see results with dates that are less than 1/2/2023 not inclusive.`],
     avgcls: ['Cumulative Layout Shift', `CLS measures the sum total of all individual layout shift scores for every 
     unexpected layout shift that occurs during the entire lifespan of the page. The score is zero to any positive 

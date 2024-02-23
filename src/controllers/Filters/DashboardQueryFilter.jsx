@@ -68,6 +68,7 @@ export function DashboardQueryFilter({
 
   let timezone = new URLSearchParams(window.location.search).get('timezone');
   if (timezone === 'null' || timezone == null) timezone = '';
+  if (timezone === '') timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {

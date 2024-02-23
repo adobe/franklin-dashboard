@@ -37,7 +37,7 @@ export function RumDashboardMain() {
           'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}
-              data={data} setter={setData} dataEndpoint={'rum-dashboard'}
+              data={data} setter={setData} dataEndpoint={'rum-checkpoint-urls'}
               apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@v3'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag} config={config} configSetter={setConfig}>
               </DashboardQueryFilter>

@@ -36,7 +36,7 @@ export function RumTableView({
                             const hostname = data[0][key] ? new URL(data[0][key].startsWith('https://') ? data[0][key] : `https://${data[0][key]}`).hostname : '';
                             return <Column align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
                           }
-                          if(key !== 'pageviews') {
+                          if(key !== 'views') {
                             return (
                                 <Column align="center">
                                     <ContextualHelp variant="info">
@@ -113,7 +113,7 @@ export function RumTableView({
                                                                 <Text>{displayedNumb + metrics[col]}</Text>
                                                             </Badge>
                                                         </Cell>;
-                                      } if (col === 'pageviews') {
+                                      } if (col === 'views') {
                                         return <Cell width='size-1500'>
                                                         <Badge width="size-1500" alignSelf='center' variant='info'>
                                                             <Text width="100%">{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>

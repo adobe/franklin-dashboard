@@ -12,7 +12,7 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import {queryRequest } from '../../../connectors/utils';
 
-export function RumTableView({
+export async function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {
@@ -30,13 +30,10 @@ export function RumTableView({
     return (
       data.length > 0 && (
         // Execute the loop inside Promise.all() to wait for all promises to resolve
-        (async () => {
-          const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
-          const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
-          console.log("---after inside RUmTableView"); 
-          const response = await Promise.all([submitPromise, cwvPromise]);
-          return response;
-        })()
+        await Promise.all([
+          queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`),
+          queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`)
+        ])
       ) &&  <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(

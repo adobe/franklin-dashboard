@@ -12,7 +12,7 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import {queryRequest } from '../../../connectors/utils';
 
-export function RumTableView({
+export async function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {

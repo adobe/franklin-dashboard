@@ -10,9 +10,8 @@ import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
-import {getUrlBase , queryRequest } from '../../../connectors/utils';
 
-export async function RumTableView({
+export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {
@@ -28,7 +27,7 @@ export async function RumTableView({
       avgcls: '',
     }
     return (
-      data && data.length > 0 
+      data.length > 0
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
@@ -37,7 +36,7 @@ export async function RumTableView({
                             const hostname = data[0][key] ? new URL(data[0][key].startsWith('https://') ? data[0][key] : `https://${data[0][key]}`).hostname : '';
                             return <Column align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
                           }
-                          if(key !== 'views') {
+                          if(key !== 'pageviews') {
                             return (
                                 <Column align="center">
                                     <ContextualHelp variant="info">
@@ -75,8 +74,6 @@ export async function RumTableView({
                         data.map((rum) => <Row>
                                 {(
                                     columns.map((col) => {
-                                      console.log("-------rum-----");
-                                      console.log(rum);
                                       if (col === 'url') {
                                         if(rum[col] === 'Other'){
                                           return <Cell>{rum[col]}</Cell>;
@@ -116,25 +113,10 @@ export async function RumTableView({
                                                                 <Text>{displayedNumb + metrics[col]}</Text>
                                                             </Badge>
                                                         </Cell>;
-                                      } if (col === 'views') {
+                                      } if (col === 'pageviews') {
                                         return <Cell width='size-1500'>
                                                         <Badge width="size-1500" alignSelf='center' variant='info'>
                                                             <Text width="100%">{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>
-                                                        </Badge>
-                                                    </Cell>;
-                                      }
-                                      if (col === 'formsubmission') {
-                                        totalSubmissions =0;
-                                        const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
-                                       for(let k= 0; k < submitData.length ; k += 1){
-                                       if(submitData[k]['url'] === `${rum['url']}`  && ((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
-                                            totalSubmissions = totalSubmissions + Number(submitData[k]['actions']);
-                                            break;
-                                         }
-                                       }
-                                        return <Cell width='size-1500'>
-                                                        <Badge width="size-1500" alignSelf='center' variant='info'>
-                                                            <Text width="100%">{parseInt(totalSubmissions, 10).toLocaleString('en-US')}</Text>
                                                         </Badge>
                                                     </Cell>;
                                       }

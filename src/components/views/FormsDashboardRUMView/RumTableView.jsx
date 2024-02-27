@@ -31,26 +31,14 @@ export async function RumTableView({
     return (
       data.length > 0 && (
         // Execute the loop inside Promise.all() to wait for all promises to resolve
-      await Promise.all(data.map(item => {
-          console.log("---inside RUmTableView");
-          console.log(item);
-          const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${item['url']}`);
-          const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${item['url']}`);
+        (async () => {
+          const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
+          const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
           console.log("---after inside RUmTableView"); 
-          // Return an array of promises
-          return [submitPromise, cwvPromise];
-        })).then(results => {
-          // Flatten the array of promises
-          const flatResults = results.flat();
-          console.log("---inside then RUmTableView");
-          // Add flattened promises to the array
-          promises.push(...flatResults);
-        }).then(() => {
-          // Dummy condition to satisfy the return statement
-          console.log("---inside then return");
-          return true;
-        })
-      ) 
+          const response = await Promise.all([submitPromise, cwvPromise]);
+          return response;
+        })()
+      )
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(

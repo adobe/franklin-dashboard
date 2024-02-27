@@ -146,11 +146,18 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
   if (pms.has('url')) {
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
-  pms.set("source",".form");
-  pms.set('checkpoint', 'viewblock');
-  console.log("----source value .form ");
+  if(type === 'render'){
+    pms.set("source",".form");
+    pms.set('checkpoint', 'viewblock');
+    console.log("----source value .form ");
+  }
+  if(type === 'submit'){
+    pms.set('checkpoint', 'formsubmit');
+    console.log("----source value .formsubmit ");
+  }
   const limit = (pms.get('limit') && (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '')) ? pms.get('limit') : '150';
   pms.set('limit', limit);
+
 
   /*
     Below are specific parameters set for specific queries

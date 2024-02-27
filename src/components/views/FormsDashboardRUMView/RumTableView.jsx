@@ -33,12 +33,11 @@ export function RumTableView({
         Promise.all([
           queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`),
           queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`)
-        ]).then(response => {
-          return true;
-        }).catch(error => {
+        ]).catch(error => {
           // Handle errors here
-        })
-      ) &&  <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+        }).then(response => {
+          return (
+          <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {
@@ -168,6 +167,8 @@ export function RumTableView({
                     }
                 </TableBody>
             </TableView>
+        )})
+             )
     );
   } if (dataFlag) {
     return (

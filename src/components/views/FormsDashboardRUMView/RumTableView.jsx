@@ -90,7 +90,23 @@ export function RumTableView({
                                         }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
-                                        const currCol = col === 'avglcp' && rum[col] ? rum[col] / 1000 : rum[col];
+                                        if(window.dashboard["rum-dashboard"+"-"+`${rum['url']}`].results === undefined){
+                                          queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", 'cwv', `${rum['url']}`);
+                                        }
+                                      console.log(window);
+                                     const cwvData  = window.dashboard["rum-dashboard"+"-"+`${rum['url']}`].results.data;
+                                     let cwvValue = {};
+                                     for(let k= 0; k < cwvData.length ; k += 1){
+                                       console.log(cwvData[k]['url']);
+                                       console.log(data[i]['url']);
+                                       if(cwvData[k]['url'] === `${rum['url']}`){
+                                        cwvValue = cwvData[k];
+                                         break;
+                                       }
+                                     }
+                                     console.log("----cwvValue");
+                                     console.log(cwvValue);
+                                        const currCol = col === 'avglcp' && cwvValue[col] ? cwvValue[col] / 1000 : cwvValue[col];
                                         const numb = parseFloat(currCol).toFixed(2).toLocaleString('en-US');
                                         const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
                                         if (displayedNumb && displayedNumb <= ranges[col][0]) {

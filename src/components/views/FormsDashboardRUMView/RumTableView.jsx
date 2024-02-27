@@ -12,7 +12,7 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import {getUrlBase , queryRequest } from '../../../connectors/utils';
 
-export function RumTableView({
+export async function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {
@@ -31,7 +31,7 @@ export function RumTableView({
     return (
       data.length > 0 && (
         // Execute the loop inside Promise.all() to wait for all promises to resolve
-       Promise.all(data.map(item => {
+      await Promise.all(data.map(item => {
           console.log("---inside RUmTableView");
           console.log(item);
           const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${item['url']}`);

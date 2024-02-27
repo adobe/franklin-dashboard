@@ -31,19 +31,22 @@ export function RumTableView({
       data.length > 0 && (
         // Execute the loop inside Promise.all() to wait for all promises to resolve
        Promise.all(data.map(item => {
+          console.log("---inside RUmTableView");
+          console.log(item);
           const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), {}, 'submit', `${item['url']}`);
           const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), {}, 'cwv', `${item['url']}`);
-      
+          console.log("---after inside RUmTableView"); 
           // Return an array of promises
           return [submitPromise, cwvPromise];
         })).then(results => {
           // Flatten the array of promises
           const flatResults = results.flat();
-      
+          console.log("---inside then RUmTableView");
           // Add flattened promises to the array
           promises.push(...flatResults);
         }).then(() => {
           // Dummy condition to satisfy the return statement
+          console.log("---inside then return");
           return true;
         })
       ) 

@@ -10,9 +10,9 @@ import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
-import {getUrlBase , queryRequest } from '../../../connectors/utils';
+import {queryRequest } from '../../../connectors/utils';
 
-export async function RumTableView({
+export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {

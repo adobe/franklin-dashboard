@@ -2,6 +2,7 @@ import { Grid, View, Flex} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
+import {queryRequest } from '../../../connectors/utils';
 
 
 export function RumDashboardMain() {
@@ -13,6 +14,14 @@ export function RumDashboardMain() {
     console.log("RumDashboardMain ---------");
   }, [data, fetchFlag]);
 
+  useEffect(async () => {
+    if( data && data.length > 0){
+          const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
+          const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
+          console.log("---after inside RUmTableView"); 
+          const response = await Promise.resolve([submitPromise, cwvPromise]);
+    }
+  },[data])
   const columns = ['url', 'avglcp', 'avgcls', 'avginp', 'views'];
   const columnHeadings = {
     views: ['Formviews', `Total form rendered to a url in date range chosen. Cut off is the end date of the range; i.e, 

@@ -16,6 +16,7 @@ export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {
+    const promises = [];
     const ranges = {
       avglcp: [2.5, 4.00],
       avgfid: [100, 300],
@@ -33,8 +34,8 @@ export function RumTableView({
        Promise.all(data.map(item => {
           console.log("---inside RUmTableView");
           console.log(item);
-          const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3", {}, 'submit', `${item['url']}`);
-          const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3", {}, 'cwv', `${item['url']}`);
+          const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${item['url']}`);
+          const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${item['url']}`);
           console.log("---after inside RUmTableView"); 
           // Return an array of promises
           return [submitPromise, cwvPromise];

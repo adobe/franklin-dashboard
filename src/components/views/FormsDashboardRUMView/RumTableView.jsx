@@ -27,7 +27,7 @@ export async function RumTableView({
       avgcls: '',
     }
     return (
-      data.length > 0 && (
+      data && data.length > 0 && (
         // Execute the loop inside Promise.all() to wait for all promises to resolve
         await Promise.all(data.map(item => {
           const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), {}, 'submit', `${item['url']}`);

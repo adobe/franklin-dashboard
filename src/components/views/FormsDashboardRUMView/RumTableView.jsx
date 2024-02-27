@@ -28,25 +28,7 @@ export async function RumTableView({
       avgcls: '',
     }
     return (
-      data && data.length > 0 && (
-        // Execute the loop inside Promise.all() to wait for all promises to resolve
-        await Promise.all(data.map(item => {
-          const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), {}, 'submit', `${item['url']}`);
-          const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), {}, 'cwv', `${item['url']}`);
-      
-          // Return an array of promises
-          return [submitPromise, cwvPromise];
-        })).then(results => {
-          // Flatten the array of promises
-          const flatResults = results.flat();
-      
-          // Add flattened promises to the array
-          promises.push(...flatResults);
-        }).then(() => {
-          // Dummy condition to satisfy the return statement
-          return true;
-        })
-      ) 
+      data && data.length > 0 
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(

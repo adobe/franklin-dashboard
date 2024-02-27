@@ -90,11 +90,11 @@ export function RumTableView({
                                         }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
-                                        if(window.dashboard["rum-dashboard"+"-"+`${rum['url']}`].results === undefined){
+                                        if(window.dashboard["rum-dashboard"].results === undefined){
                                           queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", 'cwv', `${rum['url']}`);
                                         }
                                       console.log(window);
-                                     const cwvData  = window.dashboard["rum-dashboard"+"-"].results.data;
+                                     const cwvData  = window.dashboard["rum-dashboard"].results.data;
                                      let cwvValue = {};
                                      for(let k= 0; k < cwvData.length ; k += 1){
                                        console.log(cwvData[k]['url']);

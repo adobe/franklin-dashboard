@@ -4,6 +4,7 @@ import {
   Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, Button,
 } from '@adobe/react-spectrum';
 import './RumTableView.css';
+import { useState } from 'react';
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
 import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
 import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
@@ -15,6 +16,8 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
+  const [flag, setFlag] = useState(dataFlag);
+
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -28,16 +31,20 @@ export function RumTableView({
       avgcls: '',
     }
     return (
-      data.length > 0 && (
+      data.length > 0 && (flag || (
         // Execute the loop inside Promise.all() to wait for all promises to resolve
         Promise.all([
           queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`),
           queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`)
-        ]).catch(error => {
+        ]).then(response => {
+          console.log("----flag");
+          console.log(flag);
+          setFlag(true);
+          return true;
+        }).catch(error => {
           // Handle errors here
-        }).then(response => {
-          return (
-          <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+        })
+      )) &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {
@@ -167,8 +174,6 @@ export function RumTableView({
                     }
                 </TableBody>
             </TableView>
-        )})
-             )
     );
   } if (dataFlag) {
     return (

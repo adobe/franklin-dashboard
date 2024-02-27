@@ -139,7 +139,7 @@ export async function sort({ items, sortDescriptor }) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(endpoint, endpointHost, qps = {}) {
+export async function queryRequest(endpoint, endpointHost,qps = {}, type, submitUrl="") {
   const pms = await bidirectionalConversion(endpoint, qps);
 
   // remove http or https prefix in url param if it exists
@@ -163,10 +163,42 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     pms.set('limit', '500');
   }
   const flag = `${endpoint}Flag`;
-  const checkData = () => {
-    if (Object.hasOwn(window, flag) && window[flag] === true) {
+  const checkData = async () => {
+     if(type === 'submit'){
+      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+          .then((resp) => resp.json())
+          .then((data) => {
+            window[flag] = false;
+            if (!Object.hasOwn(window, 'dashboard')) {
+              window.dashboard = {};
+            }
+            window.dashboard[endpoint+"-"+submitUrl] = data;
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error('API Call Has Failed, Check that inputs are correct', err.message);
+          });
+    } 
+    else if(type === 'cwv'){
+      endpoint ="rum-dashboard";
+      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+          .then((resp) => resp.json())
+          .then((data) => {
+            window[flag] = false;
+            if (!Object.hasOwn(window, 'dashboard')) {
+              window.dashboard = {};
+            }
+            window.dashboard[endpoint+"-"+submitUrl] = data;
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error('API Call Has Failed, Check that inputs are correct', err.message);
+          });
+    }
+    else if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);
-    } else if (!Object.hasOwn(window, flag)) {
+    } 
+    else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
       fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
         .then((resp) => resp.json())

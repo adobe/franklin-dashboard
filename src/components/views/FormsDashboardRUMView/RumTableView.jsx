@@ -11,7 +11,7 @@ import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 
-export function RumTableView({
+export async function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {
@@ -27,7 +27,25 @@ export function RumTableView({
       avgcls: '',
     }
     return (
-      data.length > 0
+      data.length > 0 && (
+        // Execute the loop inside Promise.all() to wait for all promises to resolve
+        await Promise.all(data.map(item => {
+          const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), {}, 'submit', `${item['url']}`);
+          const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), {}, 'cwv', `${item['url']}`);
+      
+          // Return an array of promises
+          return [submitPromise, cwvPromise];
+        })).then(results => {
+          // Flatten the array of promises
+          const flatResults = results.flat();
+      
+          // Add flattened promises to the array
+          promises.push(...flatResults);
+        }).then(() => {
+          // Dummy condition to satisfy the return statement
+          return true;
+        })
+      ) 
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
@@ -74,6 +92,8 @@ export function RumTableView({
                         data.map((rum) => <Row>
                                 {(
                                     columns.map((col) => {
+                                      console.log("-------rum-----");
+                                      console.log(rum);
                                       if (col === 'url') {
                                         if(rum[col] === 'Other'){
                                           return <Cell>{rum[col]}</Cell>;
@@ -117,6 +137,21 @@ export function RumTableView({
                                         return <Cell width='size-1500'>
                                                         <Badge width="size-1500" alignSelf='center' variant='info'>
                                                             <Text width="100%">{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>
+                                                        </Badge>
+                                                    </Cell>;
+                                      }
+                                      if (col === 'formsubmission') {
+                                        totalSubmissions =0;
+                                        const submitData  = window.dashboard[endpoint+"-"+`${data[i]['url']}`].results.data;
+                                       for(let k= 0; k < submitData.length ; k += 1){
+                                       if(submitData[k]['url'] === `${rum['url']}`  && ((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
+                                            totalSubmissions = totalSubmissions + Number(submitData[k]['actions']);
+                                            break;
+                                         }
+                                       }
+                                        return <Cell width='size-1500'>
+                                                        <Badge width="size-1500" alignSelf='center' variant='info'>
+                                                            <Text width="100%">{parseInt(totalSubmissions, 10).toLocaleString('en-US')}</Text>
                                                         </Badge>
                                                     </Cell>;
                                       }

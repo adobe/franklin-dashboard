@@ -83,7 +83,7 @@ export function DashboardQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    queryRequest(dataEP, apiEP, config);
+    queryRequest(dataEP, apiEP, config,'render');
   };
 
   const updateData = (cfg = {}) => {

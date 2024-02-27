@@ -2,7 +2,7 @@ import DashboardLayout from '../../core/Layout/Layout.jsx';
 import { RumDashboardMain } from './RumDashboardMain.jsx';
 import './RumDashboardMain.css';
 
-const DashboardRUMView = async() => (
+const DashboardRUMView = () => (
     <DashboardLayout>
         <RumDashboardMain></RumDashboardMain>
     </DashboardLayout>

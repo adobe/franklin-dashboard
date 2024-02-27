@@ -12,7 +12,7 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import {queryRequest } from '../../../connectors/utils';
 
-export async function RumTableView({
+export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   if (data.length > 0) {
@@ -34,7 +34,7 @@ export async function RumTableView({
           const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
           const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
           console.log("---after inside RUmTableView"); 
-          const response = await Promise.resolve([submitPromise, cwvPromise]);
+          const response = await Promise.all([submitPromise, cwvPromise]);
           return response;
         })()
       ) &&  <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>

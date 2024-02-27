@@ -14,7 +14,7 @@ import DashboardRUMPerformanceMonitor from './components/views/DashboardRUMPerfo
 
 import './App.css';
 
-async function App() {
+function App() {
   const navigate = useNavigate();
 
   return (

@@ -5,7 +5,7 @@ import { RumTableView } from './RumTableView';
 import {queryRequest } from '../../../connectors/utils';
 
 
-export async function RumDashboardMain() {
+export function RumDashboardMain() {
   const [data, setData] = useState([]);
   const [fetchFlag, setFetchFlag] = useState(false);
   const [config, setConfig] = useState({});

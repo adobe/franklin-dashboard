@@ -30,10 +30,14 @@ export async function RumTableView({
     return (
       data.length > 0 && (
         // Execute the loop inside Promise.all() to wait for all promises to resolve
-        await Promise.all([
+        Promise.all([
           queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`),
           queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`)
-        ])
+        ]).then(response => {
+          return true;
+        }).catch(error => {
+          // Handle errors here
+        })
       ) &&  <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(

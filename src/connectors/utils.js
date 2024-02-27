@@ -195,7 +195,7 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
-            window.dashboard[endpoint+"-"+submitUrl] = data;
+            window.dashboard[endpoint] = data;
           })
           .catch((err) => {
             // eslint-disable-next-line no-console

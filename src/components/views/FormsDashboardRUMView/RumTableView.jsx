@@ -92,7 +92,7 @@ export function RumTableView({
                                       } if (col.startsWith('avg')) {
                                         console.log("window");
                                         console.log(window.dashboard);
-                                        if(window.dashboard["rum-dashboard"].results === undefined){
+                                        if(window.dashboard["rum-dashboard"]?.results === undefined){
                                           queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", 'cwv', `${rum['url']}`);
                                         }
                                       console.log(window);

@@ -16,8 +16,7 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  const [flag, setFlag] = useState(dataFlag);
-
+  const [flag, setFlag] = useState(false);
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -30,21 +29,25 @@ export function RumTableView({
       avginp: 'ms',
       avgcls: '',
     }
-    return (
-      data.length > 0 && (flag || (
-        // Execute the loop inside Promise.all() to wait for all promises to resolve
+    if (data.length > 0 && (flag || !flag)) {
+      const waitTillResolved = new Promise((resolve, reject) => {
         Promise.all([
           queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`),
           queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`)
         ]).then(response => {
           console.log("----flag");
-          console.log(flag);
+          console.log(flag); // Ensure 'flag' is defined and accessible
           setFlag(true);
-          return true;
+          // Proceed with your logic here
+          resolve(true); // Resolve the outer promise when the inner promise is resolved
         }).catch(error => {
           // Handle errors here
-        })
-      )) &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+          reject(error); // Reject the outer promise if there's an error in the inner promise
+        });
+      });
+    waitTillResolved.then(() => {  
+    return (
+      data.length > 0  && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {
@@ -175,7 +178,9 @@ export function RumTableView({
                 </TableBody>
             </TableView>
     );
-  } if (dataFlag) {
+  })
+}}
+   if (dataFlag) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

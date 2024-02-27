@@ -136,7 +136,14 @@ export function RumTableView({
                                                                 <Text>{displayedNumb + metrics[col]}</Text>
                                                             </Badge>
                                                         </Cell>;
-                                      } if (col === 'pageviews') {
+                                      } if (col === 'views') {
+                                        return <Cell width='size-1500'>
+                                                        <Badge width="size-1500" alignSelf='center' variant='info'>
+                                                            <Text width="100%">{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>
+                                                        </Badge>
+                                                    </Cell>;
+                                      }
+                                      if (col === 'formsubmission') {
                                         return <Cell width='size-1500'>
                                                         <Badge width="size-1500" alignSelf='center' variant='info'>
                                                             <Text width="100%">{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>

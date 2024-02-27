@@ -34,7 +34,7 @@ export function RumTableView({
           const submitPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
           const cwvPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
           console.log("---after inside RUmTableView"); 
-          const response = await Promise.all([submitPromise, cwvPromise]);
+          const response = await Promise.resolve([submitPromise, cwvPromise]);
           return response;
         })()
       )

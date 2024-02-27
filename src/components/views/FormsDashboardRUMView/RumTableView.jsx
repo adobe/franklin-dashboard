@@ -33,7 +33,7 @@ export function RumTableView({
        Promise.all(data.map(item => {
           console.log("---inside RUmTableView");
           console.log(item);
-          const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), {}, 'submit', `${item['url']}`);
+          const submitPromise = queryRequest("rum-checkpoint-urls", getUrlBase("rum-checkpoint-urls"), {}, 'submit', `${item['url']}`);
           const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), {}, 'cwv', `${item['url']}`);
           console.log("---after inside RUmTableView"); 
           // Return an array of promises

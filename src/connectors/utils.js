@@ -165,7 +165,7 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
      if(type === 'submit'){
-      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+      await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;
@@ -181,7 +181,7 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
     } 
     else if(type === 'cwv'){
       endpoint ="rum-dashboard";
-      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+      await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;

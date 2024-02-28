@@ -39,13 +39,14 @@ export function RumTableView({
         ]).then(response => {
           console.log("----flag");
           console.log(flag);
+          console.log(window.dashboard["rum-dashboard"]);
           setFlag(true);
           return true;
         }).catch(error => {
           // Handle errors here
         }).then(response => {
           console.log("----inner flag");
-          console.log(flag);
+          console.log(window.dashboard["rum-dashboard"]);
           return true;
         })
       )) &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>

@@ -228,7 +228,7 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
         });
     }
   };
-  checkData();
+  await checkData();
 }
 
 export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone) {

@@ -102,7 +102,6 @@ makeList();
                                      let cwvValue = {};
                                      for(let k= 0; k < cwvData.length ; k += 1){
                                        console.log(cwvData[k]['url']);
-                                       console.log(data[i]['url']);
                                        if(cwvData[k]['url'] === `${rum['url']}`){
                                         cwvValue = cwvData[k];
                                          break;

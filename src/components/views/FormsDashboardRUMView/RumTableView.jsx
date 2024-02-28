@@ -13,7 +13,7 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import {queryRequest } from '../../../connectors/utils';
 
-export async function RumTableView({
+export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   const [flag, setFlag] = useState(false);
@@ -31,6 +31,7 @@ export async function RumTableView({
       avgcls: '',
     }
 
+const makeList = async () => { 
   let rumCheckpointPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
 
   rumCheckpointPromise.then(response => {
@@ -54,6 +55,8 @@ export async function RumTableView({
   }).catch(error => {
       // Handle errors here
   });
+}
+makeList();
     return (
       data.length > 0  &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>

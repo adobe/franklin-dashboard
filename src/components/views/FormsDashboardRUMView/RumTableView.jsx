@@ -17,6 +17,20 @@ export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   const [flag, setFlag] = useState(false);
+  
+  if (data.length > 0) {
+    const ranges = {
+      avglcp: [2.5, 4.00],
+      avgfid: [100, 300],
+      avginp: [200, 500],
+      avgcls: [0.1, 0.25],
+    };
+    const metrics = {
+      avglcp: 's',
+      avginp: 'ms',
+      avgcls: '',
+    }
+
   let rumCheckpointPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
 
   rumCheckpointPromise.then(response => {
@@ -40,18 +54,6 @@ export function RumTableView({
   }).catch(error => {
       // Handle errors here
   });
-  if (data.length > 0) {
-    const ranges = {
-      avglcp: [2.5, 4.00],
-      avgfid: [100, 300],
-      avginp: [200, 500],
-      avgcls: [0.1, 0.25],
-    };
-    const metrics = {
-      avglcp: 's',
-      avginp: 'ms',
-      avgcls: '',
-    }
     return (
       data.length > 0  &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>

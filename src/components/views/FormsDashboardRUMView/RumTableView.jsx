@@ -53,25 +53,7 @@ export function RumTableView({
       avgcls: '',
     }
     return (
-      data.length > 0 && (flag || (
-        // Execute the loop inside Promise.all() to wait for all promises to resolve
-        Promise.all([
-          queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`),
-          queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`)
-      ]).then(response => {
-          console.log("----flag");
-          console.log(flag);
-          console.log(window.dashboard["rum-dashboard"]);
-          setFlag(true);
-          return true;
-      }).catch(error => {
-          // Handle errors here
-      }).then(() => {
-          console.log("Next set of code after promise is resolved");
-          // Place your code here that you want to execute after the promise is resolved
-          console.log(window.dashboard["rum-dashboard"]);
-      })
-      )) &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+      data.length > 0  &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {

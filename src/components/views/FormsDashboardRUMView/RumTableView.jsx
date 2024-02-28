@@ -150,9 +150,17 @@ makeList();
                                                     </Cell>;
                                       }
                                       if (col === 'formsubmission') {
+                                        let totalSubmission = 0;
+                                        const submitData  = window.dashboard["rum-checkpoint-urls"+"-"+'submit'].results.data;
+                                        for(let k= 0; k < submitData.length ; k += 1){
+                                            if(submitData[k]['url'] === `${rum['url']}`  && ((`${submitData[k]['source']}`.indexOf(".form") !== -1) || (`${submitData[k]['source']}`.indexOf("mktoForm") !== -1))){
+                                              totalSubmission = Number(submitData[k]['actions']);
+                                              break;
+                                             }
+                                         }
                                         return <Cell width='size-1500'>
                                                         <Badge width="size-1500" alignSelf='center' variant='info'>
-                                                            <Text width="100%">{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>
+                                                            <Text width="100%">{parseInt(totalSubmission, 10).toLocaleString('en-US')}</Text>
                                                         </Badge>
                                                     </Cell>;
                                       }

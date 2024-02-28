@@ -188,13 +188,17 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
     } 
     else if(type === 'cwv'){
       endpoint ="rum-dashboard";
+      console.log("indie cwv");
       await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
+            console.log("indie cwv data");
+            console.log(data);
             window[flag] = false;
             if (!Object.hasOwn(window, 'dashboard')) {
               window.dashboard = {};
             }
+            console.log("indie cwv data endpoint");
             window.dashboard[endpoint] = data;
           })
           .catch((err) => {

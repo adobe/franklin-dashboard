@@ -16,8 +16,30 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  const [flag, setFlag] = useState(dataFlag);
+  const [flag, setFlag] = useState(false);
+  let rumCheckpointPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
 
+  rumCheckpointPromise.then(response => {
+      console.log("----flag");
+      console.log(flag);
+      setFlag(false);
+      return true;
+  }).catch(error => {
+      // Handle errors here
+  }).then(() => {
+      console.log("Next set of code after promise is resolved");
+  });
+  
+  let rumDashboardPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
+  
+  rumDashboardPromise.then(response => {
+      // Handle the response of the second queryRequest if needed
+      console.log(window.dashboard["rum-dashboard"]);
+      console.log("Next set of code after promise is rumDashboardPromise");
+
+  }).catch(error => {
+      // Handle errors here
+  });
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],

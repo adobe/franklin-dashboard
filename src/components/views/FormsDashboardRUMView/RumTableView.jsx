@@ -45,8 +45,8 @@ const makeList = async () => {
       console.log("Next set of code after promise is resolved");
   });
   
-  let rumDashboardPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
-  
+  let rumDashboardPromise = await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
+  console.log(window.dashboard["rum-dashboard"]);
   await rumDashboardPromise.then(response => {
       // Handle the response of the second queryRequest if needed
       console.log(window.dashboard["rum-dashboard"]);

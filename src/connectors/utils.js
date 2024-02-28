@@ -157,6 +157,9 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
   }
   const limit = (pms.get('limit') && (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '')) ? pms.get('limit') : '150';
   pms.set('limit', limit);
+  if(type === 'submit' || type === 'cwv'){
+    pms.set('limit',2000);
+  }
 
 
   /*

@@ -92,25 +92,17 @@ makeList();
                                         }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
-                                        console.log("window");
-                                        console.log(window.dashboard);
-                                        if(window.dashboard["rum-dashboard"]?.results === undefined){
-                                          queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", 'cwv', `${rum['url']}`);
+                                        const dashboard = window.dashboard?.["rum-dashboard"];
+                                        if (!dashboard || !dashboard.results) {
+                                             queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", 'cwv', `${rum['url']}`);
+                                             return null; // Since we're querying data, exit and wait for the response
                                         }
-                                      console.log(window);
-                                     const cwvData  = window.dashboard["rum-dashboard"]?.results?.data || [];
-                                     let cwvValue = {};
-                                     for(let k= 0; k < cwvData.length ; k += 1){
-                                       console.log(cwvData[k]['url']);
-                                       if(cwvData[k]['url'] === `${rum['url']}`){
-                                        cwvValue = cwvData[k];
-                                         break;
-                                       }
-                                     }
-                                     console.log("----cwvValue");
-                                     console.log(cwvValue);
+
+                                        const cwvData = dashboard.results.data || [];
+                                        const cwvValue = cwvData.find(data => data.url === rum.url) || {};
+
                                         const currCol = col === 'avglcp' && cwvValue[col] ? cwvValue[col] / 1000 : cwvValue[col];
-                                        const numb = parseFloat(currCol).toFixed(2).toLocaleString('en-US');
+                                        const numb = parseFloat(currCol || 0).toFixed(2).toLocaleString('en-US');
                                         const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
                                         if (displayedNumb && displayedNumb <= ranges[col][0]) {
                                           return <Cell width='size-1000'>

@@ -36,19 +36,19 @@ export function RumTableView({
         Promise.all([
           queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`),
           queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`)
-        ]).then(response => {
+      ]).then(response => {
           console.log("----flag");
           console.log(flag);
           console.log(window.dashboard["rum-dashboard"]);
           setFlag(true);
           return true;
-        }).catch(error => {
+      }).catch(error => {
           // Handle errors here
-        }).then(response => {
-          console.log("----inner flag");
+      }).then(() => {
+          console.log("Next set of code after promise is resolved");
+          // Place your code here that you want to execute after the promise is resolved
           console.log(window.dashboard["rum-dashboard"]);
-          return true;
-        })
+      })
       )) &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(

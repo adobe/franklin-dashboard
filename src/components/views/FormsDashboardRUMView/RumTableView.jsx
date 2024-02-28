@@ -32,34 +32,14 @@ export function RumTableView({
     }
 
 const makeList = async () => { 
-  let rumCheckpointPromise = queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
-
-  rumCheckpointPromise.then(response => {
-      console.log("----flag");
-      console.log(flag);
-      setFlag(false);
-      return true;
-  }).catch(error => {
-      // Handle errors here
-  }).then(() => {
-      console.log("Next set of code after promise is resolved");
-  });
-  
-  let rumDashboardPromise = await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
+  await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
+  await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
   console.log(window.dashboard["rum-dashboard"]);
   console.log("rum-dashboard");
-  await rumDashboardPromise.then(response => {
-      // Handle the response of the second queryRequest if needed
-      console.log(window.dashboard["rum-dashboard"]);
-      console.log("Next set of code after promise is rumDashboardPromise");
-
-  }).catch(error => {
-      // Handle errors here
-  });
 }
 makeList();
     return (
-      data.length > 0  &&  flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+      data.length > 0  && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {

@@ -13,7 +13,7 @@ import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
 import {queryRequest } from '../../../connectors/utils';
 
-export function RumTableView({
+export async function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   const [flag, setFlag] = useState(false);
@@ -46,7 +46,7 @@ export function RumTableView({
   
   let rumDashboardPromise = queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
   
-  rumDashboardPromise.then(response => {
+  await rumDashboardPromise.then(response => {
       // Handle the response of the second queryRequest if needed
       console.log(window.dashboard["rum-dashboard"]);
       console.log("Next set of code after promise is rumDashboardPromise");

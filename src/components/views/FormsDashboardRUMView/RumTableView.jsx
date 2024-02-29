@@ -17,7 +17,7 @@ export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   const [flag, setFlag] = useState(false);
-  
+  const urlMap = {};
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -36,6 +36,13 @@ const makeList = async () => {
   await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
   console.log(window.dashboard["rum-dashboard"]);
   console.log("rum-dashboard");
+  const cwvData = window.dashboard["rum-dashboard"].results.data || [];
+
+// Iterate through cwvData to populate the map
+cwvData.forEach(data => {
+    // Assuming data.url is the URL property
+    urlMap[data.url] = data;
+});
   setFlag(true);
 }
 makeList();
@@ -92,14 +99,8 @@ makeList();
                                         }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
-                                        const dashboard = window.dashboard?.["rum-dashboard"];
-                                        if (!dashboard || !dashboard.results) {
-                                             queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", 'cwv', `${rum['url']}`);
-                                             return null; // Since we're querying data, exit and wait for the response
-                                        }
-
-                                        const cwvData = dashboard.results.data || [];
-                                        const cwvValue = cwvData.find(data => data.url === rum.url) || {};
+                                        
+                                        const cwvValue = urlMap.get(rum.url) || {};
 
                                         const currCol = col === 'avglcp' && cwvValue[col] ? cwvValue[col] / 1000 : cwvValue[col];
                                         const numb = parseFloat(currCol || 0).toFixed(2).toLocaleString('en-US');

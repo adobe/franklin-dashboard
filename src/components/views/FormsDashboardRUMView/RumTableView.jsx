@@ -31,7 +31,7 @@ export function RumTableView({
       avgcls: '',
     }
 
-const makeList = async () => { 
+  useEffect( async () => {
   await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
   await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
   console.log(window.dashboard["rum-dashboard"]);
@@ -43,8 +43,7 @@ cwvData.forEach(data => {
     urlMap[data.url] = data;
 });
   setFlag(true);
-}
-makeList();
+}, [flag]);
     return (
       data.length > 0  && flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>

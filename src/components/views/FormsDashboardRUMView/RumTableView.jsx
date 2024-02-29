@@ -37,7 +37,6 @@ const makeList = async () => {
   console.log(window.dashboard["rum-dashboard"]);
   console.log("rum-dashboard");
   const cwvData = window.dashboard["rum-dashboard"].results.data || [];
-
 // Iterate through cwvData to populate the map
 cwvData.forEach(data => {
     // Assuming data.url is the URL property
@@ -174,7 +173,7 @@ makeList();
                 </TableBody>
             </TableView>
     );
-  } if (dataFlag) {
+  } if (dataFlag && !flag) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

@@ -1,7 +1,7 @@
 import { Grid, View, Flex} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
-import { RumTableView } from '../DashboardRUMView/RumTableView';
+import { RumTableView } from './RumTableView';
 
 
 export function RumDashboardMain() {

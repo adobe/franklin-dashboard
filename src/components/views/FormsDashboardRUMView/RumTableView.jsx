@@ -16,7 +16,7 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  const [dataLoaded, setDataLoaded] = useState(false);
+  const dataLoaded = true;
   const urlMap = {};
   console.log("inside useeffect block 123");
   if (data.length > 0) {
@@ -32,18 +32,7 @@ export function RumTableView({
       avgcls: '',
     }
 
-  useEffect( async () => {
-  console.log("inside useeffect block");  
-  await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
-  await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
-  console.log("rum-dashboard");
-  const cwvData = window.dashboard["rum-dashboard"].results.data || [];
-  cwvData.forEach(data => {
-    // Assuming data.url is the URL property
-    urlMap[data.url] = data;
-  });
-  setDataLoaded(true);
-}, [dataLoaded]);
+  
     return (
       data.length > 0  && dataLoaded && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>

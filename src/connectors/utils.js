@@ -139,7 +139,7 @@ export async function sort({ items, sortDescriptor }) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(endpoint, endpointHost,qps = {}, type, submitUrl="") {
+export async function queryRequest(endpoint, endpointHost,qps = {}, type) {
   const pms = await bidirectionalConversion(endpoint, qps);
 
   // remove http or https prefix in url param if it exists
@@ -149,11 +149,9 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
   if(type === 'render'){
     pms.set("source",".form");
     pms.set('checkpoint', 'viewblock');
-    console.log("----source value .form ");
   }
   if(type === 'submit'){
     pms.set('checkpoint', 'formsubmit');
-    console.log("----source value .formsubmit ");
   }
   const limit = (pms.get('limit') && (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '')) ? pms.get('limit') : '150';
   pms.set('limit', limit);
@@ -191,7 +189,6 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type, submit
     } 
     else if(type === 'cwv'){
       endpoint ="rum-dashboard";
-      console.log("indie cwv");
       await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {

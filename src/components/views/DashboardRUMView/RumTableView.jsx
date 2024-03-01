@@ -10,7 +10,6 @@ import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
-import {getUrlBase , queryRequest } from '../../../connectors/utils';
 
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
@@ -28,28 +27,7 @@ export function RumTableView({
       avgcls: '',
     }
     return (
-      data.length > 0 && (
-        // Execute the loop inside Promise.all() to wait for all promises to resolve
-       Promise.all(data.map(item => {
-          console.log("---inside RUmTableView");
-          console.log(item);
-          const submitPromise = queryRequest(endpoint, getUrlBase(endpoint), {}, 'submit', `${item['url']}`);
-          const cwvPromise = queryRequest("rum-dashboard", getUrlBase("rum-dashboard"), {}, 'cwv', `${item['url']}`);
-          console.log("---after inside RUmTableView"); 
-          // Return an array of promises
-          return [submitPromise, cwvPromise];
-        })).then(results => {
-          // Flatten the array of promises
-          const flatResults = results.flat();
-          console.log("---inside then RUmTableView");
-          // Add flattened promises to the array
-          promises.push(...flatResults);
-        }).then(() => {
-          // Dummy condition to satisfy the return statement
-          console.log("---inside then return");
-          return true;
-        })
-      ) 
+      data.length > 0
             && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(

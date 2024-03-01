@@ -4,7 +4,7 @@ import {
   Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, Button,
 } from '@adobe/react-spectrum';
 import './RumTableView.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
 import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
 import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
@@ -16,9 +16,8 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  const [dataLoaded, setDataLoaded] = useState(false);
+  const [flag, setFlag] = useState(false);
   const urlMap = {};
-  console.log("inside useeffect block 123");
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -32,20 +31,23 @@ export function RumTableView({
       avgcls: '',
     }
 
-  useEffect( async () => {
-  console.log("inside useeffect block");  
-  await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
-  await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
+const makeList = async () => { 
+  await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
+  await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
+  console.log(window.dashboard["rum-dashboard"]);
   console.log("rum-dashboard");
   const cwvData = window.dashboard["rum-dashboard"].results.data || [];
-  cwvData.forEach(data => {
+
+// Iterate through cwvData to populate the map
+cwvData.forEach(data => {
     // Assuming data.url is the URL property
     urlMap[data.url] = data;
-  });
-  setDataLoaded(true);
-}, [dataLoaded]);
+});
+  setFlag(true);
+}
+makeList();
     return (
-      data.length > 0  && dataLoaded && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+      data.length > 0  && flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {
@@ -172,7 +174,7 @@ export function RumTableView({
                 </TableBody>
             </TableView>
     );
-  } if (dataFlag && !dataLoaded) {
+  } if (dataFlag) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

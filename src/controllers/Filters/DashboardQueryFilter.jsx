@@ -207,7 +207,7 @@ export function DashboardQueryFilter({
     const startdate = start;
     const enddate = end;
 
-    handleRedirect(url, domainkey, startdate, enddate, limit, timezone);
+    handleRedirect(url, domainkey, startdate, enddate, limit, timezone, formsURL);
   };
 
   return globalUrl && (

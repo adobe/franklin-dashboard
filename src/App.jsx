@@ -23,7 +23,7 @@ function App() {
         <Routes>
           <Route path='/' element={<DashboardDataDeskLanding/>} index></Route>
           <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
-          <Route path='/rum-dashboard' element={<DashboardRumView/>}></Route>
+          <Route path='/rum-dashboard' element={<DashboardRUMView/>}></Route>
           <Route path='/pageviews-report' element={<DashboardRUMPerformanceMonitor/>}></Route>
         </Routes>
         <ToastContainer />

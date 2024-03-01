@@ -16,7 +16,7 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  //const [flag, setFlag] = useState(false);
+  const [flag, setFlag] = useState(false);
   const urlMap = {};
   console.log("inside useeffect block 123");
   if (data.length > 0) {
@@ -42,10 +42,10 @@ export function RumTableView({
     // Assuming data.url is the URL property
     urlMap[data.url] = data;
   });
-  //setFlag(true);
-}, [dataFlag]);
+  setFlag(true);
+}, []);
     return (
-      data.length > 0  && dataFlag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+      data.length > 0  && flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {
@@ -172,7 +172,7 @@ export function RumTableView({
                 </TableBody>
             </TableView>
     );
-  } if (dataFlag) {
+  } if (dataFlag && !flag) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

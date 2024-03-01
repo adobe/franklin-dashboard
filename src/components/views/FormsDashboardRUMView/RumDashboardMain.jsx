@@ -2,6 +2,7 @@ import { Grid, View, Flex} from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
+import {queryRequest } from '../../../connectors/utils';
 
 
 export function RumDashboardMain() {
@@ -10,6 +11,7 @@ export function RumDashboardMain() {
   const [config, setConfig] = useState({});
 
   useEffect(() => {
+    console.log("RumDashboardMain ---------");
   }, [data, fetchFlag]);
 
   const columns = ['url','views','formsubmission', 'avglcp', 'avgcls', 'avginp'];

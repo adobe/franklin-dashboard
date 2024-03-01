@@ -16,8 +16,9 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  const [dataLoaded,  ] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const urlMap = {};
+  console.log("inside useeffect block 123");
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -32,6 +33,7 @@ export function RumTableView({
     }
 
   useEffect( async () => {
+  console.log("inside useeffect block");  
   await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
   await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
   console.log("rum-dashboard");

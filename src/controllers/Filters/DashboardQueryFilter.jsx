@@ -16,7 +16,7 @@ import {
 
 export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
-  apiEndpoint, data, setter, dataFlag, flagSetter,
+  apiEndpoint, data, setter, dataFlag, flagSetter,formsURL = false
 }) {
   const [filterData, setFilterData] = React.useState([]);
   const {
@@ -76,8 +76,6 @@ export function DashboardQueryFilter({
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
   const getQuery = (cfg = {}) => {
-    console.log("------cfg--------");
-    console.log(cfg);
     const {
       url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP,
     } = cfg;
@@ -85,7 +83,12 @@ export function DashboardQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    queryRequest(dataEP, apiEP, config,'render');
+    if(formsURL){
+      queryRequest(dataEP, apiEP, config,'render');
+    }
+    else {
+        queryRequest(dataEP, apiEP, config);
+    }
   };
 
   const updateData = (cfg = {}) => {

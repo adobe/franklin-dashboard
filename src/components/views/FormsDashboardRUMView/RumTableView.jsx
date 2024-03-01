@@ -16,7 +16,7 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  const dataLoaded = true;
+  const dataLoaded = false;
   const urlMap = {};
   console.log("inside useeffect block 123");
   if (data.length > 0) {

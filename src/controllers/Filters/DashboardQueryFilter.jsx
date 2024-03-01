@@ -76,6 +76,8 @@ export function DashboardQueryFilter({
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
   const getQuery = (cfg = {}) => {
+    console.log("------cfg--------");
+    console.log(cfg);
     const {
       url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP,
     } = cfg;

@@ -23,6 +23,10 @@ const NavigationTabs = () => {
   }
 
   const currentQueryParameters = new URLSearchParams(location.search);
+  // add timezone param if it is not present
+  if (!currentQueryParameters.has('timezone')) {
+    currentQueryParameters.set('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
 
   return (
     <Provider colorScheme="light" theme={defaultTheme}>
@@ -42,6 +46,34 @@ const NavigationTabs = () => {
             RUM Dashboard
         </Button>
           <Tooltip>Explore RUM Dashboard for {globalUrl}</Tooltip>
+        </TooltipTrigger>
+        &nbsp;&nbsp;
+
+        <TooltipTrigger delay={0}>
+        <Button variant={currentTab === '404-reports' ? 'cta' : 'primary'}
+            onPress={() => {
+              if (navigate) {
+                navigate(`/404-reports?${currentQueryParameters.toString()}`);
+              }
+            }}
+        >
+            404 Reports
+        </Button>
+          <Tooltip>Explore 404 reports for {globalUrl}</Tooltip>
+        </TooltipTrigger>
+        &nbsp;&nbsp;
+
+        <TooltipTrigger delay={0}>
+        <Button variant={currentTab === 'pageviews-report' ? 'cta' : 'primary'}
+            onPress={() => {
+              if (navigate) {
+                navigate(`/pageviews-report?${currentQueryParameters.toString()}`);
+              }
+            }}
+        >
+            Pageviews Chart
+        </Button>
+          <Tooltip>Explore Pageviews for {globalUrl}</Tooltip>
         </TooltipTrigger>
 
         </div>

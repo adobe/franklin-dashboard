@@ -4,7 +4,7 @@ import {
   Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, Button,
 } from '@adobe/react-spectrum';
 import './RumTableView.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
 import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
 import CloseCircle from '@spectrum-icons/workflow/CloseCircle';

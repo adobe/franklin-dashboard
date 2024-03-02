@@ -104,8 +104,12 @@ makeList();
                                         }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
-                                        
-                                        const cwvValue = window.dashboard['cwvMap'].get(rum.url) || {};
+                                        const cwvMapObject = window.dashboard['cwvMap'];
+
+                                       // Convert object to Map
+                                        const cwvMap = new Map(Object.entries(cwvMapObject));
+
+                                        const cwvValue =cwvMap.get(rum.url) || {};
 
                                         const currCol = col === 'avglcp' && cwvValue[col] ? cwvValue[col] / 1000 : cwvValue[col];
                                         const numb = parseFloat(currCol || 0).toFixed(2).toLocaleString('en-US');

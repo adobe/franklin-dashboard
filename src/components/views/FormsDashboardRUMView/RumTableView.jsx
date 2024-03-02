@@ -33,24 +33,7 @@ export function RumTableView({
     }
 
     useEffect(() => {
-      const fetchData = async () => {
-          console.log("inside useEffect block");
-          if(window.dashboard["rum-dashboard"] === undefined){  
-              await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
-              await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
-              console.log("rum-dashboard");
-              const cwvData = window.dashboard["rum-dashboard"]?.results?.data || [];
-              if (cwvData.length > 0) {
-                  cwvData.forEach(data => {
-                      // Assuming data.url is the URL property
-                      urlMap[data.url] = data;
-                  });
-                  setFlag(true);
-              }
-          }
-      };
-  
-      fetchData(); // Call the async function
+       setFlag(true);
   }, []); 
     
     return (

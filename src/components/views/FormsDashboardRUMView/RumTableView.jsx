@@ -38,7 +38,7 @@ const makeList = async () => {
   console.log("rum-dashboard");
   const cwvData = window.dashboard["rum-dashboard"].results.data || [];
 // Iterate through cwvData to populate the map
-cwvData.forEach(data => {
+await cwvData.forEach(data => {
     // Assuming data.url is the URL property
     urlMap[data.url] = data;
     console.log("data.url");

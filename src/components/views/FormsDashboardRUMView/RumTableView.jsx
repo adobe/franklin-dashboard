@@ -33,7 +33,7 @@ export function RumTableView({
     }
 
     useEffect(() => {
-       setFlag(true);
+       console.log("test");
   }, []); 
     
     return (

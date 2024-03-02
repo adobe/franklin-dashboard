@@ -31,10 +31,6 @@ export function RumTableView({
       avginp: 'ms',
       avgcls: '',
     }
-
-    useEffect(() => {
-       console.log("test");
-  }, [flag]); 
     
     return (
       data.length > 0  && flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>

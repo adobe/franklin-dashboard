@@ -43,6 +43,7 @@ cwvData.forEach(data => {
     urlMap[data.url] = data;
     console.log("data.url");
     console.log(data.url);
+    console.log(urlMap); 
 });
   setFlag(true);
 }

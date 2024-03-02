@@ -41,6 +41,8 @@ const makeList = async () => {
 cwvData.forEach(data => {
     // Assuming data.url is the URL property
     urlMap[data.url] = data;
+    console.log("data.url");
+    console.log(data.url);
 });
   setFlag(true);
 }

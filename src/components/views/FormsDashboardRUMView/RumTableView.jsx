@@ -32,6 +32,7 @@ export function RumTableView({
     }
 
 const makeList = async () => { 
+  if( window.dashboard && window.dashboard["rum-dashboard"] === undefined){
   await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
   await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
   console.log(window.dashboard["rum-dashboard"]);
@@ -46,6 +47,7 @@ await cwvData.forEach(data => {
     console.log(urlMap); 
 });
   setFlag(true);
+}
 }
 makeList();
     return (

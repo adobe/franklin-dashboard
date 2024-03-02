@@ -4,7 +4,7 @@ import {
   Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, Button,
 } from '@adobe/react-spectrum';
 import './RumTableView.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
 import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
 import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
@@ -18,8 +18,6 @@ export function RumTableView({
 }) {
   const [flag, setFlag] = useState(false);
   const urlMap = {};
-  console.log("inside useeffect block 123");
-  
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -32,22 +30,21 @@ export function RumTableView({
       avginp: 'ms',
       avgcls: '',
     }
-    useEffect(async () => {
-      console.log("inside useEffect block");
-      if(window?.dashboard && window?.dashboard["rum-dashboard"] === undefined){  
-        await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
-        await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
-        console.log("rum-dashboard");
-        const cwvData = window.dashboard["rum-dashboard"]?.results?.data || [];
-        if (cwvData.length > 0) {
-          cwvData.forEach(data => {
-            // Assuming data.url is the URL property
-            urlMap[data.url] = data;
-          });
-          setFlag(true);
-        }
-      }
-      }, [flag]);
+
+const makeList = async () => { 
+  await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
+  await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
+  console.log(window.dashboard["rum-dashboard"]);
+  console.log("rum-dashboard");
+  const cwvData = window.dashboard["rum-dashboard"].results.data || [];
+// Iterate through cwvData to populate the map
+cwvData.forEach(data => {
+    // Assuming data.url is the URL property
+    urlMap[data.url] = data;
+});
+  setFlag(true);
+}
+makeList();
     return (
       data.length > 0  && flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>

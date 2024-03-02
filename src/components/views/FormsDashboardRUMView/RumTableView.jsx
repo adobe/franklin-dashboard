@@ -17,7 +17,6 @@ export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
   const [flag, setFlag] = useState(false);
-  const urlMap = {};
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -39,6 +38,7 @@ const makeList = async () => {
   console.log("rum-dashboard");
   const cwvData = window.dashboard["rum-dashboard"].results.data || [];
 // Iterate through cwvData to populate the map
+const urlMap = {};
 await cwvData.forEach(data => {
     // Assuming data.url is the URL property
     urlMap[data.url] = data;
@@ -46,6 +46,7 @@ await cwvData.forEach(data => {
     console.log(data.url);
     console.log(urlMap); 
 });
+window.dashboard['cwvMap'] = urlMap;
   setFlag(true);
 }
 }
@@ -104,7 +105,7 @@ makeList();
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
                                         
-                                        const cwvValue = urlMap.get(rum.url) || {};
+                                        const cwvValue = window.dashboard['cwvMap'].get(rum.url) || {};
 
                                         const currCol = col === 'avglcp' && cwvValue[col] ? cwvValue[col] / 1000 : cwvValue[col];
                                         const numb = parseFloat(currCol || 0).toFixed(2).toLocaleString('en-US');

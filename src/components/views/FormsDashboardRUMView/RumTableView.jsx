@@ -21,7 +21,7 @@ export function RumTableView({
   console.log("inside useeffect block 123");
   useEffect(async () => {
     console.log("inside useEffect block");
-    if(window.dashboard["rum-dashboard"] === undefined){  
+    if(window?.dashboard && window?.dashboard["rum-dashboard"] === undefined){  
       await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
       await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
       console.log("rum-dashboard");

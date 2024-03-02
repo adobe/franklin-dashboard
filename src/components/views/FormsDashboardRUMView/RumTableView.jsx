@@ -32,9 +32,20 @@ export function RumTableView({
 
 const makeList = async () => { 
   if( window.dashboard && window.dashboard["rum-dashboard"] === undefined){
-  await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit', `${data[0]['url']}`);
-  await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv', `${data[0]['url']}`);
-  console.log(window.dashboard["rum-dashboard"]);
+    try {
+      const [checkpointUrls, dashboardData] = await Promise.all([
+          queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit'),
+          queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv')
+      ]);
+      
+      console.log("rum-checkpoint-urls", checkpointUrls);
+      console.log("rum-dashboard", dashboardData);
+
+      // Process the responses as needed
+  } catch (error) {
+      console.error("Error fetching data:", error);
+      // Handle errors
+  }
   console.log("rum-dashboard");
   const cwvData = window.dashboard["rum-dashboard"].results.data || [];
 // Iterate through cwvData to populate the map

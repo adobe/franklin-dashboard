@@ -32,22 +32,26 @@ export function RumTableView({
       avgcls: '',
     }
 
-    useEffect(async () => {
-    console.log("inside useEffect block");
-    if(window.dashboard["rum-dashboard"] === undefined){  
-      await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
-      await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
-      console.log("rum-dashboard");
-      const cwvData = window.dashboard["rum-dashboard"]?.results?.data || [];
-      if (cwvData.length > 0) {
-        cwvData.forEach(data => {
-          // Assuming data.url is the URL property
-          urlMap[data.url] = data;
-        });
-        setFlag(true);
-      }
-    }
-    }, []);
+    useEffect(() => {
+      const fetchData = async () => {
+          console.log("inside useEffect block");
+          if(window.dashboard["rum-dashboard"] === undefined){  
+              await queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit');
+              await queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv');
+              console.log("rum-dashboard");
+              const cwvData = window.dashboard["rum-dashboard"]?.results?.data || [];
+              if (cwvData.length > 0) {
+                  cwvData.forEach(data => {
+                      // Assuming data.url is the URL property
+                      urlMap[data.url] = data;
+                  });
+                  setFlag(true);
+              }
+          }
+      };
+  
+      fetchData(); // Call the async function
+  }, []); 
     
     return (
       data.length > 0  && flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>

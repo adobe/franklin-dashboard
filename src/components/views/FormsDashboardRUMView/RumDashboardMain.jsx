@@ -13,7 +13,7 @@ export function RumDashboardMain() {
     console.log("RumDashboardMain ---------");
   }, [data, fetchFlag]);
 
-  const columns = ['url','views','formsubmission', 'avglcp', 'avgcls', 'avginp'];
+  const columns = ['url','views','submissions', 'avglcp', 'avgcls', 'avginp'];
   const columnHeadings = {
     views: ['Formviews', `Total form rendered to a url in date range chosen. Cut off is the end date of the range; i.e, 
     if you choose 1/1/2023 - 1/2/2023 you will only see results with dates that are less than 1/2/2023 not inclusive.`],

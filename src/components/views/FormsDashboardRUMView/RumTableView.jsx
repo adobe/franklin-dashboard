@@ -38,7 +38,7 @@ export function RumTableView({
                             const hostname = data[0][key] ? new URL(data[0][key].startsWith('https://') ? data[0][key] : `https://${data[0][key]}`).hostname : '';
                             return <Column align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
                           }
-                          if(key !== 'views' && key !== 'formsubmission') {
+                          if(key !== 'views' && key !== 'submissions') {
                             return (
                                 <Column align="center">
                                     <ContextualHelp variant="info">

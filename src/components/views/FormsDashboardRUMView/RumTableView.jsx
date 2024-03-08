@@ -4,14 +4,12 @@ import {
   Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, Button,
 } from '@adobe/react-spectrum';
 import './RumTableView.css';
-import { useState } from 'react';
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
 import AlertCircle from '@spectrum-icons/workflow/AlertCircle';
 import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
-import {queryRequest } from '../../../connectors/utils';
 
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter

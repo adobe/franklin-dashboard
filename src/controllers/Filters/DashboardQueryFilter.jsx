@@ -16,7 +16,7 @@ import {
 
 export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
-  apiEndpoint, data, setter, dataFlag, flagSetter,formsURL = false
+  apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
   const {
@@ -68,6 +68,7 @@ export function DashboardQueryFilter({
 
   let timezone = new URLSearchParams(window.location.search).get('timezone');
   if (timezone === 'null' || timezone == null) timezone = '';
+  if (timezone === '') timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   useEffect(() => {
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
@@ -83,12 +84,7 @@ export function DashboardQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    if(formsURL){
-      queryRequest(dataEP, apiEP, config,'render');
-    }
-    else {
-        queryRequest(dataEP, apiEP, config);
-    }
+    queryRequest(dataEP, apiEP, config);
   };
 
   const updateData = (cfg = {}) => {
@@ -207,7 +203,7 @@ export function DashboardQueryFilter({
     const startdate = start;
     const enddate = end;
 
-    handleRedirect(url, domainkey, startdate, enddate, limit, timezone, formsURL);
+    handleRedirect(url, domainkey, startdate, enddate, limit, timezone);
   };
 
   return globalUrl && (

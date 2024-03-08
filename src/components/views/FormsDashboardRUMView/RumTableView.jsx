@@ -16,7 +16,6 @@ import {queryRequest } from '../../../connectors/utils';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
-  const [flag, setFlag] = useState(false);
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -30,40 +29,8 @@ export function RumTableView({
       avgcls: '',
     }
 
-const makeList = async () => { 
-  if( window.dashboard && window.dashboard["rum-dashboard"] === undefined){
-    try {
-      const [checkpointUrls, dashboardData] = await Promise.all([
-          queryRequest("rum-checkpoint-urls", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'submit'),
-          queryRequest("rum-dashboard", "https://helix-pages.anywhere.run/helix-services/run-query@v3/", {}, 'cwv')
-      ]);
-      
-      console.log("rum-checkpoint-urls", checkpointUrls);
-      console.log("rum-dashboard", dashboardData);
-
-      // Process the responses as needed
-  } catch (error) {
-      console.error("Error fetching data:", error);
-      // Handle errors
-  }
-  console.log("rum-dashboard");
-  const cwvData = window.dashboard["rum-dashboard"].results.data || [];
-// Iterate through cwvData to populate the map
-const urlMap = {};
-await cwvData.forEach(data => {
-    // Assuming data.url is the URL property
-    urlMap[data.url] = data;
-    console.log("data.url");
-    console.log(data.url);
-    console.log(urlMap); 
-});
-window.dashboard['cwvMap'] = urlMap;
-  setFlag(true);
-}
-}
-makeList();
     return (
-      data.length > 0  && flag && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+      data.length > 0  && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
                 <TableHeader>
                     {(
                         columns.map((key) => {
@@ -115,15 +82,8 @@ makeList();
                                         }
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
-                                        const cwvMapObject = window.dashboard['cwvMap'];
-
-                                       // Convert object to Map
-                                        const cwvMap = new Map(Object.entries(cwvMapObject));
-
-                                        const cwvValue =cwvMap.get(rum.url) || {};
-
-                                        const currCol = col === 'avglcp' && cwvValue[col] ? cwvValue[col] / 1000 : cwvValue[col];
-                                        const numb = parseFloat(currCol || 0).toFixed(2).toLocaleString('en-US');
+                                        const currCol = col === 'avglcp' && rum[col] ? rum[col] / 1000 : rum[col];
+                                        const numb = parseFloat(currCol).toFixed(2).toLocaleString('en-US');
                                         const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
                                         if (displayedNumb && displayedNumb <= ranges[col][0]) {
                                           return <Cell width='size-1000'>
@@ -162,21 +122,11 @@ makeList();
                                                         </Badge>
                                                     </Cell>;
                                       }
-                                      if (col === 'formsubmission') {
-                                        let totalSubmission = 0;
-                                        const submitData = window.dashboard["rum-checkpoint-urls-submit"]?.results?.data || [];
-
-                                        for (const data of submitData) {
-                                            const { url, source, actions } = data;
-                                            if (url === rum.url && (source.includes(".form") || source.includes("mktoForm"))) {
-                                               totalSubmission = Number(actions);
-                                               break;
-                                             }
-                                        }
-
+                                      if (col === 'submissions') {
+                                        
                                         return <Cell width='size-1500'>
                                                         <Badge width="size-1500" alignSelf='center' variant='info'>
-                                                            <Text width="100%">{parseInt(totalSubmission, 10).toLocaleString('en-US')}</Text>
+                                                            <Text width="100%">{parseInt(rum[col], 10).toLocaleString('en-US')}</Text>
                                                         </Badge>
                                                     </Cell>;
                                       }
@@ -194,7 +144,7 @@ makeList();
                 </TableBody>
             </TableView>
     );
-  } if (dataFlag && !flag) {
+  } if (dataFlag) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

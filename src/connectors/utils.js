@@ -113,6 +113,11 @@ async function bidirectionalConversion(endpoint, qps = {}) {
   params.set('interval', -1);
   params.set('offset', -1);
 
+  // add timezone param if it is not present
+  if (!params.has('timezone')) {
+    params.set('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
+
   return params;
 }
 
@@ -139,26 +144,16 @@ export async function sort({ items, sortDescriptor }) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(endpoint, endpointHost,qps = {}, type) {
+export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const pms = await bidirectionalConversion(endpoint, qps);
 
   // remove http or https prefix in url param if it exists
   if (pms.has('url')) {
     pms.set('url', pms.get('url').replace(/^http(s)*:\/\//, ''));
   }
-  if(type === 'render'){
-    pms.set("source",".form");
-    pms.set('checkpoint', 'viewblock');
-  }
-  if(type === 'submit'){
-    pms.set('checkpoint', 'formsubmit');
-  }
+
   const limit = (pms.get('limit') && (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '')) ? pms.get('limit') : '150';
   pms.set('limit', limit);
-  if(type === 'submit' || type === 'cwv'){
-    pms.set('limit',2000);
-  }
-
 
   /*
     Below are specific parameters set for specific queries
@@ -171,45 +166,10 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type) {
     pms.set('limit', '500');
   }
   const flag = `${endpoint}Flag`;
-  const checkData = async () => {
-     if(type === 'submit'){
-      await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
-          .then((resp) => resp.json())
-          .then((data) => {
-            window[flag] = false;
-            if (!Object.hasOwn(window, 'dashboard')) {
-              window.dashboard = {};
-            }
-            window.dashboard[endpoint+"-"+type] = data;
-          })
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error('API Call Has Failed, Check that inputs are correct', err.message);
-          });
-    } 
-    else if(type === 'cwv'){
-      endpoint ="rum-dashboard";
-      await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
-          .then((resp) => resp.json())
-          .then((data) => {
-            console.log("indie cwv data");
-            console.log(data);
-            window[flag] = false;
-            if (!Object.hasOwn(window, 'dashboard')) {
-              window.dashboard = {};
-            }
-            console.log("indie cwv data endpoint");
-            window.dashboard[endpoint] = data;
-          })
-          .catch((err) => {
-            // eslint-disable-next-line no-console
-            console.error('API Call Has Failed, Check that inputs are correct', err.message);
-          });
-    }
-    else if (Object.hasOwn(window, flag) && window[flag] === true) {
+  const checkData = () => {
+    if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);
-    } 
-    else if (!Object.hasOwn(window, flag)) {
+    } else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
       fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
         .then((resp) => resp.json())
@@ -228,20 +188,18 @@ export async function queryRequest(endpoint, endpointHost,qps = {}, type) {
         });
     }
   };
-  await checkData();
+  checkData();
 }
 
-export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, formsURL = false) {
+export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone) {
   let timezoneParam = timezone;
   const newQp = new URLSearchParams();
   newQp.set('url', url);
   newQp.set('domainkey', domainkey);
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);
-  if(formsURL){
-    newQp.set('source', ".form");
-  }  
   if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezoneParam = '';
+  if (timezoneParam === '') timezoneParam = Intl.DateTimeFormat().resolvedOptions().timeZone;
   newQp.set('timezone', timezoneParam);
   if (limit) newQp.set('limit', limit);
   location.href = `${location.pathname}?${newQp.toString()}`;

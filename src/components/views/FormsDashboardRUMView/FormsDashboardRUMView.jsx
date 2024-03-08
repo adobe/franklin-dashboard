@@ -2,10 +2,10 @@ import DashboardLayout from '../../core/Layout/Layout.jsx';
 import { RumDashboardMain } from './RumDashboardMain.jsx';
 import './RumDashboardMain.css';
 
-const DashboardRUMView = () => (
+const FormsDashboardRUMView = () => (
     <DashboardLayout>
         <RumDashboardMain></RumDashboardMain>
     </DashboardLayout>
 );
 
-export default DashboardRUMView;
+export default FormsDashboardRUMView;

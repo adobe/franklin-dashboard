@@ -15,8 +15,8 @@ export function RumDashboardMain() {
 
   const columns = ['url','views','submissions', 'avglcp', 'avgcls', 'avginp'];
   const columnHeadings = {
-    views: ['Formviews', `Total form rendered to a url in date range chosen. Cut off is the end date of the range; i.e, 
-    if you choose 1/1/2023 - 1/2/2023 you will only see results with dates that are less than 1/2/2023 not inclusive.`],
+    views: ['Formviews', `Total form rendered to a url in date range chosen. Choosing date range 1/1/2023 - 1/2/2023
+    will provide you data from 12AM 1/1/2023 through to end of day of 1/2/2023`],
     submissions: ['Formsubmission', `Total form submitted on a form in date range chosen. Cut off is the end date of the range; i.e, 
     if you choose 1/1/2023 - 1/2/2023 you will only see results with dates that are less than 1/2/2023 not inclusive.`],
     avgcls: ['Cumulative Layout Shift', `CLS measures the sum total of all individual layout shift scores for every 

@@ -1,7 +1,7 @@
 import {
   TableView, TableHeader, TableBody, Row, Cell, Column, StatusLight,
 
-  Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, Button,
+  Badge, Text, ProgressBar, ContextualHelp, Content, Heading, IllustratedMessage, Divider, useCollator,
 } from '@adobe/react-spectrum';
 import './RumTableView.css';
 import CheckmarkCircle from '@spectrum-icons/workflow/CheckmarkCircle';
@@ -14,6 +14,8 @@ import NotFound from '@spectrum-icons/illustrations/NotFound';
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
+
+  let collator = useCollator({ numeric: true });
   if (data.length > 0) {
     const ranges = {
       avglcp: [2.5, 4.00],
@@ -27,18 +29,36 @@ export function RumTableView({
       avgcls: '',
     }
 
+    const sortFunct = ({column, direction}) => {
+      let numericColum = parseInt(column.replace(/^\D+/g, ''), 10);
+      data.sort((a, b) => {
+        let first = a[columns[numericColum]];
+        let second = b[columns[numericColum]];
+        let cmp = first === null && second === null ? 0 : first === null ? -1 : second === null ? 1 : collator.compare(first*1000, second*1000);
+        if (direction === 'descending') {
+          cmp *= -1;
+        }
+        else if(direction === 'ascending') {
+          cmp = (first === null || second === null) && direction === 'ascending' ? cmp*-1 : cmp;
+        }
+        return cmp;
+      })
+      setter([...data])
+    }
+
     return (
-      data.length > 0  && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview'>
+      data.length > 0  && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview' 
+            onSortChange={sortFunct}>
                 <TableHeader>
                     {(
                         columns.map((key) => {
                           if (key === 'url') {
                             const hostname = data[0][key] ? new URL(data[0][key].startsWith('https://') ? data[0][key] : `https://${data[0][key]}`).hostname : '';
-                            return <Column align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
+                            return <Column allowsSorting align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
                           }
                           if(key !== 'views' && key !== 'submissions') {
                             return (
-                                <Column align="center">
+                              <Column allowsResizing={true} allowsSorting align="center">
                                     <ContextualHelp variant="info">
                                         <Heading>{columnHeadings[key][0]}</Heading>
                                         <Divider size='M'></Divider>
@@ -54,7 +74,7 @@ export function RumTableView({
                           );
                         } else{
                           return (
-                            <Column align="center">
+                            <Column allowsResizing={true} allowsSorting align="center">
                                 <ContextualHelp variant="info">
                                     <Heading>{columnHeadings[key][0]}</Heading>
                                     <Divider size='M'></Divider>

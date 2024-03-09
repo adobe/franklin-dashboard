@@ -81,8 +81,7 @@ export function RumTableView({
                                         return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
                                         const currCol = col === 'avglcp' && rum[col] ? rum[col] / 1000 : rum[col];
-                                        const numUpdated = col == 'avginp' ? Math.round(currCol) : currCol;
-                                        const numb = parseFloat(numUpdated).toFixed(2).toLocaleString('en-US');
+                                        const numb = parseFloat(currCol).toFixed(2).toLocaleString('en-US');
                                         const displayedNumb = numb.endsWith('.00') ? numb.replace('.00', '') : numb;
                                         if (displayedNumb && displayedNumb <= ranges[col][0]) {
                                           return <Cell width='size-1000'>

@@ -40,11 +40,10 @@ const DashboardDataDeskLanding = () => {
                 const dates = intervalOffsetToDates(0, 30);
                 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezone = '';
-                if(extension != null && extension != ''){
-                  document.location.href =`/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&ext=${extension}`;
-                }
-                document.location.href =`/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&ext=${extension}`;
                 document.location.href = `/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&timezone=${timezone}`;
+                if(extension != null && extension != ''){
+                  document.location.href =`/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&timezone=${timezone}&ext=${extension}`;
+                }
               }}
             />
             <span>{domainkey}</span>

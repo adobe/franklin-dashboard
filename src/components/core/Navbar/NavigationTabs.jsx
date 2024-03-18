@@ -32,7 +32,7 @@ const NavigationTabs = () => {
     <Provider colorScheme="light" theme={defaultTheme}>
         <div style={{
           padding: '.7em',
-          minWidth: '500px',
+          minWidth: '700px',
         }}>
 
         <TooltipTrigger delay={0}>
@@ -75,6 +75,7 @@ const NavigationTabs = () => {
         </Button>
           <Tooltip>Explore Pageviews for {globalUrl}</Tooltip>
         </TooltipTrigger>
+        &nbsp;&nbsp;
   {extension === "forms" ? (
      <TooltipTrigger delay={0}>
        <Button 

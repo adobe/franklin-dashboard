@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../../stores/global.js';
 
 const NavigationTabs = () => {
-  const { globalUrl } = useStore();
+  const { globalUrl,extension } = useStore();
 
   const currentTab = window.location.pathname.split('/')[1];
 
@@ -75,7 +75,7 @@ const NavigationTabs = () => {
         </Button>
           <Tooltip>Explore Pageviews for {globalUrl}</Tooltip>
         </TooltipTrigger>
-  {window.ext === "forms" ? (
+  {extension === "forms" ? (
      <TooltipTrigger delay={0}>
        <Button 
         variant={currentTab === 'forms-rum-dashboard' ? 'cta' : 'primary'}

@@ -30,7 +30,7 @@ const DashboardDataDeskLanding = () => {
                 setGlobalUrl(formGlobalKey);
                 setDomainKey(formDomainKey);
                 const dates = intervalOffsetToDates(0, 30);
-                let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                let timezone = null;
                 if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezone = '';
                 document.location.href = `/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&timezone=${timezone}`;
               }}

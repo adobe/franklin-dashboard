@@ -17,7 +17,7 @@ const DashboardDataDeskLanding = () => {
 
   const currentQueryParameters = new URLSearchParams(location.search);
 
-  if (!currentQueryParameters.has('ext')) {
+  if (currentQueryParameters.has('ext')) {
     extension = currentQueryParameters.get('ext');
   }
 

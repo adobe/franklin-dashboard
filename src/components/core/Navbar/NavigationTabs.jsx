@@ -29,7 +29,7 @@ const NavigationTabs = () => {
     currentQueryParameters.set('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
   }
 
-  if (!currentQueryParameters.has('ext')) {
+  if (currentQueryParameters.has('ext')) {
     extension = currentQueryParameters.get('ext');
   }
 

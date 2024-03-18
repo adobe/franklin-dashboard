@@ -93,6 +93,7 @@ export const initStore = () => {
     setDomainKey,
     setGlobalUrl,
     setReportUrl,
+    setExtension,
   } = useStore.getState();
 
   // remove values from localstorage
@@ -116,6 +117,7 @@ export const initializeStoreFromLocalStorage = () => {
   const {
     setDomainKey,
     setGlobalUrl,
+    setExtension,
   } = useStore.getState();
 
   const domainKey = localStorage.getItem('domainKey');

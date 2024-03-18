@@ -13,6 +13,14 @@ const DashboardDataDeskLanding = () => {
     domainkey,
   } = useStore();
 
+  let extension = null;
+
+  const currentQueryParameters = new URLSearchParams(location.search);
+
+  if (!currentQueryParameters.has('ext')) {
+    extension = currentQueryParameters.get('ext');
+  }
+
   return (
     <DashboardLayout hasNavigation={false}>
       <div style={{ width: '100%', marginTop: '4em' }}>
@@ -32,10 +40,10 @@ const DashboardDataDeskLanding = () => {
                 const dates = intervalOffsetToDates(0, 30);
                 let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezone = '';
-                if(window?.location?.search){
-                  console.log("test");
+                document.location.href =`/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&timezone=${timezone}`;
+                if(extension != null && extension != ''){
+                  document.location.href = document.location.href + `&ext=${extension}`
                 }
-                document.location.href = `/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&timezone=${timezone}`;
               }}
             />
             <span>{domainkey}</span>

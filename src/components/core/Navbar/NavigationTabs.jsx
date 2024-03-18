@@ -9,11 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../../stores/global.js';
 
 const NavigationTabs = () => {
-  const { globalUrl,extension } = useStore();
+  const { globalUrl } = useStore();
 
   const currentTab = window.location.pathname.split('/')[1];
 
   let navigate = null;
+  let extension = null;
 
   try {
     navigate = useNavigate();
@@ -26,6 +27,10 @@ const NavigationTabs = () => {
   // add timezone param if it is not present
   if (!currentQueryParameters.has('timezone')) {
     currentQueryParameters.set('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
+
+  if (!currentQueryParameters.has('ext')) {
+    extension = currentQueryParameters.get('ext');
   }
 
   return (

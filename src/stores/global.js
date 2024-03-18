@@ -9,7 +9,6 @@ export const useStore = create((set) => ({
   reportGenerated: null,
   startDate: null,
   endDate: null,
-  extension: null,
 
   setDomainKey: (value) => {
     // save to localstorage
@@ -78,14 +77,6 @@ export const useStore = create((set) => ({
     }
     set(() => ({ reportGenerated: value }));
   },
-  setExtension: (value) => {
-    // save to localstorage
-
-    if (value) {
-      localStorage.setItem('ext', value);
-    }
-    set(() => ({ extension: value }));
-  },
 }));
 
 export const initStore = () => {
@@ -93,7 +84,6 @@ export const initStore = () => {
     setDomainKey,
     setGlobalUrl,
     setReportUrl,
-    setExtension,
   } = useStore.getState();
 
   // remove values from localstorage
@@ -116,12 +106,10 @@ export const initializeStoreFromLocalStorage = () => {
   const {
     setDomainKey,
     setGlobalUrl,
-    setExtension,
   } = useStore.getState();
 
   const domainKey = localStorage.getItem('domainKey');
   const globalUrl = localStorage.getItem('globalUrl');
-  const extension = localStorage.getItem('ext');
 
   if (domainKey) {
     setDomainKey(domainKey);
@@ -131,7 +119,4 @@ export const initializeStoreFromLocalStorage = () => {
     setGlobalUrl(globalUrl);
   }
 
-  if (extension) {
-    setExtension(extension);
-  }
 };

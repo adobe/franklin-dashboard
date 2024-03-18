@@ -10,6 +10,7 @@ const DashboardDataDeskLanding = () => {
   const {
     setDomainKey,
     setGlobalUrl,
+    setExtension,
     domainkey,
   } = useStore();
 
@@ -29,8 +30,9 @@ const DashboardDataDeskLanding = () => {
                 initStore();
                 setGlobalUrl(formGlobalKey);
                 setDomainKey(formDomainKey);
+                setExtension(window.ext);
                 const dates = intervalOffsetToDates(0, 30);
-                let timezone = null;
+                let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
                 if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezone = '';
                 document.location.href = `/rum-dashboard?url=${formGlobalKey}&domainkey=${formDomainKey}&startdate=${dates.start}&enddate=${dates.end}&timezone=${timezone}`;
               }}

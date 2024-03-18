@@ -8,7 +8,7 @@ export function RumDashboardMain() {
   const [data, setData] = useState([]);
   const [fetchFlag, setFetchFlag] = useState(false);
   const [config, setConfig] = useState({});
-  window.dashboard["ext"]="forms";
+  window.ext="forms";
 
   useEffect(() => {
     console.log("RumDashboardMain ---------");

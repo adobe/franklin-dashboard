@@ -180,8 +180,8 @@ export function DashboardQueryFilter({
           configuration.domainkey,
           configuration.startdate,
           configuration.enddate,
-          configuration.limit
-                  );
+          configuration.limit,
+        );
       }
     } else {
       initStore();

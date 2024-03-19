@@ -118,5 +118,4 @@ export const initializeStoreFromLocalStorage = () => {
   if (globalUrl) {
     setGlobalUrl(globalUrl);
   }
-
 };

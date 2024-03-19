@@ -180,8 +180,8 @@ export function DashboardQueryFilter({
           configuration.domainkey,
           configuration.startdate,
           configuration.enddate,
-          configuration.limit,
-        );
+          configuration.limit
+                  );
       }
     } else {
       initStore();
@@ -190,6 +190,7 @@ export function DashboardQueryFilter({
   }, []);
 
   const onSubmit = (e) => {
+    const urlParameters = new URLSearchParams(window.location.search);
     // Prevent default browser page refresh.
     e.preventDefault();
 
@@ -203,7 +204,7 @@ export function DashboardQueryFilter({
     const startdate = start;
     const enddate = end;
 
-    handleRedirect(url, domainkey, startdate, enddate, limit, timezone);
+    handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
   };
 
   return globalUrl && (

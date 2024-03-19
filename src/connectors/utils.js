@@ -201,7 +201,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezoneParam = '';
   if (timezoneParam === '') timezoneParam = Intl.DateTimeFormat().resolvedOptions().timeZone;
   newQp.set('timezone', timezoneParam);
-  if(ext != null && ext != '') newQp.set('ext',ext);
+  if (ext !== null && ext !== '') newQp.set('ext', ext);
   if (limit) newQp.set('limit', limit);
   location.href = `${location.pathname}?${newQp.toString()}`;
 }

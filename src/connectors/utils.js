@@ -199,10 +199,9 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);
   if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezoneParam = '';
-  if(ext != null && ext != '')
-    newQp.set('ext',ext);
   if (timezoneParam === '') timezoneParam = Intl.DateTimeFormat().resolvedOptions().timeZone;
   newQp.set('timezone', timezoneParam);
+  if(ext != null && ext != '') newQp.set('ext',ext);
   if (limit) newQp.set('limit', limit);
   location.href = `${location.pathname}?${newQp.toString()}`;
 }

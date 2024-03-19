@@ -14,6 +14,7 @@ const NavigationTabs = () => {
   const currentTab = window.location.pathname.split('/')[1];
 
   let navigate = null;
+  let extension = null;
 
   try {
     navigate = useNavigate();
@@ -28,11 +29,15 @@ const NavigationTabs = () => {
     currentQueryParameters.set('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
   }
 
+  if (currentQueryParameters.has('ext')) {
+    extension = currentQueryParameters.get('ext');
+  }
+
   return (
     <Provider colorScheme="light" theme={defaultTheme}>
         <div style={{
           padding: '.7em',
-          minWidth: '500px',
+          minWidth: '700px',
         }}>
 
         <TooltipTrigger delay={0}>
@@ -75,7 +80,22 @@ const NavigationTabs = () => {
         </Button>
           <Tooltip>Explore Pageviews for {globalUrl}</Tooltip>
         </TooltipTrigger>
-
+        &nbsp;&nbsp;
+  {extension === "forms" ? (
+     <TooltipTrigger delay={0}>
+       <Button 
+        variant={currentTab === 'forms-rum-dashboard' ? 'cta' : 'primary'}
+        onPress={() => {
+        if (navigate) {
+          navigate(`/forms-rum-dashboard?${currentQueryParameters.toString()}`);
+         }
+        }}
+      >
+      Forms RUM Dashboard
+      </Button>
+     <Tooltip>Explore Forms RUM Dashboard for {globalUrl}</Tooltip>
+     </TooltipTrigger>
+  ) : null}
         </div>
     </Provider>
 

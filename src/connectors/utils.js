@@ -191,7 +191,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   checkData();
 }
 
-export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone) {
+export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, ext) {
   let timezoneParam = timezone;
   const newQp = new URLSearchParams();
   newQp.set('url', url);
@@ -201,6 +201,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   if (timezone === 'null' || timezone === 'undefined' || timezone == null) timezoneParam = '';
   if (timezoneParam === '') timezoneParam = Intl.DateTimeFormat().resolvedOptions().timeZone;
   newQp.set('timezone', timezoneParam);
+  if (ext !== null && ext !== '') newQp.set('ext', ext);
   if (limit) newQp.set('limit', limit);
   location.href = `${location.pathname}?${newQp.toString()}`;
 }

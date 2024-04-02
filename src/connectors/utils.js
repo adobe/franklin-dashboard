@@ -157,7 +157,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const offset = (pms.get('offset') && (pms.get('offset') !== 'undefined') && (pms.get('offset') !== '')) ? pms.get('offset') : '-1';
   pms.set('offset', offset);
   Object.entries(qps).forEach(([k, v]) => {
-    params.set(k, v);
+    pms.set(k, v);
   });
   /*
     Below are specific parameters set for specific queries

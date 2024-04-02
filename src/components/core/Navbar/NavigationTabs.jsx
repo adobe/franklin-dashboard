@@ -96,6 +96,19 @@ const NavigationTabs = () => {
      <Tooltip>Explore Forms RUM Dashboard for {globalUrl}</Tooltip>
      </TooltipTrigger>
   ) : null}
+   &nbsp;&nbsp;
+   <TooltipTrigger delay={0}>
+        <Button variant={currentTab === 'forms-internal-rum-dashboard' ? 'cta' : 'primary'}
+            onPress={() => {
+              if (navigate) {
+                navigate(`/forms-internal-rum-dashboard?${currentQueryParameters.toString()}`);
+              }
+            }}
+        >
+           Forms Internal RUM Dashboard
+        </Button>
+          <Tooltip>Explore Forms Internal dashboard</Tooltip>
+   </TooltipTrigger>
         </div>
     </Provider>
 

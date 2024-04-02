@@ -11,6 +11,7 @@ import DashboardDataDeskLanding from './components/views/DashboardDataDeskLandin
 import Dashboard404Report from './components/views/Dashboard404Report/Dashboard404Report.jsx';
 import DashboardRumView from './components/views/DashboardRUMView/DashboardRUMView.jsx';
 import FormsDashboardRUMView from 'components/views/FormsDashboardRUMView/FormsDashboardRUMView.jsx';
+import FormsInternalDashboardRUMView from 'components/views/FormsInternalDashboardRUMView/FormsInternalDashboardRUMView.jsx';
 import DashboardRUMPerformanceMonitor from './components/views/DashboardRUMPerformanceMonitor/DashboardRUMPerformanceMonitor.jsx';
 
 import './App.css';
@@ -25,6 +26,7 @@ function App() {
           <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
           <Route path='/rum-dashboard' element={<DashboardRumView/>}></Route>
           <Route path='/forms-rum-dashboard' element={<FormsDashboardRUMView/>}></Route>
+          <Route path='/forms-internal-rum-dashboard' element={<FormsInternalDashboardRUMView/>}></Route>
           <Route path='/pageviews-report' element={<DashboardRUMPerformanceMonitor/>}></Route>
         </Routes>
         <ToastContainer />

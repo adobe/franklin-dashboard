@@ -168,8 +168,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
     if(endpoint === 'rum-forms-dashboard'){
-      params.delete('url');
-      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+      pms.delete('url');
+      await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;
@@ -189,7 +189,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
       console.log("----checkdata------");
       window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {
-     // window[flag] = true;
+      window[flag] = true;
       console.log("----checkdata------");
       await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
         .then((resp) => resp.json())

@@ -269,7 +269,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
                           let newData = {
                               url: domain,
                               views: Number(data[i]['views']),
-                              submissions: data[i]['submissions']
+                              submissions: Number(data[i]['submissions'])
                           };
                           viewData.push(newData);
                       }

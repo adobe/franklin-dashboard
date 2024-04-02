@@ -76,7 +76,7 @@ export function DashboardInternalQueryFilter({
     }
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
-  const getQuery = (cfg = {}) => {
+  const getQuery = async (cfg = {}) => {
     const {
       url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP,
     } = cfg;
@@ -84,7 +84,7 @@ export function DashboardInternalQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    getBaseDomains(dataEP, apiEP, config);
+    await getBaseDomains(dataEP, apiEP, config);
   };
 
   const updateData = (cfg = {}) => {

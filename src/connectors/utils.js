@@ -168,9 +168,11 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {
+      console.log("----checkdata------");
       window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {
-      window[flag] = true;
+     // window[flag] = true;
+      console.log("----checkdata------");
       await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
         .then((resp) => resp.json())
         .then((data) => {

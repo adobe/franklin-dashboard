@@ -167,7 +167,25 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   }
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
-    if (Object.hasOwn(window, flag) && window[flag] === true) {
+    if(endpoint === 'rum-forms-dashboard'){
+      params.delete('url');
+      await fetch(`${endpointHost}${endpoint}?${params.toString()}`)
+          .then((resp) => resp.json())
+          .then((data) => {
+            window[flag] = false;
+            if (!Object.hasOwn(window, 'dashboard')) {
+              window.dashboard = {};
+            }
+            window.dashboard[endpoint] = data;
+            const rumData = { source: endpoint, target: pms.get('url') };
+            sampleRUM('datadesk', rumData);
+          })
+          .catch((err) => {
+            // eslint-disable-next-line no-console
+            console.error('API Call Has Failed, Check that inputs are correct', err.message);
+          });
+    }
+   else if (Object.hasOwn(window, flag) && window[flag] === true) {
       console.log("----checkdata------");
       window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {

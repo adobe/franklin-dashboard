@@ -169,7 +169,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const checkData = async () => {
     if(endpoint === 'rum-forms-dashboard'){
       pms.delete('url');
-      await fetch(`${endpointHost}${endpoint}?${pms.toString()}`)
+      await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;

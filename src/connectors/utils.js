@@ -166,7 +166,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
     pms.set('limit', '500');
   }
   const flag = `${endpoint}Flag`;
-  const checkData = () => {
+  const checkData = async () => {
     if (Object.hasOwn(window, flag) && window[flag] === true) {
       window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {
@@ -188,7 +188,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
         });
     }
   };
-  checkData();
+  await checkData();
 }
 
 export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, ext) {

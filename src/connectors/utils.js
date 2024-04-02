@@ -223,6 +223,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
           data = window.dashboard[endpoint].results.data || [];
           console.log("---domain------");
           for (let i = 0; i < data.length; i += 1) {
+            console.log("inside for loop---domain------");
               let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
               if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
                   && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)

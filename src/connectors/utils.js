@@ -154,6 +154,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
 
   const limit = (pms.get('limit') && (pms.get('limit') !== 'undefined') && (pms.get('limit') !== '')) ? pms.get('limit') : '150';
   pms.set('limit', limit);
+  const offset = (pms.get('offset') && (pms.get('offset') !== 'undefined') && (pms.get('offset') !== '')) ? pms.get('offset') : '-1';
+  pms.set('offset', offset);
 
   /*
     Below are specific parameters set for specific queries

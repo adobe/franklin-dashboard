@@ -253,7 +253,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
                   }
               }
           }
-
+          console.log("---domain--done------");
           // Update qps for the next iteration
           qpsparamtere.offset = qpsparamtere.offset + qpsparamtere.limit;
           qpsparamtere.limit = qpsparamtere.limit * 2;

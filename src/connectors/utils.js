@@ -216,7 +216,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
   do {
       try {
           // Make the queryRequest
-          await queryRequest(endpoint, endpointHost, qpsparamtere = {});
+          await queryRequest(endpoint, endpointHost, qpsparamtere);
 
           // Process the data
           // Process the data

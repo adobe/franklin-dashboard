@@ -171,7 +171,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
       window.setTimeout(checkData, 5);
     } else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
-      fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
+      await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
         .then((resp) => resp.json())
         .then((data) => {
           window[flag] = false;

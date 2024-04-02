@@ -31,9 +31,7 @@ export function RumDashboardMain() {
             <View gridArea={'heading'}>
               <Well UNSAFE_style={{ textAlign: 'center' }}>
                 <Text>
-                  To repair any links that show up in the <b>404 URL</b> column
-                  below, open up your site's <code>redirects.xslx</code> and
-                  add a redirect from the url reported in the <b>404 URL</b> column.
+                  Use the reported URLs to repair any links for your site.
                 </Text>
               </Well>
             </View>

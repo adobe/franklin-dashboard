@@ -205,3 +205,66 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   if (limit) newQp.set('limit', limit);
   location.href = `${location.pathname}?${newQp.toString()}`;
 }
+
+export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
+  const domains = new Set();
+  const duplicateDomain = new Set();
+  let data;
+  let totalFormViews = 0;
+  let viewData = [];
+  const qpsparamtere = {'offset': 0, 'limit': 500};
+  do {
+      try {
+          // Make the queryRequest
+          await queryRequest(endpoint, endpointHost, qpsparamtere = {});
+
+          // Process the data
+          // Process the data
+          data = window.dashboard[endpoint].results.data || [];
+          console.log("---domain------");
+          for (let i = 0; i < data.length; i += 1) {
+              let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
+              if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
+                  && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
+                  && !(domain.indexOf('staging')>-1) && !(domain.indexOf('about:srcdoc')>-1)) {
+                  domains.add(domain);
+                  if ((`${data[i]['source']}`.indexOf(".form") !== -1) || (`${data[i]['source']}`.indexOf("mktoForm") !== -1)) {
+                      totalFormViews = totalFormViews + Number(data[i]['views']);
+                      let found = false;
+                      for (let j = 0; j < viewData.length; j++) {
+                          console.log(data[i]['url']);
+                          if (viewData[j]['url'].includes(domain) && !duplicateDomain.has(data[i]['url'])) {
+                              duplicateDomain.add(data[i]['url']);
+                              viewData[j]['views'] += Number(data[i]['views']);
+                              viewData[j]['submissions'] += Number(data[i]['submissions']);
+                              found = true;
+                              break;
+                          }
+                      }
+                      if (!found && !duplicateDomain.has(data[i]['url'])) {
+                          let newData = {
+                              url: domain,
+                              views: Number(data[i]['views']),
+                              submissions: data[i]['submissions']
+                          };
+                          viewData.push(newData);
+                      }
+                  }
+              }
+          }
+
+          // Update qps for the next iteration
+          qpsparamtere.offset = qpsparamtere.offset + qpsparamtere.limit;
+          qpsparamtere.limit = qpsparamtere.limit * 2;
+      } catch (error) {
+          // Handle errors if necessary
+          console.error("Error fetching data:", error);
+      }
+  } while (data && data.length > 0);
+  domains.add('ALL');
+  console.log("-------domains------");
+  console.log(domains);
+  window.dashboard[endpoint] = viewData;
+  window.dashboard["domains"] = domains;
+  window.dashboard["totalFormViews"] = totalFormViews;
+}

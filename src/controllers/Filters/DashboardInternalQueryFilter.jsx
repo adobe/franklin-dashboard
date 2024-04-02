@@ -11,7 +11,7 @@ import SearchIcon from '@spectrum-icons/workflow/Search';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from '../../stores/global.js';
 import {
-  queryRequest, intervalOffsetToDates, getDataDates, handleRedirect,
+  getBaseDomains, intervalOffsetToDates, getDataDates, handleRedirect,
 } from '../../connectors/utils.js';
 
 export function DashboardInternalQueryFilter({
@@ -84,7 +84,7 @@ export function DashboardInternalQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    queryRequest(dataEP, apiEP, config);
+    getBaseDomains(dataEP, apiEP, config);
   };
 
   const updateData = (cfg = {}) => {

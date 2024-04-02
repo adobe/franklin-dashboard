@@ -156,7 +156,9 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   pms.set('limit', limit);
   const offset = (pms.get('offset') && (pms.get('offset') !== 'undefined') && (pms.get('offset') !== '')) ? pms.get('offset') : '-1';
   pms.set('offset', offset);
-
+  Object.entries(qps).forEach(([k, v]) => {
+    params.set(k, v);
+  });
   /*
     Below are specific parameters set for specific queries
     This is intended as short term solution; will discuss

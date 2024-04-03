@@ -101,6 +101,7 @@ const NavigationTabs = () => {
         <Button variant={currentTab === 'forms-internal-rum-dashboard' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
+                currentQueryParameters.delete('url');
                 navigate(`/forms-internal-rum-dashboard?${currentQueryParameters.toString()}`);
               }
             }}

@@ -245,7 +245,6 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
           // Process the data
           // Process the data
           data = window.dashboard[endpoint].results.data || [];
-          delete window.dashboard.endpoint;
           console.log("---domain------");
           for (let i = 0; i < data.length; i += 1) {
             console.log("inside for loop---domain------");

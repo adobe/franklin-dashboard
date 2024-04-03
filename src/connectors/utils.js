@@ -291,5 +291,5 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
   window.dashboard["domains"] = domains;
   window.dashboard["totalFormViews"] = totalFormViews;
   window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
-  flagSetter(true);
+  //flagSetter(true);
 }

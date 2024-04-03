@@ -47,7 +47,7 @@ export function RumTableView({
     }
 
     return (
-      data.length > 0  && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview' 
+      window.dashboard['internalDataLoaded'] && data.length > 0  && <TableView width="100%" height="100%" alignSelf="end" overflowMode='truncate' selectionMode='multiple' selectionStyle='highlight' density='compact' id='tableview' 
             onSortChange={sortFunct}>
                 <TableHeader>
                     {(

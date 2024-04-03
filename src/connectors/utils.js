@@ -284,11 +284,16 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
           console.error("Error fetching data:", error);
       }
   } while (data && data.length > 0);
-  domains.add('ALL');
   console.log("-------domains------");
   console.log(domains);
+  viewData.push({
+    url: 'ALL',
+    views: totalFormViews,
+    submissions: totalFormSubmissions
+});
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard["domains"] = domains;
+  window.dashboard['internalDataLoaded'] = true;
   window.dashboard["totalFormViews"] = totalFormViews;
   window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
   flagSetter(true);

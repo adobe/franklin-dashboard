@@ -237,13 +237,12 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
   let totalFormViews = 0;
   let totalFormSubmissions = 0;
   let viewData = [];
-  const qpsparamtere = {'offset': 0, 'limit': 500};
+  const qpsparameter = {'offset': 0, 'limit': 500};
   do {
       try {
           // Make the queryRequest
-          await queryRequest(endpoint, endpointHost, qpsparamtere);
+          await queryRequest(endpoint, endpointHost, qpsparameter);
 
-          // Process the data
           // Process the data
           data = window.dashboard[endpoint].results.data || [];
           console.log("---domain------");
@@ -278,8 +277,8 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
           }
           console.log("---domain--done------");
           // Update qps for the next iteration
-          qpsparamtere.offset = qpsparamtere.offset + qpsparamtere.limit;
-          qpsparamtere.limit = qpsparamtere.limit * 2;
+          qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
+          qpsparameter.limit = qpsparameter.limit * 2;
       } catch (error) {
           // Handle errors if necessary
           console.error("Error fetching data:", error);
@@ -288,7 +287,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
   domains.add('ALL');
   console.log("-------domains------");
   console.log(domains);
-  window.dashboard[endpoint] = viewData;
+  window.dashboard[endpoint].results.data = viewData;
   window.dashboard["domains"] = domains;
   window.dashboard["totalFormViews"] = totalFormViews;
   window.dashboard["totalFormSubmissions"] = totalFormSubmissions;

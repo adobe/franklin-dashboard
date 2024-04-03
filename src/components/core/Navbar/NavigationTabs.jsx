@@ -98,10 +98,10 @@ const NavigationTabs = () => {
   ) : null}
    &nbsp;&nbsp;
    <TooltipTrigger delay={0}>
-        <Button variant={currentTab === 'forms-internal-rum-dashboard' ? 'cta' : 'primary'}
+        <Button variant={currentTab === 'rum-dashboard' ? 'cta' : 'primary'}
             onPress={() => {
               if (navigate) {
-                navigate(`/forms-internal-rum-dashboard?${currentQueryParameters.toString()}`);
+                navigate(`/rum-dashboard?${currentQueryParameters.toString()}`);
               }
             }}
         >

@@ -235,6 +235,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
   const duplicateDomain = new Set();
   let data;
   let totalFormViews = 0;
+  let totalFormSubmissions = 0;
   let viewData = [];
   const qpsparamtere = {'offset': 0, 'limit': 500};
   do {
@@ -247,13 +248,13 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
           data = window.dashboard[endpoint].results.data || [];
           console.log("---domain------");
           for (let i = 0; i < data.length; i += 1) {
-            console.log("inside for loop---domain------");
               let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
               if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
                   && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
                   && !(domain.indexOf('staging')>-1) && !(domain.indexOf('about:srcdoc')>-1)) {
                   domains.add(domain);
                       totalFormViews = totalFormViews + Number(data[i]['views']);
+                      totalFormSubmissions = totalFormSubmissions + Number(data[i]['submissions']);
                       let found = false;
                       for (let j = 0; j < viewData.length; j++) {
                           console.log(data[i]['url']);
@@ -287,7 +288,9 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
   domains.add('ALL');
   console.log("-------domains------");
   console.log(domains);
+  window[flag] = true;
   window.dashboard[endpoint] = viewData;
   window.dashboard["domains"] = domains;
   window.dashboard["totalFormViews"] = totalFormViews;
+  window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
 }

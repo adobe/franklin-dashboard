@@ -230,7 +230,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   location.href = `${location.pathname}?${newQp.toString()}`;
 }
 
-export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
+export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter){
   const domains = new Set();
   const duplicateDomain = new Set();
   let data;
@@ -288,9 +288,9 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}){
   domains.add('ALL');
   console.log("-------domains------");
   console.log(domains);
-  window[flag] = true;
   window.dashboard[endpoint] = viewData;
   window.dashboard["domains"] = domains;
   window.dashboard["totalFormViews"] = totalFormViews;
   window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
+  flagSetter(true);
 }

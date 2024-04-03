@@ -84,7 +84,7 @@ export function DashboardInternalQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    await getBaseDomains(dataEP, apiEP, config);
+    await getBaseDomains(dataEP, apiEP, config, flagSetter);
   };
 
   const updateData = (cfg = {}) => {

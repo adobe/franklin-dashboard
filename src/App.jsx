@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path='/' element={<DashboardDataDeskLanding/>} index></Route>
           <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
-          <Route path='/rum-dashboard' element={<DashboardRumView/>}></Route>
+          <Route path='/rum-dashboard1' element={<DashboardRumView/>}></Route>
           <Route path='/forms-rum-dashboard' element={<FormsDashboardRUMView/>}></Route>
           <Route path='/rum-dashboard' element={<FormsInternalDashboardRUMView/>}></Route>
           <Route path='/pageviews-report' element={<DashboardRUMPerformanceMonitor/>}></Route>

@@ -32,5 +32,4 @@ function App() {
     </Provider>
   );
 }
-internal
 export default App;

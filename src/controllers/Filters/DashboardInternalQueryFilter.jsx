@@ -11,10 +11,10 @@ import SearchIcon from '@spectrum-icons/workflow/Search';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from '../../stores/global.js';
 import {
-  queryRequest, intervalOffsetToDates, getDataDates, handleRedirect,
+  getBaseDomains, intervalOffsetToDates, getDataDates, handleRedirect,
 } from '../../connectors/utils.js';
 
-export function DashboardQueryFilter({
+export function DashboardInternalQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
@@ -76,7 +76,7 @@ export function DashboardQueryFilter({
     }
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
-  const getQuery = (cfg = {}) => {
+  const getQuery = async (cfg = {}) => {
     const {
       url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP,
     } = cfg;
@@ -84,7 +84,7 @@ export function DashboardQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    queryRequest(dataEP, apiEP, config);
+    await getBaseDomains(dataEP, apiEP, config, flagSetter);
   };
 
   const updateData = (cfg = {}) => {
@@ -207,7 +207,7 @@ export function DashboardQueryFilter({
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
   };
 
-  return globalUrl && (
+  return (
         <>
             <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}>
                 <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>
@@ -225,7 +225,7 @@ export function DashboardQueryFilter({
                     maxValue={today(getLocalTimeZone())}
                     isRequired
                   />
-                  {(
+                   {(
                     hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
                     />
                   )}
@@ -256,4 +256,4 @@ export function DashboardQueryFilter({
   );
 }
 
-export default DashboardQueryFilter;
+export default DashboardInternalQueryFilter;

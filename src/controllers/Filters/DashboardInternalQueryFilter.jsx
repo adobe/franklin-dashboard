@@ -207,7 +207,7 @@ export function DashboardInternalQueryFilter({
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
   };
 
-  return (
+  return globalUrl && (
         <>
             <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}>
                 <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>

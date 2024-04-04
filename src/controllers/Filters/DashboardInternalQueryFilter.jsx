@@ -225,7 +225,7 @@ export function DashboardInternalQueryFilter({
                     maxValue={today(getLocalTimeZone())}
                     isRequired
                   />
-                   {(
+                  {(
                     hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
                     />
                   )}

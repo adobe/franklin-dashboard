@@ -163,7 +163,7 @@ export function RumTableView({
                 </TableBody>
             </TableView>
     );
-  } if (window.dashboard['internalDataLoaded']&& dataFlag) {
+  } if (window.dashboard['internalDataLoaded'] && dataFlag) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

@@ -11,10 +11,10 @@ import SearchIcon from '@spectrum-icons/workflow/Search';
 import './DashboardQueryFilter.css';
 import { useStore, initStore } from '../../stores/global.js';
 import {
-  getBaseDomains, intervalOffsetToDates, getDataDates, handleRedirect,
+  queryRequest, intervalOffsetToDates, getDataDates, handleRedirect,
 } from '../../connectors/utils.js';
 
-export function DashboardInternalQueryFilter({
+export function DashboardQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
@@ -76,7 +76,7 @@ export function DashboardInternalQueryFilter({
     }
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
-  const getQuery = async (cfg = {}) => {
+  const getQuery = (cfg = {}) => {
     const {
       url, domainkey, startdate, enddate, hostname, limit, checkpoint, dataEP, apiEP,
     } = cfg;
@@ -84,7 +84,7 @@ export function DashboardInternalQueryFilter({
     const config = {
       domainkey, url, startdate, enddate, hostname, limit, checkpoint,
     };
-    await getBaseDomains(dataEP, apiEP, config, flagSetter);
+    queryRequest(dataEP, apiEP, config);
   };
 
   const updateData = (cfg = {}) => {
@@ -207,7 +207,7 @@ export function DashboardInternalQueryFilter({
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
   };
 
-  return (
+  return globalUrl && (
         <>
             <Flex direction="column" alignItems="center" height="100%" id='filter' rowGap={'size-250'}>
                 <Text marginTop="size-250"><FilterIcon size='XL'></FilterIcon></Text>
@@ -225,7 +225,7 @@ export function DashboardInternalQueryFilter({
                     maxValue={today(getLocalTimeZone())}
                     isRequired
                   />
-                   {(
+                  {(
                     hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
                     />
                   )}
@@ -256,4 +256,4 @@ export function DashboardInternalQueryFilter({
   );
 }
 
-export default DashboardInternalQueryFilter;
+export default DashboardQueryFilter;

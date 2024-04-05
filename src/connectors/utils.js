@@ -254,13 +254,15 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
                       totalFormSubmissions = totalFormSubmissions + Number(data[i]['submissions']);
                       let found = false;
                       for (let j = 0; j < viewData.length; j++) {
-                          console.log(data[i]['url']);
                           if (viewData[j]['url'].includes(domain) && !duplicateDomain.has(data[i]['url'])) {
                               duplicateDomain.add(data[i]['url']);
                               console.log(data[i]['url']);
                               viewData[j]['views'] += Number(data[i]['views']);
                               viewData[j]['submissions'] += Number(data[i]['submissions']);
                               console.log(viewData[j]['url']);
+                              console.log(data[i]['url']);
+                              console.log(data[i]['views']);
+                              console.log(data[i]['submissions']);
                               console.log(viewData[j]['views']);
                               console.log(viewData[j]['submissions']);
                               found = true;

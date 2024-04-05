@@ -248,9 +248,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
           console.log("---domain------");
           for (let i = 0; i < data.length; i += 1) {
               let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
-              if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
-                  && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
-                  && !(domain.indexOf('staging')>-1) && !(domain.indexOf('about:srcdoc')>-1)) {
+              if ((domain.indexOf('bamboohr')>-1)) {
                   domains.add(domain);
                       totalFormViews = totalFormViews + Number(data[i]['views']);
                       totalFormSubmissions = totalFormSubmissions + Number(data[i]['submissions']);
@@ -259,8 +257,12 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
                           console.log(data[i]['url']);
                           if (viewData[j]['url'].includes(domain) && !duplicateDomain.has(data[i]['url'])) {
                               duplicateDomain.add(data[i]['url']);
+                              console.log(data[i]['url']);
                               viewData[j]['views'] += Number(data[i]['views']);
                               viewData[j]['submissions'] += Number(data[i]['submissions']);
+                              console.log(viewData[j]['url']);
+                              console.log(viewData[j]['views']);
+                              console.log(viewData[j]['submissions']);
                               found = true;
                               break;
                           }

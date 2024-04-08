@@ -61,7 +61,7 @@ const NavigationTabs = () => {
               }
             }}
         >
-           Forms Internal RUM Dashboard
+           Forms Aggregated View RUM Dashboard
         </Button>
           <Tooltip>Explore Forms Internal dashboard</Tooltip>
    </TooltipTrigger>

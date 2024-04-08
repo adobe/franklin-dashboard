@@ -52,34 +52,6 @@ const NavigationTabs = () => {
         </Button>
           <Tooltip>Explore RUM Dashboard for {globalUrl}</Tooltip>
         </TooltipTrigger>
-        &nbsp;&nbsp;
-
-        <TooltipTrigger delay={0}>
-        <Button variant={currentTab === '404-reports' ? 'cta' : 'primary'}
-            onPress={() => {
-              if (navigate) {
-                navigate(`/404-reports?${currentQueryParameters.toString()}`);
-              }
-            }}
-        >
-            404 Reports
-        </Button>
-          <Tooltip>Explore 404 reports for {globalUrl}</Tooltip>
-        </TooltipTrigger>
-        &nbsp;&nbsp;
-
-        <TooltipTrigger delay={0}>
-        <Button variant={currentTab === 'pageviews-report' ? 'cta' : 'primary'}
-            onPress={() => {
-              if (navigate) {
-                navigate(`/pageviews-report?${currentQueryParameters.toString()}`);
-              }
-            }}
-        >
-            Pageviews Chart
-        </Button>
-          <Tooltip>Explore Pageviews for {globalUrl}</Tooltip>
-        </TooltipTrigger>
    &nbsp;&nbsp;
    <TooltipTrigger delay={0}>
         <Button variant={currentTab === 'forms-rum-dashboard' ? 'cta' : 'primary'}

@@ -144,7 +144,7 @@ export async function sort({ items, sortDescriptor }) {
  * takes block and preemptively fires off requests for resources in worker thread
  * @param {*} main
  */
-export async function queryRequest(endpoint, endpointHost, qps = {}) {
+export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) {
   const pms = await bidirectionalConversion(endpoint, qps);
 
   // remove http or https prefix in url param if it exists
@@ -172,7 +172,9 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
     if(endpoint === 'rum-forms-dashboard'){
+      if(deleteUrl){
       pms.delete('url');
+      }
       await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
@@ -241,7 +243,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
   do {
       try {
           // Make the queryRequest
-          await queryRequest(endpoint, endpointHost, qpsparameter);
+          await queryRequest(endpoint, endpointHost, qpsparameter , true);
 
           // Process the data
           data = window.dashboard[endpoint].results.data || [];

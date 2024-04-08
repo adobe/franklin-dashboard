@@ -48,7 +48,7 @@ const NavigationTabs = () => {
               }
             }}
         >
-            RUM Dashboard
+            Forms RUM Dashboard
         </Button>
           <Tooltip>Explore RUM Dashboard for {globalUrl}</Tooltip>
         </TooltipTrigger>

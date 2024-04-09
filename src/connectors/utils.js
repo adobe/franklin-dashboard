@@ -194,7 +194,8 @@ export async function queryRequest(endpoint, endpointHost, qps = {}) {
 export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, ext) {
   let timezoneParam = timezone;
   const newQp = new URLSearchParams();
-  newQp.set('url', url);
+  // only take the first domain before a comma in case multiple domains were entered
+  newQp.set('url', url.split(',')[0]);
   newQp.set('domainkey', domainkey);
   newQp.set('startdate', startdate);
   newQp.set('enddate', enddate);

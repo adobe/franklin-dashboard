@@ -1,8 +1,7 @@
-import { Grid, View, Flex} from '@adobe/react-spectrum';
+import { Grid, View, Flex } from '@adobe/react-spectrum';
 import { useState, useEffect } from 'react';
 import DashboardQueryFilter from '../../../controllers/Filters/DashboardQueryFilter';
 import { RumTableView } from './RumTableView';
-
 
 export function RumDashboardMain() {
   const [data, setData] = useState([]);
@@ -37,15 +36,15 @@ export function RumDashboardMain() {
             <View gridArea="sidebar" height="100%">
               <DashboardQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}
               data={data} setter={setData} dataEndpoint={'rum-dashboard'}
-              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@v3'}
+              apiEndpoint={'https://data.aem.live/helix-services/run-query@v3'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag} config={config} configSetter={setConfig}>
               </DashboardQueryFilter>
             </View>
 
             <View gridArea="content1" width="100%" height="100%" overflow="hidden">
               <Flex width="100%" height="100%">
-                <RumTableView 
-                data={data} setter={setData} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns} 
+                <RumTableView
+                data={data} setter={setData} dataFlag={fetchFlag} flagSetter={setFetchFlag} width="100%" height="100%" columns={columns}
                 columnHeadings={columnHeadings} config={config} configSetter={setConfig}/>
               </Flex>
             </View>

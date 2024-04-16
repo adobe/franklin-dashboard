@@ -39,7 +39,7 @@ export function RumDashboardMain() {
               <DashboardQueryFilter
                 hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true}
                 isReport={false} data={data} setter={setData} dataEndpoint={'rum-404'}
-                apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@v3'}
+                apiEndpoint={'https://data.aem.live/helix-services/run-query@v3'}
                 dataFlag={fetchFlag} flagSetter={setFetchFlag} config={config}
                 configSetter={setConfig}>
               </DashboardQueryFilter>

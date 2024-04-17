@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  // eslint-disable-next-line no-unused-vars
   TextField, Form, ButtonGroup, Button,
 } from '@adobe/react-spectrum';
 
@@ -16,8 +17,15 @@ const DomainKeyForm = ({
     // Get form data as an object.
     const {
       domainkey,
+    } = Object.fromEntries(new FormData(e.currentTarget));
+
+    let {
       inputUrl,
     } = Object.fromEntries(new FormData(e.currentTarget));
+
+    // only take the first domain before a comma in case multiple domains were entered
+    // eslint-disable-next-line prefer-destructuring
+    inputUrl = inputUrl.split(',')[0];
 
     let errorsCount = 0;
 

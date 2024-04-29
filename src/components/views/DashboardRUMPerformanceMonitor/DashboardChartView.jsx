@@ -8,7 +8,7 @@ import './DashboardChartView.css';
 import { getDataDates } from 'connectors/utils';
 
 export function DashboardChartView({
-  data, dataFlag
+  data, dataFlag,
 }) {
   const formatter = useDateFormatter({ dateStyle: 'short' });
 
@@ -16,14 +16,13 @@ export function DashboardChartView({
     let totalPageViews = 0;
     data.forEach((pageview) => {
       totalPageViews += parseInt(pageview.pageviews, 10);
-    })
+    });
 
-    const {start, end} = getDataDates();
+    const { start, end } = getDataDates();
     const currStart = start ? parseDate(start) : null;
     const currEnd = end ? parseDate(end) : null;
-    const urlParameters = new URLSearchParams(location.search)
+    const urlParameters = new URLSearchParams(location.search);
     const url = urlParameters.get('url').replace('https://', '');
-
 
     return start && end && (
             <Grid
@@ -36,7 +35,7 @@ export function DashboardChartView({
             >
                 <View gridArea="title" width="100%">
                     <h2 style={{ textAlign: 'center' }}>
-                      {<a href={'https://'+url}>{url}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` visits between ${formatter.formatRange(
+                      {<a href={`https://${url}`}>{url}</a>} registered <Badge margin="auto" width="fit-content" UNSAFE_style={{ fontSize: '15px' }} alignSelf='center' variant='info'>{parseInt(totalPageViews, 10).toLocaleString('en-US')}</Badge>{` page views between ${formatter.formatRange(
                         currStart.toDate(),
                         currEnd.toDate(),
                       )}`}

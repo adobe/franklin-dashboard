@@ -94,6 +94,10 @@ const DashboardNavbar = ({
   };
 
   return (
+    <div>
+    <div style={{
+      padding: '1.5em', display: 'block', backgroundColor: 'red', color: 'white', fontWeight: 'bold', textAlign: 'center',
+    }}>https://data.aem.live is deprecated.  Ask datadesk or your Adobe contact for your RUM Explorer URL.</div>
     <div style={{ padding: '1.5em', display: 'flex' }}
     >
         {hasNavigation && <NavigationTabs />}
@@ -122,6 +126,7 @@ const DashboardNavbar = ({
 
         </div>
         }
+    </div>
     </div>
   );
 };

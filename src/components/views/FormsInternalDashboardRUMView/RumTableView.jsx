@@ -95,10 +95,23 @@ export function RumTableView({
                                 {(
                                     columns.map((col) => {
                                       if (col === 'url') {
-                                        if(rum[col] === 'Other'){
+                                        if (rum[col] === 'Other') {
                                           return <Cell>{rum[col]}</Cell>;
                                         }
-                                        return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
+                                      
+                                        const baseDashboardUrl = 'https://forms-internal-dashboard--franklin-dashboard--adobe.hlx.page/rum-dashboard';
+                                        const url = rum[col];
+                                        const urlParameters = new URLSearchParams(window.location.search);
+                                        const domainkey = urlParameters.get('domainkey');
+                                        const startdate = urlParameters.get('startdate');
+                                        const enddate = urlParameters.get('enddate');
+                                        const interval = urlParameters.get('interval');
+                                        const offset = urlParameters.get('offset');
+                                        const timezone = 'Asia/Calcutta'; // Replace with dynamic value if needed
+                                      
+                                        const dashboardUrl = `${baseDashboardUrl}?url=${url}&domainkey=${domainkey}&startdate=${startdate}&enddate=${enddate}&timezone=${encodeURIComponent(timezone)}`;
+                                      
+                                        return <Cell><a href={dashboardUrl} target="_blank">{url.replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col.startsWith('avg')) {
                                         const currCol = col === 'avglcp' && rum[col] ? rum[col] / 1000 : rum[col];
                                         const numUpdated = col == 'avginp' ? Math.round(currCol) : currCol;

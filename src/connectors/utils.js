@@ -315,12 +315,14 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           data = window.dashboard[endpoint].results.data || [];
           console.log("---CS Form submission------");
           for (let i = 0; i < data.length; i += 1) {
+                    if(! data[i]['url'].includes('localhost')){
                           let newData = {
                               url: data[i]['url'],
                               submissions: data[i]['actions']
                           };
                           viewData.push(newData);
                       }
+          }  
           
           console.log("---CS Form submission--done------");
           // Update qps for the next iteration

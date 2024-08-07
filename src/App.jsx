@@ -27,8 +27,7 @@ function App() {
           <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
           <Route path='/rum-dashboard' element={<FormsDashboardRUMView/>}></Route>
           <Route path='/forms-rum-dashboard' element={<FormsInternalDashboardRUMView/>}></Route>
-          <Route path='/forms-cs-rum-dashboard' element={<FormsCSDashboardRUMView/>}></Route>
-          <Route path='/pageviews-report' element={<DashboardRUMPerformanceMonitor/>}></Route>
+          <Route path='/pageviews-report' element={<FormsCSDashboardRUMView/>}></Route>
         </Routes>
         <ToastContainer />
     </Provider>

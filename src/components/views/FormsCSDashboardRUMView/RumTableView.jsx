@@ -111,7 +111,7 @@ export function RumTableView({
                                       
                                         const dashboardUrl = `${baseDashboardUrl}?url=${url}&domainkey=${domainkey}&startdate=${startdate}&enddate=${enddate}&timezone=${encodeURIComponent(timezone)}`;
                                       
-                                        return <Cell>{url}</Cell>;
+                                        return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col === 'views') {
                                         return <Cell width='size-1500'>
                                                         <Badge width="size-1500" alignSelf='center' variant='info'>

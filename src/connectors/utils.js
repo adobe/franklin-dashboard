@@ -171,7 +171,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
   }
   const flag = `${endpoint}Flag`;
   const checkData = async () => {
-    if(endpoint === 'rum-forms-dashboard'){
+    if(endpoint === 'rum-forms-dashboard' || endpoint === 'rum-checkpoint-urls'){
       if(deleteUrl){
       pms.delete('url');
       }
@@ -303,11 +303,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
 
 
 export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter){
-  const domains = new Set();
-  const duplicateDomain = new Set();
   let data;
-  let totalFormViews = 0;
-  let totalFormSubmissions = 0;
   let viewData = [];
   const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit', 'source': '#guideContainerForm'};
   do {
@@ -338,5 +334,6 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
       }
   } while (data && data.length > 0);
   window.dashboard[endpoint].results.data = viewData;
+  window.dashboard['internalCSRUMDataLoaded'] = true;
   flagSetter(true);
 }

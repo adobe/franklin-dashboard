@@ -300,3 +300,43 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
   window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
   flagSetter(true);
 }
+
+
+export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter){
+  const domains = new Set();
+  const duplicateDomain = new Set();
+  let data;
+  let totalFormViews = 0;
+  let totalFormSubmissions = 0;
+  let viewData = [];
+  const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit', 'source': '#guideContainerForm'};
+  do {
+      try {
+          // Make the queryRequest
+          await queryRequest(endpoint, endpointHost, qpsparameter , true);
+
+          // Process the data
+          data = window.dashboard[endpoint].results.data || [];
+          console.log("---CS Form submission------");
+          for (let i = 0; i < data.length; i += 1) {
+                          let newData = {
+                              url: data[i]['url'],
+                              submissions: data[i]['actions']
+                          };
+                          viewData.push(newData);
+                      }
+          
+          console.log("---CS Form submission--done------");
+          // Update qps for the next iteration
+          qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
+          qpsparameter.limit = qpsparameter.limit * 2;
+          qpsparameter.source = "#guideContainerForm";
+          qpsparameter.checkpoint = "formsubmit";
+      } catch (error) {
+          // Handle errors if necessary
+          console.error("Error fetching data:", error);
+      }
+  } while (data && data.length > 0);
+  window.dashboard[endpoint].results.data = viewData;
+  flagSetter(true);
+}

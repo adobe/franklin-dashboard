@@ -13,6 +13,7 @@ import DashboardRumView from './components/views/DashboardRUMView/DashboardRUMVi
 import FormsDashboardRUMView from 'components/views/FormsDashboardRUMView/FormsDashboardRUMView.jsx';
 import FormsInternalDashboardRUMView from 'components/views/FormsInternalDashboardRUMView/FormsInternalDashboardRUMView.jsx';
 import DashboardRUMPerformanceMonitor from './components/views/DashboardRUMPerformanceMonitor/DashboardRUMPerformanceMonitor.jsx';
+import FormsCSDashboardRUMView from 'components/views/FormsCSDashboardRUMView/FormsCSDashboardRUMView.jsx';
 
 import './App.css';
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/404-reports' element={<Dashboard404Report/>}></Route>
           <Route path='/rum-dashboard' element={<FormsDashboardRUMView/>}></Route>
           <Route path='/forms-rum-dashboard' element={<FormsInternalDashboardRUMView/>}></Route>
+          <Route path='/forms-cs-rum-dashboard' element={<FormsCSDashboardRUMView/>}></Route>
           <Route path='/pageviews-report' element={<DashboardRUMPerformanceMonitor/>}></Route>
         </Routes>
         <ToastContainer />

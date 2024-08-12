@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable import/extensions */
-import { Flex, DatePicker, TextField, Form, Button, Text } from '@adobe/react-spectrum';
+import { Flex, DatePicker, TextField, Form, Button, ComboBox, Item } from '@adobe/react-spectrum';
 import { useNavigate } from 'react-router-dom';
 import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
 import React, { useEffect } from 'react';
@@ -225,19 +225,20 @@ export function DashboardFormsCSQueryFilter({
                     isRequired
                   />
                   {hasUrlField && (
-                    <TextField 
-                        name='tenantUrl' 
-                        label="Tenant" 
-                        autoFocus 
+                    <ComboBox
+                        name='tenantUrl'
+                        label="Tenant"
+                        autoFocus
                         defaultValue=""
                         placeholder="Select tenant"
+                        isRequired
                     >
                         {formsProgramMapping.map((item, index) => (
-                            <option key={index} value={item.tenant}>
+                            <Item key={index} value={item.tenant}>
                                 {item.tenant}
-                            </option>
+                            </Item>
                         ))}
-                    </TextField>
+                    </ComboBox>
                 )}
                   {(
                     hasDomainkeyField && <TextField

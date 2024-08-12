@@ -18,6 +18,8 @@ export function DashboardFormsCSQueryFilter({
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
+  const [defaultTenant, setDefaultTenant] = React.useState('');
+
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,
     setStartDate, setEndDate, startDate, endDate, setDataEndpoint, setTenantName,
@@ -195,8 +197,6 @@ export function DashboardFormsCSQueryFilter({
       navigate('/');
     }
   }, []);
-
-  const [defaultTenant, setDefaultTenant] = useState('');
 
     // Retrieve the default value from localStorage when the component mounts
     useEffect(() => {

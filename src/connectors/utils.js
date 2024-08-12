@@ -303,8 +303,10 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
 
 
 export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter){
+  const domains = new Set();
   let data;
   let viewData = [];
+  let totalFormSubmissions = 0;
   const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit', 'source': '#guideContainerForm'};
   do {
       try {
@@ -315,15 +317,19 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           data = window.dashboard[endpoint].results.data || [];
           console.log("---CS Form submission------");
           for (let i = 0; i < data.length; i += 1) {
+            let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').replace(/^www\./, '').split('/')[0]
                     if(! data[i]['url'].includes('localhost')){
                           let newData = {
                               url: data[i]['url'],
                               submissions: data[i]['actions']
                           };
+                          domains.add(domain);
                           viewData.push(newData);
+                          totalFormSubmissions = totalFormSubmissions + Number(data[i]['actions']);
                       }
           }  
-          
+          console.log("---domain----");
+          console.log(domains);
           console.log("---CS Form submission--done------");
           // Update qps for the next iteration
           qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
@@ -335,7 +341,12 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           console.error("Error fetching data:", error);
       }
   } while (data && data.length > 0);
+  viewData.push({
+    url: 'ALL',
+    submissions: totalFormSubmissions
+});
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard['internalCSRUMDataLoaded'] = true;
+  window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
   flagSetter(true);
 }

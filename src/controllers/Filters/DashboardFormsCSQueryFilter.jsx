@@ -196,6 +196,17 @@ export function DashboardFormsCSQueryFilter({
     }
   }, []);
 
+  const [defaultTenant, setDefaultTenant] = useState('');
+
+    // Retrieve the default value from localStorage when the component mounts
+    useEffect(() => {
+        const storedTenant = localStorage.getItem('tenantUrl');
+        if (storedTenant) {
+            setDefaultTenant(storedTenant);
+        }
+    }, []);
+
+
   const onSubmit = (e) => {
     const urlParameters = new URLSearchParams(window.location.search);
     // Prevent default browser page refresh.
@@ -237,6 +248,7 @@ export function DashboardFormsCSQueryFilter({
                     <ComboBox
                         name='tenantUrl'
                         label="Tenant"
+                        defaultValue={defaultTenant} // Set default value from state
                         autoFocus
                         placeholder="Select tenant"
                         isRequired

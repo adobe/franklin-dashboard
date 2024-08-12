@@ -197,10 +197,10 @@ export function DashboardFormsCSQueryFilter({
     // Get form data as an object.
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
-      start, end, inputUrl, domainkey, limit,
+      start, end, tenantUrl, domainkey, limit,
     } = formData;
 
-    const url = inputUrl;
+    const url = tenantUrl;
     const startdate = start;
     const enddate = end;
 
@@ -226,7 +226,7 @@ export function DashboardFormsCSQueryFilter({
                     isRequired
                   />
                   {(
-                    hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
+                    hasUrlField && <TextField name='tenantUrl' label="Tenant" autoFocus defaultValue=""
                     />
                   )}
                   {(

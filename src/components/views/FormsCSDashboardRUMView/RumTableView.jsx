@@ -10,13 +10,24 @@ import CloseCircle from '@spectrum-icons/workflow/CloseCircle';
 import SentimentNeutral from '@spectrum-icons/workflow/SentimentNeutral';
 import AlertTriangle from '@spectrum-icons/workflow/Alert';
 import NotFound from '@spectrum-icons/illustrations/NotFound';
+import formsProgramMapping from './forms_program_id_name_mapping.json';
 
 export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
 
+  const hostnameToProgramIdMap = new Map();
+  const programIdToNameMap = new Map(Object.entries(formsProgramMapping));
+
   let collator = useCollator({ numeric: true });
   if (data.length > 0) {
+    formsProgramMapping.forEach(item => {
+      hostnameToProgramIdMap.set(item.hostname, item.program_id);
+  });
+   
+    window.dashboard['dash/domain-list'].results.data.forEach(item => {
+    hostnameToProgramIdMap.set(item.hostname, programIdToNameMap.get(item.program_id));
+   });
     const ranges = {
       avglcp: [2.5, 4.00],
       avgfid: [100, 300],
@@ -127,7 +138,15 @@ export function RumTableView({
                                                         </Badge>
                                                     </Cell>;
                                       }
-                                      return <Cell width="size-1000">
+                                      if (col === 'tenantname') {
+                                        
+                                        return <Cell width='size-1500'>
+                                                        <Badge width="size-1500" alignSelf='center' variant='info'>
+                                                            <Text width="100%">{hostnameToProgramIdMap.get(rum[col])}</Text>
+                                                        </Badge>
+                                                    </Cell>;
+                                      }
+                                       return <Cell width="size-1000">
                                                     <Badge width="size-1000" alignSelf='center' variant='info'>
                                                         <AlertCircle aria-label="Pass" />
                                                         <Text>{rum[col]}</Text>

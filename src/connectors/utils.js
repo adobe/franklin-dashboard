@@ -321,7 +321,8 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                     if(! data[i]['url'].includes('localhost')){
                           let newData = {
                               url: data[i]['url'],
-                              submissions: data[i]['actions']
+                              submissions: data[i]['actions'],
+                              tenantname : domain
                           };
                           domains.add(domain);
                           viewData.push(newData);
@@ -343,7 +344,8 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   } while (data && data.length > 0);
   viewData.push({
     url: 'ALL',
-    submissions: totalFormSubmissions
+    submissions: totalFormSubmissions,
+    tenantname: 'ALL'
 });
 const domainsArray = Array.from(domains);
 const domainsString = domainsArray.join(', ');

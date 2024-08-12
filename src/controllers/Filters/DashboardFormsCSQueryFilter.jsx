@@ -20,7 +20,7 @@ export function DashboardFormsCSQueryFilter({
   const [filterData, setFilterData] = React.useState([]);
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,
-    setStartDate, setEndDate, startDate, endDate, setDataEndpoint,
+    setStartDate, setEndDate, startDate, endDate, setDataEndpoint, setTenantName,
   } = useStore();
   let navigate = null;
   const uniqueTenants = Array.from(new Set(formsProgramMapping.map(item => item.tenant)))
@@ -94,7 +94,7 @@ export function DashboardFormsCSQueryFilter({
 
   const updateData = (cfg = {}) => {
     const {
-      dataEP, url, domainkey,
+      dataEP, url, domainkey, tenantUrl
     } = cfg;
     const flag = `${dataEP}Flag`;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
@@ -119,6 +119,7 @@ export function DashboardFormsCSQueryFilter({
       setDataEndpoint(dataEndpoint);
       setStartDate(currStart);
       setEndDate(currEnd);
+      setTenantName(tenantUrl);
     }
   };
 
@@ -169,6 +170,7 @@ export function DashboardFormsCSQueryFilter({
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
         limit: urlLimit,
+        tenantUrl: tenantUrl,
       };
       if (dataEndpoint === 'rum-sources') {
         configuration.checkpoint = '404';
@@ -205,11 +207,11 @@ export function DashboardFormsCSQueryFilter({
       start, end, tenantUrl, domainkey, limit,
     } = formData;
 
-    const url = tenantUrl;
+    const tenant = tenantUrl;
     const startdate = start;
     const enddate = end;
-
-    handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
+    setTenantName(tenant);
+    handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'),tenant);
   };
 
   return globalUrl && (

@@ -9,6 +9,7 @@ export const useStore = create((set) => ({
   reportGenerated: null,
   startDate: null,
   endDate: null,
+  tenantName: null,
 
   setDomainKey: (value) => {
     // save to localstorage
@@ -44,6 +45,14 @@ export const useStore = create((set) => ({
       localStorage.setItem('globalUrl', value);
     }
     set(() => ({ globalUrl: value }));
+  },
+  setTenantName: (value) => {
+    // save to localstorage
+
+    if (value) {
+      localStorage.setItem('setTenantName', value);
+    }
+    set(() => ({ setTenantName: value }));
   },
   setReportUrl: (value) => {
     // save to localstorage

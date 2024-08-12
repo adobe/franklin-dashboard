@@ -217,7 +217,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
   await checkData();
 }
 
-export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, ext) {
+export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, ext,tenantUrl="") {
   let timezoneParam = timezone;
   const newQp = new URLSearchParams();
   newQp.set('url', url);

@@ -16,14 +16,13 @@ export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
 
-  const hostnameToProgramIdMap = new Map();
-  const programIdToNameMap = new Map(Object.entries(formsProgramMapping));
+  const hostnameToProgramIdMap = formsProgramMapping.reduce((map, item) => {
+    map[item.domain] = item.tenant;
+    return map;
+}, {});
 
   let collator = useCollator({ numeric: true });
-  if (data.length > 0 && window.dashboard['dash/domain-list']?.results?.data.length > 0) { 
-    window.dashboard['dash/domain-list'].results.data.forEach(item => {
-    hostnameToProgramIdMap.set(item.hostname, programIdToNameMap.get(item.program_id+""));
-   });
+  if (data.length > 0) {    
     const ranges = {
       avglcp: [2.5, 4.00],
       avgfid: [100, 300],

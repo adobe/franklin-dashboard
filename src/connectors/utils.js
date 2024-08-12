@@ -347,10 +347,6 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
     submissions: totalFormSubmissions,
     tenantname: 'ALL'
 });
-const domainsArray = Array.from(domains);
-const domainsString = domainsArray.join(', ');
-  const qpsdomainparameter = {'offset': -1, 'limit': 500 ,'url': domainsString};
-  await queryRequest('dash/domain-list', endpointHost, qpsdomainparameter);
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard['internalCSRUMDataLoaded'] = true;
   window.dashboard["totalFormSubmissions"] = totalFormSubmissions;

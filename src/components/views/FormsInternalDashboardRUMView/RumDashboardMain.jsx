@@ -20,7 +20,7 @@ export function RumDashboardMain() {
     submissions: ['Formsubmission', `Total form submitted on a form in date range chosen. Choosing date range 1/1/2023 - 1/2/2023
     will provide you data from 12AM 1/1/2023 through to end of day of 1/2/2023`],
   };
-
+  
   return (
         <Grid areas={['sidebar content1',
           'sidebar content1']} columns={['.5fr', '6fr']} rows={['.5fr', '6fr']} height="87vh" width="100%" columnGap={'size-100'} id='table_gridview'>

@@ -13,6 +13,7 @@ import { useStore, initStore } from '../../stores/global.js';
 import {
   getEDSCSFormSubmission, intervalOffsetToDates, getDataDates, handleRedirect,
 } from '../../connectors/utils.js';
+import formsProgramMapping from './../../components/views/FormsCSDashboardRUMView/forms_program_id_name_mapping.json';
 
 export function DashboardFormsCSQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
@@ -225,10 +226,24 @@ export function DashboardFormsCSQueryFilter({
                     maxValue={today(getLocalTimeZone())}
                     isRequired
                   />
-                  {(
-                    hasUrlField && <TextField name='tenantUrl' label="Tenant" autoFocus defaultValue=""
-                    />
-                  )}
+                  {hasUrlField && (
+                <FormControl fullWidth>
+                    <InputLabel id="tenant-select-label">Tenant</InputLabel>
+                    <Select
+                        labelId="tenant-select-label"
+                        name="tenantUrl"
+                        label="Tenant"
+                        defaultValue=""
+                        autoFocus
+                    >
+                        {formsProgramMapping.map((item, index) => (
+                            <MenuItem key={index} value={item.tenant}>
+                                {item.tenant}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            )}
                   {(
                     hasDomainkeyField && <TextField
                       name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus

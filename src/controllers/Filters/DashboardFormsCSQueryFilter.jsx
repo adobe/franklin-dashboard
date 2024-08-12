@@ -204,10 +204,11 @@ export function DashboardFormsCSQueryFilter({
     // Get form data as an object.
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
-      start, end, tenantUrl, domainkey, limit,
+      start, end, tenantUrl, domainkey, limit,inputUrl,
     } = formData;
 
     const tenant = tenantUrl;
+    const url = inputUrl;
     const startdate = start;
     const enddate = end;
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'),tenant);

@@ -135,12 +135,7 @@ export function RumTableView({
                                                     </Cell>;
                                       }
                                       if (col === 'tenantname') {
-                                        
-                                        return <Cell width='size-1500'>
-                                                        <Badge width="size-1500" alignSelf='center' variant='info'>
-                                                            <Text width="100%">{hostnameToProgramIdMap.get(rum[col])}</Text>
-                                                        </Badge>
-                                                    </Cell>;
+                                        return <Cell>{hostnameToProgramIdMap.get(rum[col])}</Cell>;
                                       }
                                        return <Cell width="size-1000">
                                                     <Badge width="size-1000" alignSelf='center' variant='info'>

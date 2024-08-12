@@ -172,7 +172,7 @@ export function DashboardFormsCSQueryFilter({
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
         limit: urlLimit,
-        tenantUrl: "",
+        tenantUrl: localStorage.getItem('tenantUrl'),
       };
       if (dataEndpoint === 'rum-sources') {
         configuration.checkpoint = '404';

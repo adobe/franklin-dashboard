@@ -23,6 +23,12 @@ export function DashboardFormsCSQueryFilter({
     setStartDate, setEndDate, startDate, endDate, setDataEndpoint,
   } = useStore();
   let navigate = null;
+  const uniqueTenants = Array.from(new Set(formsProgramMapping.map(item => item.tenant)))
+        .map(tenant => ({
+            tenant,
+            value: tenant
+        }));
+
   try {
     navigate = useNavigate();
   } catch (e) {
@@ -233,12 +239,14 @@ export function DashboardFormsCSQueryFilter({
                         isRequired
                         width="size-3000" // Set a specific width if needed
                     >
-                        {(
-                            formsProgramMapping.map((item, index) => (
-                                <Item key={index} value={item.tenant}>
+                        {uniqueTenants.length > 0 ? (
+                            uniqueTenants.map((item, index) => (
+                                <Item key={index} value={item.value}>
                                     {item.tenant}
                                 </Item>
                             ))
+                        ) : (
+                            <Item value="">No tenants available</Item>
                         )}
                     </ComboBox>
                 )}

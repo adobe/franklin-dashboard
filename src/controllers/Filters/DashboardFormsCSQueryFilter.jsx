@@ -210,7 +210,6 @@ export function DashboardFormsCSQueryFilter({
     const tenant = tenantUrl;
     const startdate = start;
     const enddate = end;
-    setTenantName(tenant);
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'),tenant);
   };
 

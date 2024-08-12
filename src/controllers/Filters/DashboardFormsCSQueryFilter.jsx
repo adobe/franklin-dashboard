@@ -250,7 +250,6 @@ export function DashboardFormsCSQueryFilter({
                         label="Tenant"
                         defaultValue={localStorage.getItem('tenantUrl')} // Set default value from state
                         autoFocus
-                        placeholder="Select tenant"
                         isRequired
                         width="size-3000" // Set a specific width if needed
                     >

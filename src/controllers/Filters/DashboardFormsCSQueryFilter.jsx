@@ -233,14 +233,12 @@ export function DashboardFormsCSQueryFilter({
                         isRequired
                         width="size-3000" // Set a specific width if needed
                     >
-                        {formsProgramMapping.length > 0 ? (
+                        {(
                             formsProgramMapping.map((item, index) => (
                                 <Item key={index} value={item.tenant}>
                                     {item.tenant}
                                 </Item>
                             ))
-                        ) : (
-                            <Item value="">No tenants available</Item>
                         )}
                     </ComboBox>
                 )}

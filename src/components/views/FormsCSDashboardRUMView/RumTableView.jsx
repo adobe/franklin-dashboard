@@ -22,7 +22,7 @@ export function RumTableView({
   let collator = useCollator({ numeric: true });
   if (data.length > 0 && window.dashboard['dash/domain-list']?.results?.data.length > 0) { 
     window.dashboard['dash/domain-list'].results.data.forEach(item => {
-    hostnameToProgramIdMap.set(item.hostname, programIdToNameMap.get(item.program_id));
+    hostnameToProgramIdMap.set(item.hostname, programIdToNameMap.get(item.program_id+""));
    });
     const ranges = {
       avglcp: [2.5, 4.00],

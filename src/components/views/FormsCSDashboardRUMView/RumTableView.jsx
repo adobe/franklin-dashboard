@@ -20,7 +20,7 @@ export function RumTableView({
   const programIdToNameMap = new Map(Object.entries(formsProgramMapping));
 
   let collator = useCollator({ numeric: true });
-  if (data.length > 0) { 
+  if (data.length > 0 && window.dashboard['dash/domain-list']?.results?.data.length > 0) { 
     window.dashboard['dash/domain-list'].results.data.forEach(item => {
     hostnameToProgramIdMap.set(item.hostname, programIdToNameMap.get(item.program_id));
    });

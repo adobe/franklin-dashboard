@@ -248,7 +248,7 @@ export function DashboardFormsCSQueryFilter({
                     <ComboBox
                         name='tenantUrl'
                         label="Tenant"
-                        defaultValue={defaultTenant} // Set default value from state
+                        defaultValue={localStorage.getItem('tenantUrl')} // Set default value from state
                         autoFocus
                         placeholder="Select tenant"
                         isRequired

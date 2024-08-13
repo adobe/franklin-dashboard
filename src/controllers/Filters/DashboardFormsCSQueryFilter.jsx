@@ -202,14 +202,6 @@ export function DashboardFormsCSQueryFilter({
     }
   }, []);
 
-    // Retrieve the default value from localStorage when the component mounts
-    useEffect(() => {
-        const storedTenant = localStorage.getItem('tenantUrl');
-        if (storedTenant) {
-            setDefaultTenant(storedTenant);
-        }
-    }, []);
-
     const handleChange = (selectedValue) => {
       localStorage.setItem('tenantUrl', selectedValue);
       setTenantUrl(selectedValue);

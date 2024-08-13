@@ -172,12 +172,12 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
     pms.set('limit', '500');
   }
   const flag = `${endpoint}Flag`;
-  const checkData = async () => {
+  const checkData = () => {
     if(endpoint === 'rum-forms-dashboard' || endpoint === 'rum-checkpoint-urls'){
       if(deleteUrl){
       pms.delete('url');
       }
-      await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
+       fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;
@@ -199,7 +199,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
     } else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
       console.log("----checkdata------");
-      await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
+      fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
         .then((resp) => resp.json())
         .then((data) => {
           window[flag] = false;
@@ -216,7 +216,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
         });
     }
   };
-  await checkData();
+   checkData();
 }
 
 export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, ext,tenantUrl="") {

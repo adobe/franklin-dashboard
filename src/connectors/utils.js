@@ -334,7 +334,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                   let tenantName = localStorage.getItem('tenantName');
                   console.log("---orgName---");
                   console.log(orgName);
-                  if (tenantName === 'All' && orgName !== "") {
+                  if (tenantName === 'All' && orgName !== undefined) {
                       if (groupedData.has(orgName)) {
                           // If orgName already exists, aggregate the data
                           let existingData = groupedData.get(orgName);
@@ -348,7 +348,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                               orgName: orgName
                           });
                       }
-                  } else if (orgName === tenantName && orgName !== "") {
+                  } else if (orgName === tenantName && orgName !== undefined) {
                       // If tenantName is not 'All', process as usual
                       let newData = {
                           url: data[i]['url'],

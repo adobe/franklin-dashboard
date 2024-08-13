@@ -81,10 +81,6 @@ export function DashboardFormsCSQueryFilter({
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
     }
-    const savedTenantUrl = localStorage.getItem('tenantUrl');
-        if (savedTenantUrl) {
-            setTenantUrl(savedTenantUrl);
-        }
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
   const getQuery = async (cfg = {}) => {
@@ -141,6 +137,14 @@ export function DashboardFormsCSQueryFilter({
     setHostName(hostname);
     return hostname;
   };
+
+  // Initialize state from localStorage
+  useEffect(() => {
+    const savedTenantUrl = localStorage.getItem('tenantUrl');
+    if (savedTenantUrl) {
+        setTenantUrl(savedTenantUrl);
+    }
+}, []);
 
   useEffect(() => {
     // check query parameters if this is a shareLink

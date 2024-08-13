@@ -261,6 +261,9 @@ export function DashboardFormsCSQueryFilter({
                         isRequired
                         width="size-3000" // Set a specific width if needed
                     >
+                      <Item key='All' value='All'>
+                                    All
+                       </Item>
                         {uniqueTenants.length > 0 ? (
                             uniqueTenants.map((item, index) => (
                                 <Item key={item.tenant} value={item.value}>

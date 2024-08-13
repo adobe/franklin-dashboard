@@ -334,7 +334,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                   let tenantName = localStorage.getItem('tenantName');
                   console.log("---orgName---");
                   console.log(orgName);
-                  if (tenantName === 'All' && orgName != undefined) {
+                  if (tenantName === 'All' ) {
                       if (groupedData.has(orgName)) {
                         console.log("---orgName---");
                         console.log(orgName);

@@ -275,6 +275,10 @@ export function DashboardFormsCSQueryFilter({
                         )}
                     </ComboBox>
                 )}
+                {(
+                    hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isHidden
+                    />
+                  )}
                   {(
                     hasDomainkeyField && <TextField
                       name='domainkey' label='Domain Key' type='password' defaultValue={domainKey} autoFocus

@@ -320,7 +320,6 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
 
           // Process the data
           data = window.dashboard[endpoint].results.data || [];
-          console.log("---CS Form submission------");
           
           let groupedData = new Map();  // Map to store grouped data when tenantName is 'All'
           
@@ -371,9 +370,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
               });
           }
           
-          console.log("---domain----");
           console.log(domains);
-          console.log("---CS Form submission--done------");
           // Update qps for the next iteration
           qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
           qpsparameter.limit = qpsparameter.limit * 2;

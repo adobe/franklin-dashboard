@@ -16,7 +16,9 @@ export function RumTableView({
   data, dataFlag, columns, columnHeadings, config, configSetter, setter
 }) {
 
-  
+  const hostnameToProgramIdMap = new Map(
+    formsProgramMapping.map(item => [item.domain, item.tenant])
+);
 
   let collator = useCollator({ numeric: true });
   if (data.length > 0) {    

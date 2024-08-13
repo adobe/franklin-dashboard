@@ -100,8 +100,11 @@ export function DashboardQueryFilter({
         setter([]);
         flagSetter(window[flag]);
       }
+      console.log("----updateData------inside if");
+
       window.setTimeout(() => { updateData(cfg); }, 1000);
     } else if (Object.hasOwn(window, flag) && window[flag] === false) {
+      console.log("----updateData------inside else");
       flagSetter(window[flag]);
       // query complete, hide loading graphic
       // data = window.dashboard[dataEndpoint].results.data;

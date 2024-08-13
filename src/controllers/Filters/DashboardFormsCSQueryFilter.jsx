@@ -18,7 +18,7 @@ export function DashboardFormsCSQueryFilter({
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
-  const [tenantUrl, setTenantUrl] = React.useState('');
+  const [tenantUrl, setTenantUrl] = React.useState('All');
 
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,
@@ -279,7 +279,7 @@ export function DashboardFormsCSQueryFilter({
                     />
                   )}
                   {(
-                    <TextField name='timezone' label="Timezone" autoFocus defaultValue={timezone} isDisabled isRequired={false}
+                    <TextField name='timezone' label="Timezone" autoFocus defaultValue={tenantUrl} isDisabled isRequired={false}
                     />
                   )}
                   {(

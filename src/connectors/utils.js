@@ -1,6 +1,8 @@
 /* eslint-disable no-restricted-globals */
 import { useCollator } from '@adobe/react-spectrum';
 import sampleRUM from '../lib-franklin.js';
+import formsProgramMapping from './../components/views/FormsCSDashboardRUMView/forms_program_id_name_mapping.json';
+
 /**
  * Gets information on queries from rum-queries.json
  */
@@ -307,6 +309,9 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   let data;
   let viewData = [];
   let totalFormSubmissions = 0;
+  const hostnameToProgramIdMap = new Map(
+    formsProgramMapping.map(item => [item.domain, item.tenant])
+);
   const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit', 'source': '#guideContainerForm'};
   do {
       try {
@@ -318,9 +323,9 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           console.log("---CS Form submission------");
           for (let i = 0; i < data.length; i += 1) {
             let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').replace(/^www\./, '').split('/')[0]
-                    if(! (data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 
+                    if(!(data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 
                     || data[i]['url'].includes('uat') || data[i]['url'].includes('publish-') || data[i]['url'].includes('stage')
-                    || data[i]['url'].includes('test') )){
+                    || data[i]['url'].includes('test')) && ((hostnameToProgramIdMap.get(domain) === localStorage.getItem('tenantName')) || (localStorage.getItem('tenantName') === 'All'))){
                           let newData = {
                               url: data[i]['url'],
                               submissions: data[i]['actions'],

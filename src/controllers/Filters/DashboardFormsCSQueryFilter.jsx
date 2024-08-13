@@ -248,6 +248,7 @@ export function DashboardFormsCSQueryFilter({
                     <ComboBox
                         name='tenantUrl'
                         label="Tenant"
+                        selectedKey={localStorage.getItem('tenantUrl')}
                         defaultValue="{localStorage.getItem('tenantUrl')}" // Set default value from state
                         autoFocus
                         isRequired

@@ -149,7 +149,7 @@ export function RumTableView({
                 </TableBody>
             </TableView>
     );
-  } if (dataFlag) {
+  } if (!(window?.dashboard['internalCSRUMDataLoaded']===true)) {
     return (
             <ProgressBar margin="auto" label="Loading…" isIndeterminate />
     );

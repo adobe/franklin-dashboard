@@ -332,7 +332,8 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                   
                   let orgName = hostnameToProgramIdMap.get(domain);
                   let tenantName = localStorage.getItem('tenantName');
-          
+                  console.log("---orgName---");
+                  console.log(orgName);
                   if (tenantName === 'All' && orgName !== "") {
                       if (groupedData.has(orgName)) {
                           // If orgName already exists, aggregate the data

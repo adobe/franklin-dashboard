@@ -342,7 +342,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                       } else {
                           // If orgName doesn't exist, create a new entry
                           groupedData.set(orgName, {
-                              url: data[i]['url'],  // You can decide what to do with the URL in this case
+                              url: '',  // You can decide what to do with the URL in this case
                               submissions: Number(data[i]['actions']),
                               tenantname: domain,
                               orgName: orgName

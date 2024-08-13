@@ -18,7 +18,7 @@ export function DashboardFormsCSQueryFilter({
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
-  const [defaultTenant, setDefaultTenant] = React.useState('');
+  const [tenantUrl, setTenantUrl] = useState('');
 
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,
@@ -81,6 +81,10 @@ export function DashboardFormsCSQueryFilter({
     if (Object.hasOwn(window, 'dashboard') && Object.hasOwn(window.dashboard, dataEndpoint) && Object.hasOwn(window.dashboard[dataEndpoint], 'results')) {
       setter(window.dashboard[dataEndpoint].results.data); // Calling setter here to update
     }
+    const savedTenantUrl = localStorage.getItem('tenantUrl');
+        if (savedTenantUrl) {
+            setTenantUrl(savedTenantUrl);
+        }
   }, [data, filterData, dataFlag, globalUrl, startDate, endDate]);
 
   const getQuery = async (cfg = {}) => {
@@ -206,6 +210,10 @@ export function DashboardFormsCSQueryFilter({
         }
     }, []);
 
+    const handleChange = (selectedValue) => {
+      localStorage.setItem('tenantUrl', selectedValue);
+      setTenantUrl(selectedValue);
+  };
 
   const onSubmit = (e) => {
     const urlParameters = new URLSearchParams(window.location.search);
@@ -248,8 +256,8 @@ export function DashboardFormsCSQueryFilter({
                     <ComboBox
                         name='tenantUrl'
                         label="Tenant"
-                        selectedKey={localStorage.getItem('tenantUrl')}
-                        defaultValue="{localStorage.getItem('tenantUrl')}" // Set default value from state
+                        selectedKey={tenantUrl} // Control the selected value
+                        onSelectionChange={handleChange} // Update the state on selection change            
                         autoFocus
                         isRequired
                         width="size-3000" // Set a specific width if needed

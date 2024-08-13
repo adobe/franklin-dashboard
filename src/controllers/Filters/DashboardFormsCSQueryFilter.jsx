@@ -22,7 +22,7 @@ export function DashboardFormsCSQueryFilter({
 
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,
-    setStartDate, setEndDate, startDate, endDate, setDataEndpoint, setTenantName,
+    setStartDate, setEndDate, startDate, endDate, setDataEndpoint, setTenantName, tenantName,
   } = useStore();
   let navigate = null;
   const uniqueTenants = Array.from(new Set(formsProgramMapping.map(item => item.tenant)))
@@ -140,7 +140,7 @@ export function DashboardFormsCSQueryFilter({
 
   // Initialize state from localStorage
   useEffect(() => {
-    const savedTenantUrl = localStorage.getItem('tenantUrl');
+    const savedTenantUrl = localStorage.getItem('tenantName');
     if (savedTenantUrl) {
         setTenantUrl(savedTenantUrl);
     }
@@ -180,7 +180,7 @@ export function DashboardFormsCSQueryFilter({
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
         limit: urlLimit,
-        tenantUrl: localStorage.getItem('tenantUrl'),
+        tenantUrl: localStorage.getItem('tenantName'),
       };
       if (dataEndpoint === 'rum-sources') {
         configuration.checkpoint = '404';
@@ -207,7 +207,7 @@ export function DashboardFormsCSQueryFilter({
   }, []);
 
     const handleChange = (selectedValue) => {
-      localStorage.setItem('tenantUrl', selectedValue);
+      localStorage.setItem('tenantName', selectedValue);
       setTenantUrl(selectedValue);
   };
 
@@ -226,7 +226,7 @@ export function DashboardFormsCSQueryFilter({
     const url = inputUrl;
     const startdate = start;
     const enddate = end;
-    localStorage.setItem('tenantUrl', tenant);
+    localStorage.setItem('tenantName', tenant);
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'),tenant);
   };
 

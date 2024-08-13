@@ -50,9 +50,9 @@ export const useStore = create((set) => ({
     // save to localstorage
 
     if (value) {
-      localStorage.setItem('setTenantName', value);
+      localStorage.setItem('tenantName', value);
     }
-    set(() => ({ setTenantName: value }));
+    set(() => ({ tenantName: value }));
   },
   setReportUrl: (value) => {
     // save to localstorage

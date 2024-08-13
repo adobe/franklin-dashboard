@@ -172,12 +172,12 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
     pms.set('limit', '500');
   }
   const flag = `${endpoint}Flag`;
-  const checkData = () => {
+  const checkData = async () => {
     if(endpoint === 'rum-forms-dashboard' || endpoint === 'rum-checkpoint-urls'){
       if(deleteUrl){
       pms.delete('url');
       }
-       fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
+      await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
           .then((resp) => resp.json())
           .then((data) => {
             window[flag] = false;
@@ -199,7 +199,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
     } else if (!Object.hasOwn(window, flag)) {
       window[flag] = true;
       console.log("----checkdata------");
-      fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
+      await fetch(`${endpointHost}/${endpoint}?${pms.toString()}`)
         .then((resp) => resp.json())
         .then((data) => {
           window[flag] = false;
@@ -216,7 +216,7 @@ export async function queryRequest(endpoint, endpointHost, qps = {}, deleteUrl) 
         });
     }
   };
-   checkData();
+  await checkData();
 }
 
 export function handleRedirect(url, domainkey, startdate, enddate, limit, timezone, ext,tenantUrl="") {
@@ -371,6 +371,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           }
           
           console.log(domains);
+          console.log("---CS Form submission--done------");
           // Update qps for the next iteration
           qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
           qpsparameter.limit = qpsparameter.limit * 2;

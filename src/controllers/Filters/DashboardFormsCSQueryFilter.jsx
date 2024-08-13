@@ -248,13 +248,13 @@ export function DashboardFormsCSQueryFilter({
                     maxValue={today(getLocalTimeZone())}
                     isRequired
                   />
-                  {hasUrlField && (
+                  {(
                     <ComboBox
                         name='tenantUrl'
                         label="Tenant"
                         defaultValue={tenantUrl}
                         selectedKey={tenantUrl} // Control the selected value
-                        onSelectionChange={handleChange} // Update the state on selection change            
+                        onSelectionChange={handleChange} // Update the state on selection change                        
                         autoFocus
                         isRequired
                         width="size-3000" // Set a specific width if needed

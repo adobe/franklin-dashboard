@@ -99,6 +99,9 @@ export function DashboardFormsCSQueryFilter({
       dataEP, url, domainkey, tenantUrl
     } = cfg;
     const flag = `${dataEP}Flag`;
+    console.log("----updateData------");
+    console.log(flag);
+    console.log(window[flag]);
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       if (Object.hasOwn(window, flag) && window[flag] === true) {
         setter([]);

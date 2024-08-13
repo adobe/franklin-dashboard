@@ -252,7 +252,7 @@ export function DashboardFormsCSQueryFilter({
                     <ComboBox
                         name='tenantUrl'
                         label="Tenant"
-                        selectedKey={tenantUrl} // Control the selected value
+                        selectedKey={tenantName} // Control the selected value
                         onSelectionChange={handleChange} // Update the state on selection change            
                         autoFocus
                         isRequired

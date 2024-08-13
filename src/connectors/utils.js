@@ -318,7 +318,8 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           console.log("---CS Form submission------");
           for (let i = 0; i < data.length; i += 1) {
             let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').replace(/^www\./, '').split('/')[0]
-                    if(! data[i]['url'].includes('localhost')){
+                    if(! (data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 
+                    || data[i]['url'].includes('uat') || data[i]['url'].includes('publish-'))){
                           let newData = {
                               url: data[i]['url'],
                               submissions: data[i]['actions'],

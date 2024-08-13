@@ -263,7 +263,7 @@ export function DashboardFormsCSQueryFilter({
                     >
                         {uniqueTenants.length > 0 ? (
                             uniqueTenants.map((item, index) => (
-                                <Item key={index} value={item.value}>
+                                <Item key={item.tenant} value={item.value}>
                                     {item.tenant}
                                 </Item>
                             ))

@@ -92,6 +92,8 @@ export function DashboardQueryFilter({
       dataEP, url, domainkey,
     } = cfg;
     const flag = `${dataEP}Flag`;
+    console.log("----updateData------");
+    console.log(flag);
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
       if (Object.hasOwn(window, flag) && window[flag] === true) {
         setter([]);

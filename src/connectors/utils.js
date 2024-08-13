@@ -333,7 +333,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                   let orgName = hostnameToProgramIdMap.get(domain);
                   let tenantName = localStorage.getItem('tenantName');
           
-                  if (tenantName === 'All') {
+                  if (tenantName === 'All' && orgName !== "") {
                       if (groupedData.has(orgName)) {
                           // If orgName already exists, aggregate the data
                           let existingData = groupedData.get(orgName);
@@ -347,7 +347,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                               orgName: orgName
                           });
                       }
-                  } else if (orgName === tenantName) {
+                  } else if (orgName === tenantName && orgName !== "") {
                       // If tenantName is not 'All', process as usual
                       let newData = {
                           url: data[i]['url'],

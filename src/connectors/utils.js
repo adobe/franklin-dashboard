@@ -321,21 +321,56 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           // Process the data
           data = window.dashboard[endpoint].results.data || [];
           console.log("---CS Form submission------");
+          
+          let groupedData = new Map();  // Map to store grouped data when tenantName is 'All'
+          
           for (let i = 0; i < data.length; i += 1) {
-            let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').replace(/^www\./, '').split('/')[0]
-                    if(!(data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 
-                    || data[i]['url'].includes('uat') || data[i]['url'].includes('publish-') || data[i]['url'].includes('stage')
-                    || data[i]['url'].includes('test')) && ((hostnameToProgramIdMap.get(domain) === localStorage.getItem('tenantName')) || (localStorage.getItem('tenantName') === 'All'))){
-                          let newData = {
-                              url: data[i]['url'],
-                              submissions: data[i]['actions'],
-                              tenantname : domain
-                          };
-                          domains.add(domain);
-                          viewData.push(newData);
-                          totalFormSubmissions = totalFormSubmissions + Number(data[i]['actions']);
+              let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').replace(/^www\./, '').split('/')[0];
+              
+              if (!(data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 
+                  || data[i]['url'].includes('uat') || data[i]['url'].includes('publish-') || data[i]['url'].includes('stage')
+                  || data[i]['url'].includes('test'))) {
+                  
+                  let orgName = hostnameToProgramIdMap.get(domain);
+                  let tenantName = localStorage.getItem('tenantName');
+          
+                  if (tenantName === 'All') {
+                      if (groupedData.has(orgName)) {
+                          // If orgName already exists, aggregate the data
+                          let existingData = groupedData.get(orgName);
+                          existingData.submissions += Number(data[i]['actions']);
+                      } else {
+                          // If orgName doesn't exist, create a new entry
+                          groupedData.set(orgName, {
+                              url: data[i]['url'],  // You can decide what to do with the URL in this case
+                              submissions: Number(data[i]['actions']),
+                              tenantname: domain,
+                              orgName: orgName
+                          });
                       }
-          }  
+                  } else if (orgName === tenantName) {
+                      // If tenantName is not 'All', process as usual
+                      let newData = {
+                          url: data[i]['url'],
+                          submissions: Number(data[i]['actions']),
+                          tenantname: domain,
+                          orgName: orgName
+                      };
+                      domains.add(domain);
+                      viewData.push(newData);
+                      totalFormSubmissions += Number(data[i]['actions']);
+                  }
+              }
+          }
+          
+          // If tenantName is 'All', push the grouped data into viewData
+          if (localStorage.getItem('tenantName') === 'All') {
+              groupedData.forEach((value, key) => {
+                  viewData.push(value);
+                  totalFormSubmissions += value.submissions;
+              });
+          }
+          
           console.log("---domain----");
           console.log(domains);
           console.log("---CS Form submission--done------");
@@ -350,9 +385,10 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
       }
   } while (data && data.length > 0);
   viewData.push({
-    url: 'ALL',
+    url: 'All',
     submissions: totalFormSubmissions,
-    tenantname: 'ALL'
+    tenantname: 'All',
+    orgName : 'All'
 });
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard['internalCSRUMDataLoaded'] = true;

@@ -99,6 +99,7 @@ export const initStore = () => {
   localStorage.removeItem('domainKey');
   localStorage.removeItem('globalUrl');
   localStorage.removeItem('reportUrl');
+  localStorage.removeItem('tenantName');
 
   setDomainKey(null);
   setGlobalUrl(null);

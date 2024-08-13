@@ -121,6 +121,8 @@ export function DashboardFormsCSQueryFilter({
       setDataEndpoint(dataEndpoint);
       setStartDate(currStart);
       setEndDate(currEnd);
+      console.log("--setTenantName(tenantUrl)-");
+      console.log(tenantUrl);
       setTenantName(tenantUrl);
     }
   };

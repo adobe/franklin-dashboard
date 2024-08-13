@@ -280,7 +280,7 @@ export function DashboardFormsCSQueryFilter({
                     />
                   )}
                   {(
-                    <TextField name='timezone' label="Timezone" autoFocus defaultValue={tenantUrl} isDisabled isRequired={false}
+                    <TextField name='timezone' label="Timezone" autoFocus defaultValue={timezone} isDisabled isRequired={false}
                     />
                   )}
                   {(

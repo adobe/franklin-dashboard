@@ -18,7 +18,7 @@ export function DashboardFormsCSQueryFilter({
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
-  const [tenantUrl, setTenantUrl] = useState('');
+  const [tenantUrl, setTenantUrl] = React.useState('');
 
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,

@@ -334,7 +334,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                   let tenantName = localStorage.getItem('tenantName');
                   console.log("---orgName---");
                   console.log(orgName);
-                  if (tenantName === 'All' && orgName != undefined) {
+                  if (tenantName === 'All' && orgName != undefined || tenantName == null) {
                       if (groupedData.has(orgName)) {
                         console.log("---orgName---");
                         console.log(orgName);
@@ -366,7 +366,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           }
           
           // If tenantName is 'All', push the grouped data into viewData
-          if (localStorage.getItem('tenantName') === 'All') {
+          if (localStorage.getItem('tenantName') === 'All' || tenantName == null) {
               groupedData.forEach((value, key) => {
                   viewData.push(value);
                   totalFormSubmissions += value.submissions;

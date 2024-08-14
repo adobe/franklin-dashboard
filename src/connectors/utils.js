@@ -366,7 +366,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           }
           
           // If tenantName is 'All', push the grouped data into viewData
-          if (localStorage.getItem('tenantName') === 'All' || tenantName == 'All') {
+          if (localStorage.getItem('tenantName') === 'All' || !localStorage.getItem('tenantName')) {
               groupedData.forEach((value, key) => {
                   viewData.push(value);
                   totalFormSubmissions += value.submissions;

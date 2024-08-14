@@ -18,7 +18,7 @@ export function DashboardFormsCSQueryFilter({
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
-  const [tenantUrl, setTenantUrl] = React.useState(localStorage.getItem('tenantName'));
+  const [tenantUrl, setTenantUrl] = React.useState(localStorage.getItem('tenantName') ? localStorage.getItem('tenantName') : 'All');
 
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,

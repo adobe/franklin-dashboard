@@ -331,10 +331,10 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                   || data[i]['url'].includes('test'))) {
                   
                   let orgName = hostnameToProgramIdMap.get(domain);
-                  let tenantName = localStorage.getItem('tenantName');
+                  let tenantName = localStorage.getItem('tenantName') ? localStorage.getItem('tenantName') : 'All';
                   console.log("---orgName---");
                   console.log(orgName);
-                  if (tenantName === 'All' && orgName != undefined || tenantName == null) {
+                  if (tenantName === 'All' && orgName != undefined) {
                       if (groupedData.has(orgName)) {
                         console.log("---orgName---");
                         console.log(orgName);
@@ -366,7 +366,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           }
           
           // If tenantName is 'All', push the grouped data into viewData
-          if (localStorage.getItem('tenantName') === 'All' || tenantName == null) {
+          if (localStorage.getItem('tenantName') === 'All' || tenantName == 'All') {
               groupedData.forEach((value, key) => {
                   viewData.push(value);
                   totalFormSubmissions += value.submissions;

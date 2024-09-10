@@ -143,7 +143,7 @@ export function RumTableView({
                                         const interval = urlParameters.get('interval');
                                         const offset = urlParameters.get('offset');
                                         const timezone = 'Asia/Calcutta'; // Replace with dynamic value if needed
-                                        localStorage.setItem('tenantName', hostnameToProgramIdMap.get(rum[col]));
+                                        //localStorage.setItem('tenantName', hostnameToProgramIdMap.get(rum[col]));
                                         const dashboardUrl = `${baseDashboardUrl}?url=${url}&domainkey=${domainkey}&startdate=${startdate}&enddate=${enddate}&timezone=${encodeURIComponent(timezone)}`;
                                       
                                         //return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;

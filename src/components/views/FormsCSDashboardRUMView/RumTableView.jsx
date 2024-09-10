@@ -147,6 +147,8 @@ export function RumTableView({
                                         const dashboardUrl = `${baseDashboardUrl}?url=${url}&domainkey=${domainkey}&startdate=${startdate}&enddate=${enddate}&timezone=${encodeURIComponent(timezone)}`;
                                       
                                         //return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
+                                        console.log(dashboardUrl);
+                                        console.log("---dashboardUrl----");
                                         return <Cell><a href={dashboardUrl} target="_blank">{hostnameToProgramIdMap.get(rum[col]).replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       }
                                        return <Cell width="size-1000">

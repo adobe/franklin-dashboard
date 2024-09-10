@@ -20,14 +20,13 @@ export function RumTableView({
     formsProgramMapping.map(item => [item.domain, item.tenant])
 );
 
-const handleClick = (event, selectedValue) => {
+const handleClick = (event, selectedValue,dashboardUrl) => {
   event.preventDefault(); // Prevent default link behavior if needed
-  const dashboardUrl = `${baseDashboardUrl}?url=${url}&domainkey=${domainkey}&startdate=${startdate}&enddate=${enddate}&timezone=${encodeURIComponent(timezone)}`;
   
   console.log(dashboardUrl);
   console.log("---dashboardUrl----");
   console.log(`Selected Value: ${selectedValue}`);
-
+  localStorage.setItem('tenantName', selectedValue);
   window.open(dashboardUrl, '_blank'); // Open the URL in a new tab
 };
   let collator = useCollator({ numeric: true });
@@ -159,7 +158,7 @@ const handleClick = (event, selectedValue) => {
                                         //return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
                                         console.log(dashboardUrl);
                                         console.log("---dashboardUrl----");
-                                        return <Cell><a href={dashboardUrl} target="_blank" onClick={(event) => handleClick(event, hostnameToProgramIdMap.get(rum[col]))}>{hostnameToProgramIdMap.get(rum[col])}</a></Cell>;
+                                        return <Cell><a href={dashboardUrl} target="_blank" onClick={(event) => handleClick(event, hostnameToProgramIdMap.get(rum[col]),dashboardUrl)}>{hostnameToProgramIdMap.get(rum[col])}</a></Cell>;
                                       }
                                        return <Cell width="size-1000">
                                                     <Badge width="size-1000" alignSelf='center' variant='info'>

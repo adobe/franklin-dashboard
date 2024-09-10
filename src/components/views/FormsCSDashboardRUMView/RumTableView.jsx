@@ -134,7 +134,20 @@ export function RumTableView({
                                                     </Cell>;
                                       }
                                       if (col === 'tenantname') {
-                                        return <Cell>{hostnameToProgramIdMap.get(rum[col])}</Cell>;
+                                        const baseDashboardUrl = 'https://forms-internal-dashboard--franklin-dashboard--adobe.hlx.page/rum-dashboard';
+                                        const url = rum[col];
+                                        const urlParameters = new URLSearchParams(window.location.search);
+                                        const domainkey = urlParameters.get('domainkey');
+                                        const startdate = urlParameters.get('startdate');
+                                        const enddate = urlParameters.get('enddate');
+                                        const interval = urlParameters.get('interval');
+                                        const offset = urlParameters.get('offset');
+                                        const timezone = 'Asia/Calcutta'; // Replace with dynamic value if needed
+                                        localStorage.setItem('tenantName', hostnameToProgramIdMap.get(rum[col]));
+                                        const dashboardUrl = `${baseDashboardUrl}?url=${url}&domainkey=${domainkey}&startdate=${startdate}&enddate=${enddate}&timezone=${encodeURIComponent(timezone)}`;
+                                      
+                                        //return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
+                                        return <Cell><a href={dashboardUrl} target="_blank">{hostnameToProgramIdMap.get(rum[col]).replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       }
                                        return <Cell width="size-1000">
                                                     <Badge width="size-1000" alignSelf='center' variant='info'>

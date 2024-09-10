@@ -134,7 +134,7 @@ export function RumTableView({
                                                     </Cell>;
                                       }
                                       if (col === 'tenantname') {
-                                        const baseDashboardUrl = 'https://forms-internal-dashboard--franklin-dashboard--adobe.hlx.page/rum-dashboard';
+                                        const baseDashboardUrl = 'https://forms-internal-dashboard--franklin-dashboard--adobe.hlx.page/pageviews-report';
                                         const url = rum[col];
                                         const urlParameters = new URLSearchParams(window.location.search);
                                         const domainkey = urlParameters.get('domainkey');

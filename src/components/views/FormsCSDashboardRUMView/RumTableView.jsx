@@ -20,6 +20,13 @@ export function RumTableView({
     formsProgramMapping.map(item => [item.domain, item.tenant])
 );
 
+const handleClick = (event) => {
+  event.preventDefault(); // Prevent default link behavior if needed
+  console.log(dashboardUrl);
+  console.log("---dashboardUrl----");
+  window.open(dashboardUrl, '_blank'); // Open the URL in a new tab
+};
+
   let collator = useCollator({ numeric: true });
   if (data.length > 0) {    
     const ranges = {
@@ -149,7 +156,7 @@ export function RumTableView({
                                         //return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
                                         console.log(dashboardUrl);
                                         console.log("---dashboardUrl----");
-                                        return <Cell><a href={dashboardUrl} target="_blank">{hostnameToProgramIdMap.get(rum[col])}</a></Cell>;
+                                        return <Cell><a href={dashboardUrl} target="_blank" onClick={handleClick}>{hostnameToProgramIdMap.get(rum[col])}</a></Cell>;
                                       }
                                        return <Cell width="size-1000">
                                                     <Badge width="size-1000" alignSelf='center' variant='info'>

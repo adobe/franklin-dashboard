@@ -156,7 +156,7 @@ const handleClick = (event) => {
                                         //return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
                                         console.log(dashboardUrl);
                                         console.log("---dashboardUrl----");
-                                        return <Cell><a href={dashboardUrl} target="_blank" onClick={handleClick}>{hostnameToProgramIdMap.get(rum[col])}</a></Cell>;
+                                        return <Cell><a href={dashboardUrl} target="_blank" onClick={handleClick(hostnameToProgramIdMap.get(rum[col]))}>{hostnameToProgramIdMap.get(rum[col])}</a></Cell>;
                                       }
                                        return <Cell width="size-1000">
                                                     <Badge width="size-1000" alignSelf='center' variant='info'>

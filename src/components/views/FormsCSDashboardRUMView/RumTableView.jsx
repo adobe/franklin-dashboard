@@ -129,8 +129,8 @@ const handleClick = (event, selectedValue,dashboardUrl) => {
                                       }
                                       if (col === 'tenantname') {
                                         const baseDashboardUrl = 'https://forms-internal-dashboard--franklin-dashboard--adobe.hlx.page/pageviews-report';
-                                        const url = urlParameters.get('url');
                                         const urlParameters = new URLSearchParams(window.location.search);
+                                        const url = urlParameters.get('url');
                                         const domainkey = urlParameters.get('domainkey');
                                         const startdate = urlParameters.get('startdate');
                                         const enddate = urlParameters.get('enddate');

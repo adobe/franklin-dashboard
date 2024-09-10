@@ -23,9 +23,6 @@ export function RumTableView({
 const handleClick = (event, selectedValue,dashboardUrl) => {
   event.preventDefault(); // Prevent default link behavior if needed
   
-  console.log(dashboardUrl);
-  console.log("---dashboardUrl----");
-  console.log(`Selected Value: ${selectedValue}`);
   localStorage.setItem('tenantName', selectedValue);
   window.open(dashboardUrl, '_blank'); // Open the URL in a new tab
 };
@@ -132,7 +129,7 @@ const handleClick = (event, selectedValue,dashboardUrl) => {
                                       }
                                       if (col === 'tenantname') {
                                         const baseDashboardUrl = 'https://forms-internal-dashboard--franklin-dashboard--adobe.hlx.page/pageviews-report';
-                                        const url = rum[col];
+                                        const url = urlParameters.get('url');
                                         const urlParameters = new URLSearchParams(window.location.search);
                                         const domainkey = urlParameters.get('domainkey');
                                         const startdate = urlParameters.get('startdate');

@@ -22,7 +22,7 @@ const MultipleTextEditable = ({ defaultItems = [] }) => {
   return (
     <Flex direction="column" gap="size-200" width="100%">
       {/* Render the TagGroup only if there are items */}
-      {items.length > 0 ? (
+      { items && items.length > 0 ? (
         <TagGroup
           items={items}
           onRemove={onRemove}

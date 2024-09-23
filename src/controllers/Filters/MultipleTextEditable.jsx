@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TagGroup, Item, Button, TextField, Flex } from '@adobe/react-spectrum';
 
-const MultipleTextEditable = ({ defaultItems }) => {
+const MultipleTextEditable = ({ defaultItems = [] }) => {
   const [items, setItems] = useState(defaultItems);
   const [newItem, setNewItem] = useState('');
 
@@ -21,14 +21,18 @@ const MultipleTextEditable = ({ defaultItems }) => {
 
   return (
     <Flex direction="column" gap="size-200" width="100%">
-      {/* Render the TagGroup */}
-      <TagGroup
-        items={items}
-        onRemove={onRemove}
-        aria-label="Editable TagGroup example"
-      >
-        {item => <Item>{item.name}</Item>}
-      </TagGroup>
+      {/* Render the TagGroup only if there are items */}
+      {items.length > 0 ? (
+        <TagGroup
+          items={items}
+          onRemove={onRemove}
+          aria-label="Editable TagGroup example"
+        >
+          {item => <Item>{item.name}</Item>}
+        </TagGroup>
+      ) : (
+        <p>No items available. Please add a new item.</p>
+      )}
 
       {/* Text input to add new tags */}
       <Flex direction="row" gap="size-200" alignItems="center">

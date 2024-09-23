@@ -1,33 +1,46 @@
 import React, { useState } from 'react';
-import { TextField, Button, Flex } from '@adobe/react-spectrum';
+import { TagGroup, Item, Button, TextField, Flex } from '@adobe/react-spectrum';
 
-const MultipleTextEditable = ({ label, name, defaultValues = [] }) => {
-  const [values, setValues] = useState(defaultValues);
+const MultipleTextEditable = ({ defaultItems }) => {
+  const [items, setItems] = useState(defaultItems);
+  const [newItem, setNewItem] = useState('');
 
-  const handleAddField = () => {
-    setValues([...values, '']);
+  // Handle removing items
+  const onRemove = (keys) => {
+    setItems(prevItems => prevItems.filter((item) => !keys.has(item.id)));
   };
 
-  const handleChange = (index, newValue) => {
-    const updatedValues = [...values];
-    updatedValues[index] = newValue;
-    setValues(updatedValues);
+  // Handle adding new item
+  const onAddItem = () => {
+    if (newItem.trim()) {
+      const newItemObject = { id: items.length + 1, name: newItem };
+      setItems([...items, newItemObject]);
+      setNewItem('');
+    }
   };
 
   return (
-    <Flex direction="column" gap="size-200">
-      {values.map((value, index) => (
+    <Flex direction="column" gap="size-200" width="100%">
+      {/* Render the TagGroup */}
+      <TagGroup
+        items={items}
+        onRemove={onRemove}
+        aria-label="Editable TagGroup example"
+      >
+        {item => <Item>{item.name}</Item>}
+      </TagGroup>
+
+      {/* Text input to add new tags */}
+      <Flex direction="row" gap="size-200" alignItems="center">
         <TextField
-          key={index}
-          label={`${label} ${index + 1}`}
-          value={value}
-          onChange={(newValue) => handleChange(index, newValue)}
-          name={`${name}[${index}]`}
+          value={newItem}
+          onChange={setNewItem}
+          placeholder="Add new item"
         />
-      ))}
-      <Button variant="primary" onPress={handleAddField}>
-        Add Another {label}
-      </Button>
+        <Button variant="primary" onPress={onAddItem}>
+          Add
+        </Button>
+      </Flex>
     </Flex>
   );
 };

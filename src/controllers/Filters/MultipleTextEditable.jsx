@@ -48,7 +48,7 @@ const MultipleTextEditable = ({ label, name, defaultItems = [] }) => {
 
       {/* Hidden inputs to submit form data */}
       {items.map(item => (
-        <input
+        <TextField
           key={item.id}
           type="hidden"
           name={name}

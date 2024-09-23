@@ -140,7 +140,7 @@ export function DashboardFormsubmitQueryFilter({
     useEffect(() => {
       const savedSource = localStorage.getItem('excludeSource');
       if (savedSource) {
-          setExcludeSource(savedSource);
+        setSource(savedSource);
       }
   }, []);
   

@@ -14,7 +14,7 @@ import {
   getEDSFormSubmission, intervalOffsetToDates, getDataDates, handleRedirect,
 } from '../../connectors/utils.js';
 
-export function DashboardInternalQueryFilter({
+export function DashboardFormsubmitQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
@@ -256,4 +256,4 @@ export function DashboardInternalQueryFilter({
   );
 }
 
-export default DashboardInternalQueryFilter;
+export default DashboardFormsubmitQueryFilter;

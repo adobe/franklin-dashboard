@@ -87,9 +87,9 @@ const NavigationTabs = () => {
               }
             }}
         >
-           FormsSubmit Checkpoint RUM Dashboard
+           FormSubmit Checkpoint RUM Dashboard
         </Button>
-          <Tooltip>Explore FormsSubmit Checkpoint RUM Dashboard</Tooltip>
+          <Tooltip>Explore FormSubmit Checkpoint RUM Dashboard</Tooltip>
    </TooltipTrigger>
         </div>
     </Provider>

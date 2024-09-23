@@ -401,7 +401,9 @@ export async function  getEDSFormSubmission(endpoint, endpointHost, qps = {}, fl
   let data;
   let viewData = [];
   let totalFormSubmissions = 0;
+  console.log("---- here in EDS Formsubmit ");
   const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit'};
+  console.log("---- here in EDS Formsubmit ",qpsparameter.checkpoint);
   do {
       try {
           // Make the queryRequest

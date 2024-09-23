@@ -20,9 +20,11 @@ export function DashboardFormsubmitQueryFilter({
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
+  const [source, setSource] = React.useState(localStorage.getItem('excludeSource') ? localStorage.getItem('excludeSource') : []);
+
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,
-    setStartDate, setEndDate, startDate, endDate, setDataEndpoint,
+    setStartDate, setEndDate, startDate, endDate, setDataEndpoint, setExcludeSource
   } = useStore();
   let navigate = null;
   try {
@@ -90,7 +92,7 @@ export function DashboardFormsubmitQueryFilter({
 
   const updateData = (cfg = {}) => {
     const {
-      dataEP, url, domainkey,
+      dataEP, url, domainkey, source
     } = cfg;
     const flag = `${dataEP}Flag`;
     if ((Object.hasOwn(window, flag) && window[flag] === true) || !Object.hasOwn(window, flag)) {
@@ -115,6 +117,9 @@ export function DashboardFormsubmitQueryFilter({
       setDataEndpoint(dataEndpoint);
       setStartDate(currStart);
       setEndDate(currEnd);
+      console.log("--setExcludeSource(source)-");
+      console.log(source);
+      setExcludeSource(source);
     }
   };
 
@@ -130,6 +135,15 @@ export function DashboardFormsubmitQueryFilter({
     setHostName(hostname);
     return hostname;
   };
+
+    // Initialize state from localStorage
+    useEffect(() => {
+      const savedSource = localStorage.getItem('excludeSource');
+      if (savedSource) {
+          setExcludeSource(savedSource);
+      }
+  }, []);
+  
 
   useEffect(() => {
     // check query parameters if this is a shareLink
@@ -165,6 +179,7 @@ export function DashboardFormsubmitQueryFilter({
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
         limit: urlLimit,
+        source: localStorage.getItem('excludeSource'),
       };
       if (dataEndpoint === 'rum-sources') {
         configuration.checkpoint = '404';
@@ -198,12 +213,15 @@ export function DashboardFormsubmitQueryFilter({
     // Get form data as an object.
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
-      start, end, inputUrl, domainkey, limit,
+      start, end, inputUrl, domainkey, limit, source
     } = formData;
 
     const url = inputUrl;
     const startdate = start;
     const enddate = end;
+    const sourceVal = source;
+    localStorage.setItem('excludeSource', sourceVal);
+
 
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
   };
@@ -248,7 +266,7 @@ export function DashboardFormsubmitQueryFilter({
                     />
                   )}
                   {/* New MultipleTextEditable Component */}
-                  <MultipleTextEditable label="Exclude Source" name="dynamicText" defaultValues={[]} />
+                  <MultipleTextEditable label="Exclude Source" name="source" defaultValues={source} />
 
                   <br />
                   <Button

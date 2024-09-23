@@ -40,7 +40,7 @@ const MultipleTextEditable = ({ defaultItems = [] }) => {
           placeholder="Exclude Source"
         />
         <Button variant="primary" onPress={onAddItem}>
-          Add To Exclude Source 
+          Exclude Source 
         </Button>
       </Flex>
     </Flex>

@@ -420,7 +420,8 @@ export async function  getEDSFormSubmission(endpoint, endpointHost, qps = {}, fl
                   // If tenantName is not 'All', process as usual
                       let newData = {
                           url: data[i]['url'],
-                          submissions: Number(data[i]['actions'])
+                          submissions: Number(data[i]['actions']),
+                          source: data[i]['source'],
                       };
                       viewData.push(newData);
                       totalFormSubmissions += Number(data[i]['actions']);

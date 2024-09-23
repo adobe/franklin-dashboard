@@ -248,7 +248,7 @@ export function DashboardFormsubmitQueryFilter({
                     />
                   )}
                   {/* New MultipleTextEditable Component */}
-                  <MultipleTextEditable label="Dynamic Text" name="dynamicText" defaultValues={[]} />
+                  <MultipleTextEditable label="Exclude Source" name="dynamicText" defaultValues={[]} />
 
                   <br />
                   <Button

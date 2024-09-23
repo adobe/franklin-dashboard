@@ -30,19 +30,17 @@ const MultipleTextEditable = ({ defaultItems = [] }) => {
         >
           {item => <Item>{item.name}</Item>}
         </TagGroup>
-      ) : (
-        <p>No items available. Please add a new item.</p>
-      )}
+      ) : ''}
 
       {/* Text input to add new tags */}
       <Flex direction="row" gap="size-200" alignItems="center">
         <TextField
           value={newItem}
           onChange={setNewItem}
-          placeholder="Add new item"
+          placeholder="Exclude Source"
         />
         <Button variant="primary" onPress={onAddItem}>
-          Add
+          Add To Exclude Source 
         </Button>
       </Flex>
     </Flex>

@@ -78,6 +78,19 @@ const NavigationTabs = () => {
         </Button>
           <Tooltip>Explore Forms Forms CS Submission dashboard</Tooltip>
    </TooltipTrigger>
+   &nbsp;&nbsp;
+   <TooltipTrigger delay={0}>
+        <Button variant={currentTab === '404-reports' ? 'cta' : 'primary'}
+            onPress={() => {
+              if (navigate) {
+                navigate(`/404-reports?${currentQueryParameters.toString()}`);
+              }
+            }}
+        >
+           FormsSubmit Checkpoint RUM Dashboard
+        </Button>
+          <Tooltip>Explore FormsSubmit Checkpoint RUM Dashboard</Tooltip>
+   </TooltipTrigger>
         </div>
     </Provider>
 

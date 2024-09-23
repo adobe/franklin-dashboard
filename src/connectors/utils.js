@@ -396,3 +396,51 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
   flagSetter(true);
 }
+
+export async function  getEDSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter){
+  let data;
+  let viewData = [];
+  let totalFormSubmissions = 0;
+  const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit'};
+  do {
+      try {
+          // Make the queryRequest
+          await queryRequest(endpoint, endpointHost, qpsparameter , true);
+
+          // Process the data
+          data = window.dashboard[endpoint].results.data || [];
+                    
+          for (let i = 0; i < data.length; i += 1) {
+              
+              if (!(data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 
+                  || data[i]['url'].includes('uat') || data[i]['url'].includes('publish-') || data[i]['url'].includes('stage')
+                  || data[i]['url'].includes('test'))) {
+                  // If tenantName is not 'All', process as usual
+                      let newData = {
+                          url: data[i]['url'],
+                          submissions: Number(data[i]['actions'])
+                      };
+                      viewData.push(newData);
+                      totalFormSubmissions += Number(data[i]['actions']);
+              }
+          }
+          
+          
+          // Update qps for the next iteration
+          qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
+          qpsparameter.limit = qpsparameter.limit * 2;
+          qpsparameter.checkpoint = "formsubmit";
+      } catch (error) {
+          // Handle errors if necessary
+          console.error("Error fetching data:", error);
+      }
+  } while (data && data.length > 0);
+  viewData.push({
+    url: 'All',
+    submissions: totalFormSubmissions
+});
+  window.dashboard[endpoint].results.data = viewData;
+  window.dashboard['internalFormSubmitRUMDataLoaded'] = true;
+  window.dashboard["totalFormSubmitSubmissions"] = totalFormSubmissions;
+  flagSetter(true);
+}

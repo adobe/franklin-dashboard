@@ -82,7 +82,7 @@ export function RumTableView({
                                         if(rum[col] === 'Other'){
                                           return <Cell>{rum[col]}</Cell>;
                                         }
-                                        return <Cell><a href={rum[col]} target="_blank">{rum[col].replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
+                                        return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
                                       }if (col === 'source') {
                                           return <Cell>{rum[col]}</Cell>;
                                       }if (col === 'submissions') {

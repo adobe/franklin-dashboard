@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TagGroup, Item, Button, TextField, Flex } from '@adobe/react-spectrum';
 
-const MultipleTextEditable = ({ defaultItems = [] }) => {
+const MultipleTextEditable = ({ label, name, defaultItems = [] }) => {
   const [items, setItems] = useState(defaultItems);
   const [newItem, setNewItem] = useState('');
 
@@ -21,8 +21,10 @@ const MultipleTextEditable = ({ defaultItems = [] }) => {
 
   return (
     <Flex direction="column" gap="size-200" width="100%">
-      {/* Render the TagGroup only if there are items */}
-      { items != undefined && items.length > 0 ? (
+      <label>{label}</label>
+
+      {/* Render the TagGroup */}
+      {items.length > 0 ? (
         <TagGroup
           items={items}
           onRemove={onRemove}
@@ -43,6 +45,16 @@ const MultipleTextEditable = ({ defaultItems = [] }) => {
           Exclude Source 
         </Button>
       </Flex>
+
+      {/* Hidden inputs to submit form data */}
+      {items.map(item => (
+        <input
+          key={item.id}
+          type="hidden"
+          name={name}
+          value={item.name}
+        />
+      ))}
     </Flex>
   );
 };

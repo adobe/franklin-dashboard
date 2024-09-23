@@ -46,15 +46,7 @@ const MultipleTextEditable = ({ label, name, defaultItems = [] }) => {
         </Button>
       </Flex>
 
-      {/* Hidden inputs to submit form data */}
-      {items.map(item => (
-        <TextField
-          key={item.id}
-          type="hidden"
-          name={name}
-          value={item.name}
-        />
-      ))}
+      
     </Flex>
   );
 };

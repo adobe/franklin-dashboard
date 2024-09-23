@@ -37,7 +37,7 @@ const NavigationTabs = () => {
     <Provider colorScheme="light" theme={defaultTheme}>
         <div style={{
           padding: '.7em',
-          minWidth: '900px',
+          minWidth: '1200px',
         }}>
 
         <TooltipTrigger delay={0}>

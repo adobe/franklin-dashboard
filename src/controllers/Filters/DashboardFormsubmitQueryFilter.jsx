@@ -13,6 +13,7 @@ import { useStore, initStore } from '../../stores/global.js';
 import {
   getEDSFormSubmission, intervalOffsetToDates, getDataDates, handleRedirect,
 } from '../../connectors/utils.js';
+import MultipleTextEditable from './MultipleTextEditable';
 
 export function DashboardFormsubmitQueryFilter({
   hasCheckpoint, hasUrlField, hasDomainkeyField, dataEndpoint,
@@ -246,6 +247,9 @@ export function DashboardFormsubmitQueryFilter({
                     <TextField name='timezone' defaultValue={timezone} isReadOnly isHidden
                     />
                   )}
+                  {/* New MultipleTextEditable Component */}
+                  <MultipleTextEditable label="Dynamic Text" name="dynamicText" defaultValues={[]} />
+
                   <br />
                   <Button
                     type="submit" variant="cta"><SearchIcon/><Text>Search</Text>

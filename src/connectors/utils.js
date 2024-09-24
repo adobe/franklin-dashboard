@@ -397,10 +397,12 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   flagSetter(true);
 }
 
-export async function  getEDSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter){
+let totalFormSubmissions = 0; // Initialize totalFormSubmissions as a global variable
+
+export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter) {
   let data;
   let viewData = [];
-  let totalFormSubmissions = 0;
+
   console.log("---- here in EDS Formsubmit ");
   const qpsparameter = { 'offset': -1, 'limit': 500, 'checkpoint': 'formsubmit' };
   console.log("---- here in EDS Formsubmit ", qpsparameter.checkpoint);
@@ -444,10 +446,17 @@ export async function  getEDSFormSubmission(endpoint, endpointHost, qps = {}, fl
       console.error("Error fetching data:", error);
     }
   } while (data && data.length > 0);
+
+  // Update the totalFormSubmissions for each person with the same criteria
+  const uniqueCriteria = new Set(viewData.map(item => JSON.stringify(item)));
+  const uniqueViewData = Array.from(uniqueCriteria).map(item => JSON.parse(item));
+  totalFormSubmissions = uniqueViewData.reduce((total, item) => total + item.submissions, 0);
+
   viewData.push({
     url: 'All',
     submissions: totalFormSubmissions
   });
+
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard['internalFormSubmitRUMDataLoaded'] = true;
   window.dashboard["totalFormSubmitSubmissions"] = totalFormSubmissions;

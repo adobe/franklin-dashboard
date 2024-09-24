@@ -408,16 +408,11 @@ export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, fla
   console.log("---- here in EDS Formsubmit ", qpsparameter.checkpoint);
   do {
     try {
-      const { Mutex } = require('async-mutex'); // Import the Mutex class
-
       // Make the queryRequest
-      const lock = new Mutex(); // Create a Mutex lock
-
       await queryRequest(endpoint, endpointHost, qpsparameter, true);
 
       // Process the data
       data = window.dashboard[endpoint].results.data || [];
-
 
       const excludeSource = localStorage.getItem('excludeSource') ? JSON.parse(localStorage.getItem('excludeSource')) : [];
 
@@ -437,13 +432,8 @@ export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, fla
             submissions: Number(data[i]['actions']),
             source: source,
           };
-
-          // Acquire the lock before updating the totalFormSubmissions count
-          await lock.acquire();
-          totalFormSubmissions += Number(data[i]['actions']);
-          lock.release(); // Release the lock
-
           viewData.push(newData);
+          totalFormSubmissions += Number(data[i]['actions']);
         }
       }
 

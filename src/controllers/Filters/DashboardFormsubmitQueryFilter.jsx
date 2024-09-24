@@ -213,7 +213,7 @@ export function DashboardFormsubmitQueryFilter({
     // Get form data as an object.
     const formData = Object.fromEntries(new FormData(e.currentTarget));
     const {
-      start, end, inputUrl, domainkey, limit, source
+      start, end, inputUrl, domainkey, limit
     } = formData;
 
     const url = inputUrl;

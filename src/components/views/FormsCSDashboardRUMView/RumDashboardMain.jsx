@@ -27,7 +27,7 @@ export function RumDashboardMain() {
             <View gridArea="sidebar" height="100%">
               <DashboardFormsCSQueryFilter hasCheckpointField={false} hasUrlField={true} hasDomainkeyField={true} isReport={false}
               data={data} setter={setData} dataEndpoint={'rum-checkpoint-urls'}
-              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@ci8232'}
+              apiEndpoint={'https://helix-pages.anywhere.run/helix-services/run-query@v3'}
               dataFlag={fetchFlag} flagSetter={setFetchFlag} config={config} configSetter={setConfig} formsURL={true}>
               </DashboardFormsCSQueryFilter>
             </View>

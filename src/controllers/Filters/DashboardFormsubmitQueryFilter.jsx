@@ -20,7 +20,7 @@ export function DashboardFormsubmitQueryFilter({
   apiEndpoint, data, setter, dataFlag, flagSetter,
 }) {
   const [filterData, setFilterData] = React.useState([]);
-  const [source, setSource] = React.useState(localStorage.getItem('excludeSource') ? localStorage.getItem('excludeSource') : []);
+  const [source, setSource] = React.useState(localStorage.getItem('excludeSource') ? JSON.parse(localStorage.getItem('excludeSource')) : []);
 
   const {
     setGlobalUrl, setHostName, globalUrl, domainKey, setDomainKey,

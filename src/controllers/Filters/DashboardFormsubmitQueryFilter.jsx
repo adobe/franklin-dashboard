@@ -219,10 +219,11 @@ export function DashboardFormsubmitQueryFilter({
     const url = inputUrl;
     const startdate = start;
     const enddate = end;
-    // Here you access the sourceItems state instead of formData
-    const sourceVal = source.map(item => item.name); // Get the names of the sources
+    const sourceVal = source ? source.map(item => item.name) : []; // Check if source is defined before mapping
     localStorage.setItem('excludeSource', JSON.stringify(sourceVal)); // Store the list as a string
 
+    // Add your custom logic here
+    // For example, you can perform additional validation or data manipulation before redirecting
 
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
   };

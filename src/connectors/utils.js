@@ -397,7 +397,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   flagSetter(true);
 }
 
-const totalFormSubmissions = 0; // Initialize totalFormSubmissions as a global variable
+let totalFormSubmissions = 0; // Initialize totalFormSubmissions as a global variable
 
 export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter) {
   let data;
@@ -409,6 +409,8 @@ export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, fla
   do {
     try {
       // Make the queryRequest
+      const lock = new Mutex(); // Create a Mutex lock
+
       await queryRequest(endpoint, endpointHost, qpsparameter, true);
 
       // Process the data
@@ -432,8 +434,13 @@ export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, fla
             submissions: Number(data[i]['actions']),
             source: source,
           };
-          viewData.push(newData);
+
+          // Acquire the lock before updating the totalFormSubmissions count
+          await lock.acquire();
           totalFormSubmissions += Number(data[i]['actions']);
+          lock.release(); // Release the lock
+
+          viewData.push(newData);
         }
       }
 

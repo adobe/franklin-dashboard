@@ -236,7 +236,7 @@ export function DashboardFormsubmitQueryFilter({
                     isRequired
                   />
                   {(
-                    hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired
+                    hasUrlField && <TextField name='inputUrl' label="Url" autoFocus defaultValue={globalUrl} isRequired isHidden
                     />
                   )}
                   {(

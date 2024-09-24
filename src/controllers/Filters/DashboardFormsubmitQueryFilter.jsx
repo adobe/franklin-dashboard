@@ -138,10 +138,8 @@ export function DashboardFormsubmitQueryFilter({
 
     // Initialize state from localStorage
     useEffect(() => {
-      const savedSource = JSON.parse(localStorage.getItem('excludeSource'));
-      if (savedSource) {
+      const savedSource = localStorage.getItem('excludeSource') ? JSON.parse(localStorage.getItem('excludeSource')) : [];
         setSource(savedSource);
-      }
   }, []);
   
 
@@ -179,7 +177,7 @@ export function DashboardFormsubmitQueryFilter({
         apiEP: apiEndpoint,
         dataEP: dataEndpoint,
         limit: urlLimit,
-        source: JSON.parse(localStorage.getItem('excludeSource')),
+        source: localStorage.getItem('excludeSource') ? JSON.parse(localStorage.getItem('excludeSource')) : [],
       };
       if (dataEndpoint === 'rum-sources') {
         configuration.checkpoint = '404';

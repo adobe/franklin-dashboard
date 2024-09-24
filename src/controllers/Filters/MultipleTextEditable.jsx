@@ -7,15 +7,15 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
 
   // Handle removing items
   const onRemove = (keys) => {
-    setItems(prevItems => prevItems.filter((item) => !keys.has(item.id)));
+    setItems(prevItems => prevItems.filter((item) => !keys.has(item)));
   };
 
   // Handle adding new item
   const onAddItem = () => {
     if (newItem.trim()) {
-      const isDuplicate = items.some(item => item.name.toLowerCase() === newItem.toLowerCase());
+      const isDuplicate = items.some(item => item.toLowerCase() === newItem.toLowerCase());
       if (!isDuplicate) {
-        const newItemObject = { id: uuidv4(), name: newItem };
+        const newItemObject = newItem;
         setItems([...items, newItemObject]);
         setNewItem('');
       }
@@ -33,7 +33,7 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
           onRemove={onRemove}
           aria-label="Editable TagGroup example"
         >
-          {item => <Item>{item.name}</Item>}
+          {item => <Item>{item}</Item>}
         </TagGroup>
       ) : null}
 

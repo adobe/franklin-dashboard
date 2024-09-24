@@ -400,9 +400,6 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
 let totalFormSubmissions = 0; // Initialize totalFormSubmissions as a global variable
 
 export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter) {
-  let data;
-  let viewData = [];
-
   console.log("---- here in EDS Formsubmit ");
   const qpsparameter = { 'offset': -1, 'limit': 500, 'checkpoint': 'formsubmit' };
   console.log("---- here in EDS Formsubmit ", qpsparameter.checkpoint);

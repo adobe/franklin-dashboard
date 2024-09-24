@@ -234,12 +234,12 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   location.href = `${location.pathname}?${newQp.toString()}`;
 }
 
+let totalFormSubmissionsBaseDomains = 0;
 export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter){
   const domains = new Set();
   const duplicateDomain = new Set();
   let data;
   let totalFormViews = 0;
-  let totalFormSubmissions = 0;
   let viewData = [];
   const qpsparameter = {'offset': -1, 'limit': 500};
   do {
@@ -257,7 +257,7 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
                   && !(domain.indexOf('staging')>-1) && !(domain.indexOf('about:srcdoc')>-1)) {
                   domains.add(domain);
                       totalFormViews = totalFormViews + Number(data[i]['views']);
-                      totalFormSubmissions = totalFormSubmissions + Number(data[i]['submissions']);
+                      totalFormSubmissionsBaseDomains = totalFormSubmissionsBaseDomains + Number(data[i]['submissions']);
                       let found = false;
                       for (let j = 0; j < viewData.length; j++) {
                           console.log(data[i]['url']);
@@ -293,22 +293,22 @@ export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSett
   viewData.push({
     url: 'ALL',
     views: totalFormViews,
-    submissions: totalFormSubmissions
+    submissions: totalFormSubmissionsBaseDomains
 });
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard["domains"] = domains;
   window.dashboard['internalDataLoaded'] = true;
   window.dashboard["totalFormViews"] = totalFormViews;
-  window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
+  window.dashboard["totalFormSubmissionsBaseDomains"] = totalFormSubmissionsBaseDomains;
   flagSetter(true);
 }
 
+let totalEDSFormFormSubmissions = 0;
 
 export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter){
   const domains = new Set();
   let data;
   let viewData = [];
-  let totalFormSubmissions = 0;
   const hostnameToProgramIdMap = new Map(
     formsProgramMapping.map(item => [item.domain, item.tenant])
 );
@@ -360,7 +360,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
                       };
                       domains.add(domain);
                       viewData.push(newData);
-                      totalFormSubmissions += Number(data[i]['actions']);
+                      totalEDSFormFormSubmissions += Number(data[i]['actions']);
                   }
               }
           }
@@ -369,7 +369,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           if (localStorage.getItem('tenantName') === 'All' || !localStorage.getItem('tenantName')) {
               groupedData.forEach((value, key) => {
                   viewData.push(value);
-                  totalFormSubmissions += value.submissions;
+                  totalEDSFormFormSubmissions += value.submissions;
               });
           }
           
@@ -387,13 +387,13 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   } while (data && data.length > 0);
   viewData.push({
     url: 'All',
-    submissions: totalFormSubmissions,
+    submissions: totalEDSFormFormSubmissions,
     tenantname: 'All',
     orgName : 'All'
 });
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard['internalCSRUMDataLoaded'] = true;
-  window.dashboard["totalFormSubmissions"] = totalFormSubmissions;
+  window.dashboard["totalEDSFormFormSubmissions"] = totalEDSFormFormSubmissions;
   flagSetter(true);
 }
 

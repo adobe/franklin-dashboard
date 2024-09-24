@@ -42,7 +42,7 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
           aria-label="Exclude Source"
         />
         <Button variant="cta" onPress={onAddItem}>
-          Exclude Source 
+          Add Source to Exclude 
         </Button>
       </Flex>
     </Flex>

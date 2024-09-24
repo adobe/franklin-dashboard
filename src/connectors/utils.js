@@ -400,6 +400,9 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
 let totalFormSubmissions = 0; // Initialize totalFormSubmissions as a global variable
 
 export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter) {
+  let data;
+  let viewData = [];
+
   console.log("---- here in EDS Formsubmit ");
   const qpsparameter = { 'offset': -1, 'limit': 500, 'checkpoint': 'formsubmit' };
   console.log("---- here in EDS Formsubmit ", qpsparameter.checkpoint);
@@ -409,11 +412,9 @@ export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, fla
       await queryRequest(endpoint, endpointHost, qpsparameter, true);
 
       // Process the data
-      let data = window.dashboard[endpoint].results.data || [];
+      data = window.dashboard[endpoint].results.data || [];
 
       const excludeSource = localStorage.getItem('excludeSource') ? JSON.parse(localStorage.getItem('excludeSource')) : [];
-
-      let viewData = []; // Initialize viewData as an empty array on each iteration
 
       for (let i = 0; i < data.length; i += 1) {
         const source = data[i]['source'];
@@ -440,19 +441,13 @@ export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, fla
       qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
       qpsparameter.limit = qpsparameter.limit * 2;
       qpsparameter.checkpoint = "formsubmit";
-
-      viewData.push({
-        url: 'All',
-        submissions: totalFormSubmissions
-      });
-
-      window.dashboard[endpoint].results.data = viewData;
-      window.dashboard['internalFormSubmitRUMDataLoaded'] = true;
-      window.dashboard["totalFormSubmitSubmissions"] = totalFormSubmissions;
-      flagSetter(true);
     } catch (error) {
       // Handle errors if necessary
       console.error("Error fetching data:", error);
     }
   } while (data && data.length > 0);
+  window.dashboard[endpoint].results.data = viewData;
+  window.dashboard['internalFormSubmitRUMDataLoaded'] = true;
+  window.dashboard["totalFormSubmitSubmissions"] = totalFormSubmissions;
+  flagSetter(true);
 }

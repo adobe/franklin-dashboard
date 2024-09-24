@@ -34,7 +34,13 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
       ) : null}
 
       {/* Text input to add new tags */}
-      <Flex direction="row" gap="size-200" alignItems="center">
+      <Flex direction="column" gap="size-200">
+        <TextField
+          value={newItem}
+          onChange={setNewItem}
+          label="Exclude Source"
+          aria-label="Exclude Source"
+        />
         <TextField
           value={newItem}
           onChange={setNewItem}

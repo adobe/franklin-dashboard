@@ -217,7 +217,7 @@ export function DashboardFormsubmitQueryFilter({
     const url = inputUrl;
     const startdate = start;
     const enddate = end;
-    const sourceVal = source ? source.map(item => item.name) : []; // Check if source is defined before mapping
+    const sourceVal = source ? source : []; // Check if source is defined before mapping
     localStorage.setItem('excludeSource', JSON.stringify(sourceVal)); // Store the list as a string
 
     // Add your custom logic here

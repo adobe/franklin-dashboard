@@ -20,8 +20,6 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
 
   return (
     <Flex direction="column" gap="size-200" width="100%">
-      <label>{label}</label>
-
       {/* Render the TagGroup */}
       {items.length > 0 ? (
         <TagGroup
@@ -43,7 +41,7 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
           label="Exclude Source"
           aria-label="Exclude Source"
         />
-        <Button variant="primary" onPress={onAddItem}>
+        <Button variant="cta" onPress={onAddItem}>
           Exclude Source 
         </Button>
       </Flex>

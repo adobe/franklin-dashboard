@@ -54,7 +54,7 @@ export function RumTableView({
                         columns.map((key) => {
                           if (key === 'url') {
                             const hostname = data[0][key] ? new URL(data[0][key].startsWith('https://') ? data[0][key] : `https://${data[0][key]}`).hostname : '';
-                            return <Column allowsSorting align="start" width="fit-content" allowsResizing={true}>{`${key} (${hostname})`}</Column>;
+                            return <Column allowsSorting align="start" width="fit-content" allowsResizing={true}>{`${key}`}</Column>;
                           }
                          else {
                           return (

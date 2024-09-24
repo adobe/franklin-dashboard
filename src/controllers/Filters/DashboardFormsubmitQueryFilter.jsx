@@ -219,8 +219,9 @@ export function DashboardFormsubmitQueryFilter({
     const url = inputUrl;
     const startdate = start;
     const enddate = end;
-    const sourceVal = source;
-    localStorage.setItem('excludeSource', sourceVal);
+    // Here you access the sourceItems state instead of formData
+    const sourceVal = source.map(item => item.name); // Get the names of the sources
+    localStorage.setItem('excludeSource', JSON.stringify(sourceVal)); // Store the list as a string
 
 
     handleRedirect(url, domainkey, startdate, enddate, limit, timezone, urlParameters.get('ext'));
@@ -266,7 +267,7 @@ export function DashboardFormsubmitQueryFilter({
                     />
                   )}
                   {/* New MultipleTextEditable Component */}
-                  <MultipleTextEditable label="Exclude Source" name="source" defaultItems={source}  isRequired={false}/>
+                  <MultipleTextEditable label="Exclude Source" items={sourceItems} setItems={setSourceItems} />
 
                   <br />
                   <Button

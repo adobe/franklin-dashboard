@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { TagGroup, Item, Button, TextField, Flex } from '@adobe/react-spectrum';
+import { v4 as uuidv4 } from 'uuid'; 
 
-const MultipleTextEditable = ({ label, name, defaultItems = [] }) => {
-  const [items, setItems] = useState(defaultItems);
+const MultipleTextEditable = ({ label, items, setItems }) => {
   const [newItem, setNewItem] = useState('');
 
   // Handle removing items
@@ -13,9 +13,12 @@ const MultipleTextEditable = ({ label, name, defaultItems = [] }) => {
   // Handle adding new item
   const onAddItem = () => {
     if (newItem.trim()) {
-      const newItemObject = { id: items.length + 1, name: newItem };
-      setItems([...items, newItemObject]);
-      setNewItem('');
+      const isDuplicate = items.some(item => item.name.toLowerCase() === newItem.toLowerCase());
+      if (!isDuplicate) {
+        const newItemObject = { id: uuidv4(), name: newItem };
+        setItems([...items, newItemObject]);
+        setNewItem('');
+      }
     }
   };
 
@@ -32,7 +35,7 @@ const MultipleTextEditable = ({ label, name, defaultItems = [] }) => {
         >
           {item => <Item>{item.name}</Item>}
         </TagGroup>
-      ) : ''}
+      ) : null}
 
       {/* Text input to add new tags */}
       <Flex direction="row" gap="size-200" alignItems="center">
@@ -45,8 +48,6 @@ const MultipleTextEditable = ({ label, name, defaultItems = [] }) => {
           Exclude Source 
         </Button>
       </Flex>
-
-      
     </Flex>
   );
 };

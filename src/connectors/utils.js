@@ -402,46 +402,52 @@ export async function  getEDSFormSubmission(endpoint, endpointHost, qps = {}, fl
   let viewData = [];
   let totalFormSubmissions = 0;
   console.log("---- here in EDS Formsubmit ");
-  const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit'};
-  console.log("---- here in EDS Formsubmit ",qpsparameter.checkpoint);
+  const qpsparameter = { 'offset': -1, 'limit': 500, 'checkpoint': 'formsubmit' };
+  console.log("---- here in EDS Formsubmit ", qpsparameter.checkpoint);
   do {
-      try {
-          // Make the queryRequest
-          await queryRequest(endpoint, endpointHost, qpsparameter , true);
+    try {
+      // Make the queryRequest
+      await queryRequest(endpoint, endpointHost, qpsparameter, true);
 
-          // Process the data
-          data = window.dashboard[endpoint].results.data || [];
-                    
-          for (let i = 0; i < data.length; i += 1) {
-              
-              if (!(data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 
-                  || data[i]['url'].includes('uat') || data[i]['url'].includes('publish-') || data[i]['url'].includes('stage')
-                  || data[i]['url'].includes('test'))) {
-                  // If tenantName is not 'All', process as usual
-                      let newData = {
-                          url: data[i]['url'],
-                          submissions: Number(data[i]['actions']),
-                          source: data[i]['source'],
-                      };
-                      viewData.push(newData);
-                      totalFormSubmissions += Number(data[i]['actions']);
-              }
-          }
-          
-          
-          // Update qps for the next iteration
-          qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
-          qpsparameter.limit = qpsparameter.limit * 2;
-          qpsparameter.checkpoint = "formsubmit";
-      } catch (error) {
-          // Handle errors if necessary
-          console.error("Error fetching data:", error);
+      // Process the data
+      data = window.dashboard[endpoint].results.data || [];
+
+      const excludeSource = JSON.parse(localStorage.getItem('excludeSource'));
+
+      for (let i = 0; i < data.length; i += 1) {
+        const source = data[i]['source'];
+
+        if (
+          !(data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa')
+            || data[i]['url'].includes('uat') || data[i]['url'].includes('publish-') || data[i]['url'].includes('stage')
+            || data[i]['url'].includes('test'))
+          && source
+          && !excludeSource.some((excluded) => source.toLowerCase().includes(excluded.toLowerCase()))
+        ) {
+          // If tenantName is not 'All', process as usual
+          let newData = {
+            url: data[i]['url'],
+            submissions: Number(data[i]['actions']),
+            source: source,
+          };
+          viewData.push(newData);
+          totalFormSubmissions += Number(data[i]['actions']);
+        }
       }
+
+      // Update qps for the next iteration
+      qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
+      qpsparameter.limit = qpsparameter.limit * 2;
+      qpsparameter.checkpoint = "formsubmit";
+    } catch (error) {
+      // Handle errors if necessary
+      console.error("Error fetching data:", error);
+    }
   } while (data && data.length > 0);
   viewData.push({
     url: 'All',
     submissions: totalFormSubmissions
-});
+  });
   window.dashboard[endpoint].results.data = viewData;
   window.dashboard['internalFormSubmitRUMDataLoaded'] = true;
   window.dashboard["totalFormSubmitSubmissions"] = totalFormSubmissions;

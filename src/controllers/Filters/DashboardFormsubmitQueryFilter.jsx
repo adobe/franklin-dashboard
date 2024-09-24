@@ -117,9 +117,6 @@ export function DashboardFormsubmitQueryFilter({
       setDataEndpoint(dataEndpoint);
       setStartDate(currStart);
       setEndDate(currEnd);
-      console.log("--setExcludeSource(source)-");
-      console.log(source);
-      setExcludeSource(source);
     }
   };
 
@@ -135,12 +132,6 @@ export function DashboardFormsubmitQueryFilter({
     setHostName(hostname);
     return hostname;
   };
-
-    // Initialize state from localStorage
-    useEffect(() => {
-      const savedSource = localStorage.getItem('excludeSource') ? JSON.parse(localStorage.getItem('excludeSource')) : [];
-        setSource(savedSource);
-  }, []);
   
 
   useEffect(() => {

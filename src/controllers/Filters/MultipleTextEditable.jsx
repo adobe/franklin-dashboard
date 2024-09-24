@@ -29,7 +29,9 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
           onRemove={onRemove}
           aria-label="Editable TagGroup example"
         >
-          {<Item>{item}</Item>}
+          {items.map((item) => (
+            <Item key={item}>{item}</Item>
+          ))}
         </TagGroup>
       ) : null}
 

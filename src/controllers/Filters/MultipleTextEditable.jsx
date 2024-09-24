@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TagGroup, Item, Button, TextField, Flex } from '@adobe/react-spectrum';
-import { v4 as uuidv4 } from 'uuid'; 
 
 const MultipleTextEditable = ({ label, items, setItems }) => {
   const [newItem, setNewItem] = useState('');
@@ -13,12 +12,9 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
   // Handle adding new item
   const onAddItem = () => {
     if (newItem.trim()) {
-      const isDuplicate = items.some(item => item.toLowerCase() === newItem.toLowerCase());
-      if (!isDuplicate) {
         const newItemObject = newItem;
         setItems([...items, newItemObject]);
         setNewItem('');
-      }
     }
   };
 
@@ -42,7 +38,8 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
         <TextField
           value={newItem}
           onChange={setNewItem}
-          placeholder="Exclude Source"
+          label="Exclude Source"
+          aria-label="Exclude Source"
         />
         <Button variant="primary" onPress={onAddItem}>
           Exclude Source 

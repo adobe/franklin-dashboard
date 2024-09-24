@@ -412,7 +412,7 @@ export async function  getEDSFormSubmission(endpoint, endpointHost, qps = {}, fl
       // Process the data
       data = window.dashboard[endpoint].results.data || [];
 
-      const excludeSource = JSON.parse(localStorage.getItem('excludeSource'));
+      const excludeSource = localStorage.getItem('excludeSource') ? JSON.parse(localStorage.getItem('excludeSource')) : [];
 
       for (let i = 0; i < data.length; i += 1) {
         const source = data[i]['source'];

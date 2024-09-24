@@ -41,12 +41,6 @@ const MultipleTextEditable = ({ label, items, setItems }) => {
           label="Exclude Source"
           aria-label="Exclude Source"
         />
-        <TextField
-          value={newItem}
-          onChange={setNewItem}
-          label="Exclude Source"
-          aria-label="Exclude Source"
-        />
         <Button variant="cta" onPress={onAddItem}>
           Exclude Source 
         </Button>

@@ -267,7 +267,7 @@ export function DashboardFormsubmitQueryFilter({
                     />
                   )}
                   {/* New MultipleTextEditable Component */}
-                  <MultipleTextEditable label="Exclude Source" items={sourceItems} setItems={setSourceItems} />
+                  <MultipleTextEditable label="Exclude Source" items={source} setItems={setSource} />
 
                   <br />
                   <Button

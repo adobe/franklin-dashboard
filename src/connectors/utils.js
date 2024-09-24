@@ -397,7 +397,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   flagSetter(true);
 }
 
-let totalFormSubmissions = 0; // Initialize totalFormSubmissions as a global variable
+const totalFormSubmissions = 0; // Initialize totalFormSubmissions as a global variable
 
 export async function getEDSFormSubmission(endpoint, endpointHost, qps = {}, flagSetter) {
   let data;

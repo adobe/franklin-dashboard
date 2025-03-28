@@ -236,7 +236,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
 
 export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter) {
   // Reset global counter at the start of each call to prevent accumulation from previous runs
-  let totalFormSubmissionsBaseDomains = 0;
+  totalFormSubmissionsBaseDomains = 0;
   console.log("---- Starting getBaseDomains ----");
   
   // Use local variables for accumulation to prevent race conditions
@@ -246,22 +246,10 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
   let localTotalFormViews = 0;
   let localTotalFormSubmissions = 0;
   let viewData = [];
-  
-  // Initialize pagination with fixed size batches
-  let currentOffset = 0;
-  const batchSize = 500;  // Fixed batch size
+  const qpsparameter = {'offset': -1, 'limit': 10000};
   
   try {
     do {
-      // Set up pagination parameters
-      const qpsparameter = {
-        'offset': currentOffset,
-        'limit': batchSize,
-        ...qps  // Include any other query parameters
-      };
-      
-      console.log(`Fetching batch - offset: ${currentOffset}, limit: ${batchSize}`);
-      
       // Wait for query request to complete before proceeding
       await queryRequest(endpoint, endpointHost, qpsparameter, true);
 
@@ -281,30 +269,11 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
         
         // Skip unwanted domains
         if (domain.endsWith('hlx.page') || domain.endsWith('hlx.live') || 
-            domain.indexOf('localhost') > -1 || domain.indexOf('dev') > -1 || 
-            domain.indexOf('stage') > -1 || domain.indexOf('stagging') > -1 || 
-            domain.indexOf('main-') > -1 || domain.indexOf('staging') > -1 || 
-            domain.indexOf('about:srcdoc') > -1) {
+            domain.indexOf('localhost')>-1 || domain.indexOf('dev')>-1 || 
+            domain.indexOf('stage')>-1 || domain.indexOf('stagging')>-1 || 
+            domain.indexOf('main-')>-1 || domain.indexOf('staging')>-1 || 
+            domain.indexOf('about:srcdoc')>-1) {
           continue;
-        }
-
-        // Special logging for shredit.com
-        if (domain === 'www.shredit.com') {
-          shreditUrlCount++;
-          const views = parseInt(record['views']) || 0;
-          const submissions = parseInt(record['submissions']) || 0;
-          shreditViews += views;
-          shreditSubmissions += submissions;
-          
-          console.log('Found Shredit URL:', {
-            url: record['url'],
-            views: views,
-            submissions: submissions,
-            runningTotalViews: shreditViews,
-            runningTotalSubmissions: shreditSubmissions,
-            urlCount: shreditUrlCount,
-            currentOffset: currentOffset
-          });
         }
 
         // Add domain to set
@@ -330,17 +299,6 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             submissions: existingData.submissions + submissions
           };
           duplicateDomain.add(record['url']);
-
-          // Log updates for shredit.com
-          if (domain === 'www.shredit.com') {
-            console.log('Updated Shredit aggregated data:', {
-              previousViews: existingData.views,
-              newViews: existingData.views + views,
-              previousSubmissions: existingData.submissions,
-              newSubmissions: existingData.submissions + submissions,
-              currentOffset: currentOffset
-            });
-          }
         } else if (!duplicateDomain.has(record['url'])) {
           // Add new domain data
           viewData.push({
@@ -348,43 +306,14 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             views: views,
             submissions: submissions
           });
-
-          // Log new entry for shredit.com
-          if (domain === 'www.shredit.com') {
-            console.log('Created new Shredit entry:', {
-              views: views,
-              submissions: submissions,
-              currentOffset: currentOffset
-            });
-          }
         }
       }
 
-      // Update offset for next batch - only if we got a full batch
-      if (data.length === batchSize) {
-        currentOffset += batchSize;
-        console.log(`Moving to next batch starting at offset: ${currentOffset}`);
-      } else {
-        console.log(`Received partial batch (${data.length} records), ending pagination`);
-        data = null; // End the loop
-      }
+      // Update parameters for next iteration
+      qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
+      qpsparameter.limit = qpsparameter.limit * 2;
 
-      console.log('Batch processing complete. Current Shredit totals:', {
-        totalViews: shreditViews,
-        totalSubmissions: shreditSubmissions,
-        totalUrls: shreditUrlCount,
-        currentOffset: currentOffset
-      });
-
-    } while (data && data.length === batchSize); // Continue if we got a full batch
-
-    // Log final totals for shredit.com
-    console.log('FINAL SHREDIT.COM TOTALS:', {
-      totalViews: shreditViews,
-      totalSubmissions: shreditSubmissions,
-      totalUrlsProcessed: shreditUrlCount,
-      inViewData: viewData.find(item => item.url === 'www.shredit.com')
-    });
+    } while (data && data.length > 0);
 
     // After all processing is complete, add the totals record
     viewData.push({
@@ -425,7 +354,7 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
   const hostnameToProgramIdMap = new Map(
     formsProgramMapping.map(item => [item.domain, item.tenant])
 );
-  const qpsparameter = {'offset': -1, 'limit': 500 ,'checkpoint': 'formsubmit', 'source': '#guideContainerForm'};
+  const qpsparameter = {'offset': -1, 'limit': 10000 ,'checkpoint': 'formsubmit', 'source': '#guideContainerForm'};
   do {
       try {
           // Make the queryRequest

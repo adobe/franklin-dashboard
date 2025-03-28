@@ -238,6 +238,7 @@ let totalFormSubmissionsBaseDomains = 0;
 export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter) {
   // Reset global counter at the start of each call to prevent accumulation from previous runs
   totalFormSubmissionsBaseDomains = 0;
+  console.log("---- here in getBaseDomains ");
   
   // Use local variables for accumulation to prevent race conditions
   const domains = new Set();

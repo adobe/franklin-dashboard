@@ -234,10 +234,9 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
   location.href = `${location.pathname}?${newQp.toString()}`;
 }
 
-let totalFormSubmissionsBaseDomains = 0;
 export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter) {
   // Reset global counter at the start of each call to prevent accumulation from previous runs
-  totalFormSubmissionsBaseDomains = 0;
+  let totalFormSubmissionsBaseDomains = 0;
   console.log("---- here in getBaseDomains ");
   
   // Use local variables for accumulation to prevent race conditions
@@ -248,6 +247,11 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
   let localTotalFormSubmissions = 0;
   let viewData = [];
   const qpsparameter = {'offset': -1, 'limit': 500};
+  
+  // Add counters specifically for shredit.com
+  let shreditViews = 0;
+  let shreditSubmissions = 0;
+  let shreditUrlCount = 0;
   
   try {
     do {
@@ -262,6 +266,8 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
       }
       data = dashboardData;
 
+      console.log(`Processing batch of ${data.length} records...`);
+
       // Process each record
       for (const record of data) {
         const domain = record['url'].replace(/^http(s)*:\/\//, '').split('/')[0];
@@ -273,6 +279,24 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             domain.indexOf('main-') > -1 || domain.indexOf('staging') > -1 || 
             domain.indexOf('about:srcdoc') > -1) {
           continue;
+        }
+
+        // Special logging for shredit.com
+        if (domain === 'www.shredit.com') {
+          shreditUrlCount++;
+          const views = parseInt(record['views']) || 0;
+          const submissions = parseInt(record['submissions']) || 0;
+          shreditViews += views;
+          shreditSubmissions += submissions;
+          
+          console.log('Found Shredit URL:', {
+            url: record['url'],
+            views: views,
+            submissions: submissions,
+            runningTotalViews: shreditViews,
+            runningTotalSubmissions: shreditSubmissions,
+            urlCount: shreditUrlCount
+          });
         }
 
         // Add domain to set
@@ -298,6 +322,16 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             submissions: existingData.submissions + submissions
           };
           duplicateDomain.add(record['url']);
+
+          // Log updates for shredit.com
+          if (domain === 'www.shredit.com') {
+            console.log('Updated Shredit aggregated data:', {
+              previousViews: existingData.views,
+              newViews: existingData.views + views,
+              previousSubmissions: existingData.submissions,
+              newSubmissions: existingData.submissions + submissions
+            });
+          }
         } else if (!duplicateDomain.has(record['url'])) {
           // Add new domain data
           viewData.push({
@@ -305,6 +339,14 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             views: views,
             submissions: submissions
           });
+
+          // Log new entry for shredit.com
+          if (domain === 'www.shredit.com') {
+            console.log('Created new Shredit entry:', {
+              views: views,
+              submissions: submissions
+            });
+          }
         }
       }
 
@@ -312,7 +354,21 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
       qpsparameter.offset += qpsparameter.limit;
       qpsparameter.limit *= 2;
 
+      console.log('Batch processing complete. Current Shredit totals:', {
+        totalViews: shreditViews,
+        totalSubmissions: shreditSubmissions,
+        totalUrls: shreditUrlCount
+      });
+
     } while (data && data.length > 0);
+
+    // Log final totals for shredit.com
+    console.log('FINAL SHREDIT.COM TOTALS:', {
+      totalViews: shreditViews,
+      totalSubmissions: shreditSubmissions,
+      totalUrlsProcessed: shreditUrlCount,
+      inViewData: viewData.find(item => item.url === 'www.shredit.com')
+    });
 
     // After all processing is complete, add the totals record
     viewData.push({

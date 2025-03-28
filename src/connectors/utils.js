@@ -236,7 +236,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
 
 export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter) {
   // Reset global counter at the start of each call to prevent accumulation from previous runs
-  totalFormSubmissionsBaseDomains = 0;
+  let totalFormSubmissionsBaseDomains = 0;
   console.log("---- Starting getBaseDomains ----");
   
   // Use local variables for accumulation to prevent race conditions

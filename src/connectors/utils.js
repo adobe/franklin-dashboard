@@ -237,7 +237,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
 export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter) {
   // Reset global counter at the start of each call to prevent accumulation from previous runs
   let totalFormSubmissionsBaseDomains = 0;
-  console.log("---- here in getBaseDomains ");
+  console.log("---- Starting getBaseDomains ----");
   
   // Use local variables for accumulation to prevent race conditions
   const domains = new Set();
@@ -246,15 +246,22 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
   let localTotalFormViews = 0;
   let localTotalFormSubmissions = 0;
   let viewData = [];
-  const qpsparameter = {'offset': -1, 'limit': 500};
   
-  // Add counters specifically for shredit.com
-  let shreditViews = 0;
-  let shreditSubmissions = 0;
-  let shreditUrlCount = 0;
+  // Initialize pagination with fixed size batches
+  let currentOffset = 0;
+  const batchSize = 500;  // Fixed batch size
   
   try {
     do {
+      // Set up pagination parameters
+      const qpsparameter = {
+        'offset': currentOffset,
+        'limit': batchSize,
+        ...qps  // Include any other query parameters
+      };
+      
+      console.log(`Fetching batch - offset: ${currentOffset}, limit: ${batchSize}`);
+      
       // Wait for query request to complete before proceeding
       await queryRequest(endpoint, endpointHost, qpsparameter, true);
 
@@ -295,7 +302,8 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             submissions: submissions,
             runningTotalViews: shreditViews,
             runningTotalSubmissions: shreditSubmissions,
-            urlCount: shreditUrlCount
+            urlCount: shreditUrlCount,
+            currentOffset: currentOffset
           });
         }
 
@@ -329,7 +337,8 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
               previousViews: existingData.views,
               newViews: existingData.views + views,
               previousSubmissions: existingData.submissions,
-              newSubmissions: existingData.submissions + submissions
+              newSubmissions: existingData.submissions + submissions,
+              currentOffset: currentOffset
             });
           }
         } else if (!duplicateDomain.has(record['url'])) {
@@ -344,23 +353,30 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
           if (domain === 'www.shredit.com') {
             console.log('Created new Shredit entry:', {
               views: views,
-              submissions: submissions
+              submissions: submissions,
+              currentOffset: currentOffset
             });
           }
         }
       }
 
-      // Update parameters for next iteration
-      qpsparameter.offset += qpsparameter.limit;
-      qpsparameter.limit *= 2;
+      // Update offset for next batch - only if we got a full batch
+      if (data.length === batchSize) {
+        currentOffset += batchSize;
+        console.log(`Moving to next batch starting at offset: ${currentOffset}`);
+      } else {
+        console.log(`Received partial batch (${data.length} records), ending pagination`);
+        data = null; // End the loop
+      }
 
       console.log('Batch processing complete. Current Shredit totals:', {
         totalViews: shreditViews,
         totalSubmissions: shreditSubmissions,
-        totalUrls: shreditUrlCount
+        totalUrls: shreditUrlCount,
+        currentOffset: currentOffset
       });
 
-    } while (data && data.length > 0);
+    } while (data && data.length === batchSize); // Continue if we got a full batch
 
     // Log final totals for shredit.com
     console.log('FINAL SHREDIT.COM TOTALS:', {

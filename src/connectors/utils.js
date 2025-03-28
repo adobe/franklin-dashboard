@@ -236,7 +236,7 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
 
 export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter) {
   // Reset global counter at the start of each call to prevent accumulation from previous runs
-  let totalFormSubmissionsBaseDomains = 0;
+  totalFormSubmissionsBaseDomains = 0;
   console.log("---- Starting getBaseDomains ----");
   
   // Use local variables for accumulation to prevent race conditions
@@ -247,6 +247,11 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
   let localTotalFormSubmissions = 0;
   let viewData = [];
   const qpsparameter = {'offset': -1, 'limit': 10000};
+  
+  // Add tracking for shredit.com
+  let shreditUrls = new Set();
+  let shreditTotalViews = 0;
+  let shreditTotalSubmissions = 0;
   
   try {
     do {
@@ -266,6 +271,24 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
       // Process each record
       for (const record of data) {
         const domain = record['url'].replace(/^http(s)*:\/\//, '').split('/')[0];
+        
+        // Track shredit.com URLs and metrics
+        if (domain === 'www.shredit.com') {
+          shreditUrls.add(record['url']);
+          const views = parseInt(record['views']) || 0;
+          const submissions = parseInt(record['submissions']) || 0;
+          shreditTotalViews += views;
+          shreditTotalSubmissions += submissions;
+          
+          console.log('Found Shredit URL:', {
+            fullUrl: record['url'],
+            views,
+            submissions,
+            runningTotalViews: shreditTotalViews,
+            runningTotalSubmissions: shreditTotalSubmissions,
+            uniqueUrlsCount: shreditUrls.size
+          });
+        }
         
         // Skip unwanted domains
         if (domain.endsWith('hlx.page') || domain.endsWith('hlx.live') || 
@@ -299,6 +322,17 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             submissions: existingData.submissions + submissions
           };
           duplicateDomain.add(record['url']);
+          
+          // Log shredit.com updates
+          if (domain === 'www.shredit.com') {
+            console.log('Updated Shredit domain totals:', {
+              previousViews: existingData.views,
+              newViews: existingData.views + views,
+              previousSubmissions: existingData.submissions,
+              newSubmissions: existingData.submissions + submissions,
+              uniqueUrlsCount: shreditUrls.size
+            });
+          }
         } else if (!duplicateDomain.has(record['url'])) {
           // Add new domain data
           viewData.push({
@@ -306,6 +340,15 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
             views: views,
             submissions: submissions
           });
+          
+          // Log new shredit.com entry
+          if (domain === 'www.shredit.com') {
+            console.log('Created new Shredit domain entry:', {
+              views,
+              submissions,
+              uniqueUrlsCount: shreditUrls.size
+            });
+          }
         }
       }
 
@@ -314,6 +357,14 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
       qpsparameter.limit = qpsparameter.limit * 2;
 
     } while (data && data.length > 0);
+
+    // Log final shredit.com statistics
+    console.log('FINAL SHREDIT.COM STATISTICS:', {
+      totalUniqueUrls: shreditUrls.size,
+      totalViews: shreditTotalViews,
+      totalSubmissions: shreditTotalSubmissions,
+      allUrls: Array.from(shreditUrls)
+    });
 
     // After all processing is complete, add the totals record
     viewData.push({

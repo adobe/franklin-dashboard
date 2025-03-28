@@ -235,72 +235,112 @@ export function handleRedirect(url, domainkey, startdate, enddate, limit, timezo
 }
 
 let totalFormSubmissionsBaseDomains = 0;
-export async function  getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter){
+export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSetter) {
+  // Reset global counter at the start of each call to prevent accumulation from previous runs
+  totalFormSubmissionsBaseDomains = 0;
+  
+  // Use local variables for accumulation to prevent race conditions
   const domains = new Set();
   const duplicateDomain = new Set();
   let data;
-  let totalFormViews = 0;
+  let localTotalFormViews = 0;
+  let localTotalFormSubmissions = 0;
   let viewData = [];
   const qpsparameter = {'offset': -1, 'limit': 500};
-  do {
-      try {
-          // Make the queryRequest
-          await queryRequest(endpoint, endpointHost, qpsparameter , true);
+  
+  try {
+    do {
+      // Wait for query request to complete before proceeding
+      await queryRequest(endpoint, endpointHost, qpsparameter, true);
 
-          // Process the data
-          data = window.dashboard[endpoint].results.data || [];
-          console.log("---domain------");
-          for (let i = 0; i < data.length; i += 1) {
-              let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').split('/')[0]
-              if (!domain.endsWith('hlx.page') && !domain.endsWith('hlx.live') && !(domain.indexOf('localhost')>-1)
-                  && !(domain.indexOf('dev')>-1) && !(domain.indexOf('stage')>-1) && !(domain.indexOf('stagging')>-1) && !(domain.indexOf('main-')>-1)
-                  && !(domain.indexOf('staging')>-1) && !(domain.indexOf('about:srcdoc')>-1)) {
-                  domains.add(domain);
-                      totalFormViews = totalFormViews + Number(data[i]['views']);
-                      totalFormSubmissionsBaseDomains = totalFormSubmissionsBaseDomains + Number(data[i]['submissions']);
-                      let found = false;
-                      for (let j = 0; j < viewData.length; j++) {
-                          console.log(data[i]['url']);
-                          if (viewData[j]['url'].includes(domain)) {
-                              duplicateDomain.add(data[i]['url']);
-                              viewData[j]['views'] += Number(data[i]['views']);
-                              viewData[j]['submissions'] += Number(data[i]['submissions']);
-                              found = true;
-                              break;
-                          }
-                      }
-                      if (!found && !duplicateDomain.has(data[i]['url'])) {
-                          let newData = {
-                              url: domain,
-                              views: Number(data[i]['views']),
-                              submissions: Number(data[i]['submissions'])
-                          };
-                          viewData.push(newData);
-                      }
-              }
-          }
-          console.log("---domain--done------");
-          // Update qps for the next iteration
-          qpsparameter.offset = qpsparameter.offset + qpsparameter.limit;
-          qpsparameter.limit = qpsparameter.limit * 2;
-      } catch (error) {
-          // Handle errors if necessary
-          console.error("Error fetching data:", error);
+      // Safely get data from window object
+      const dashboardData = window.dashboard?.[endpoint]?.results?.data;
+      if (!dashboardData) {
+        console.warn('No data received from dashboard');
+        break;
       }
-  } while (data && data.length > 0);
-  console.log("-------domains------");
-  console.log(domains);
-  viewData.push({
-    url: 'ALL',
-    views: totalFormViews,
-    submissions: totalFormSubmissionsBaseDomains
-});
-  window.dashboard[endpoint].results.data = viewData;
-  window.dashboard["domains"] = domains;
-  window.dashboard['internalDataLoaded'] = true;
-  window.dashboard["totalFormViews"] = totalFormViews;
-  window.dashboard["totalFormSubmissionsBaseDomains"] = totalFormSubmissionsBaseDomains;
-  flagSetter(true);
+      data = dashboardData;
+
+      // Process each record
+      for (const record of data) {
+        const domain = record['url'].replace(/^http(s)*:\/\//, '').split('/')[0];
+        
+        // Skip unwanted domains
+        if (domain.endsWith('hlx.page') || domain.endsWith('hlx.live') || 
+            domain.indexOf('localhost') > -1 || domain.indexOf('dev') > -1 || 
+            domain.indexOf('stage') > -1 || domain.indexOf('stagging') > -1 || 
+            domain.indexOf('main-') > -1 || domain.indexOf('staging') > -1 || 
+            domain.indexOf('about:srcdoc') > -1) {
+          continue;
+        }
+
+        // Add domain to set
+        domains.add(domain);
+
+        // Safely convert string numbers to integers
+        const views = parseInt(record['views']) || 0;
+        const submissions = parseInt(record['submissions']) || 0;
+
+        // Update local totals
+        localTotalFormViews += views;
+        localTotalFormSubmissions += submissions;
+
+        // Find existing domain data or create new entry
+        const existingIndex = viewData.findIndex(item => item.url === domain);
+        
+        if (existingIndex !== -1) {
+          // Update existing domain data atomically
+          const existingData = viewData[existingIndex];
+          viewData[existingIndex] = {
+            ...existingData,
+            views: existingData.views + views,
+            submissions: existingData.submissions + submissions
+          };
+          duplicateDomain.add(record['url']);
+        } else if (!duplicateDomain.has(record['url'])) {
+          // Add new domain data
+          viewData.push({
+            url: domain,
+            views: views,
+            submissions: submissions
+          });
+        }
+      }
+
+      // Update parameters for next iteration
+      qpsparameter.offset += qpsparameter.limit;
+      qpsparameter.limit *= 2;
+
+    } while (data && data.length > 0);
+
+    // After all processing is complete, add the totals record
+    viewData.push({
+      url: 'ALL',
+      views: localTotalFormViews,
+      submissions: localTotalFormSubmissions
+    });
+
+    // Update global state only once at the end
+    if (window.dashboard) {
+      window.dashboard[endpoint] = {
+        ...window.dashboard[endpoint],
+        results: { data: viewData }
+      };
+      window.dashboard.domains = domains;
+      window.dashboard.internalDataLoaded = true;
+      window.dashboard.totalFormViews = localTotalFormViews;
+      window.dashboard.totalFormSubmissionsBaseDomains = localTotalFormSubmissions;
+      totalFormSubmissionsBaseDomains = localTotalFormSubmissions; // Update global counter
+    }
+
+    // Signal completion
+    flagSetter(true);
+
+  } catch (error) {
+    console.error('Error in getBaseDomains:', error);
+    flagSetter(false);
+    throw error;
+  }
 }
 
 let totalEDSFormFormSubmissions = 0;

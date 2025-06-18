@@ -100,7 +100,7 @@ export function RumTableView({
                                         }
                                       
                                         const baseDashboardUrl = 'https://forms-internal-dashboard--franklin-dashboard--adobe.hlx.page/rum-dashboard';
-                                        const url = rum[col];
+                                        const url = rum[col] || '';
                                         const urlParameters = new URLSearchParams(window.location.search);
                                         const domainkey = urlParameters.get('domainkey');
                                         const startdate = urlParameters.get('startdate');

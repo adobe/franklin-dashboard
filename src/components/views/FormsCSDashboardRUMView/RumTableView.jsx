@@ -109,8 +109,9 @@ const handleClick = (event, selectedValue,dashboardUrl) => {
                                         if (rum[col] === 'Other') {
                                           return <Cell>{rum[col]}</Cell>;
                                         }
-                                          
-                                        return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
+                                        
+                                        const url = rum[col] || '';
+                                        return <Cell><a href={url} target="_blank">{url}</a></Cell>;
                                         //return <Cell><a href={dashboardUrl} target="_blank">{url.replace(/^https?:\/\/[^/]+/i, '')}</a></Cell>;
                                       } if (col === 'views') {
                                         return <Cell width='size-1500'>
@@ -143,7 +144,9 @@ const handleClick = (event, selectedValue,dashboardUrl) => {
                                         //return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
                                         console.log(dashboardUrl);
                                         console.log("---dashboardUrl----");
-                                        return <Cell><a href={dashboardUrl} target="_blank" onClick={(event) => handleClick(event, hostnameToProgramIdMap.get(rum[col]),dashboardUrl)}>{hostnameToProgramIdMap.get(rum[col])}</a></Cell>;
+                                        const tenantValue = rum[col] || '';
+                                        const tenantName = hostnameToProgramIdMap.get(tenantValue) || tenantValue;
+                                        return <Cell><a href={dashboardUrl} target="_blank" onClick={(event) => handleClick(event, tenantName, dashboardUrl)}>{tenantName}</a></Cell>;
                                       }
                                        return <Cell width="size-1000">
                                                     <Badge width="size-1000" alignSelf='center' variant='info'>

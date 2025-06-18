@@ -82,7 +82,8 @@ export function RumTableView({
                                         if(rum[col] === 'Other'){
                                           return <Cell>{rum[col]}</Cell>;
                                         }
-                                        return <Cell><a href={rum[col]} target="_blank">{rum[col]}</a></Cell>;
+                                        const url = rum[col] || '';
+                                        return <Cell><a href={url} target="_blank">{url}</a></Cell>;
                                       }if (col === 'source') {
                                           return <Cell>{rum[col]}</Cell>;
                                       }if (col === 'submissions') {

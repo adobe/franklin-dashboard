@@ -270,6 +270,11 @@ export async function getBaseDomains(endpoint, endpointHost, qps = {}, flagSette
 
       // Process each record
       for (const record of data) {
+        // Skip records with null or undefined URLs
+        if (!record['url']) {
+          continue;
+        }
+        
         const domain = record['url'].replace(/^http(s)*:\/\//, '').split('/')[0];
         
         // Track shredit.com URLs and metrics
@@ -417,6 +422,11 @@ export async function  getEDSCSFormSubmission(endpoint, endpointHost, qps = {}, 
           let groupedData = new Map();  // Map to store grouped data when tenantName is 'All'
           
           for (let i = 0; i < data.length; i += 1) {
+              // Skip records with null or undefined URLs
+              if (!data[i]['url']) {
+                  continue;
+              }
+              
               let domain = data[i]['url'].replace(/^http(s)*:\/\//, '').replace(/^www\./, '').split('/')[0];
               
               if (!(data[i]['url'].includes('localhost') || data[i]['url'].includes('dev') || data[i]['url'].includes('qa') 

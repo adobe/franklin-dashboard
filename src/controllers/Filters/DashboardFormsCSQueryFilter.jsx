@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 import { Flex, DatePicker, TextField, Form, Button, ComboBox, Item,Text } from '@adobe/react-spectrum';
 import { useNavigate } from 'react-router-dom';
-import { today, getLocalTimeZone, parseDate } from '@internationalized/date';
+import { today, getLocalTimeZone, parseDate, CalendarDate } from '@internationalized/date';
 import React, { useEffect } from 'react';
 import FilterIcon from '@spectrum-icons/workflow/Filter';
 import SearchIcon from '@spectrum-icons/workflow/Search';
@@ -37,6 +37,18 @@ export function DashboardFormsCSQueryFilter({
     // eslint-disable-next-line no-console
     console.log('useNavigate not available');
   }
+  
+  // Calculate date 2 months ago for minValue of start date
+  const getTwoMonthsAgo = () => {
+    const now = today(getLocalTimeZone());
+    const twoMonthsAgo = new CalendarDate(
+      now.year,
+      now.month - 2,
+      now.day
+    );
+    return twoMonthsAgo;
+  };
+
   const dates = intervalOffsetToDates(0, 30);
   const [range, setRange] = React.useState(() => {
     const currDataDates = getDataDates();
@@ -247,6 +259,7 @@ export function DashboardFormsCSQueryFilter({
                     name="start"
                     defaultValue={range.start}
                     isRequired
+                    minValue={getTwoMonthsAgo()}
                   />
                   <DatePicker
                     label="End Date"

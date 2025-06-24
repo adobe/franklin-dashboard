@@ -1,0 +1,55 @@
+name: CWV PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  run-cwv-check:
+    runs-on: ubuntu-latest
+    environment: CWV
+    env:
+      AZURE_OPENAI_API_DEPLOYMENT_NAME: ${{ secrets.AZURE_OPENAI_API_DEPLOYMENT_NAME }}
+      AZURE_OPENAI_API_INSTANCE_NAME: ${{ secrets.AZURE_OPENAI_API_INSTANCE_NAME }}
+      AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+      AZURE_OPENAI_API_VERSION: ${{ secrets.AZURE_OPENAI_API_VERSION }}
+      GOOGLE_CRUX_API_KEY: ${{ secrets.GOOGLE_CRUX_API_KEY }}
+      GOOGLE_PAGESPEED_INSIGHTS_API_KEY: ${{ secrets.GOOGLE_PAGESPEED_INSIGHTS_API_KEY }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install CWV Agent
+        run: npm install --no-save git+https://github.com/ramboz/cwv-agent.git
+
+      - name: Build Preview URL
+        id: build_url
+        run: |
+          BRANCH=${{ github.head_ref }}
+          REPO=${{ github.event.repository.name }}
+          OWNER=${{ github.repository_owner }}
+          PREVIEW_URL="https://${BRANCH}--${REPO}--${OWNER}.aem.page"
+          echo "PREVIEW_URL=$PREVIEW_URL" >> $GITHUB_OUTPUT
+
+      - name: Run CWV Agent
+        run: |
+          node node_modules/cwv-agent/index.js --action prompt --url ${{ steps.build_url.outputs.PREVIEW_URL }} --device mobile --model gpt-4o
+          node node_modules/cwv-agent/index.js --action prompt --url ${{ steps.build_url.outputs.PREVIEW_URL }} --device desktop --model gpt-4o
+
+      - name: Upload All CWV Summary Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: cwv-summaries
+          path: .cache/*.report.gpt4o.summary.md
+
+      - name: Print project file tree (excluding node_modules)
+        run: |
+          sudo apt-get update && sudo apt-get install -y tree
+          echo "📁 Project structure (excluding node_modules):"
+          tree -L 3 -a -I 'node_modules'
